@@ -1,0 +1,29 @@
+{
+	"type": "mash",
+	"source": {
+		"quantize": 1,
+		"media": [],
+		"fonts": [],
+		"effects": [],
+		"tracks": {
+			"overlays": [
+				{
+					"type": "overlays",
+					"clips": []
+				}
+			],
+			"video": [
+				{
+					"type": "video",
+					"clips": []
+				}
+			],
+			"audio": [
+				{
+					"type": "audio",
+					"clips": []
+				}
+			]
+		}
+	}
+}

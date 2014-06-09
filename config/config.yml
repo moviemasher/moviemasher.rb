@@ -1,0 +1,25 @@
+test:
+  path_ffmpeg: ffmpeg
+  path_sox: sox
+  path_temporary: log/temporary
+  path_cache: log/cache
+  path_log: log
+  queue_idle_timeout: 40
+  queue_initial_timeout: nil
+  queue_wait_time_seconds: 5
+  queue_visibility_timeout: 360
+  queue_url: |
+    https://example.com/
+
+production:
+  path_ffmpeg: ffmpeg
+  path_sox: sox
+  path_temporary: /tmp/moviemasher/temporary
+  path_cache: /tmp/moviemasher/cache
+  path_log: /tmp/moviemasher/log
+  queue_idle_timeout: 40
+  queue_initial_timeout: nil
+  queue_wait_time_seconds: 5
+  queue_visibility_timeout: 360
+  queue_url: |
+    https://example.com/

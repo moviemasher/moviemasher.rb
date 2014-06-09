@@ -1,0 +1,10 @@
+{
+	"type": "video",
+	"length": 3,
+	"trim": 1,
+	"source": {
+		"type": "file",
+		"path": "media/video/drummers.mov",
+		"mode": "symlink"
+	}
+}

@@ -1,0 +1,5 @@
+{
+	"type": "s3",
+	"bucket": "test",
+	"path": "log/output"
+}

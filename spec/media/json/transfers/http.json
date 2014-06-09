@@ -1,0 +1,8 @@
+{
+	"type": "http",
+	"host": "test.localhost",
+	"port": "4568",
+	"path": "s3/log/spec",
+	"basename": "windmills",
+	"extension": "jpg"
+}

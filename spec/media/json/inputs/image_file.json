@@ -1,0 +1,11 @@
+{
+	"type": "image",
+	"length": 3,
+	"source": {
+		"type": "file",
+		"path": "media/image",
+		"name": "windmills",
+		"extension": "jpg",
+		"mode": "symlink"
+	}
+}

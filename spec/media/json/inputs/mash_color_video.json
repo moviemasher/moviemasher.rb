@@ -1,0 +1,56 @@
+{
+	"type": "mash",
+	"source": {
+		"quantize": 10,
+		"label": "A Second Each of Blue and Video",
+		"backcolor": "red",
+		"media": [{
+			"id": "drummers",
+			"type": "video",
+			"audio": 0,
+			"duration": 10,
+			"source": "video/drummers.mov"
+		}, {
+			"label": "Color",
+			"type": "theme",
+			"id": "com.moviemasher.theme.color",
+			"properties": { 
+				"color": { "type": "rgb", "value": "yellow" }
+			},
+			"filters": [{
+				"id": "color",
+				"parameters":[{
+					"name": "color",
+					"value":"color"
+				}]
+			}]
+		}],
+		"fonts": [],
+		"effects": [],
+		"tracks": {
+			"video": [
+				{
+					"type": "video",
+					"clips": [{
+						"id": "com.moviemasher.theme.color",
+						"effects": [],
+						"frame": 0,
+						"length": 10,
+						"color": "blue"
+					},{
+						"id": "drummers",
+						"effects": [],
+						"frame": 10,
+						"length": 10
+					}]
+				}
+			],
+			"audio": [
+				{
+					"type": "audio",
+					"clips": []
+				}
+			]
+		}
+	}
+}

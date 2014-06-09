@@ -1,0 +1,63 @@
+{
+	"type": "mash",
+	"source": {
+		"quantize": 10,
+		"backcolor": "blue",
+		"label": "Fills",
+		"media": [{
+			"id": "cable",
+			"type": "image",
+			"source": "image/cable.jpg"
+		},{
+			"id": "windmills",
+			"type": "image",
+			"source": "image/windmills.jpg"
+		}],
+		"fonts": [],
+		"effects": [],
+		"tracks": {
+			"video": [
+				{
+					"type": "video",
+					"clips": [{
+						"id": "cable",
+						"fill": "scale",
+						"frame": 0,
+						"length": 20
+					},{
+						"id": "cable",
+						"fill": "crop",
+						"frame": 20,
+						"length": 20
+					},{
+						"id": "cable",
+						"fill": "stretch",
+						"frame": 40,
+						"length": 20
+					},{
+						"id": "windmills",
+						"fill": "scale",
+						"frame": 60,
+						"length": 20
+					},{
+						"id": "windmills",
+						"fill": "crop",
+						"frame": 80,
+						"length": 20
+					},{
+						"id": "windmills",
+						"fill": "stretch",
+						"frame": 100,
+						"length": 20
+					}]
+				}
+			],
+			"audio": [
+				{
+					"type": "audio",
+					"clips": []
+				}
+			]
+		}
+	}
+}

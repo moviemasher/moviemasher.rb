@@ -1,0 +1,8 @@
+{
+	"type": "sequence",
+	"basename": "256x144x10",
+	"extension": "jpg",
+	"dimensions": "256x144",
+	"fps": "10",
+	"quality": "1"
+}
