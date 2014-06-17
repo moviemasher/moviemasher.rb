@@ -1,5 +1,6 @@
 
 module MovieMasher
+	#FilterTimestamps = 'setpts=expr=PTS-STARTPTS'
 	TypeVideo = 'video'
 	TypeSequence = 'sequence'
 	TypeAudio = 'audio'
@@ -9,7 +10,8 @@ module MovieMasher
 	TypeWaveform = 'waveform'
 	TypeTheme = 'theme'
 	TypeEffect = 'effect'
-	TypeTransform = 'transform'
+	TypeMerger = 'merger'
+	TypeScaler = 'scaler'
 	TypeTransition = 'transition'
 	InitiateTrigger = 'initiate'
 	DoneTrigger = 'done'
@@ -115,21 +117,19 @@ module MovieMasher
 				end
 				return ((TypeVideo == a[:type]) ? -1 : 1)
 			end
+			
 		end
-		# grab audio datum for output ranges
-		audio_outputs.each do |output|
-			__filter_graphs_audio output, job[:inputs]
-		end
-		video_outputs.each do |output|
-			__filter_graphs_video output, job[:inputs]
-		end
+		video_graphs = (video_outputs.empty? ? Array.new : __filter_graphs_video(job[:inputs]))
+		audio_graphs = (audio_outputs.empty? ? Array.new : __filter_graphs_audio(job[:inputs]))
+		
+		
 		# do video outputs first
 		video_outputs.each do |output|
-			__build_output job, output
+			__build_output job, output, video_graphs, audio_graphs
 		end
 		# then audio and other outputs
 		audio_outputs.each do |output|
-			__build_output job, output
+			__build_output job, output, video_graphs, audio_graphs
 		end
 		job[:outputs].each do |output|
 			__transfer_job_output job, output
@@ -175,40 +175,41 @@ module MovieMasher
 	def self.__cache_gcf a, b 
 		 ( ( b == 0 ) ? a : __cache_gcf(b, a % b) )
 	end
-	def self.__build_output job, output
+	def self.__build_output job, output, video_graphs, audio_graphs
 		unless output[:rendering] then
-			audio_graphs = output[:filter_graphs][:audio] || Array.new
-			video_graphs = output[:filter_graphs][:video] || Array.new
 			cmd = ''
-			duration = nil
+			video_duration = FLOAT_ZERO
+			audio_duration = FLOAT_ZERO
 			unless video_graphs.empty? then
-				durations = output[:filter_graphs][:video_durations]
 				if 1 == video_graphs.length then
-					duration = durations[0]
-					cmd = __filter_graph_cmd video_graphs[0]
+					graph = video_graphs[0]
+					video_duration = graph.duration
+					cmd = graph.command output
 					raise "Could not build complex filter" if cmd.empty?
 				else 
-					cmd = __filter_graphs_concat output, video_graphs, durations
+					cmd = __filter_graphs_concat output, video_graphs
 					raise "Could not build complex filter" if cmd.empty?
-					duration = durations.inject(:+)
+					video_graphs.each do |graph|
+						video_duration += graph.duration
+					end
 				end
-				cmd = " -filter_complex '#{cmd}'"
+				cmd = " -filter_complex '#{cmd}' -t #{video_duration}"
 			end
 			unless audio_graphs.empty? then
-				durations = output[:filter_graphs][:audio_durations]
 				if 1 == audio_graphs.length then
 					graph = audio_graphs[0]
 				else 
 					puts "TODO: need to merge audio"
 				end
 			end
+			duration = [audio_duration, video_duration].max
 			if not cmd.empty? then
 				#puts "audio_graphs: #{audio_graphs}"
 				cmd += __output_command output, (audio_graphs.empty? ? AVVideo : (video_graphs.empty? ? AVAudio : AVBoth))
 				output[:rendering] = __output_path job, output
 				cmd = '-y' + cmd
 				#puts cmd
-				raise "duration does not match length #{duration} != #{job[:duration]} #{durations}" if duration and not float_cmp(duration, job[:duration])
+				raise "duration does not match length #{duration} != #{job[:duration]}" if duration and not float_cmp(duration, job[:duration])
 				__ffmpeg_command cmd, output[:rendering], duration
 			end
 		end
@@ -350,6 +351,7 @@ module MovieMasher
 				input[:duration] = __cache_get_info(cache_url_path, 'duration').to_f unless input[:duration] and float_gtr(input[:duration], FLOAT_ZERO)
 			when TypeImage 
 				input[:dimensions] = __cache_get_info(cache_url_path, 'dimensions')
+				#puts "INPUT DIMENSIONS #{input[:dimensions]} for #{input_url}"
 				raise "could not determine image dimensions" unless input[:dimensions]
 			end
 		end
@@ -492,7 +494,7 @@ module MovieMasher
 		puts whole_cmd
 		result = __shell_command whole_cmd
 		if not out_file.empty? then	
-			raise "Failed to generate file #{result}" unless File.exists?(out_file)
+			raise "Failed to generate file #{result}\n#{cmd.gsub(';', ";\n")}" unless File.exists?(out_file)
 			raise "Generated zero length file #{result}" unless File.size?(out_file)
 			if duration then
 				file_duration = __cache_get_info(out_file, 'duration')
@@ -502,146 +504,8 @@ module MovieMasher
 		end 
 		result
 	end
-	def self.__filter_safe filter, scope, input
-  		fps = scope[:mm_fps]
-		dimensions = scope[:mm_dimensions]
-		parameters = filter[:parameters]
-		case filter[:id]
-		when 'color'
-			if TypeTheme == input[:type] then
-				parameters[:size] = dimensions unless parameters[:size]
-			end
-			parameters[:rate] = fps unless parameters[:rate]
-			# puts "input range #{input[:range].get_seconds}"
-			parameters[:duration] = __cache_time(input[:range].length_time.get_seconds) unless parameters[:duration]
-		end
-	end
-  	def self.__filter_chain_effects last_label, range, output, input, chain, backcolor = nil
-  		backcolor = output[:backcolor] unless backcolor
-		fps = output[:fps]
-		dimensions = output[:dimensions]
-		input_dimensions = input[:dimensions] # || dimensions
-		#puts "INPUT_DIMENSIONS: #{input_dimensions}"
-		#puts "INPUT: #{input}"
-  		raise "last filter in chain has no out_labels #{chain.join "\n"}" unless last_label
-		overlay_filter = nil
-		if input[:transform] then
-			transform = Marshal.load(Marshal.dump(input[:transform]))
-			transform[:dimensions] = input_dimensions unless transform[:dimensions]
-			raise "__filter_chain_effects transform no dimensions: #{input}" unless transform[:dimensions]
-			transform_chain = __filter_chain_module range, output, transform, backcolor
-			transform_chain.each do |transform_filter|
-				if 'overlay' == transform_filter[:id] then
-					overlay_filter = transform_filter
-				else
-					chain << transform_filter
-				end
-			end
-		else 
-			chain.concat __filters_sizing(input_dimensions, dimensions, backcolor, input[:fill])
-		end
-		if input[:effects] and input[:effects].is_a?(Array) and not input[:effects].empty? then
-			input[:effects].each do |effect|
-				effect[:dimensions] = input_dimensions unless effect[:dimensions]
-				raise "TRANSFORM effect no dimensions: #{input}" unless effect[:dimensions]
-				effect_chain = __filter_chain_module range, output, effect, backcolor
-				chain.concat effect_chain unless effect_chain.empty?
-			end
-		end
-		track_index = input[:track]
-		label = "track#{track_index}"
-		
-		input_range = input[:range]
-		unless range.is_equal_to_time_range?(input_range) then
-			range_start = range.get_seconds
-			range_end = range.end_time.get_seconds
-			input_start = input_range.get_seconds
-			input_end = input_range.end_time.get_seconds
-			if range_start > input_start or range_end < input_end then
-				filter = __filter_init 'trim', :duration => __cache_time(range.length_time.get_seconds)
-				filter[:parameters][:start] = __cache_time(range_start - input_start) if range_start > input_start
-				chain << filter
-				chain << __filter_timestamps
-			end
-		end
-		chain[chain.length - 1][:out_labels] << label
-		out_label = "overlain#{track_index}"
-		if not overlay_filter then
-			y = x = 0
-			overlay_filter = __filter_init 'overlay', :x => x, :y => y, :repeatlast => 0
-		end
-		overlay_filter[:in_labels] << last_label
-		overlay_filter[:in_labels] << label
-		overlay_filter[:out_labels] << out_label
-		[chain, [overlay_filter]]
-	end
-	def self.__filter_chain_theme last_label, range, output, input, backcolor = nil
-		scope = Hash.new
-		fps = output[:fps]
-		dimensions = output[:dimensions]
-		input_dimensions = input[:dimensions] || dimensions
-		raise "__filter_chain_theme no dimensions\nINPUT: #{input}\nOUTPUT: #{output}" unless input_dimensions
-		scope[:mm_input_width], scope[:mm_input_height] = input_dimensions.split 'x'
-		scope[:mm_width], scope[:mm_height] = dimensions.split 'x'
-		scope[:mm_fps] = fps
-		scope[:mm_dimensions] = dimensions
-		scope[:mm_t] = "(t/#{range.length_time.get_seconds})"
-		chain = Array.new
-		input[:properties].each do |property, ob|
-			scope[property] = input[property] || ob[:value]
-		end if input[:properties]
-		raise "input has no filters #{input}" unless 0 < input[:filters].length
-		if input[:filters] and input[:filters].is_a? Array and not input[:filters].empty? then
-			input[:filters].each do |filter_config|
-				filter_id = filter_config[:id] # eg. color, overlay
-				filter = __filter_init filter_id 
-				parameters = filter[:parameters]
-				__filter_safe filter, scope, input
-				filter_config[:parameters].each do |parameter|
-					evaluated = __filter_scope_value scope, parameter[:value]
-					#puts "__filter_chain_theme #{parameter[:name]} #{evaluated}"
-					parameters[parameter[:name].to_sym] = evaluated
-				end if filter_config[:parameters]
-				chain << filter
-			end 
-		end
-		__filter_chain_effects last_label, range, output, input, chain, backcolor
-	end
-	def self.__filter_chain_module range, output, input, backcolor = nil
-		scope = Hash.new
-		chain = Array.new
-		fps = output[:fps]
-		dimensions = output[:dimensions]
-		input_dimensions = input[:dimensions] #|| dimensions
-		raise "__filter_chain_module no dimensions #{input}" unless input_dimensions
-		scope[:mm_input_width], scope[:mm_input_height] = input_dimensions.split 'x'
-		scope[:mm_width], scope[:mm_height] = dimensions.split 'x'
-		scope[:mm_fps] = fps
-		scope[:mm_dimensions] = dimensions
-		scope[:mm_t] = "(t/#{range.length_time.get_seconds})"
-		if input[:properties] and input[:properties].is_a? Hash and not input[:properties].empty? then
-			input[:properties].each do |property, ob|
-				scope[property] = input[property] || ob[:value]
-				#puts "__filter_chain_module scope[#{property.id2name} = #{scope[property]}"
-			end
-		end
-		if input[:filters] and input[:filters].is_a? Array and not input[:filters].empty? then
-			input[:filters].each do |filter_config|
-				filter_id = filter_config[:id] # eg. color, overlay
-				filter = __filter_init filter_id 
-				parameters = filter[:parameters]
-				__filter_safe filter, scope, input
-				filter_config[:parameters].each do |parameter|
-					#puts "__filter_chain_module #{input}"
-					evaluated = __filter_scope_value scope, parameter[:value] 		
-					#puts "__filter_chain_module #{filter_id} #{parameter[:name]} #{evaluated}"					
-					parameters[parameter[:name].to_sym] = evaluated
-				end if filter_config[:parameters]
-				chain << filter
-			end 
-		end
-		chain
-	end
+	
+	
 	def self.__filter_scope_map scope, stack, key
 		parameters = stack[key]
 		if parameters then
@@ -652,7 +516,6 @@ module MovieMasher
 		end
 		((parameters and (not parameters.empty?)) ? parameters : nil)
 	end
-	
 	def self.__filter_scope_call scope, stack
 		raise "__filter_scope_call got false stack #{scope}" unless stack
 		result = ''
@@ -691,6 +554,7 @@ module MovieMasher
 		deepest = 0
 		esc = '.'
 		# expand variables
+		value_str = value_str.dup
 		value_str.gsub!(RegexVariables) do |match|
 			match_str = match.to_s
 			match_sym = match_str.to_sym
@@ -756,6 +620,7 @@ module MovieMasher
 		bind
 	end
 	def self.__filter_scope_value scope, value
+		#puts "__filter_scope_value #{value}"
 		result = nil
 		if value.is_a? String 
 			result = __filter_parse_scope_value scope, value
@@ -775,32 +640,9 @@ module MovieMasher
 		end
 		result
 	end
-	def self.__filter_chain_video last_label, range, output, input, backcolor = nil
-		fps = output[:fps]
-		dimensions = output[:dimensions]
-		chain = Array.new
-		case input[:type]
-		when TypeVideo
-			# movie filter for cached file input
-			chain << __filter_init('movie', :filename => input[:cached_file])
-			# fps filter to match output
-			chain << __filter_init('fps', :fps => fps)
-			# trim filter, if needed
-			filter = __filter_trim_input input
-			chain << filter if filter
-			# set presentation timestamp filter 
-			chain << __filter_timestamps
-		when TypeImage
-			duration = input[:length_seconds] || __get_length(input)
-			file = __video_from_image input[:cached_file], duration, fps
-			chain << __filter_init('movie', :filename => file)
-			chain << __filter_init('fps', :fps => fps)
-			chain << __filter_init('trim', :duration => __cache_time(duration))
-		end
-		# add effects, etc.
-		__filter_chain_effects last_label, range, output, input, chain, backcolor
-	end
-	def self.__filter_graph_audio input, output 
+	
+	
+	def self.__filter_graph_audio input 
 		graph = Array.new
 		if not input[:no_audio] then
 			case input[:type]
@@ -840,84 +682,34 @@ module MovieMasher
 		end
 		graph
 	end
-	def self.__filter_graph_cmd graph 
-		# puts "__filter_graph_cmd graph #{graph}"
-		graph_cmds = Array.new
-		if not graph.empty? then
-			last_label = nil
-			
-			graph.length.times do |graph_index|
-				chain = graph[graph_index]
-				#puts "__filter_graph_cmd chain #{chain}"
-				chain_cmds = Array.new
-				last_label = nil
-				chain.length.times do |chain_index|
-					filter = chain[chain_index]
-					do_in_label = (last_label and not __filter_is_source? filter[:id])
-					do_out_label = last_label and (chain.length - 1 == chain_index)
-					
-					
-					filter_cmds = Array.new
-					filter[:parameters].each do |k,v|
-						filter_cmds << k.id2name + '=' + v.to_s
-					end
-					filter[:in_labels] << last_label if do_in_label and filter[:in_labels].empty? 
-					filter[:out_labels] << last_label if (do_out_label and filter[:out_labels].empty?)
-					pre_cmds = Array.new
-					filter[:in_labels].each do |label|
-						next unless label and not label.empty?
-						pre_cmds << "[#{label}]"
-					end
-					pre_cmds << filter[:id]
-					post_cmds = Array.new
-					filter[:out_labels].each do |label|
-						next unless label and not label.empty?
-						post_cmds << "[#{label}]"
-						last_label = label
-					end unless (graph.length - 1 == graph_index)
-					chain_cmds << (pre_cmds.join('') + '=' + filter_cmds.join(':') + post_cmds.join(''))
-				end
-				chain_cmd = chain_cmds.join(',')
-				graph_cmds << chain_cmd
-				#puts "chain_cmd #{chain_cmd}"
-			end
-			#graph_cmds[graph_cmds.length-1] += ",[#{last_label}]format=pix_fmts=yuv420p"
-		end
-		graph_cmds.join ';'
-	end
-	def self.__filter_graphs_audio output, inputs
-		graphs = output[:filter_graphs][:audio]
+	
+	def self.__filter_graphs_audio inputs
+		graphs = Array.new
 		start_counter = FLOAT_ZERO
 		inputs.each do |input|
 			next if input[:no_audio]
-			graphs << __filter_graph_audio(input, output)
+			graphs << __filter_graph_audio(input)
 		end
+		graphs
 	end
-	def self.__filter_graphs_concat output, graphs, durations
+	def self.__filter_graphs_concat output, graphs
 		cmds = Array.new
 		intermediate_output = __output_intermediate
-		
 		graphs.length.times do |index|
 			graph = graphs[index]
-			duration = durations[index]
-			cmd = __filter_graph_cmd graph
+			duration = graph.duration
+			cmd = graph.command output
 			raise "Could not build complex filter" if cmd.empty?
 			cmd += ",format=pix_fmts=yuv420p"
-			cmd = " -filter_complex '#{cmd}'"
+			cmd = " -filter_complex '#{cmd}' -t #{duration}"
+			
 			cmd += __output_command intermediate_output, AVVideo
 			out_file = CONFIG['path_temporary']
 			out_file += '/' unless out_file.end_with? '/'
 			out_file += output[:identifier] + '/' if output[:identifier]
 			out_file += "concat-#{cmds.length}.#{intermediate_output[:extension]}"
 			cmd = '-y' + cmd
-			#puts cmd
-			__ffmpeg_command cmd, out_file
-			
-			#cmd = "-f #{PIPE_VIDEO_FORMAT} -i #{out_file}"
-			#result = __ffmpeg_command cmd 
-			#file_duration = __cache_info_from_ffmpeg 'duration', result 
-			#raise "piped file duration not #{duration} #{file_duration} #{result}" unless float_cmp(duration, file_duration.to_f)
-			##,setpts=expr=PTS-STARTPTS
+			__ffmpeg_command cmd, out_file			
 			cmds << "movie=filename=#{out_file}[concat#{cmds.length}]"
 		end
 		cmd = ''
@@ -928,99 +720,70 @@ module MovieMasher
 		cmds << cmd
 		cmds.join ';'
 	end
-	def self.__filter_background output, duration, backcolor = nil
-		backcolor = output[:backcolor] unless backcolor
-		fps = output[:fps]
-		dimensions = output[:dimensions]
-		background_filter = __filter_init 'color', :color => backcolor, :duration => __cache_time(duration), :size => dimensions, :rate => fps
-		background_filter[:out_labels] << 'backcolor'
-		background_filter
-	end
-	def self.__filter_graph output, seconds, backcolor = nil
-		chain = [__filter_background(output, seconds, backcolor)]
-		[chain]
-	end
-	def self.__filter_graphs_mash output, mash
+	def self.__filter_graphs_video inputs
 		graphs = Array.new
-		durations = Array.new
-		all_ranges = __mash_video_ranges mash
-		all_ranges.each do |range|
-			range_seconds = range.length_time.get_seconds
-			graph = __filter_graph output, range_seconds, mash[:backcolor]
-			clips = __mash_clips_in_range mash, range, TrackTypeVideo
-			if 0 < clips.length then
-				last_label = 'backcolor'
-				track_clips = Array.new
-				clips.each do |clip|
-					track_clip = Hash.new
-					track_clips[clip[:track]] = track_clip
-					track_clip[:clip] = clip
-					case clip[:type]
-					when TypeVideo, TypeImage
-						media = __mash_search mash, clip[:id]
-						# media properties were copied to clip before file was cached
-						clip[:cached_file] = media[:cached_file] || raise("could not find cached file")
-						clip[:dimensions] = media[:dimensions] || raise("could not find dimensions #{clip} #{media}")
-						clip[:duration] = (media[:duration].to_f || raise("could not find duration")) if TypeVideo == clip[:type]
-						track_clip[:chain], track_clip[:overlay_chain] = __filter_chain_video last_label, range, output, clip, mash[:backcolor]
-					when TypeTheme
-						clip[:dimensions] = output[:dimensions] unless clip[:dimensions]
-						track_clip[:chain], track_clip[:overlay_chain] = __filter_chain_theme last_label, range, output, clip, mash[:backcolor]
-					when TypeTransition
-						raise "TODO: transitions"
-					end
-					last_label = "overlain#{clip[:track]}"
-				end
-				labels = Array.new
-				overlay_chains = Array.new
-				track_clips.each do |track_clip|
-					next unless track_clip
-					overlay_chain = track_clip[:overlay_chain]
-					chain = track_clip[:chain]
-					graph << chain
-					overlay_chains << overlay_chain
-				end
-				graph.concat overlay_chains
-			else
-				graph << [__filter_background(output, range_seconds, mash[:background])]
-			end
-			graphs << graph
-			durations << range_seconds
-		end
-		[graphs, durations]
-	end
-	def self.__filter_graphs_video output, inputs
-		graphs = output[:filter_graphs][:video]
-		durations = output[:filter_graphs][:video_durations]
 		raise "__filter_graphs_video already called" unless 0 == graphs.length
-		dimensions = output[:dimensions]
-		fps = output[:fps]
-		duration = 0.to_f
 		inputs.each do |input|
 			#puts "input #{input}"
 			next if input[:no_video]
 			case input[:type]
 			when TypeMash
-				# puts "mash input #{input}"
-				mash_graphs, mash_durations = __filter_graphs_mash output, input[:source]
-				# raise "multiple graphs in mash" unless 1 == mash_graphs.length
-				raise "mash_graphs.empty" if mash_graphs.empty?
-				unless mash_graphs.empty?
-					graphs.concat mash_graphs 
-					durations.concat mash_durations
+				mash = input[:source]
+				all_ranges = __mash_video_ranges mash
+				all_ranges.each do |range|
+					#put "mash Graph.new #{range.inspect}"
+					graph = Graph.new input, range, mash[:backcolor]
+					clips = __mash_clips_in_range mash, range, TrackTypeVideo
+					if 0 < clips.length then
+						transition_layer = nil
+						transitioning_clips = Array.new
+						clips.each do |clip|
+							case clip[:type]
+							when TypeVideo, TypeImage
+								# media properties were copied to clip BEFORE file was cached, so repeat now
+								media = mash_search mash, clip[:id]
+								raise "could not find media for clip #{clip[:id]}" unless media
+								clip[:cached_file] = media[:cached_file] || raise("could not find cached file")
+								clip[:dimensions] = media[:dimensions] || raise("could not find dimensions #{clip} #{media}")
+								clip[:duration] = (media[:duration].to_f || raise("could not find duration")) if TypeVideo == clip[:type]
+							end	
+							if TypeTransition == clip[:type] then
+								raise "found two transitions within #{range.inspect}" if transition_layer
+								transition_layer = graph.create_layer clip
+							elsif 0 == clip[:track] then
+								transitioning_clips << clip
+							end
+						end
+						if transition_layer then
+							puts "transitioning_clips[0][:frame] #{transitioning_clips[0][:frame]}" if 0 < transitioning_clips.length
+							puts "transitioning_clips[1][:frame] #{transitioning_clips[1][:frame]}" if 1 < transitioning_clips.length
+							raise "too many clips on track zero" if 2 < transitioning_clips.length
+							if 0 < transitioning_clips.length then
+								transitioning_clips.each do |clip| 
+									puts "graph.new_layer clip"
+									transition_layer.layers << graph.new_layer(clip)
+								end 
+							end
+						end
+						clips.each do |clip|
+							next if transition_layer and 0 == clip[:track] 
+							case clip[:type]
+							when TypeVideo, TypeImage, TypeTheme
+								puts "graph.create_layer clip"
+								graph.create_layer clip
+							end
+						end
+					end
+					graphs << graph
 				end
 			when TypeVideo, TypeImage
-				input_range = input[:range]
-				duration = input_range.length_time.get_seconds
-				graph = __filter_graph output, duration
-				chain, overlay_chain = __filter_chain_video 'backcolor', input_range, output, input
-				graph << chain
-				graph << overlay_chain
-				graphs << graph 
-				durations << duration
+				#puts "Graph.new #{input[:range].inspect}"
+				graph = Graph.new input, input[:range]
+				graph.create_layer(input)
+				graphs << graph
 			end
 		end
-		#puts "graphs #{graphs.inspect}"
+		graphs
 	end
   	def self.__filter_init id, parameters = Hash.new
   		filter = Hash.new
@@ -1041,23 +804,28 @@ module MovieMasher
 	def self.__filter_timestamps
 		__filter_init 'setpts', :expr => 'PTS-STARTPTS'
 	end
-	def self.__filter_transform_default
+	def self.__filter_merger_default
 		filter_config = Hash.new
+		filter_config[:type] = TypeMerger
 		filter_config[:filters] = Array.new
-
-		scale_config = Hash.new
-		filter_config[:filters] << scale_config
-		scale_config[:id] = 'scale'
-		scale_config[:parameters] = Array.new
-		scale_config[:parameters] << {:name => 'width', :value => 'mm_width'}
-		scale_config[:parameters] << {:name => 'height', :value => 'mm_height'}
-	
 		overlay_config = Hash.new
-		filter_config[:filters] << overlay_config
 		overlay_config[:id] = 'overlay'
 		overlay_config[:parameters] = Array.new
 		overlay_config[:parameters] << {:name => 'x', :value => '0'}
 		overlay_config[:parameters] << {:name => 'y', :value => '0'}
+		filter_config[:filters] << overlay_config
+		filter_config
+	end
+	def self.__filter_scaler_default
+		filter_config = Hash.new
+		filter_config[:type] = TypeScaler
+		filter_config[:filters] = Array.new
+		scale_config = Hash.new
+		scale_config[:id] = 'scale'
+		scale_config[:parameters] = Array.new
+		scale_config[:parameters] << {:name => 'width', :value => 'mm_width'}
+		scale_config[:parameters] << {:name => 'height', :value => 'mm_height'}
+		filter_config[:filters] << scale_config
 		filter_config
 	end
 	def self.__filter_trim_input input
@@ -1212,20 +980,32 @@ module MovieMasher
 			else 
 				input[:quantized_frame] = mash[:quantize] * (input[:still].to_f / input[:fps].to_f).round
 			end
+		when TypeTransition
+			input[:to] = Hash.new unless input[:to]
+			input[:from] = Hash.new unless input[:from]
+			input[:to][:merger] = __filter_merger_default unless input[:to][:merger]
+			input[:to][:scaler] = __filter_scaler_default unless input[:to][:scaler] or input[:to][:fill]
+			input[:from][:merger] = __filter_merger_default unless input[:from][:merger]
+			input[:from][:scaler] = __filter_scaler_default unless input[:from][:scaler] or input[:from][:fill]
 		when TypeVideo, TypeAudio
 			input[:trim] = 0 unless input[:trim]
 			input[:trim_seconds] = input[:trim].to_f / mash[:quantize] unless input[:trim_seconds]
 		end
 		__init_raw_input input
 		# this is done for real inputs during __set_timing
+		__init_input_ranges input
+		input
+  	end
+  	def self.__init_input_ranges input
 		input[:effects].each do |effect|
 			effect[:range] = input[:range]
 		end
-		input
+		input[:merger][:range] = input[:range] if input[:merger] 	
+		input[:scaler][:range] = input[:range] if input[:scaler]
   	end
 	def self.__init_clip_media clip, mash
 		if clip[:id] then
-			media = __mash_search mash, clip[:id]
+			media = mash_search mash, clip[:id]
 			if media then
 				media.each do |k,v|
 					clip[k] = v unless clip[k]
@@ -1248,6 +1028,8 @@ module MovieMasher
 		end	
 		__init_time input, :length # image will already be one by default
 		__init_raw_input input
+		# this is done for real inputs during __set_timing
+		__init_input_ranges input
 		input
 	end
 	def self.__init_input_mash input
@@ -1282,7 +1064,8 @@ module MovieMasher
 				track[:clips] = Array.new unless track[:clips] and track[:clips].is_a? Array
 				track[:clips].each do |clip|
 					__init_clip clip, mash, track_index, track_type
-					__init_clip_media(clip[:transform], mash) if clip[:transform]
+					__init_clip_media(clip[:merger], mash) if clip[:merger]
+					__init_clip_media(clip[:scaler], mash) if clip[:scaler]
 					clip[:effects].each do |effect|
 						__init_clip_media effect, mash
 					end
@@ -1302,8 +1085,6 @@ module MovieMasher
 		output[:filter_graphs] = Hash.new
 		output[:filter_graphs][:video] = Array.new unless AVAudio == output[:desires]
 		output[:filter_graphs][:audio] = Array.new unless AVVideo == output[:desires]
-		output[:filter_graphs][:video_durations] = Array.new unless AVAudio == output[:desires]
-		output[:filter_graphs][:audio_durations] = Array.new unless AVVideo == output[:desires]
 		
 		output[:identifier] = UUID.new.generate
 		__init_key output, :basename, output[:type]
@@ -1353,7 +1134,9 @@ module MovieMasher
 	def self.__init_raw_input input
 	
 		input[:effects] = Array.new unless input[:effects] and input[:effects].is_a? Array
-		input[:transform] = __filter_transform_default unless input[:transform] or input[:fill]
+		input[:merger] = __filter_merger_default unless input[:merger]
+		input[:scaler] = __filter_scaler_default unless input[:scaler] or input[:fill]
+		
 		input_type = input[:type]
 		is_av = [TypeVideo, TypeAudio].include? input_type
 		is_v = [TypeVideo, TypeImage, TypeFrame].include? input_type
@@ -1485,6 +1268,7 @@ module MovieMasher
 				end
 			end
 		end
+		clips_in_range.sort! { |a,b| ((a[:track] == b[:track]) ? (a[:frame] <=> b[:frame]) : (a[:track] <=> b[:track]))}
 		clips_in_range
 	end
 	def self.__mash_duration mash
@@ -1511,7 +1295,7 @@ module MovieMasher
 		end
 		false
 	end
-	def self.__mash_search(mash, id, key = :media)
+	def self.mash_search(mash, id, key = :media)
 		mash[key].each do |item|
 			return item if id == item[:id]
 		end
@@ -1604,10 +1388,13 @@ module MovieMasher
 		output
 		#final_output
 	end
-	def self.__output_path job, output, index = nil
+	def self.output_path output
 		out_file = CONFIG['path_temporary']
 		out_file += '/' unless out_file.end_with? '/'
-		out_file += output[:identifier] + '/' if output[:identifier]
+		out_file += output[:identifier] + '/' if output[:identifier]	
+	end
+	def self.__output_path job, output, index = nil
+		out_file = output_path output
 		__transfer_file_name job, output, out_file, index
 	end
 	def self.__outputs_need_duration outputs
@@ -1635,11 +1422,8 @@ module MovieMasher
 			end	
 			start_video = input[:start] + __get_length(input) unless input[:no_video]
 			start_audio = input[:start] + __get_length(input) unless input[:no_audio]
-			
 			input[:range] = __get_trim_range_simple(input)
-			input[:effects].each do |effect|
-				effect[:range] = input[:range]
-			end
+			__init_input_ranges input
 		end
 		output_duration = float_max(start_video, start_audio)
 		job[:duration] = output_duration

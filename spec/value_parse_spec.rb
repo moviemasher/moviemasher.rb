@@ -11,7 +11,7 @@ describe "Value Parsing..." do
 		it "returns expresions when sent simple expression: 2 + a * m - j" do
 			value = "2 + a * m - j"
 			scope = Hash.new
-			expect(MovieMasher.__filter_parse_scope_value scope, value).to eq value
+			expect(MovieMasher.__filter_parse_scope_value scope, value).to eq '2+a*m-j'
 		end
 		it "returns proper nested array for nested non calls: (in_h-mm_max(mm_width, mm_height))-((in_h-mm_max(mm_width, mm_height))*mm_t)" do
 			value = "(in_h-mm_max(mm_width, mm_height))-((in_h-mm_max(mm_width, mm_height))*mm_t)"

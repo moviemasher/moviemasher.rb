@@ -31,7 +31,8 @@
 							"value":"mm_vert(scale)"
 						}
 					]
-				},{
+				},
+				{
 					"id": "setsar",
 					"parameters": [
 						{
@@ -42,7 +43,8 @@
 							"value":"1"
 						}
 					]
-				},{
+				},
+				{
 					"id": "overlay",
 					"parameters": [
 						{
@@ -55,12 +57,13 @@
 					]
 				}
 			]
-		},{
+		},
+		{
 			"label": "Color",
 			"type": "theme",
 			"id": "com.moviemasher.theme.color",
 			"properties": { 
-				"color": { "type": "rgb", "value": "yellow" }
+				"color": { "type": "rgb", "value": "red" }
 			},
 			"filters": [{
 				"id": "color",
@@ -69,7 +72,8 @@
 					"value":"color"
 				}]
 			}]
-		}],
+		}
+		],
 		"fonts": [],
 		"effects": [],
 		"tracks": {
@@ -80,8 +84,20 @@
 						"id": "com.moviemasher.theme.color",
 						"effects": [],
 						"frame": 0,
-						"length": 140,
+						"length": 50,
 						"color": "blue"
+					},{
+						"id": "com.moviemasher.theme.color",
+						"effects": [],
+						"frame": 50,
+						"length": 70,
+						"color": "green"
+					},{
+						"id": "com.moviemasher.theme.color",
+						"effects": [],
+						"frame": 120,
+						"length": 20,
+						"color": "yellow"
 					}]
 				},{
 					"type": "video",

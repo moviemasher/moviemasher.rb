@@ -1,0 +1,330 @@
+{
+	"type": "mash",
+	"source": {
+		"quantize": 10,
+		"backcolor": "red",
+		"label": "Transition",
+		"media": [{
+			"id": "cable",
+			"type": "image",
+			"source": "image/cable.jpg"
+		},{
+			"id": "windmills",
+			"type": "image",
+			"source": "image/windmills.jpg"
+		},{
+			"label": "Crossfade",
+			"type": "transition",
+			"id": "com.moviemasher.transition.crossfade",
+			"to": {
+				"filters": [
+					{
+						"id": "fade",
+						"parameters": [
+							{
+								"name": "alpha",
+								"value":"1"
+							},
+							{
+								"name": "type",
+								"value":"in"
+							},
+							{
+								"name": "duration",
+								"value":"mm_duration"
+							}
+						]
+					}
+				]
+			}
+		},{
+			"label": "Overlay",
+			"type": "merger",
+			"id": "com.moviemasher.merger.overlay",
+			"properties": { 
+				"left": { "type": "pixel", "value": 0 },
+				"top": { "type": "pixel", "value": 0 }
+			},
+			"filters": [
+				{
+					"id": "overlay",
+					"parameters": [
+						{
+							"name": "x",
+							"value":"left*(mm_width-overlay_w)"
+						},{
+							"name": "y",
+							"value":"top*(mm_height-overlay_h)"
+						}
+					]
+				}
+			]
+		},{
+			"label": "Cube",
+			"type": "transition",
+			"id": "com.moviemasher.transition.cube",
+			"properties": {
+				"direction": { "type": "direction4", "value": 0 }
+			},
+			"from": {
+				"scaler": {
+					"filters": [
+						{
+							"id": "scale",
+							"parameters": [
+								{
+									"name": "width",
+									"value": [
+										{
+											"condition": "(direction == '1') or (direction == '3')",
+											"value": "in_w*mm_t"
+										},{
+											"condition": "true",
+											"value": "-1"
+										}
+									]
+								},{
+									"name": "height",
+									"value": [
+										{
+											"condition": "(direction == '0') or (direction == '2')",
+											"value": "in_h*mm_t"
+										},{
+											"condition": "true",
+											"value": "-1"
+										}
+									]
+								}
+							]
+						},{
+							"id": "setsar",
+							"parameters": [
+								{
+									"name": "sar",
+									"value":"1"
+								},{
+									"name": "max",
+									"value":"1"
+								}
+							]
+						}
+					]
+				},
+				"merger": {
+					"filters": [
+						{
+							"id": "overlay",
+							"parameters": [
+								{
+									"name": "x",
+									"value": [
+										{
+											"condition": "(direction == '1')",
+											"value": "in_w-in_w*mm_t"
+										},{
+											"condition": "true",
+											"value": "0"
+										}
+									]
+							
+								},{
+									"name": "y",
+									"value": [
+										{
+											"condition": "(direction == '2')",
+											"value": "in_h-in_h*mm_t"
+										},{
+											"condition": "true",
+											"value": "0"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			},
+			"to": {
+				"scaler": {
+					"filters": [
+						{
+							"id": "scale",
+							"parameters": [
+								{
+									"name": "width",
+									"value": [
+										{
+											"condition": "(direction == '1') or (direction == '3')",
+											"value": "in_w*mm_t"
+										},{
+											"condition": "true",
+											"value": "-1"
+										}
+									]
+								},{
+									"name": "height",
+									"value": [
+										{
+											"condition": "(direction == '0') or (direction == '2')",
+											"value": "in_h*mm_t"
+										},{
+											"condition": "true",
+											"value": "-1"
+										}
+									]
+								}
+							]
+						},{
+							"id": "setsar",
+							"parameters": [
+								{
+									"name": "sar",
+									"value":"1"
+								},{
+									"name": "max",
+									"value":"1"
+								}
+							]
+						}
+					]
+				},
+				"merger": {
+					"filters": [
+						{
+							"id": "overlay",
+							"parameters": [
+								{
+									"name": "x",
+									"value": [
+										{
+											"condition": "(direction == '3')",
+											"value": "in_w-in_w*mm_t"
+										},{
+											"condition": "true",
+											"value": "0"
+										}
+									]
+								},{
+									"name": "y",
+									"value": [
+										{
+											"condition": "(direction == '0')",
+											"value": "in_h-in_h*mm_t"
+										},{
+											"condition": "true",
+											"value": "0"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			}
+		},{
+			"id": "drummers",
+			"type": "video",
+			"audio": 0,
+			"duration": 10,
+			"source": "video/drummers.mov"
+		},{
+			"label": "Scale",
+			"type": "scaler",
+			"id": "com.moviemasher.scaler.scale",
+			"properties": { 
+				"scale": { "type": "size1", "value": 0.50 }
+			},
+			"filters": [
+				{
+					"id": "scale",
+					"parameters": [
+						{
+							"name": "width",
+							"value":"mm_horz(scale)"
+						},{
+							"name": "height",
+							"value":"mm_vert(scale)"
+						}
+					]
+				},{
+					"id": "setsar",
+					"parameters": [
+						{
+							"name": "sar",
+							"value":"1"
+						},{
+							"name": "max",
+							"value":"1"
+						}
+					]
+				}
+			]
+		}],
+		"fonts": [],
+		"effects": [],
+		"tracks": {
+			"video": [
+				{
+					"type": "video",
+					"clips": [
+						{
+							"id": "cable",
+							"fill": "crop",
+							"frame": 0,
+							"length": 50
+						},{
+							"id": "com.moviemasher.transition.crossfade",
+							"frame": 20,
+							"length": 30
+						},{
+							"id": "windmills",
+							"fill": "crop",
+							"frame": 20,
+							"length": 50
+						}
+					]
+				},
+				{
+					"type": "video",
+					"clips": [{
+						"id": "drummers",
+						"effects": [],
+						"frame": 10,
+						"length": 20,
+						"merger": {
+							"id": "com.moviemasher.merger.overlay",
+							"left": 0.5,
+							"top": 0.5
+						},
+						"scaler": {
+							"id": "com.moviemasher.scaler.scale",
+							"scale": 0.5
+						}
+					},
+					{
+						"id": "drummers",
+						"effects": [],
+						"trim": 30,
+						"frame": 40,
+						"length": 20,
+						"merger": {
+							"id": "com.moviemasher.merger.overlay",
+							"left": 1,
+							"top": 0
+						},
+						"scaler": {
+							"id": "com.moviemasher.scaler.scale",
+							"scale": 0.5
+						}
+					}]
+				}
+			],
+			"audio": [
+				{
+					"type": "audio",
+					"clips": []
+				}
+			]
+		}
+	}
+}

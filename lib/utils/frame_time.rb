@@ -34,8 +34,8 @@ module MovieMasher
 			end
 			start	
 		end
-		def get_seconds
-			@frame.to_f / @fps.to_f
+		def get_seconds precision = 3
+			float_precision (@frame.to_f / @fps.to_f), precision
 		end
 		def get_time_range
 			FrameRange.new(@frame, 1, @fps)

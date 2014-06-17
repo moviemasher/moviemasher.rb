@@ -1,5 +1,45 @@
 module MovieMasher
 	class FilterHelpers
+		def self.mm_textfile param_string, scope
+			params = __params_from_str param_string, scope
+			text = params.join ','
+			job_path = MovieMasher.output_path scope[:mm_job_output]
+			FileUtils.mkdir_p(job_path)
+			job_path += UUID.new.generate
+			job_path += '.txt'
+			File.open(job_path, 'w') {|f| f.write(text) }
+			job_path
+		end
+		def self.rgb param_string, scope
+			params = __params_from_str param_string, scope
+			"0x%02x%02x%02x" % params
+		end
+		def self.rgba param_string, scope
+			params = __params_from_str param_string, scope
+			params.push (params.pop.to_f * 255.to_f).to_i
+			"0x%02x%02x%02x%02x" % params
+		end
+		def self.__font_from_scope font_id, scope
+			mash = scope[:mm_job_input][:source]
+			raise "found no mash source in job input #{scope[:mm_job_input]}" unless mash
+			font = MovieMasher.mash_search(mash, font_id, :fonts)
+			raise "found no font with id #{font_id} in mash #{mash}" unless font
+			font
+		end
+		def self.mm_font_file param_string, scope
+			params = __params_from_str param_string, scope
+			font_id = params.join ','
+			font = __font_from_scope font_id, scope
+			raise "font has not been cached #{font}" unless font[:cached_file]
+			font[:cached_file] # font[:family]
+		end
+		def self.mm_font_family param_string, scope
+			params = __params_from_str param_string, scope
+			font_id = params.join ','
+			font = __font_from_scope font_id, scope
+			raise "font has no family" unless font[:family]
+			font[:family]
+		end
 		def self.mm_horz param_string, scope
 			params = __params_from_str param_string, scope
 			param_string = params.join(',')

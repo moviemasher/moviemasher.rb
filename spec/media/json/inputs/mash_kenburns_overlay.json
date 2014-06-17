@@ -43,6 +43,28 @@
 				}
 			]
 		},{
+			"label": "Overlay",
+			"type": "merger",
+			"id": "com.moviemasher.merger.overlay",
+			"properties": { 
+				"left": { "type": "pixel", "value": 0 },
+				"top": { "type": "pixel", "value": 0 }
+			},
+			"filters": [
+				{
+					"id": "overlay",
+					"parameters": [
+						{
+							"name": "x",
+							"value":"left*(mm_width-overlay_w)"
+						},{
+							"name": "y",
+							"value":"top*(mm_height-overlay_h)"
+						}
+					]
+				}
+			]
+		},{
 			"id": "cable",
 			"type": "image",
 			"source": "image/cable.jpg"
@@ -234,6 +256,39 @@
 						},
 						"frame": 385,
 						"length": 55
+					}]
+				},{
+					"type": "video",
+					"clips": [{
+						"id": "drummers",
+						"effects": [],
+						"frame": 20,
+						"length": 70,
+						"merger": {
+							"id": "com.moviemasher.merger.overlay",
+							"left": 0.5,
+							"top": 0.5
+						},
+						"scaler": {
+							"id": "com.moviemasher.scaler.scale",
+							"scale": 0.5
+						}
+					},
+					{
+						"id": "drummers",
+						"effects": [],
+						"trim": 30,
+						"frame": 100,
+						"length": 30,
+						"merger": {
+							"id": "com.moviemasher.merger.overlay",
+							"left": 1,
+							"top": 0
+						},
+						"scaler": {
+							"id": "com.moviemasher.scaler.scale",
+							"scale": 0.5
+						}
 					}]
 				}
 			],

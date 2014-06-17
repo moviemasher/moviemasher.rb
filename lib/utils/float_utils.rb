@@ -35,3 +35,7 @@ end
 def float_sort(a, b)
 	(float_gtr(a[0], b[0]) ? 1 : (float_cmp(a[0], b[0]) ? 0 : -1))
 end
+def float_precision f, precision = 3
+	divisor = (precision * 10).to_f
+	(f.to_f * divisor).floor / divisor
+end
