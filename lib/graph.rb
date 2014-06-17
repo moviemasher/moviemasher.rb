@@ -45,7 +45,7 @@ module MovieMasher
 			initialize_chains
 			@input[:merger][:dimensions] = @input[:dimensions] if @input[:merger] and not @input[:merger][:dimensions]
 			@input[:scaler][:dimensions] = @input[:dimensions] if @input[:scaler] and not @input[:scaler][:dimensions]
-			puts "input has no dimensions #{@input}" unless @input[:dimensions]
+			#puts "input has no dimensions #{@input}" unless @input[:dimensions]
 			@merger_chain = (@input[:merger] ? MergerChain.new(@input[:merger]) : OverlayChain.new)
 			@scaler_chain = (@input[:scaler] ? ScalerChain.new(@input[:scaler]) : FillChain.new(@input[:dimensions], @input[:fill]))
 			@effects_chain = EffectsChain.new @input
@@ -286,7 +286,7 @@ module MovieMasher
 		end
 		def input_options options
 			options = options.dup # shallow copy, so mm_job_input and mm_job_output are just pointers
-			puts "input has no dimensions #{@input}" unless @input[:dimensions]
+			#puts "input has no dimensions #{@input}" unless @input[:dimensions]
 			raise "input has no range #{@input}" unless @input[:range]
 			options[:mm_input_dimensions] = @input[:dimensions] || options[:mm_dimensions]
 			options[:mm_input_width], options[:mm_input_height] = options[:mm_input_dimensions].split 'x'
@@ -349,7 +349,7 @@ module MovieMasher
 				cmds = Array.new
 				2.times do |i|
 					layer = @layers[i]
-					puts "layer input #{layer.input}"
+					#puts "layer input #{layer.input}"
 					layer_chain = @layer_chains[i]
 					cmd = layer.command options
 					cmd += ','
@@ -421,7 +421,7 @@ module MovieMasher
 	  	end
 	  	def __filter_scope_value scope, value
 	  		raise "__filter_scope_value got nil value" unless value
-			puts "__filter_scope_value #{value}"
+			#puts "__filter_scope_value #{value}"
 			result = nil
 			if value.is_a? Array 
 				bind = __filter_scope_binding scope
@@ -619,8 +619,8 @@ module MovieMasher
 		def command_range_trim input_range
 			cmd = ''
 			if @render_range and not input_range.is_equal_to_time_range?(@render_range) then
-				puts "@render_range #{@render_range.inspect}"
-				puts "input_range #{input_range.inspect}"
+				#puts "@render_range #{@render_range.inspect}"
+				#puts "input_range #{input_range.inspect}"
 				range_start = @render_range.get_seconds
 				range_end = @render_range.end_time.get_seconds
 				input_start = input_range.get_seconds

@@ -4,7 +4,7 @@ require_relative 'spec_helper'
 describe "Graphing..." do
 	context "Graph#command" do
 		it "returns correct filter string for simple background" do
-			graph = MovieMasher::Graph.new(MovieMasher::FrameRange.new(3, 2, 1), 'blue')
+			graph = MovieMasher::Graph.new(Hash.new, MovieMasher::FrameRange.new(3, 2, 1), 'blue')
 			output = Hash.new
 			output[:fps] = 30
 			output[:dimensions] = '320x240'
@@ -12,7 +12,7 @@ describe "Graphing..." do
 			expect(graph.command output).to eq 'color=color=blue:duration=2.0:size=320x240:rate=30'
 		end
 		it "returns correct filter string for simple video" do
-			graph = MovieMasher::Graph.new(MovieMasher::FrameRange.new(0, 2, 1), 'blue')
+			graph = MovieMasher::Graph.new(Hash.new, MovieMasher::FrameRange.new(0, 2, 1), 'blue')
 			output = Hash.new
 			output[:fps] = 30
 			output[:dimensions] = '320x240'
@@ -62,7 +62,16 @@ describe "Graphing..." do
 			backcolor = 'red'
 			MovieMasher.__init_input input
 			MovieMasher.__init_output output
-			options = MovieMasher.output_options output, backcolor, MovieMasher::FrameRange.new(0, input[:length_seconds], 1)
+			
+			options = Hash.new #MovieMasher.output_options output, backcolor, MovieMasher::FrameRange.new(0, input[:length_seconds], 1)
+			options[:mm_duration] = input[:length_seconds]
+			options[:mm_dimensions] = output[:dimensions]			
+			options[:mm_backcolor] = @backcolor || output[:backcolor] || 'black'
+			options[:mm_fps] = output[:fps]			
+			options[:mm_width], options[:mm_height] = options[:mm_dimensions].split 'x'
+			
+			
+			
 			expect(chain.command options).to eq 'movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30,setpts=expr=PTS-STARTPTS,crop=w=533:h=400:x=34:y=0,scale=w=320:h=240'
 		end
 	end

@@ -491,7 +491,7 @@ module MovieMasher
 			FileUtils.mkdir_p(File.dirname(out_file))
 			whole_cmd += " #{out_file}"
 		end # -v debug 
-		puts whole_cmd
+		#puts whole_cmd
 		result = __shell_command whole_cmd
 		if not out_file.empty? then	
 			raise "Failed to generate file #{result}\n#{cmd.gsub(';', ";\n")}" unless File.exists?(out_file)
@@ -755,12 +755,12 @@ module MovieMasher
 							end
 						end
 						if transition_layer then
-							puts "transitioning_clips[0][:frame] #{transitioning_clips[0][:frame]}" if 0 < transitioning_clips.length
-							puts "transitioning_clips[1][:frame] #{transitioning_clips[1][:frame]}" if 1 < transitioning_clips.length
+							#puts "transitioning_clips[0][:frame] #{transitioning_clips[0][:frame]}" if 0 < transitioning_clips.length
+							#puts "transitioning_clips[1][:frame] #{transitioning_clips[1][:frame]}" if 1 < transitioning_clips.length
 							raise "too many clips on track zero" if 2 < transitioning_clips.length
 							if 0 < transitioning_clips.length then
 								transitioning_clips.each do |clip| 
-									puts "graph.new_layer clip"
+									#puts "graph.new_layer clip"
 									transition_layer.layers << graph.new_layer(clip)
 								end 
 							end
@@ -769,7 +769,7 @@ module MovieMasher
 							next if transition_layer and 0 == clip[:track] 
 							case clip[:type]
 							when TypeVideo, TypeImage, TypeTheme
-								puts "graph.create_layer clip"
+								#puts "graph.create_layer clip"
 								graph.create_layer clip
 							end
 						end
