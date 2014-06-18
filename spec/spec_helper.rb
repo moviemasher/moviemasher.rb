@@ -20,8 +20,8 @@ Sinatra::Base.set :raise_errors, true
 Sinatra::Base.set :logging, false
 include RSpec::Matchers
 
-pid1 = nil
-pid2 = nil
+PIDS = Array.new
+
 
 def app
 	Sinatra::Application
@@ -71,26 +71,39 @@ def spec_job_mash_simple mash, output = 'video_h264', destination = 'file_log'
 	processed_job = MovieMasher.process job
 	#puts processed_job.inspect
 	destination_file = destination['directory'] + '/' + destination['path'] + '/' + output['basename'].gsub!('{job_id}', job['id']) + '.' + output['extension']
-	#puts "destination_file exists #{File.exists? destination_file} #{destination_file}"
-	expect(File.exists? destination_file).to be_true
-	expect(MovieMasher.__cache_get_info(destination_file, 'dimensions')).to eq output['dimensions']
-	expect(MovieMasher.__cache_get_info(destination_file, 'fps').to_i).to eq output['fps'].to_i
-	expect(MovieMasher.__cache_get_info(destination_file, 'duration').to_f).to be_within(0.1).of processed_job[:duration]
+	puts "destination_file exists #{File.exists? destination_file} #{destination_file}"
+	expect(File.exists?(destination_file)).to be_true
+	case output['type']
+	when MovieMasher::TypeAudio, MovieMasher::TypeVideo
+		expect(MovieMasher.__cache_get_info(destination_file, 'duration').to_f).to be_within(0.1).of processed_job[:duration]
+	end
+	case output['type']
+	when MovieMasher::TypeImage, MovieMasher::TypeVideo
+		expect(MovieMasher.__cache_get_info(destination_file, 'dimensions')).to eq output['dimensions']
+	end
+	if MovieMasher::TypeVideo == output['type'] then
+		expect(MovieMasher.__cache_get_info(destination_file, 'fps').to_i).to eq output['fps'].to_i
+	end
 end
 
 def spec_start_redis
-	pid1 = fork do
-		$stdout = File.new('/dev/null', 'w')
-		File.open("test1.conf", 'w') {|f| f.write("port 6380\ndbfilename test1.rdb\nloglevel warning") }
-		exec "redis-server test1.conf"
+	if PIDS.empty? then
+		pid = fork do
+			$stdout = File.new('/dev/null', 'w')
+			File.open("test1.conf", 'w') {|f| f.write("port 6380\ndbfilename test1.rdb\nloglevel warning") }
+			exec "redis-server test1.conf"
+		end
+		PIDS << pid
+		pid = fork do
+			$stdout = File.new('/dev/null', 'w')
+			File.open("test2.conf", 'w') {|f| f.write("port 6381\ndbfilename test2.rdb\nloglevel warning") }
+			exec "redis-server test2.conf"
+		end
+		PIDS << pid
+		
+		puts "PIDS: #{PIDS}\n\n"
+		sleep(3)
 	end
-	pid2 = fork do
-		$stdout = File.new('/dev/null', 'w')
-		File.open("test2.conf", 'w') {|f| f.write("port 6381\ndbfilename test2.rdb\nloglevel warning") }
-		exec "redis-server test2.conf"
-	end
-	puts "PID1 is #{pid1} and PID2 is #{pid2}\n\n"
-	sleep(3)
 rescue Exception => e
 	puts "EXCEPTION: spec_start_redis #{e.inspect}"
 end
@@ -100,22 +113,20 @@ RSpec.configure do |config|
 		c.syntax = :expect
 	end
 	config.include Rack::Test::Methods
-
-#	config.before(:suite) do
-# 		puts "BEFORE SUITE START"
-# 		puts "BEFORE SUITE END"
-#	end
-
 	config.after(:suite) do
-		STDOUT.flush
-		puts "PID1 is #{pid1} and PID2 is #{pid2}\n\n" if pid1
-		Process.kill("KILL", pid1) if pid1
-		Process.kill("KILL", pid2) if pid2
-		FileUtils.rm "test1.rdb" if File.exists?("test1.rdb")
-		FileUtils.rm "test2.rdb" if File.exists?("test2.rdb")
-		FileUtils.rm "test1.conf" if File.exists?("test1.conf")
-		FileUtils.rm "test2.conf" if File.exists?("test2.conf")
-		Process.waitall if pid1
-	#	puts "AFTER SUITE END"
+		unless PIDS.empty? then
+			STDOUT.flush
+			puts "PIDS #{PIDS}" 
+			PIDS.each do |pid|
+				Process.kill("KILL", pid) 
+			end
+			FileUtils.rm "test1.rdb" if File.exists?("test1.rdb")
+			FileUtils.rm "test2.rdb" if File.exists?("test2.rdb")
+			FileUtils.rm "test1.conf" if File.exists?("test1.conf")
+			FileUtils.rm "test2.conf" if File.exists?("test2.conf")
+			Process.waitall
+			puts "AFTER SUITE END"
+			PIDS.clear
+		end
   	end
 end

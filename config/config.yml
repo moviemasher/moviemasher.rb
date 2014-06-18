@@ -1,5 +1,6 @@
 test:
   path_ffmpeg: ffmpeg
+  path_ecasound: ecasound
   path_sox: sox
   path_temporary: log/temporary
   path_cache: log/cache
@@ -13,6 +14,7 @@ test:
 
 production:
   path_ffmpeg: ffmpeg
+  path_ecasound: ecasound
   path_sox: sox
   path_temporary: /tmp/moviemasher/temporary
   path_cache: /tmp/moviemasher/cache

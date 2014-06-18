@@ -224,7 +224,6 @@
 		},{
 			"id": "drummers",
 			"type": "video",
-			"audio": 0,
 			"duration": 10,
 			"source": "video/drummers.mov"
 		},{

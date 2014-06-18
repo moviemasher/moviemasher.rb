@@ -3,6 +3,12 @@ require_relative 'spec_helper'
 
 describe "Rendering..." do
 	context "MovieMasher.process" do
+		it "correctly renders audio file volume" do
+			spec_job_mash_simple 'audio_file_volume', 'audio_mp3'
+		end
+		it "correctly renders mash transition" do
+			spec_job_mash_simple 'mash_transition'
+		end
 		it "correctly renders mash ken burns" do
 			spec_job_mash_simple 'mash_kenburns_overlay'			
 		end
@@ -23,9 +29,6 @@ describe "Rendering..." do
 		end
 		it "correctly renders mash text" do
 			spec_job_mash_simple 'mash_text'			
-		end
-		it "correctly renders mash transition" do
-			spec_job_mash_simple 'mash_transition'
 		end
 	end
 end

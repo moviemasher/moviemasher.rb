@@ -37,8 +37,8 @@ module MovieMasher
 	MASH_FILL_CROP = 'crop'
 	MASH_FILL_SCALE = 'scale'
 	
-	MASH_VOLUME_NONE = '0,50,100,50'
-	MASH_VOLUME_MUTE = '0,0,100,0'
+	MASH_VOLUME_NONE = '0,1,1,1'
+	MASH_VOLUME_MUTE = '0,0,1,0'
 	INTERMEDIATE_AUDIO_EXTENSION = 'wav' # file extension for audio portion
 	INTERMEDIATE_VIDEO_CODEC = 'png' #'mpeg2video';#''; # -vcodec switch
 	INTERMEDIATE_VIDEO_EXTENSION = 'mov' #'mpg'; # file extension for video portion
@@ -81,6 +81,10 @@ module MovieMasher
 					end
 					# TODO: handle copy flag in input
 					copy_files[input[:copy]] = job[:cached][input_url] if input[:copy]
+				else
+					#puts "__has_desired?(__input_has(input), output_desires) = #{__has_desired?(__input_has(input), output_desires)}"
+					#puts "__has_desired?(#{__input_has(input)}, #{output_desires})"
+					#puts "__input_has(input) == output_desires #{__input_has(input) == output_desires}"
 				end
 				if (TypeMash == input[:type]) then
 					input[:source] = JSON.parse(File.read(job[:cached][input_url])) 
@@ -166,11 +170,22 @@ module MovieMasher
 			w = dimensions[0].to_i
 			h = dimensions[1].to_i
 			gcf = __cache_gcf(w, h)
-			ratio_w = w / gcf
-			ratio_h = h / gcf
-			result = (wants_string ? "#{ratio_w}x#{ratio_h}" : [ratio_w, ratio_h])
+			result = [w / gcf, h / gcf]
+			result = result.join('x') if wants_string
 		end
 		result
+	end
+	def self.__audio_from_file path
+		raise "__audio_from_file with invalid path" unless path and (not path.empty?) and File.exists? path
+		out_file = "#{File.dirname path}/#{File.basename path}-intermediate.#{INTERMEDIATE_AUDIO_EXTENSION}"
+		unless File.exists? out_file then
+			cmds = Array.new
+			cmds << __cache_switch(path, 'i')
+			cmds << __cache_switch(2, 'ac')
+			cmds << __cache_switch(44100, 'ar')
+			__ffmpeg_command cmds.join(' '), out_file
+		end
+		out_file
 	end
 	def self.__cache_gcf a, b 
 		 ( ( b == 0 ) ? a : __cache_gcf(b, a % b) )
@@ -178,36 +193,91 @@ module MovieMasher
 	def self.__build_output job, output, video_graphs, audio_graphs
 		unless output[:rendering] then
 			cmd = ''
-			video_duration = FLOAT_ZERO
+			duration = FLOAT_ZERO
 			audio_duration = FLOAT_ZERO
 			unless video_graphs.empty? then
 				if 1 == video_graphs.length then
 					graph = video_graphs[0]
-					video_duration = graph.duration
+					duration = graph.duration
 					cmd = graph.command output
 					raise "Could not build complex filter" if cmd.empty?
 				else 
 					cmd = __filter_graphs_concat output, video_graphs
 					raise "Could not build complex filter" if cmd.empty?
 					video_graphs.each do |graph|
-						video_duration += graph.duration
+						duration += graph.duration
 					end
 				end
-				cmd = " -filter_complex '#{cmd}' -t #{video_duration}"
+				cmd = "-filter_complex '#{cmd}' -t #{duration} "
 			end
 			unless audio_graphs.empty? then
-				if 1 == audio_graphs.length then
-					graph = audio_graphs[0]
-				else 
-					puts "TODO: need to merge audio"
+				audio_graphs_count = audio_graphs.length
+				data = audio_graphs[0]
+				unless 1 == audio_graphs_count and 1 == data[:loops] and MASH_VOLUME_NONE == data[:volume] and float_cmp(data[:start_seconds], FLOAT_ZERO) then
+					# merge audio and feed resulting file to ffmpeg
+					audio_cmd = ''
+					counter = 1
+					start_counter = FLOAT_ZERO
+					audio_graphs_count.times do |audio_graphs_index|
+						data = audio_graphs[audio_graphs_index]
+						loops = data[:loops] || 1
+						volume = data[:volume]
+						start = data[:start_seconds]
+						raise "negative start time" unless float_gtre(start, FLOAT_ZERO)
+						data[:waved_file] = __audio_from_file(data[:cached_file]) unless data[:waved_file]
+						audio_cmd += " -a:#{counter} -i "
+						counter += 1
+						audio_cmd += 'audioloop,' if 1 < loops
+						audio_cmd += "playat,#{data[:start_seconds]},"
+						audio_cmd += "select,#{data[:trim_seconds]},#{data[:length_seconds]}"
+						audio_cmd += ",#{data[:waved_file]}"
+						audio_cmd += ' -t:' + data[:length_seconds] if 1 < loops
+						unless MASH_VOLUME_NONE == volume then
+							volume = volume.split ','
+							z = volume.length / 2
+							audio_cmd += " -ea:0 -klg:1,0,200,#{z}"
+							z.times do |i|
+								p = (i + 1) * 2
+								pos = volume[p - 2].to_f
+								val = volume[p - 1].to_f
+								pos = (data[:length_seconds] * loops.to_f * pos) if (float_gtr(pos, FLOAT_ZERO)) 									
+								audio_cmd += ",#{__cache_time(start + pos)},#{val}"
+							end
+						end
+						#puts "audio_duration #{data[:start_seconds]} + #{data[:length_seconds]}"
+						audio_duration = float_max(audio_duration, data[:start_seconds] + data[:length_seconds])
+					end
+					audio_cmd += ' -a:all -z:mixmode,sum'
+					audio_cmd += ' -o'
+					audio_path = output_path output
+					audio_path += "audio-#{Digest::SHA2.new(256).hexdigest(audio_cmd)}.#{INTERMEDIATE_AUDIO_EXTENSION}"
+					unless File.exists? audio_path then
+						__ffmpeg_command(audio_cmd, audio_path, audio_duration, 'ecasound')
+					end
+					data = Hash.new
+					data[:type] = TypeAudio
+					data[:trim_seconds] = FLOAT_ZERO
+					data[:length_seconds] = audio_duration
+					data[:waved_file] = audio_path
+				else
+					audio_duration = data[:length_seconds]
 				end
+				data[:waved_file] = __audio_from_file(data[:cached_file]) unless data[:waved_file]
+				cmds = Array.new
+				cmds << __cache_switch(data[:waved_file], 'i')
+				if float_cmp(data[:trim_seconds], FLOAT_ZERO) and float_cmp(data[:length_seconds], output[:duration]) then
+					cmds << __cache_switch(data[:length_seconds], 't')
+				else
+					cmds << __cache_switch("'atrim=start=#{data[:trim_seconds]}:duration=#{audio_duration},asetpts=expr=PTS-STARTPTS'", 'af') 
+				end
+				cmd += cmds.join(' ')
+				duration = float_max(audio_duration, duration)
 			end
-			duration = [audio_duration, video_duration].max
 			if not cmd.empty? then
 				#puts "audio_graphs: #{audio_graphs}"
 				cmd += __output_command output, (audio_graphs.empty? ? AVVideo : (video_graphs.empty? ? AVAudio : AVBoth))
 				output[:rendering] = __output_path job, output
-				cmd = '-y' + cmd
+				cmd = '-y ' + cmd
 				#puts cmd
 				raise "duration does not match length #{duration} != #{job[:duration]}" if duration and not float_cmp(duration, job[:duration])
 				__ffmpeg_command cmd, output[:rendering], duration
@@ -252,7 +322,7 @@ module MovieMasher
 		result
 	end
 	def self.__cache_get_info file_path, type
-		raise "bad parameters #{file_path}, #{type}" unless type and file_path and not (type.empty? or file_path.empty?)
+		raise "bad parameters #{file_path}, #{type}" unless type and file_path and (not (type.empty? or file_path.empty?))
 		result = nil
 		if File.exists?(file_path) then
 			info_file = __cache_meta_path type, file_path
@@ -265,6 +335,12 @@ module MovieMasher
 					# do nothing if file doesn't already exist
 				when 'dimensions'
 					check[:ffmpeg] = true
+				when 'ffmpegduration'
+					check[:ffmpeg] = true
+					type = 'duration'
+				when 'soxduration'
+					check[:sox] = true
+					type = 'duration'
 				when 'duration'
 					check[TypeAudio == __cache_file_type(file_path) ? :sox : :ffmpeg] = true
 				when 'fps', TypeAudio # only from FFMPEG
@@ -281,8 +357,8 @@ module MovieMasher
 				elsif check[:sox] then
 					data = __cache_get_info(file_path, 'sox')
 					if not data then
-						cmd = CONFIG[:path_sox]
-						cmd += ' --i ' . file_path
+						cmd = "#{CONFIG['path_sox']} --i #{file_path}"
+						#puts "CMD #{cmd}"
 						data = __shell_command cmd
 						__cache_set_info(file_path, 'sox', data)
 					end
@@ -354,6 +430,8 @@ module MovieMasher
 				#puts "INPUT DIMENSIONS #{input[:dimensions]} for #{input_url}"
 				raise "could not determine image dimensions" unless input[:dimensions]
 			end
+		else
+			raise "could not produce an input_url #{input}"
 		end
 		cache_url_path
 	end
@@ -462,7 +540,7 @@ module MovieMasher
 		when TypeVideo
 			has = ((MASH_VOLUME_MUTE != clip[:volume]) and (0 != clip[:audio]))
 		when TypeTheme, TypeTransition, TypeEffect
-			puts "TODO: __clip_has_audio for #{clip[:type]} clips"
+			#puts "TODO: __clip_has_audio for #{clip[:type]} clips"
 		end
 		has
 	end
@@ -485,21 +563,23 @@ module MovieMasher
 		end
 		url
 	end
-	def self.__ffmpeg_command(cmd, out_file = '', duration = nil)
-		whole_cmd = "#{CONFIG['path_ffmpeg']} #{cmd}"
+	def self.__ffmpeg_command(cmd, out_file = '', duration = nil, app = 'ffmpeg')
+		#puts "__ffmpeg_command #{app}"
+		whole_cmd = CONFIG["path_#{app}"]
+		whole_cmd += ' ' + cmd
 		if not out_file.empty? then
 			FileUtils.mkdir_p(File.dirname(out_file))
 			whole_cmd += " #{out_file}"
 		end # -v debug 
-		#puts whole_cmd
+		puts whole_cmd
 		result = __shell_command whole_cmd
 		if not out_file.empty? then	
 			raise "Failed to generate file #{result}\n#{cmd.gsub(';', ";\n")}" unless File.exists?(out_file)
 			raise "Generated zero length file #{result}" unless File.size?(out_file)
 			if duration then
-				file_duration = __cache_get_info(out_file, 'duration')
+				file_duration = __cache_get_info(out_file, 'ffmpegduration')
 				raise "could not determine duration of #{out_file} #{result}" unless file_duration
-				raise "generated file with incorrect duration #{duration} != #{file_duration} #{result}" unless float_cmp(duration, file_duration.to_f)
+				raise "generated file with incorrect duration #{duration} != #{file_duration} #{result}" unless float_cmp(duration, file_duration.to_f, 1)
 			end
 		end 
 		result
@@ -641,54 +721,44 @@ module MovieMasher
 		result
 	end
 	
-	
-	def self.__filter_graph_audio input 
-		graph = Array.new
-		if not input[:no_audio] then
-			case input[:type]
-			when TypeVideo, TypeAudio
-				data = Hash.new
-				data[:type] = input[:type]
-				data[:trim_seconds] = __get_trim input
-				data[:start] = FrameTime.new(input[:start], 1)	
-				data[:file] = input[:cached_file]
-				data[:volume] = input[:volume]
-				data[:loops] = input[:loops]
-				data[:duration] = input[:duration]
-				graph << data
-			when TypeMash
-				quantize = input[:source][:quantize]
-				audio_clips = __mash_clips_having_audio input[:source]
-				start = trim_range.frame
-				stop = trim_range.get_end
-				mash_trim = (quantize * __get_trim(input)).floor
-				audio_clips.each do |clip|
-					data = Hash.new
-					data[:file] = clip[:cached_file]
-					data[:type] = clip[:type]
-					clip_trim = __mash_trim_frame clip, start, stop, quantize
-					raise "could not determine trim" if clip_trim.empty?
-					clip_start = clip[:frame]
-					clip_start -= mash_trim
-					clip_start += clip_trim[:offset]
-					clip_start += quantize * input[:frame] # add mash start as frames
-					data[:start] = FrameTime.new(clip_start, quantize)
-					data[:loops] = clip[:loops]
-					data[:trim] = FrameRange.new(clip_trim[:trimstart], clip_trim[:trimlength], quantize)
-					data[:volume] = clip[:volume]
-					graph << data
-				end
-			end
-		end
-		graph
-	end
-	
 	def self.__filter_graphs_audio inputs
 		graphs = Array.new
 		start_counter = FLOAT_ZERO
 		inputs.each do |input|
 			next if input[:no_audio]
-			graphs << __filter_graph_audio(input)
+			#puts "INPUT: #{input}\n"
+			case input[:type]
+			when TypeVideo, TypeAudio
+				data = Hash.new
+				data[:type] = input[:type]
+				data[:trim_seconds] = __get_trim input
+				data[:length_seconds] = __get_length input
+				data[:start_seconds] = input[:start]	
+				data[:cached_file] = input[:cached_file]
+				data[:volume] = input[:volume]
+				data[:loops] = input[:loops]
+				graphs << data
+			when TypeMash
+				quantize = input[:source][:quantize]
+				audio_clips = __mash_clips_having_audio input[:source]
+				audio_clips.each do |clip|
+					unless clip[:cached_file] then
+						media = mash_search mash, clip[:id]
+						raise "could not find media for clip #{clip[:id]}" unless media
+						clip[:cached_file] = media[:cached_file] || raise("could not find cached file")
+					end
+					data = Hash.new
+					data[:type] = clip[:type]
+					data[:trim_seconds] = clip[:trim_seconds]
+					data[:length_seconds] = clip[:length_seconds]
+					#puts "start_seconds = #{input[:start]} + #{quantize} * #{clip[:frame]}"
+					data[:start_seconds] = input[:start].to_f + clip[:frame].to_f / quantize.to_f
+					data[:cached_file] = clip[:cached_file]
+					data[:volume] = clip[:volume]
+					data[:loops] = clip[:loops]
+					graphs << data
+				end
+			end
 		end
 		graphs
 	end
@@ -702,7 +772,6 @@ module MovieMasher
 			raise "Could not build complex filter" if cmd.empty?
 			cmd += ",format=pix_fmts=yuv420p"
 			cmd = " -filter_complex '#{cmd}' -t #{duration}"
-			
 			cmd += __output_command intermediate_output, AVVideo
 			out_file = CONFIG['path_temporary']
 			out_file += '/' unless out_file.end_with? '/'
@@ -745,7 +814,6 @@ module MovieMasher
 								raise "could not find media for clip #{clip[:id]}" unless media
 								clip[:cached_file] = media[:cached_file] || raise("could not find cached file")
 								clip[:dimensions] = media[:dimensions] || raise("could not find dimensions #{clip} #{media}")
-								clip[:duration] = (media[:duration].to_f || raise("could not find duration")) if TypeVideo == clip[:type]
 							end	
 							if TypeTransition == clip[:type] then
 								raise "found two transitions within #{range.inspect}" if transition_layer
@@ -957,10 +1025,7 @@ module MovieMasher
 		Digest::SHA2.new(256).hexdigest s
 	end
 	def self.__has_desired? has, desired
-		has = (AVBoth == desired)
-		has = (AVBoth == has) unless has
-		has = (desired == has) unless has
-		has
+		(AVBoth == desired) or (AVBoth == has) or (desired == has) 
 	end
 	def self.__init_clip input, mash, track_index, track_type
 		__init_clip_media input, mash
@@ -969,7 +1034,7 @@ module MovieMasher
 		# necessitating caching of media if its duration unknown
 		raise "mash clips must have length" unless input[:length] and 0 < input[:length]
 		input[:range] = FrameRange.new input[:frame], input[:length], mash[:quantize]
-		input[:length_seconds] = input[:range].length_time.get_seconds unless input[:length_seconds]
+		input[:length_seconds] = input[:range].length_seconds unless input[:length_seconds]
 		input[:track] = track_index if track_index 
 		case input[:type]
 		when TypeFrame
@@ -1321,6 +1386,7 @@ module MovieMasher
 		orig_clip_trimstart = clip[:trim] || 0
 		clip_trimstart = orig_clip_trimstart + (clip_start - orig_clip_start)
 		clip_length = [clip_length, media_duration - clip_trimstart].min if 0 < media_duration 
+		result[:offset] = 0
 		if 0 < clip_length then
 			result[:offset] = (clip_start - orig_clip_start)
 			result[:trimstart] = clip_trimstart
@@ -1571,31 +1637,5 @@ module MovieMasher
 			job[sym] = true
 			puts "TODO: __trigger should send out #{type} notification"
 		end
-	end
-	def self.__video_from_image img_file, duration, fps
-		frame_time = FrameTime.new ((duration.to_f) * fps.to_f).round.to_i, fps
-		frame_time.scale 1, :ceil
-		frame_time.frame += 1
-		raise "no frame_time from #{duration}@#{fps} #{frame_time.inspect}" unless 0 < frame_time.frame
-		parent_dir = File.dirname img_file
-		base_name = File.basename img_file
-		out_file = "#{parent_dir}/#{base_name}-#{duration}-#{fps}.#{PIPE_VIDEO_EXTENSION}" # INTERMEDIATE_VIDEO_EXTENSION
-		
-		unless File.exists?(out_file) then
-			cmd = ''
-			cmd += __cache_switch('1', 'loop')
-			cmd += __cache_switch(frame_time.fps, 'r')
-			cmd += __cache_switch(img_file, 'i')
-			cmd += __cache_switch('format=pix_fmts=yuv420p', 'filter_complex')
-			cmd += __cache_switch(PIPE_VIDEO_FORMAT, 'f:v')
-		
-			# (fps.to_f * duration.to_f).floor
-			cmd += __cache_switch(frame_time.frame, 'vframes')
-			cmd += __cache_switch(__cache_time(frame_time.get_seconds), 't')
-			__ffmpeg_command cmd, out_file
-			#file_duration = __cache_get_info out_file, 'duration'
-			#raise "Durations don't match #{file_duration} #{duration}" unless float_cmp(file_duration, duration)
-		end
-		out_file
 	end
 end

@@ -1,11 +1,7 @@
 {
-	"type": "video",
-	"basename": "video-h264",
-	"extension": "mp4",
-	"dimensions": "512x288",
-	"fps": "30",
-	"video_codec": "libx264 -preset ultrafast -level 41",
-	"audio_codec": "aac -strict experimental",
-	"video_bitrate": "2000",
-	"audio_bitrate": "224"
+	"type": "audio",
+	"basename": "audio-mp3",
+	"extension": "mp3",
+	"audio_codec": "libmp3lame",
+	"audio_bitrate": "128"
 }
