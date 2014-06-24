@@ -8,11 +8,13 @@
 			"id": "cable",
 			"type": "image",
 			"source": "image/cable.jpg"
-		},{
+		},
+		{
 			"id": "windmills",
 			"type": "image",
 			"source": "image/windmills.jpg"
-		},{
+		},
+		{
 			"label": "Crossfade",
 			"type": "transition",
 			"id": "com.moviemasher.transition.crossfade",
@@ -37,7 +39,8 @@
 					}
 				]
 			}
-		},{
+		},
+		{
 			"label": "Overlay",
 			"type": "merger",
 			"id": "com.moviemasher.merger.overlay",
@@ -59,7 +62,8 @@
 					]
 				}
 			]
-		},{
+		},
+		{
 			"label": "Cube",
 			"type": "transition",
 			"id": "com.moviemasher.transition.cube",

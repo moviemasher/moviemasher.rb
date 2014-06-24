@@ -235,7 +235,7 @@ module MovieMasher
 						unless MASH_VOLUME_NONE == volume then
 							volume = volume.split ','
 							z = volume.length / 2
-							audio_cmd += " -ea:0 -klg:1,0,200,#{z}"
+							audio_cmd += " -ea:0 -klg:1,0,100,#{z}"
 							z.times do |i|
 								p = (i + 1) * 2
 								pos = volume[p - 2].to_f

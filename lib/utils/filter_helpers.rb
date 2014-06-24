@@ -26,14 +26,14 @@ module MovieMasher
 			raise "found no font with id #{font_id} in mash #{mash}" unless font
 			font
 		end
-		def self.mm_font_file param_string, scope
+		def self.mm_fontfile param_string, scope
 			params = __params_from_str param_string, scope
 			font_id = params.join ','
 			font = __font_from_scope font_id, scope
 			raise "font has not been cached #{font}" unless font[:cached_file]
 			font[:cached_file] # font[:family]
 		end
-		def self.mm_font_family param_string, scope
+		def self.mm_fontfamily param_string, scope
 			params = __params_from_str param_string, scope
 			font_id = params.join ','
 			font = __font_from_scope font_id, scope

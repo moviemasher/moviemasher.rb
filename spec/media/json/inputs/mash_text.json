@@ -39,7 +39,7 @@
 					"value":"mm_vert(y)"
 				},{
 					"name": "fontfile",
-					"value":"mm_font_file(font)"
+					"value":"mm_fontfile(font)"
 				},{
 					"name": "textfile",
 					"value":"mm_textfile(string)"

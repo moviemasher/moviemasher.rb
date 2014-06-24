@@ -76,7 +76,8 @@
 			"id": "grid",
 			"type": "image",
 			"source": "image/960grid.png"
-		},{
+		},
+		{
 			"label": "Ken Burns",
 			"type": "scaler",
 			"id": "com.moviemasher.scaler.kenburns",
@@ -177,7 +178,8 @@
 					]
 				}
 			]
-		}],
+		}
+		],
 		"fonts": [],
 		"effects": [],
 		"tracks": {
