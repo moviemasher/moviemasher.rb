@@ -46,8 +46,8 @@ module MovieMasher
 			@input[:merger][:dimensions] = @input[:dimensions] if @input[:merger] and not @input[:merger][:dimensions]
 			@input[:scaler][:dimensions] = @input[:dimensions] if @input[:scaler] and not @input[:scaler][:dimensions]
 			#puts "input has no dimensions #{@input}" unless @input[:dimensions]
-			@merger_chain = (@input[:merger] ? MergerChain.new(@input[:merger]) : OverlayChain.new)
-			@scaler_chain = (@input[:scaler] ? ScalerChain.new(@input[:scaler]) : FillChain.new(@input[:dimensions], @input[:fill]))
+			@merger_chain = (@input[:merger] ? FilterChain.new(@input[:merger]) : OverlayChain.new)
+			@scaler_chain = (@input[:scaler] ? FilterChain.new(@input[:scaler]) : FillChain.new(@input[:dimensions], @input[:fill]))
 			@effects_chain = EffectsChain.new @input
 			@chains << @scaler_chain
 			@chains << @effects_chain
@@ -299,13 +299,6 @@ module MovieMasher
 			end
 			options
 		end
-	end
-	class MergerChain < FilterChain
-		
-	end
-	class ScalerChain < FilterChain
-		
-		
 	end
 	class EffectsChain < Chain
 		def initialize_filters
@@ -608,8 +601,19 @@ module MovieMasher
 			scope = Hash.new
 			scope[:mm_job_input] = @job_input
 			scope[:mm_job_output] = job_output
-			
-			scope[:mm_backcolor] = @backcolor || job_output[:backcolor] || 'black'
+			backcolor = @backcolor || job_output[:backcolor]
+			if backcolor then
+				backcolor = backcolor.to_s.strip
+				# it might be an rgb
+				if backcolor.start_with?('rgb(') and backcolor.end_with?(')') then
+					backcolor['rgb('] = ''
+					backcolor[')'] = ''
+					backcolor = FilterHelpers.rgb(backcolor)
+				end
+			else 
+				backcolor = 'black'
+			end
+			scope[:mm_backcolor] = backcolor
 			scope[:mm_fps] = job_output[:fps]			
 			scope[:mm_dimensions] = job_output[:dimensions]
 			scope[:mm_width], scope[:mm_height] = scope[:mm_dimensions].split 'x'

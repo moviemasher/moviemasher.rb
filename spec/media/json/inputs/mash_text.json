@@ -4,55 +4,57 @@
 		"quantize": 10,
 		"label": "Text",
 		"backcolor": "red",
-		"media": [{
-			"label": "Title",
-			"type": "theme",
-			"id": "com.moviemasher.theme.text",
-			"properties": { 
-				"string": { "type": "string", "value": "Title" },
-				"size": { "type": "fontsize", "value": 0.2 },
-				"x": { "type": "number", "value": 0 },
-				"y": { "type": "number", "value": 0 },
-				"color": { "type": "rgba", "value": "white" },
-				"background": { "type": "rgb", "value": "black" },
-				"font": { "type": "font", "value": "default" }
-			},
-			"filters": [{
-				"id": "color",
-				"parameters":[{
-					"name": "color",
-					"value":"background"
+		"media": [
+			{
+				"label": "Title",
+				"type": "theme",
+				"id": "com.moviemasher.theme.text",
+				"properties": { 
+					"string": { "type": "string", "value": "Title" },
+					"size": { "type": "fontsize", "value": 0.2 },
+					"x": { "type": "number", "value": 0 },
+					"y": { "type": "number", "value": 0 },
+					"color": { "type": "rgba", "value": "white" },
+					"background": { "type": "rgb", "value": "black" },
+					"font": { "type": "font", "value": "default" }
+				},
+				"filters": [{
+					"id": "color",
+					"parameters":[{
+						"name": "color",
+						"value":"background"
+					}]
+				},{
+					"id": "drawtext",
+					"parameters":[{
+						"name": "fontcolor",
+						"value":"color"
+					},{
+						"name": "fontsize",
+						"value":"mm_vert(size)"
+					},{
+						"name": "x",
+						"value":"mm_horz(x)"
+					},{
+						"name": "y",
+						"value":"mm_vert(y)"
+					},{
+						"name": "fontfile",
+						"value":"mm_fontfile(font)"
+					},{
+						"name": "textfile",
+						"value":"mm_textfile(string)"
+					}]
 				}]
-			},{
-				"id": "drawtext",
-				"parameters":[{
-					"name": "fontcolor",
-					"value":"color"
-				},{
-					"name": "fontsize",
-					"value":"mm_vert(size)"
-				},{
-					"name": "x",
-					"value":"mm_horz(x)"
-				},{
-					"name": "y",
-					"value":"mm_vert(y)"
-				},{
-					"name": "fontfile",
-					"value":"mm_fontfile(font)"
-				},{
-					"name": "textfile",
-					"value":"mm_textfile(string)"
-				}]
-			}]
-		}],
-		"fonts": [{
-			"label": "Blackout Midnight",
-			"source": "font/blackout_midnight-webfont.ttf",
-			"id":"blackout_midnight",
-			"family":"Blackout Midnight"
-		}],
-		"effects": [],
+			}, 
+			{
+				"type": "font",
+				"label": "Blackout Midnight",
+				"source": "font/blackout_midnight-webfont.ttf",
+				"id":"blackout_midnight",
+				"family":"Blackout Midnight"
+			}
+		],
 		"tracks": {
 			"overlays": [
 				{

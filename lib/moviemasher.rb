@@ -1,10 +1,10 @@
 
 module MovieMasher
-	#FilterTimestamps = 'setpts=expr=PTS-STARTPTS'
 	TypeVideo = 'video'
 	TypeSequence = 'sequence'
 	TypeAudio = 'audio'
 	TypeImage = 'image'
+	TypeFont = 'font'
 	TypeFrame = 'frame'
 	TypeMash = 'mash'
 	TypeWaveform = 'waveform'
@@ -395,7 +395,7 @@ module MovieMasher
 		result
 	end
 	def self.__cache_input job, input, base_source = nil, input_url = nil
-		#puts "__cache_input #{input_url} #{base_source}"
+		puts "__cache_input #{input}, #{base_source}, #{input_url} "
 		input_url = __input_url(job, input, base_source) unless input_url
 		cache_url_path = nil
 		if input_url then
@@ -416,6 +416,7 @@ module MovieMasher
 				__cache_source job, source, cache_url_path
 				raise "could not cache #{input_url}" unless File.exists? cache_url_path
 			end
+			puts "cached_file #{cache_url_path} #{input}"
 			input[:cached_file] = cache_url_path
 			case input[:type]
 			when TypeVideo
@@ -438,15 +439,12 @@ module MovieMasher
 	def self.__cache_job_mash job, input
 		mash = input[:source]
 		base_source = (input[:base_source] || job[:base_source])
-		#puts "__cache_job_mash base_source #{base_source}"
 		mash[:media].each do |media|
+			puts "__cache_job_mash media #{media[:type]} #{media}"
 			case media[:type]
-			when TypeVideo, TypeAudio, TypeImage
+			when TypeVideo, TypeAudio, TypeImage, TypeFont
 				__cache_input job, media, base_source
 			end
-		end
-		mash[:fonts].each do |font|
-			__cache_input job, font, base_source
 		end
 	end
 	def self.__cache_source job, source, out_file
@@ -861,17 +859,7 @@ module MovieMasher
 		filter[:parameters] = parameters
 		filter
   	end
-	def self.__filter_is_source? filter_id
-		case filter_id
-		when 'color', 'movie'
-			true
-		else 
-			false
-		end
-	end
-	def self.__filter_timestamps
-		__filter_init 'setpts', :expr => 'PTS-STARTPTS'
-	end
+	
 	def self.__filter_merger_default
 		filter_config = Hash.new
 		filter_config[:type] = TypeMerger
@@ -896,81 +884,7 @@ module MovieMasher
 		filter_config[:filters] << scale_config
 		filter_config
 	end
-	def self.__filter_trim_input input
-		filter = nil
-		trim_seconds = input[:trim_seconds] || __get_trim(input)
-		length_seconds = input[:length_seconds] || __get_length(input)
-		trim_beginning = float_gtr(trim_seconds, FLOAT_ZERO)
-		trim_end = float_gtr(length_seconds, FLOAT_ZERO) and (input[:duration] > (trim_seconds + length_seconds))
-		if trim_beginning or trim_end then
-			# start and duration look at timestamp and change it
-			filter = __filter_init 'trim', :duration => __cache_time(length_seconds)
-			filter[:parameters][:start] = __cache_time(trim_seconds) if trim_beginning
-		end
-		filter
-	end
-	def self.__filters_sizing orig_dims, target_dims, backcolor, fill = MASH_FILL_STRETCH
-		raise "original dimensions nil" unless orig_dims
-		filters = Array.new
-		orig_dims = orig_dims.split('x') if orig_dims.is_a? String
-		target_dims = target_dims.split('x') if target_dims.is_a? String
-		if orig_dims != target_dims then
-			orig_w = orig_dims[0].to_i
-			orig_h = orig_dims[1].to_i
-			target_w = target_dims[0].to_i
-			target_h = target_dims[1].to_i
-			orig_w_f = orig_w.to_f
-			orig_h_f = orig_h.to_f
-			target_w_f = target_w.to_f
-			target_h_f = target_h.to_f
-			simple_scale = (MASH_FILL_STRETCH == fill)
-			if not simple_scale then
-				fill_is_scale = (MASH_FILL_SCALE == fill)
-				ratio_w = target_w_f / orig_w_f
-				ratio_h = target_h_f / orig_h_f
-				ratio = (! fill_is_scale ? float_max(ratio_h, ratio_w) : float_min(ratio_h, ratio_w))
-				target_w_scaled = target_w_f / ratio
-				target_h_scaled = target_h_f / ratio
-				simple_scale = (float_cmp(orig_w_f, target_w_scaled) and float_cmp(orig_h_f, target_h_scaled))
-			end
-			if not simple_scale then
-				if (float_gtr(orig_w_f, target_w_scaled) or float_gtr(orig_h_f, target_h_scaled))
-					filter = __filter_init 'crop'
-					parameters = filter[:parameters]
-					parameters[:w] = target_w_scaled.to_i
-					parameters[:h] = target_h_scaled.to_i
-					parameters[:x] = ((orig_w_f - target_w_scaled) / FLOAT_TWO).ceil.to_i
-					parameters[:y] = ((orig_h_f - target_h_scaled) / FLOAT_TWO).ceil.to_i
-					filters << filter	
-				else
-					filter = __filter_init 'pad'
-					parameters = filter[:parameters]
-					parameters[:w] = target_w_scaled.to_i
-					parameters[:h] = target_h_scaled.to_i
-					parameters[:x] = ((target_w_scaled - orig_w_f) / FLOAT_TWO).floor.to_i
-					parameters[:y] = ((target_h_scaled - orig_h_f) / FLOAT_TWO).floor.to_i
-					parameters[:color] = backcolor
-					filters << filter	
-				end
-				simple_scale = ! ((orig_w == target_w) or (orig_h == target_h))
-			end
-			if simple_scale then
-				filter = __filter_init 'scale'
-				parameters = filter[:parameters]
-				parameters[:w] = target_w
-				parameters[:h] = target_h
-				filters << filter	
-			end
-			if (MASH_FILL_STRETCH == fill) then
-				filter = __filter_init 'setsar'
-				parameters = filter[:parameters]
-				parameters[:sar] = 1
-				parameters[:max] = 1
-				filters << filter
-			end
-		end
-		filters
-	end
+
 	def self.__get_length output
 		__get_time output, :length
 	end
@@ -1003,19 +917,7 @@ module MovieMasher
 	def self.__get_trim output
 		__get_time output, :trim
 	end
-	def self.__get_trim_range output
-		case output[:type]
-		when TypeImage
-			easy_num = 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9
-			FrameRange.new __get_trim(output) * easy_num, 1, easy_num
-		when TypeVideo
-			range = __get_trim_range_simple output
-			range.scale(output[:fps], :floor)
-			range
-		else
-			__get_trim_range_simple output
-		end
-	end
+	
 	def self.__get_trim_range_simple output
 		range = FrameRange.new __get_trim(output), 1, 1
 		range.length = __get_length output
@@ -1117,7 +1019,6 @@ module MovieMasher
 	def self.__init_mash mash
 		mash[:quantize] = (mash[:quantize] ? mash[:quantize].to_f : FLOAT_ONE)
 		mash[:media] = Array.new unless mash[:media] and mash[:media].is_a? Array
-		mash[:fonts] = Array.new unless mash[:fonts] and mash[:fonts].is_a? Array
 		mash[:tracks] = Array.new unless mash[:tracks] and mash[:tracks].is_a? Hash
 		longest = FLOAT_ZERO
 		TrackTypes.each do |track_type|
@@ -1210,7 +1111,13 @@ module MovieMasher
 		__init_key(input, :volume, MASH_VOLUME_NONE) if is_av
 		
 		__init_key(input, :fill, MASH_FILL_STRETCH) if is_v
-			 
+		
+		# set source from url unless defined
+		case input_type
+		when TypeVideo, TypeImage, TypeFrame, TypeAudio
+			input[:source] = input[:url] unless input[:source]
+		end		
+		
 		# set no_* when we know for sure
 		case input_type
 		when TypeMash
@@ -1243,16 +1150,7 @@ module MovieMasher
 			input[key] = FLOAT_ZERO
 		end
 	end
-  	def self.__init_video_data data = nil
-  		data = Hash.new unless data
-  		data[:type] = TypeVideo unless data[:type]
-  		data[:duration] = FLOAT_ZERO unless data[:duration]
-  		data[:length_seconds] = data[:duration] unless data[:length_seconds]
-  		data[:trim_seconds] = FLOAT_ZERO unless data[:trim_seconds]
-  		data[:file] = '' unless data[:file]
-  		data[:fill] = MASH_FILL_NONE unless data[:fill] or TypeAudio == data[:type] 
-  		data
-  	end
+
 	def self.__input_dimensions job
 		dimensions = nil
 		found_mash = false
@@ -1462,14 +1360,6 @@ module MovieMasher
 	def self.__output_path job, output, index = nil
 		out_file = output_path output
 		__transfer_file_name job, output, out_file, index
-	end
-	def self.__outputs_need_duration outputs
-		needs = false
-		outputs.each do |output|
-			needs = (! (float_cmp(__get_trim(output), FLOAT_ZERO) && float_cmp(__get_length(output), FLOAT_ZERO)))
-			break if needs
-		end
-		needs
 	end
 	def self.__set_timing job
 		start_audio = FLOAT_ZERO

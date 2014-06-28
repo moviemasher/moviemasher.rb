@@ -2,7 +2,7 @@
 	"type": "mash",
 	"source": {
 		"quantize": 10,
-		"backcolor": "red",
+		"backcolor": "rgb( 255, 0, 0 )",
 		"label": "Ken Burns",
 		"media": [{
 			"id": "drummers",
@@ -180,8 +180,6 @@
 			]
 		}
 		],
-		"fonts": [],
-		"effects": [],
 		"tracks": {
 			"video": [
 				{

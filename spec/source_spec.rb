@@ -2,6 +2,10 @@
 require_relative 'spec_helper'
 
 describe "Sources..." do
+	before(:all) do
+		spec_start_redis
+	end
+	
 	context "__directory_path_name" do
 		it "correctly deals with leading and trailing slashes" do
 			source = {:directory => 'DIR/', :path => '/PATH.ext'}
@@ -26,8 +30,9 @@ describe "Sources..." do
 		it "correctly returns url when source is simple url" do
 			job = MovieMasher.__change_keys_to_symbols!(spec_job_simple 'image_url')
 			input = job[:inputs].first
+			input = MovieMasher.__init_input(input)
 			url = MovieMasher.__input_url Hash.new, input
-			expect(url).to eq input[:source]
+			expect(url).to eq input[:url]
 		end
 		it "correctly returns file url when source is file object" do
 			job = MovieMasher.__change_keys_to_symbols!(spec_job_simple 'image_file')
@@ -70,6 +75,7 @@ describe "Sources..." do
 			# grab the file we saved to s3 via http (clientside_aws must be running with RACK_ENV=test on port 4568)
 			job = MovieMasher.__change_keys_to_symbols!(spec_job_simple 'image_url')
 			input = job[:inputs].first
+			input = MovieMasher.__init_input(input)
 			source = input[:source]
 			path = MovieMasher.__cache_input job, input
 			url = MovieMasher.__hash source
