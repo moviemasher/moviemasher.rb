@@ -97,24 +97,52 @@ module MovieMasher
 		end
 		def self.mm_max param_string, scope
 			params = __params_from_str param_string
+			params.map! { |p| p.to_f; }
 			params.max
-		end
-		def self.mm_times param_string, scope
-			params = __params_from_str param_string
-			total = FLOAT_ONE
-			params.each do |param|
-				total *= param.to_f
-			end
-			total
 		end
 		def self.mm_min param_string, scope
 			params = __params_from_str param_string
+			params.map! { |p| p.to_f; }
+			#puts "mm_min #{params.join ', '} = #{params.min}"
 			params.min
 		end
 		def self.mm_cmp param_string, scope
 			params = __params_from_str param_string
+			#puts "mm_cmp (#{params[0].to_f} > #{params[1].to_f} ? #{params[2]} : #{params[3]}) = #{(params[0].to_f > params[1].to_f ? params[2] : params[3])}"
 			(params[0].to_f > params[1].to_f ? params[2] : params[3])
 		end
+#		def self.mm_times param_string, scope
+#			params = __params_from_str param_string
+#			total = FLOAT_ONE
+#			params.each do |param|
+#				total *= param.to_f
+#			end
+#			total
+#		end
+#		def self.mm_divide param_string, scope
+#			params = __params_from_str param_string
+#			#puts "mm_divide #{params[0]} / #{params[1]} = #{params[0].to_f / params[1].to_f}"
+#			params[0].to_f / params[1].to_f
+#		end
+#		def self.mm_dir_is_vert param_string, scope
+#			params = __params_from_str param_string
+#			case params[0].to_i
+#			when 1, 3
+#				params[2]
+#			else 
+#				params[1]
+#			end
+#			
+#		end
+#		def self.mm_dir_is_horz param_string, scope
+#			params = __params_from_str param_string
+#			case params[0].to_i
+#			when 0, 2
+#				params[2]
+#			else 
+#				params[1]
+#			end
+#		end
 		def self.__params_from_str param_string
 			param_string = param_string.split(',') if param_string.is_a?(String)
 			param_string.map! { |p| p.is_a?(String) ? p.strip : p }

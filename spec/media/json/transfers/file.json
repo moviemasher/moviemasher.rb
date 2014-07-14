@@ -1,7 +1,7 @@
 {
 	"type": "file",
 	"mode": "copy",
-	"path": "log/tests"
+	"path": "log/tests/{output.name}"
 }
 			
 			

@@ -1,6 +1,7 @@
 {
 	"type": "mash",
 	"source": {
+		"id": "mash_overlays",
 		"quantize": 10,
 		"label": "Overlays",
 		"backcolor": "red",

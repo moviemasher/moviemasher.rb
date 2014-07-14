@@ -6,23 +6,23 @@ describe "Rendering..." do
 		it "correctly renders mash text" do
 			spec_job_mash_simple 'mash_text'			
 		end
-		it "correctly renders audio file volume" do
-			spec_job_mash_simple 'audio_file_volume', 'audio_mp3'
+		it "correctly renders mash pan" do
+			spec_job_mash_simple 'mash_pan'	
+		end
+		it "correctly renders a trimmed video file" do
+			spec_job_mash_simple 'video_file'
 		end
 		it "correctly renders mash transition" do
 			spec_job_mash_simple 'mash_transition'
 		end
-		it "correctly renders mash ken burns" do
-			spec_job_mash_simple 'mash_kenburns'			
+		it "correctly renders audio file volume" do
+			spec_job_mash_simple 'audio_file_volume', 'audio_mp3'
 		end
 		it "correctly renders mash overlays" do
 			spec_job_mash_simple 'mash_overlays'
 		end
 		it "correctly renders mash fill" do
 			spec_job_mash_simple 'mash_fill'			
-		end
-		it "correctly renders a trimmed video file" do
-			spec_job_mash_simple 'video_file'
 		end
 		it "correctly renders mash color video" do
 			spec_job_mash_simple 'mash_color_video'

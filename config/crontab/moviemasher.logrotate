@@ -1,0 +1,24 @@
+/var/log/moviemasher/transcoder.log {
+    missingok
+    size 1M
+    create 700 ec2_user www
+    rotate 1
+}
+/var/log/moviemasher/transcoder_cron.log {
+    missingok
+    size 1M
+    create 700 ec2_user www
+    rotate 1
+}
+/var/log/moviemasher/sdk.log {
+    missingok
+    size 1M
+    create 700 ec2_user www
+    rotate 1
+}
+/var/log/moviemasher/sdk.log {
+    missingok
+    size 1M
+    create 700 ec2_user www
+    rotate 1
+}

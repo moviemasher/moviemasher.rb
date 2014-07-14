@@ -1,6 +1,7 @@
 {
 	"type": "mash",
 	"source": {
+		"id": "mash_fill",
 		"quantize": 10,
 		"backcolor": "blue",
 		"label": "Fills",

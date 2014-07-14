@@ -1,6 +1,7 @@
 {
 	"type": "image",
 	"source": {
+		"id": "image_s3",
 		"type": "s3",
 		"bucket": "test",
 		"path": "image/windmills.jpg"

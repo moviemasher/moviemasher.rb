@@ -11,11 +11,11 @@ module MovieMasher
 			@length = n
 		end
 		def initialize (start = 0, length = 1, rate = 0)
-			@length = length.to_i
+			@length = length #.to_i
 			super(start, rate)
 		end
 		def length_seconds(precision = 3)
-			length_time.get_seconds precision
+			float_precision((@length.to_f / @fps.to_f), precision)
 		end
 		def length_time
 			FrameTime.new(length, fps)

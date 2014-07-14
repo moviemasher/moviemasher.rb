@@ -4,6 +4,7 @@
 	"length": 6,
 	"trim": 1,
 	"source": {
+		"id": "audio_file_volume",
 		"type": "file",
 		"path": "media/audio/D_Celt-8 Bar_140.mp3",
 		"mode": "symlink"

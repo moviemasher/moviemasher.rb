@@ -67,10 +67,14 @@ def spec_job_mash_simple mash, output = 'video_h264', destination = 'file_log'
 	#puts job.inspect
 	input['source']['directory'] = __dir__
 	destination['directory'] = File.dirname __dir__
-	output['basename'] = "#{mash}-{job_id}"
+	output['basename'] = "{job.inputs.0.source.id}-{job.id}" # note: transcoder evaluates {job.id}
 	processed_job = MovieMasher.process job
 	#puts processed_job.inspect
-	destination_file = destination['directory'] + '/' + destination['path'] + '/' + output['basename'].gsub!('{job_id}', job['id']) + '.' + output['extension']
+	output_name = "#{output['basename']}.#{output['extension']}"
+	dest_path = destination['path'].gsub('{output.name}', output_name)
+	dest_path = dest_path.gsub('{job.id}', job['id'])
+	dest_path = dest_path.gsub('{job.inputs.0.source.id}', input['source']['id'])
+	destination_file = "#{destination['directory']}/#{dest_path}"
 	puts "destination_file exists #{File.exists? destination_file} #{destination_file}"
 	expect(File.exists?(destination_file)).to be_true
 	case output['type']

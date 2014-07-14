@@ -1,10 +1,9 @@
 {
 	"type": "video",
-	"length": 3,
-	"trim": 1,
 	"source": {
 		"type": "file",
-		"path": "media/video/drummers.mov",
+		"id": "video_file",
+		"path": "media/video/Lovelyloops_best.mpg",
 		"mode": "symlink"
 	}
 }

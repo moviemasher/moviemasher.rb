@@ -51,7 +51,7 @@ describe "Sources..." do
 			path = MovieMasher.__cache_input job, input
 			url = "#{source[:type]}://#{__dir__}/#{source[:path]}/#{source[:name]}.#{source[:extension]}"
 			url = MovieMasher.__hash url
-			expect(path).to eq "#{CONFIG['path_cache']}/#{url}/cached.#{source[:extension]}"
+			expect(path).to eq "#{CONFIG['dir_cache']}/#{url}/cached.#{source[:extension]}"
 			expect(File.exists? path).to be_true
 			expect(File.symlink? path).to be_true
 		end
@@ -67,7 +67,7 @@ describe "Sources..." do
 			path = MovieMasher.__cache_input job, input
 			url = "#{source[:type]}://#{source[:bucket]}.s3.amazonaws.com/#{source[:path]}"
 			url = MovieMasher.__hash url
-			expect(path).to eq "#{CONFIG['path_cache']}/#{url}/cached#{File.extname(source[:path])}"
+			expect(path).to eq "#{CONFIG['dir_cache']}/#{url}/cached#{File.extname(source[:path])}"
 			expect(File.exists? path).to be_true
 			expect(FileUtils.identical? path, path_name).to be_true
 		end
@@ -79,7 +79,7 @@ describe "Sources..." do
 			source = input[:source]
 			path = MovieMasher.__cache_input job, input
 			url = MovieMasher.__hash source
-			expect(path).to eq "#{CONFIG['path_cache']}/#{url}/cached#{File.extname(source)}"
+			expect(path).to eq "#{CONFIG['dir_cache']}/#{url}/cached#{File.extname(source)}"
 			expect(File.exists? path).to be_true
 		end
 	end

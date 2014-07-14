@@ -1,0 +1,2 @@
+
+* * * * * cd /home/ec2_user && RACK_ENV=production rake moviemasher:process_queues >> /var/log/moviemasher/transcoder_cron.log 2>&1 &

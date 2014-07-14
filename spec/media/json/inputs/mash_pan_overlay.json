@@ -1,6 +1,7 @@
 {
 	"type": "mash",
 	"source": {
+		"id": "mash_pan_overlay",
 		"quantize": 10,
 		"backcolor": "rgb( 255, 0, 0 )",
 		"label": "Ken Burns",

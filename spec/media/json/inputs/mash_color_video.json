@@ -1,6 +1,7 @@
 {
 	"type": "mash",
 	"source": {
+		"id": "mash_color_video",
 		"quantize": 10,
 		"label": "A Second Each of Blue and Video",
 		"backcolor": "red",

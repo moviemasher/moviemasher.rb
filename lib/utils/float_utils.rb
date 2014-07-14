@@ -7,8 +7,8 @@ FLOAT_ZERO = 0.to_f unless defined? FLOAT_ZERO
 
 def float_cmp(f1, f2, precision = 3) # are 2 floats equal
     e = (10 ** precision).to_f
-    i1 = (f1.to_f * e).round
-    i2 = (f2.to_f * e).round
+    i1 = (f1.to_f * e).round.to_i
+    i2 = (f2.to_f * e).round.to_i
     (i1 == i2)
 end
 def float_less(small, big, precision = 3) # is one float smaller than another
@@ -35,7 +35,13 @@ end
 def float_sort(a, b)
 	(float_gtr(a[0], b[0]) ? 1 : (float_cmp(a[0], b[0]) ? 0 : -1))
 end
+def float_string f, precision = 3
+	divisor = (precision.to_i ** 10).to_f
+	fs = (f.to_f * divisor).floor.to_i.to_s
+	fs.insert(-2 - precision, '.')
+	fs
+end
 def float_precision f, precision = 3
-	divisor = (precision * 10).to_f
+	divisor = (precision.to_i ** 10).to_f
 	(f.to_f * divisor).floor / divisor
 end

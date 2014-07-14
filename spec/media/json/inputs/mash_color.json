@@ -1,6 +1,7 @@
 {
 	"type": "mash",
 	"source": {
+		"id": "mash_color",
 		"quantize": 10,
 		"label": "Ten Seconds of Green",
 		"backcolor": "red",

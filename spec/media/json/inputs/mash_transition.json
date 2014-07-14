@@ -1,6 +1,7 @@
 {
 	"type": "mash",
 	"source": {
+		"id": "mash_transition",
 		"quantize": 10,
 		"backcolor": "red",
 		"label": "Transition",

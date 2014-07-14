@@ -2,26 +2,29 @@ test:
   path_ffmpeg: ffmpeg
   path_ecasound: ecasound
   path_sox: sox
-  path_temporary: log/temporary
-  path_cache: log/cache
-  path_log: log
+  dir_temporary: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherTemporary
+  dir_cache: log/cache
+  path_log: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherLog
   queue_idle_timeout: 40
   queue_initial_timeout: nil
   queue_wait_time_seconds: 5
   queue_visibility_timeout: 360
-  queue_url: |
-    https://example.com/
-
+  dir_queue: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherQueue
+  #queue_url: |
+  #  https://example.com/
+  process_queues_seconds: 55
 production:
   path_ffmpeg: ffmpeg
   path_ecasound: ecasound
   path_sox: sox
-  path_temporary: /tmp/moviemasher/temporary
-  path_cache: /tmp/moviemasher/cache
-  path_log: /tmp/moviemasher/log
+  dir_temporary: /tmp/moviemasher/temporary
+  dir_cache: /tmp/moviemasher/cache
+  path_log: /var/log/moviemasher
   queue_idle_timeout: 40
   queue_initial_timeout: nil
   queue_wait_time_seconds: 5
   queue_visibility_timeout: 360
-  queue_url: |
-    https://example.com/
+  process_queues_seconds: 55
+  dir_queue: /var/www/private/queue
+  #queue_url: |
+  #  https://example.com/

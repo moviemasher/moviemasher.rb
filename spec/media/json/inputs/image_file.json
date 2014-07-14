@@ -2,6 +2,7 @@
 	"type": "image",
 	"length": 3,
 	"source": {
+		"id": "image_file",
 		"type": "file",
 		"path": "media/image",
 		"name": "windmills",

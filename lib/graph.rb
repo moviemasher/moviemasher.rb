@@ -118,6 +118,7 @@ module MovieMasher
 			duration = @input[:length_seconds] || __get_length
 			@fps_filter.parameters[:fps] = fps
 			@trim_filter.parameters[:duration] = duration
+			raise "input has no cached_file #{@input.inspect}" unless @input[:cached_file]
 			file = __video_from_image @input[:cached_file], duration, fps
 			@movie_filter.parameters[:filename] = file
 			super
@@ -142,7 +143,7 @@ module MovieMasher
 				# (fps.to_f * duration.to_f).floor
 				cmd += MovieMasher::__cache_switch(frame_time.frame, 'vframes')
 				cmd += MovieMasher::__cache_switch(float_precision(frame_time.get_seconds), 't')
-				MovieMasher::__ffmpeg_command cmd, out_file
+				MovieMasher::app_exec cmd, out_file
 				#file_duration = __cache_get_info out_file, 'duration'
 				#raise "Durations don't match #{file_duration} #{duration}" unless float_cmp(file_duration, duration)
 			end
@@ -438,7 +439,7 @@ module MovieMasher
 			#puts "value_str = #{value_str}"
 			level = 0
 			deepest = 0
-			esc = '.'
+			esc = '~'
 			# expand variables
 			value_str = value_str.dup
 			value_str.gsub!(MovieMasher::RegexVariables) do |match|
@@ -469,14 +470,14 @@ module MovieMasher
 			end
 			#puts "value_str = #{value_str}"
 			while 0 < deepest
-				value_str.gsub!(Regexp.new("([a-z_]+)[(]#{deepest}[.]([^)]+)[)]#{deepest}[.]")) do |m|
+				value_str.gsub!(Regexp.new("([a-z_]+)[(]#{deepest}[#{esc}](.+)[)]#{deepest}[#{esc}]")) do |m|
 					#puts "level #{level} #{m}"
 					method = $1
 					param_str = $2
 					params = param_str.split(',')
 					params.each do |param|
 						param.strip!
-						param.gsub!(/([()])[0-9]+[.]/) {$1}
+						param.gsub!(Regexp.new("([()])[0-9]+[#{esc}]")) {$1}
 					end
 					func_sym = method.to_sym
 					if FilterHelpers.respond_to? func_sym then
@@ -489,11 +490,11 @@ module MovieMasher
 					end
 					result			
 				end
+				#puts "deepest = #{deepest} #{value_str}"
 				deepest -= 1
-				#puts "value_str = #{value_str}"
 			end
 			# remove any lingering markers
-			value_str.gsub!(/([()])[0-9]+[.]/) { $1 }
+			value_str.gsub!(Regexp.new("([()])[0-9]+[#{esc}]")) { $1 }
 			# remove whitespace
 			value_str.gsub!(/\s/, '')
 			#puts "value_str = #{value_str}"
@@ -526,6 +527,7 @@ module MovieMasher
 			@parameters.each do |k,v|
 				#puts "#{k.id2name}=#{v}"
 	  			evaluated = v
+	  			raise "#{k} is nil" if v.nil?
 	  			evaluated = __filter_scope_value(scope, evaluated) if scope
 				cmds << "#{k.id2name}=#{evaluated.to_s}"
 			end
@@ -542,7 +544,7 @@ module MovieMasher
 		def command options
 			raise "ColorLayer with no color #{options}" unless options[:mm_backcolor]
 			raise "ColorLayer with no size #{options}" unless options[:mm_dimensions]
-			raise "ColorLayer with no rate #{options}" unless options[:mm_fps]
+			#raise "ColorLayer with no rate #{options}" unless options[:mm_fps]
 			"color=color=#{options[:mm_backcolor]}:duration=#{@duration}:size=#{options[:mm_dimensions]}:rate=#{options[:mm_fps]}"
 		end
 		def range
@@ -551,9 +553,12 @@ module MovieMasher
 	end
 	class Graph
 		def duration
-			@render_range.length_seconds
+			dur = @render_range.length_seconds
+			#puts "Graph#duration #{dur} #{@render_range.inspect}"
+			dur
 		end
 		def initialize job_input, render_range, backcolor = nil
+			#puts "Graph #{render_range.inspect}"
 			@job_input = job_input
 			@render_range = render_range
 			@backcolor = backcolor
