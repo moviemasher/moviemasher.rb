@@ -1,6 +1,7 @@
 {
 	"type": "sequence",
-	"basename": "256x144x10",
+	"directory": "{output.dimensions}x{output.fps}",
+	"name": "{output.sequence}",
 	"extension": "jpg",
 	"dimensions": "256x144",
 	"fps": "10",

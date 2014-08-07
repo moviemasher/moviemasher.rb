@@ -119,7 +119,11 @@ module MovieMasher
 			@fps_filter.parameters[:fps] = fps
 			@trim_filter.parameters[:duration] = duration
 			raise "input has no cached_file #{@input.inspect}" unless @input[:cached_file]
-			file = __video_from_image @input[:cached_file], duration, fps
+			file = @input[:cached_file]
+			output_type_is_video = (TypeVideo == options[:mm_job_output][:type])
+			@fps_filter.disabled = (not output_type_is_video)
+			@trim_filter.disabled = (not output_type_is_video)
+			file = __video_from_image(file, duration, fps) if output_type_is_video
 			@movie_filter.parameters[:filename] = file
 			super
 		end
@@ -156,13 +160,14 @@ module MovieMasher
 			chain = Chain.new
 			chain << HashFilter.new('movie', :filename => @input[:cached_file])
 			# trim filter, if needed
-			filter = __filter_trim_input
-			chain << filter if filter
+			@trim_filter = __filter_trim_input
+			chain << @trim_filter if @trim_filter
 			# fps is placeholder since each output has its own rate
 			@fps_filter = HashFilter.new('fps', :fps => 0)
 			chain << @fps_filter
 			# set presentation timestamp filter 
-			chain << __filter_timestamps
+			@filter_timestamps = __filter_timestamps
+			chain << @filter_timestamps
 			@chains << chain
 			#puts "VideoLayer.initialize_chains #{@chains}"
 		end
@@ -180,6 +185,11 @@ module MovieMasher
 			filter
 		end
 		def command options
+			raise "command with empty options" unless options
+			output_type_is_video = ((! options[:mm_job_output]) || (TypeVideo == options[:mm_job_output][:type]))
+			@fps_filter.disabled = (not output_type_is_video)
+			@trim_filter.disabled = (not output_type_is_video) if @trim_filter
+			@filter_timestamps.disabled = (not output_type_is_video)
 			@fps_filter.parameters[:fps] = options[:mm_fps]
 			super
 		end
@@ -191,7 +201,8 @@ module MovieMasher
 		def command options
 			cmds = Array.new
 			@filters.each do |filter|
-				cmds << filter.command(options)
+				cmd = filter.command(options)
+				cmds << cmd if cmd and not cmd.empty?
 			end
 			cmds.join(',')
 		end
@@ -219,23 +230,33 @@ module MovieMasher
 			orig_dims = orig_dims.split('x')
 			target_dims = target_dims.split('x')
 			if orig_dims != target_dims then
+				#puts "#{orig_dims} != #{target_dims}"
 				orig_w = orig_dims[0].to_i
 				orig_h = orig_dims[1].to_i
 				target_w = target_dims[0].to_i
 				target_h = target_dims[1].to_i
+				#puts "#{orig_w}x#{orig_h} != #{target_w}x#{target_h}"
 				orig_w_f = orig_w.to_f
 				orig_h_f = orig_h.to_f
 				target_w_f = target_w.to_f
 				target_h_f = target_h.to_f
+				#puts "#{orig_w_f}x#{orig_h_f} != #{target_w_f}x#{target_h_f}"
 				simple_scale = (MASH_FILL_STRETCH == @fill)
 				if not simple_scale then
 					fill_is_scale = (MASH_FILL_SCALE == @fill)
 					ratio_w = target_w_f / orig_w_f
 					ratio_h = target_h_f / orig_h_f
-					ratio = (! fill_is_scale ? float_max(ratio_h, ratio_w) : float_min(ratio_h, ratio_w))
-					target_w_scaled = target_w_f / ratio
-					target_h_scaled = target_h_f / ratio
-					simple_scale = (float_cmp(orig_w_f, target_w_scaled) and float_cmp(orig_h_f, target_h_scaled))
+					ratio = (fill_is_scale ? float_min(ratio_h, ratio_w) : float_max(ratio_h, ratio_w))
+					simple_scale = (MASH_FILL_NONE == @fill)
+					if simple_scale then
+						target_w = (orig_w_f * ratio).to_i
+						target_h = (orig_h_f * ratio).to_i
+						#puts "#{orig_w}x#{orig_h} / #{ratio} (float_max(#{ratio_h}, #{ratio_w})) = #{target_w}x#{target_h}"
+					else
+						target_w_scaled = target_w_f / ratio
+						target_h_scaled = target_h_f / ratio
+						simple_scale = (float_cmp(orig_w_f, target_w_scaled) and float_cmp(orig_h_f, target_h_scaled))
+					end
 				end
 				if not simple_scale then
 					if (float_gtr(orig_w_f, target_w_scaled) or float_gtr(orig_h_f, target_h_scaled))
@@ -378,22 +399,26 @@ module MovieMasher
 	end
 	class Filter
 		attr_reader :id, :parameters, :in_labels, :out_labels
+		attr_writer :disabled
 		def command scope = nil
-			cmds = Array.new
-			@in_labels.each do |label|
-				next unless label and not label.empty?
-				cmds << "[#{label}]"
-			end unless __filter_is_source? @id 
+			cmd = ''
+			unless @disabled then
+				cmds = Array.new
+				@in_labels.each do |label|
+					next unless label and not label.empty?
+					cmds << "[#{label}]"
+				end unless __filter_is_source? @id 
 			
-			cmds << "#{@id}="
-			cmd = cmds.join ''
-			cmd += command_parameters(scope)
-			cmds = Array.new
-			@out_labels.each do |label|
-				next unless label and not label.empty?
-				cmds << "[#{label}]"
-			end 
-			cmd += cmds.join ''
+				cmds << "#{@id}="
+				cmd = cmds.join ''
+				cmd += command_parameters(scope)
+				cmds = Array.new
+				@out_labels.each do |label|
+					next unless label and not label.empty?
+					cmds << "[#{label}]"
+				end 
+				cmd += cmds.join ''
+			end
 			cmd
 		end
 		def command_parameters scope
@@ -470,7 +495,8 @@ module MovieMasher
 			end
 			#puts "value_str = #{value_str}"
 			while 0 < deepest
-				value_str.gsub!(Regexp.new("([a-z_]+)[(]#{deepest}[#{esc}](.+)[)]#{deepest}[#{esc}]")) do |m|
+				#puts "PRE deepest = #{deepest} #{value_str}"
+				value_str.gsub!(Regexp.new("([a-z_]+)[(]#{deepest}[#{esc}](.*?)[)]#{deepest}[#{esc}]")) do |m|
 					#puts "level #{level} #{m}"
 					method = $1
 					param_str = $2
@@ -490,7 +516,7 @@ module MovieMasher
 					end
 					result			
 				end
-				#puts "deepest = #{deepest} #{value_str}"
+				#puts "POST deepest = #{deepest} #{value_str}"
 				deepest -= 1
 			end
 			# remove any lingering markers
@@ -571,34 +597,38 @@ module MovieMasher
 		end
 		def command output
 			graph_cmds = Array.new
-			layer_length = @layers.length
 			layer_options = output_options(output)
-			layer_length.times do |i|
-				layer = @layers[i]
-				cmd = layer.command layer_options
-				cmd += command_range_trim(layer.range) if layer.range
-				cmd += "[layer#{i}]" if 1 < layer_length
-				graph_cmds << cmd
-			end
-			if 1 < layer_length then
-				(1..layer_length-1).each do |i|
-					raise "layer_length #{layer_length} i #{i} #{@layers}" unless i < @layers.length
+			case output[:type]
+			when TypeImage, TypeSequence
+				graph_cmds << @layers[1].command(layer_options)
+			else
+				layer_length = @layers.length
+				layer_length.times do |i|
 					layer = @layers[i]
-					cmd = (1 == i ? "[layer#{i-1}]" : "[layered#{i-1}]")
-					cmd += "[layer#{i}]"
-					merge_cmd = layer.command_merger(layer_options)
-					
-					raise "merger produced no command #{layer.inspect}" unless merge_cmd and not merge_cmd.empty?
-					#puts "merge command: #{merge_cmd}"
-					cmd += merge_cmd
-					if i + 1 < layer_length then
-						cmd += "[layered#{i}]"
-					end
+					cmd = layer.command layer_options
+					cmd += command_range_trim(layer.range) if layer.range
+					cmd += "[layer#{i}]" if 1 < layer_length
 					graph_cmds << cmd
-				end	
+				end
+				if 1 < layer_length then
+					(1..layer_length-1).each do |i|
+						raise "layer_length #{layer_length} i #{i} #{@layers}" unless i < @layers.length
+						layer = @layers[i]
+						cmd = (1 == i ? "[layer#{i-1}]" : "[layered#{i-1}]")
+						cmd += "[layer#{i}]"
+						merge_cmd = layer.command_merger(layer_options)
+					
+						raise "merger produced no command #{layer.inspect}" unless merge_cmd and not merge_cmd.empty?
+						#puts "merge command: #{merge_cmd}"
+						cmd += merge_cmd
+						if i + 1 < layer_length then
+							cmd += "[layered#{i}]"
+						end
+						graph_cmds << cmd
+					end	
+				end
 			end
 			cmd = graph_cmds.join ';'
-			
 			#cmd += ",fps=fps=#{layer_options[:mm_fps]}"
 			cmd
 		end

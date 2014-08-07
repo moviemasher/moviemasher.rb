@@ -34,61 +34,70 @@ def spec_file dir, name
 	JSON.parse(File.read("#{__dir__}/media/json/#{dir}/#{name}.json"))
 end
 
-def spec_output name
-	spec_file 'outputs', name	
-end
-
-def spec_transfer name
-	spec_file 'transfers', name	
-end
-
-def spec_input name
-	spec_file 'inputs', name	
-end
-
-def spec_job_simple input = nil, output = nil, destination = nil
+def spec_job_simple(input = nil, output = nil, destination = nil)
 	job = Hash.new
 	job['id'] = UUID.new.generate
 	job['inputs'] = Array.new
 	job['outputs'] = Array.new
-	job['destination'] = spec_transfer(destination) if destination
-	job['inputs'] << spec_input(input) if input
-	job['outputs'] << spec_output(output) if output
+	job['destination'] = spec_file('destinations', destination) if destination
+	job['inputs'] << spec_file('inputs', input) if input
+	job['outputs'] << spec_file('outputs', output) if output
 	job
 end
 
-def spec_job_mash_simple mash, output = 'video_h264', destination = 'file_log'
+def spec_job(mash, output = 'video_h264', destination = 'file_log')
 	job = spec_job_simple mash, output, destination
 	output = job['outputs'][0]
 	input = job['inputs'][0]
-	input['base_source'] = spec_transfer 'file_spec'
+	input['base_source'] = spec_file('sources', 'file_spec')
 	input['base_source']['directory'] = File.dirname __dir__
 	destination = job['destination']
 	#puts job.inspect
 	input['source']['directory'] = __dir__
 	destination['directory'] = File.dirname __dir__
-	output['basename'] = "{job.inputs.0.source.id}-{job.id}" # note: transcoder evaluates {job.id}
+	output['basename'] = "{job.inputs.0.source.id}-{job.id}" unless output['basename'] 
+	job
+end
+
+def spec_job_output_path job, processed_job
+	destination = processed_job[:destination]	
+	dest_path = destination[:file]
+	if File.directory?(dest_path) then
+		dest_path = Dir["#{dest_path}/*"].first
+		#puts "DIR: #{dest_path}"
+	end
+	dest_path
+end
+
+def spec_job_mash_simple mash, output = 'video_h264', destination = 'file_log'
+	job = spec_job mash, output, destination
+	output = job['outputs'][0]
+	input = job['inputs'][0]	
 	processed_job = MovieMasher.process job
 	#puts processed_job.inspect
-	output_name = "#{output['basename']}.#{output['extension']}"
-	dest_path = destination['path'].gsub('{output.name}', output_name)
-	dest_path = dest_path.gsub('{job.id}', job['id'])
-	dest_path = dest_path.gsub('{job.inputs.0.source.id}', input['source']['id'])
-	destination_file = "#{destination['directory']}/#{dest_path}"
-	puts "destination_file exists #{File.exists? destination_file} #{destination_file}"
+	destination_file = spec_job_output_path job, processed_job
+	
+	#puts "destination_file exists #{File.exists? destination_file} #{destination_file}"
 	expect(File.exists?(destination_file)).to be_true
 	case output['type']
 	when MovieMasher::TypeAudio, MovieMasher::TypeVideo
-		expect(MovieMasher.__cache_get_info(destination_file, 'duration').to_f).to be_within(0.1).of processed_job[:duration]
+		spec_expect_duration destination_file, processed_job[:duration]
 	end
-	case output['type']
-	when MovieMasher::TypeImage, MovieMasher::TypeVideo
-		expect(MovieMasher.__cache_get_info(destination_file, 'dimensions')).to eq output['dimensions']
-	end
-	if MovieMasher::TypeVideo == output['type'] then
-		expect(MovieMasher.__cache_get_info(destination_file, 'fps').to_i).to eq output['fps'].to_i
-	end
+	spec_expect_dimensions(destination_file, output['dimensions']) if MovieMasher::TypeMash == input['type']
+	spec_expect_fps(destination_file, output['fps']) if MovieMasher::TypeVideo == output['type'] 
+	
+	[job, processed_job]
 end
+def spec_expect_duration destination_file, duration
+	expect(MovieMasher.__cache_get_info(destination_file, 'duration').to_f).to be_within(0.1).of duration
+end
+def spec_expect_fps destination_file, fps
+	expect(MovieMasher.__cache_get_info(destination_file, 'fps').to_i).to eq fps.to_i
+end
+def spec_expect_dimensions destination_file, dimensions
+	expect(MovieMasher.__cache_get_info(destination_file, 'dimensions')).to eq dimensions
+end
+
 
 def spec_start_redis
 	if PIDS.empty? then

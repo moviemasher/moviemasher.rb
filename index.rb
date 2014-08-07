@@ -15,10 +15,22 @@ require 'net/http'
 require 'net/http/post/multipart'
 require 'aws-sdk' unless defined? AWS # maybe something has loaded aws-mock
 
+user_data_file = "#{__dir__}/config/userdata.json"
+
 CONFIG = YAML::load( File.open("#{__dir__}/config/config.yml") )[ENV['RACK_ENV']] unless defined? CONFIG
+if File.exists? "#{__dir__}/config/userdata.json" then
+	begin
+		JSON.parse(File.read("#{__dir__}/config/userdata.json")).each do |k, v|
+			CONFIG[k] = v
+		end
+	rescue 
+		puts "Could not parse userdata.json"
+	end
+end
 CONFIG['dir_temporary'] = File.expand_path CONFIG['dir_temporary']
 CONFIG['dir_cache'] = File.expand_path CONFIG['dir_cache']
 CONFIG['path_log'] = File.expand_path CONFIG['path_log']
+			
 
 IDER = UUID.new
 

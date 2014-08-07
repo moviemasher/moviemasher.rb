@@ -1,5 +1,0 @@
-{
-	"type": "file",
-	"path": "log/output/{output.name}",
-	"mode": "move"
-}

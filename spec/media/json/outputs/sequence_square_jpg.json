@@ -1,0 +1,8 @@
+{
+	"type": "sequence",
+	"name": "{output.dimensions}x{output.fps}/{output.sequence}",
+	"extension": "jpg",
+	"dimensions": "256x256",
+	"fps": "10",
+	"quality": "1"
+}

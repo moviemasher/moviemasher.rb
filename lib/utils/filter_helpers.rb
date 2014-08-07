@@ -97,14 +97,27 @@ module MovieMasher
 		end
 		def self.mm_max param_string, scope
 			params = __params_from_str param_string
-			params.map! { |p| p.to_f; }
-			params.max
+			all_ints = true
+			params.map! do |p|
+				p = p.to_f
+				all_ints = false if all_ints and not float_cmp(p.floor, p)
+				p
+			end
+			p = params.max
+			p = p.to_i if all_ints
+			p
 		end
 		def self.mm_min param_string, scope
 			params = __params_from_str param_string
-			params.map! { |p| p.to_f; }
-			#puts "mm_min #{params.join ', '} = #{params.min}"
-			params.min
+			all_ints = true
+			params.map! do |p|
+				p = p.to_f
+				all_ints = false if all_ints and not float_cmp(p.floor, p)
+				p
+			end
+			p = params.min
+			p = p.to_i if all_ints
+			p
 		end
 		def self.mm_cmp param_string, scope
 			params = __params_from_str param_string

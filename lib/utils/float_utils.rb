@@ -36,12 +36,12 @@ def float_sort(a, b)
 	(float_gtr(a[0], b[0]) ? 1 : (float_cmp(a[0], b[0]) ? 0 : -1))
 end
 def float_string f, precision = 3
-	divisor = (precision.to_i ** 10).to_f
-	fs = (f.to_f * divisor).floor.to_i.to_s
-	fs.insert(-2 - precision, '.')
+	divisor = (10 ** precision.to_i).to_f
+	fs = ((f.to_f * divisor).round).to_i.to_s.ljust(precision + 2, '0')
+	fs.insert(-1 - precision, '.')
 	fs
 end
 def float_precision f, precision = 3
-	divisor = (precision.to_i ** 10).to_f
-	(f.to_f * divisor).floor / divisor
+	divisor = (10 ** precision.to_i).to_f
+	(f.to_f * divisor).round / divisor
 end

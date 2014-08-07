@@ -1,0 +1,12 @@
+{
+	"type": "image",
+	"fill": "none",
+	"source": {
+		"id": "image_vert_sm_4x3",
+		"type": "file",
+		"path": "media/image",
+		"name": "vert-sm-4x3",
+		"extension": "png",
+		"mode": "symlink"
+	}
+}

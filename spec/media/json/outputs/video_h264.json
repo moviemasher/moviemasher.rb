@@ -1,6 +1,6 @@
 {
 	"type": "video",
-	"basename": "video-h264-{job_id}",
+	"name": "video-h264-{job.id}",
 	"extension": "mp4",
 	"dimensions": "512x288",
 	"fps": "30",

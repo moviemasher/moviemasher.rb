@@ -1,7 +1,5 @@
 {
 	"type": "audio",
-	"length": 6,
-	"trim": 1,
 	"source": {
 		"id": "audio_file",
 		"type": "file",

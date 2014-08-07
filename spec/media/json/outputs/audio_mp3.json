@@ -1,6 +1,6 @@
 {
 	"type": "audio",
-	"basename": "audio-mp3",
+	"name": "audio-mp3",
 	"extension": "mp3",
 	"audio_codec": "libmp3lame",
 	"audio_bitrate": "128"
