@@ -1741,10 +1741,12 @@ module MovieMasher
 		end
 		url
 	end
+	def self.__sqs
+		(CONFIG['queue_region'] ? AWS::SQS.new(:region => CONFIG['queue_region']) : AWS::SQS.new)
+	end
 	def self.__sqs_request run_seconds, start
 		unless @@queue then
-			region = CONFIG['queue_region'] || 'us-east-1'
-			sqs = AWS::SQS.new(:region => region)
+			sqs = __sqs
 			# queue will be nil if their URL is not defined in config.yml
 			@@queue = sqs.queues[CONFIG['queue_url']]
 		end
