@@ -45,6 +45,29 @@ module MovieMasher
 	@@formats = nil
 	@@codecs = nil
 	@@job = nil
+	def self.app_exec(cmd, out_file = '', duration = nil, precision = 1, app = 'ffmpeg')
+		#puts "app_exec #{app}"
+		outputs_file = (('/dev/null' != out_file) and (not out_file.empty?))
+		whole_cmd = CONFIG["path_#{app}"]
+		whole_cmd += ' ' + cmd
+		FileUtils.mkdir_p(File.dirname(out_file)) if outputs_file
+		whole_cmd += " #{out_file}" unless out_file.empty?
+		#puts whole_cmd
+		@@job[:commands] << whole_cmd if @@job
+		result = __shell_command whole_cmd
+		if outputs_file and not out_file.include?('%') then	
+			raise "Failed to generate file #{result}\n#{cmd.gsub(';', ";\n")}" unless File.exists?(out_file)
+			raise "Generated zero length file #{result}" unless File.size?(out_file)
+			if duration then
+				audio_duration = __cache_get_info(out_file, 'audio_duration')
+				video_duration = __cache_get_info(out_file, 'video_duration')
+				#puts "audio_duration: #{audio_duration} video_duration: #{video_duration}"
+				raise "could not determine duration of #{out_file} #{result}" unless audio_duration or video_duration
+				raise "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration}" unless float_cmp(duration, video_duration.to_f, precision) or float_cmp(duration, audio_duration.to_f, precision)
+			end
+		end 
+		result
+	end
 	def self.codecs
 		@@codecs = app_exec('-codecs') unless @@codecs
 		@@codecs
@@ -52,6 +75,18 @@ module MovieMasher
 	def self.formats
 		@@formats = app_exec('-formats') unless @@formats
 		@@formats
+	end
+	def self.mash_search(mash, id, key = :media)
+		mash[key].each do |item|
+			return item if id == item[:id]
+		end
+		nil
+	end
+	def self.output_path output
+		out_file = CONFIG['dir_temporary']
+		out_file += '/' unless out_file.end_with? '/'
+		out_file += output[:job_identifier] + '/' if output[:job_identifier]
+		out_file += output[:identifier] + '/' if output[:identifier]	
 	end
 	def self.process orig_job
 		begin
@@ -254,9 +289,6 @@ module MovieMasher
 		end
 		out_file
 	end
-	def self.__cache_gcf a, b 
-		 ( ( b == 0 ) ? a : __cache_gcf(b, a % b) )
-	end
 	def self.__build_output output, video_graphs, audio_graphs
 		unless output[:rendering] then
 			avb = __output_desires output
@@ -404,6 +436,9 @@ module MovieMasher
 			end
 		end
 	end	
+	def self.__cache_gcf a, b 
+		 ( ( b == 0 ) ? a : __cache_gcf(b, a % b) )
+	end
 	def self.__cache_meta_path type, file_path
 		parent_dir = File.dirname file_path
 		base_name = File.basename file_path
@@ -573,8 +608,8 @@ module MovieMasher
 		FileUtils.mkdir_p(File.dirname(out_file))
 		case source[:type]
 		when SourceTypeFile
-			source_file = __directory_path_name source
-			__transfer_file source[:mode], source_file, out_file
+			source_path = __directory_path_name source
+			__transfer_file source[:mode], source_path, out_file
 		when SourceTypeHttp, SourceTypeHttps
 			url = "#{source[:type]}://#{source[:host]}"
 			path = __directory_path_name source
@@ -602,10 +637,6 @@ module MovieMasher
 			File.open(out_file, 'w') { |file| file.write(object_read_data) }
 		end
 		out_file
-	end
-	def self.__s3_bucket source
-		s3 = AWS::S3.new(:region => (source[:region] || 'us-east-1'))
-		s3.buckets[source[:bucket]]
 	end
 	def self.__cache_switch(value, prefix = '', suffix = '')
 		switch = ''
@@ -667,37 +698,6 @@ module MovieMasher
 		end
 		has
 	end
-	def self.__gain_changes gain
-		does = false;
-		#puts "__gain_changes: #{gain}"
-		if gain.is_a?(String) and gain.include?(',') then
-			gains = gain.split ','
-			(gains.length / 2).times do |i|
-				does = ! float_cmp(gains[1 + i * 2].to_f, MASH_VOLUME_NONE)
-				break if does
-			end
-		else
-			does = ! float_cmp(gain.to_f, MASH_VOLUME_NONE)
-		end
-		#puts "__gain_changes: #{does} #{gain}"
-		does
-	end
-	def self.__gain_mutes gain
-		does = true
-		#puts "__gain_mutes: #{gain}"
-		if gain.is_a?(String) and gain.include?(',') then
-			does = true
-			gains = gain.split ','
-			gains.length.times do |i|
-				does = float_cmp(gains[1 + i * 2].to_f, MASH_VOLUME_MUTE)
-				break unless does
-			end
-		else
-			does = float_cmp(gain.to_f, MASH_VOLUME_MUTE)
-		end
-		#puts "__gain_mutes: #{does} #{gain}"
-		does
-	end
 	def self.__directory_path_name source
 		url = source[:key]
 		if not url then
@@ -719,28 +719,70 @@ module MovieMasher
 		end
 		url
 	end
-	def self.app_exec(cmd, out_file = '', duration = nil, precision = 1, app = 'ffmpeg')
-		#puts "app_exec #{app}"
-		outputs_file = (('/dev/null' != out_file) and (not out_file.empty?))
-		whole_cmd = CONFIG["path_#{app}"]
-		whole_cmd += ' ' + cmd
-		FileUtils.mkdir_p(File.dirname(out_file)) if outputs_file
-		whole_cmd += " #{out_file}" unless out_file.empty?
-		#puts whole_cmd
-		@@job[:commands] << whole_cmd if @@job
-		result = __shell_command whole_cmd
-		if outputs_file and not out_file.include?('%') then	
-			raise "Failed to generate file #{result}\n#{cmd.gsub(';', ";\n")}" unless File.exists?(out_file)
-			raise "Generated zero length file #{result}" unless File.size?(out_file)
-			if duration then
-				audio_duration = __cache_get_info(out_file, 'audio_duration')
-				video_duration = __cache_get_info(out_file, 'video_duration')
-				#puts "audio_duration: #{audio_duration} video_duration: #{video_duration}"
-				raise "could not determine duration of #{out_file} #{result}" unless audio_duration or video_duration
-				raise "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration}" unless float_cmp(duration, video_duration.to_f, precision) or float_cmp(duration, audio_duration.to_f, precision)
+	def self.__eval_hash_recursively data
+		data.each do |k,v|
+			if v.is_a? String then
+				data[k] = __eval_value v
+			elsif v.is_a? Hash then
+				__eval_hash_recursively data
 			end
-		end 
-		result
+		end
+	end
+	def self.__eval_path ob, path_array, is_only_eval
+		value = ob
+		raise "value false #{path_array}" unless value
+		key = path_array.shift
+		if key then
+			if key.to_i.to_s == key then
+				key = key.to_i
+			else
+				key = key.to_sym 
+			end
+			raise "#{key} not found in #{value.inspect}" if nil == value[key]
+			value = value[key]
+			value = __eval_path(value, path_array, is_only_eval) unless path_array.empty?
+			raise "value false #{path_array}" if nil == value
+		end
+		if path_array.empty? then
+			if value.is_a?(Hash) or value.is_a?(Array) then
+				value = value.inspect unless is_only_eval
+			else
+				value = value.to_s
+			end	
+		end
+		raise "value false #{path_array}" if nil == value
+		value
+	end
+	def self.__eval_value value
+		split_value = eval_split value
+		if 1 < split_value.length then
+			value = ''
+			is_static = true
+			#puts "value is split #{split_value.inspect}"
+			split_value.each do |bit|
+				if is_static then
+					value += bit
+				else
+					split_bit = bit.split '.'
+					is_only_eval = (value.empty? and 2 == split_value.length)
+					case split_bit.shift
+					when 'job'
+						evaled = __eval_path(@@job, split_bit, is_only_eval)
+					when 'output'
+						evaled = __eval_path(@@output, split_bit, is_only_eval)
+					else
+						evaled = "{#{bit}}"
+					end
+					if is_only_eval then
+						value = evaled
+					else
+						value += evaled if evaled
+					end
+				end
+				is_static = ! is_static
+			end
+		end
+		value
 	end
 	def self.__filter_scope_map scope, stack, key
 		parameters = stack[key]
@@ -999,7 +1041,6 @@ module MovieMasher
 		filter[:parameters] = parameters
 		filter
   	end
-	
 	def self.__filter_merger_default
 		filter_config = Hash.new
 		filter_config[:type] = TypeMerger
@@ -1024,18 +1065,22 @@ module MovieMasher
 		filter_config[:filters] << scale_config
 		filter_config
 	end
-	def self.__flush_cache_files(dir, gigs = 0)
+	def self.__flush_cache_files(dir, gigs = nil)
 		result = false
+		gigs = 0 unless gigs
 		if File.exists?(dir) then
 			kbs = gigs * 1024 * 1024
 			ds = __flush_directory_size_kb(dir)
+			puts "__flush_directory_size_kb #{dir} #{ds}"
+		
 			result = __flush_cache_kb(dir, ds - kbs) if (ds > kbs)
 		end
 		result
 	end
 	def self.__flush_cache_kb(dir, kbs_to_flush)
-		cmd = "du --max-depth 1 #{dir}"
+		cmd = "du -d 1 #{dir}"
 		result = __shell_command cmd
+		#puts "#{cmd} #{result}"
 		if result then
 			directories = Array.new
 			lines = result.split "\n"
@@ -1057,6 +1102,7 @@ module MovieMasher
 				directories.each do |dir|
 					cmd = "rm -R #{dir[:bits][1]}"
 					result = __shell_command(cmd)
+					#puts "#{cmd} #{result}"
 					unless result then
 						kbs_to_flush -= dir[:bits][0]
 						break if (kbs_to_flush <= 0) 
@@ -1077,7 +1123,37 @@ module MovieMasher
 		end
 		size
 	end
-
+	def self.__gain_changes gain
+		does = false;
+		#puts "__gain_changes: #{gain}"
+		if gain.is_a?(String) and gain.include?(',') then
+			gains = gain.split ','
+			(gains.length / 2).times do |i|
+				does = ! float_cmp(gains[1 + i * 2].to_f, MASH_VOLUME_NONE)
+				break if does
+			end
+		else
+			does = ! float_cmp(gain.to_f, MASH_VOLUME_NONE)
+		end
+		#puts "__gain_changes: #{does} #{gain}"
+		does
+	end
+	def self.__gain_mutes gain
+		does = true
+		#puts "__gain_mutes: #{gain}"
+		if gain.is_a?(String) and gain.include?(',') then
+			does = true
+			gains = gain.split ','
+			gains.length.times do |i|
+				does = float_cmp(gains[1 + i * 2].to_f, MASH_VOLUME_MUTE)
+				break unless does
+			end
+		else
+			does = float_cmp(gain.to_f, MASH_VOLUME_MUTE)
+		end
+		#puts "__gain_mutes: #{does} #{gain}"
+		does
+	end
 	def self.__get_length output
 		__get_time output, :length
 	end
@@ -1111,7 +1187,6 @@ module MovieMasher
 	def self.__get_trim output
 		__get_time output, :trim
 	end
-	
 	def self.__get_trim_range_simple output
 		range = FrameRange.new __get_trim(output), 1, 1
 		range.length = __get_length output
@@ -1355,7 +1430,6 @@ module MovieMasher
 			input[key] = FLOAT_ZERO
 		end
 	end
-
 	def self.__input_dimensions
 		dimensions = nil
 		found_mash = false
@@ -1464,12 +1538,6 @@ module MovieMasher
 		end
 		false
 	end
-	def self.mash_search(mash, id, key = :media)
-		mash[key].each do |item|
-			return item if id == item[:id]
-		end
-		nil
-	end
 	def self.__mash_trim_frame clip, start, stop, fps = 44100
 		result = Hash.new
 		fps = fps.to_i
@@ -1565,11 +1633,11 @@ module MovieMasher
 		output
 		#final_output
 	end
-	def self.output_path output
-		out_file = CONFIG['dir_temporary']
-		out_file += '/' unless out_file.end_with? '/'
-		out_file += output[:job_identifier] + '/' if output[:job_identifier]
-		out_file += output[:identifier] + '/' if output[:identifier]	
+	def self.__output_path output, index = nil
+		#puts "__output_path name = #{output[:name]}"
+				
+		out_file = output_path output
+		__transfer_file_name output, out_file, index
 	end
 	def self.__render_path output
 		raise "__render_path called with no job processing" unless @@job
@@ -1592,12 +1660,6 @@ module MovieMasher
 		dirs << path
 		path = dirs.join '/'
 		__eval_value path
-	end
-	def self.__output_path output, index = nil
-		#puts "__output_path name = #{output[:name]}"
-				
-		out_file = output_path output
-		__transfer_file_name output, out_file, index
 	end
 	def self.__set_timing
 		start_audio = FLOAT_ZERO
@@ -1706,20 +1768,24 @@ module MovieMasher
 			end
 		end
 	end
-	def self.__transfer_file mode, source_file, out_file
-		source_file = "/#{source_file}" unless source_file.start_with? '/'
+	def self.__s3_bucket source
+		s3 = AWS::S3.new(:region => (source[:region] || 'us-east-1'))
+		s3.buckets[source[:bucket]]
+	end
+	def self.__transfer_file mode, source_path, out_file
+		source_path = "/#{source_path}" unless source_path.start_with? '/'
 		out_file = "/#{out_file}" unless out_file.start_with? '/'
 		case mode
 		when SourceModeSymlink
-			FileUtils.symlink source_file, out_file
+			FileUtils.symlink source_path, out_file
 		when SourceModeCopy
-			FileUtils.copy source_file, out_file
+			FileUtils.copy source_path, out_file
 		when SourceModeMove
-			FileUtils.move source_file, out_file
+			FileUtils.move source_path, out_file
 		end
-		raise "could not #{mode} #{source_file} to #{out_file}" unless File.exists? out_file
+		raise "could not #{mode} #{source_path} to #{out_file}" unless File.exists? out_file
 	rescue 
-		puts "could not #{mode} #{source_file} to #{out_file}"
+		puts "could not #{mode} #{source_path} to #{out_file}"
 		raise
 	end
 	def self.__transfer_file_from_data file
@@ -1741,20 +1807,20 @@ module MovieMasher
 				file = File.dirname(file) + '/' if file.include? '%'
 			end
 		end
-		source_file = __directory_path_name destination
-		source_file = File.dirname(source_file) + '/' if source_file.include? '%'
+		destination_path = __directory_path_name destination
+		destination_path = File.dirname(destination_path) + '/' if destination_path.include? '%'
 		case destination[:type]
 		when SourceTypeFile
-			FileUtils.mkdir_p(File.dirname(source_file))
-			destination[:file] = source_file
+			FileUtils.mkdir_p(File.dirname(destination_path))
+			destination[:file] = destination_path
 			if file then
 				file = __transfer_file_from_data file
-				__transfer_file destination[:mode], file, source_file
+				__transfer_file destination[:mode], file, destination_path
 			end
 		when SourceTypeS3
 			if file then
 				file = __transfer_file_from_data file
-				puts "__transfer_file_destination #{file} #{source_file}"
+				puts "__transfer_file_destination #{file} #{destination_path}"
 				
 				files = Array.new
 				uploading_directory = File.directory?(file)
@@ -1770,7 +1836,7 @@ module MovieMasher
 				
 				files.each do |file|
 					puts "file = #{file}"
-					bucket_key = source_file
+					bucket_key = destination_path
 					bucket_key += File.basename(file) if bucket_key.end_with? '/'
 					puts "bucket_key = #{bucket_key}"
 					mime_type = __cache_get_info file, 'Content-Type'
@@ -1840,71 +1906,6 @@ module MovieMasher
 			
 		else
 			raise "output #{output[:identifier]} was not generated" if output[:required]
-		end
-	end
-	def self.__eval_path ob, path_array, is_only_eval
-		value = ob
-		raise "value false #{path_array}" unless value
-		key = path_array.shift
-		if key then
-			if key.to_i.to_s == key then
-				key = key.to_i
-			else
-				key = key.to_sym 
-			end
-			raise "#{key} not found in #{value.inspect}" if nil == value[key]
-			value = value[key]
-			value = __eval_path(value, path_array, is_only_eval) unless path_array.empty?
-			raise "value false #{path_array}" if nil == value
-		end
-		if path_array.empty? then
-			if value.is_a?(Hash) or value.is_a?(Array) then
-				value = value.inspect unless is_only_eval
-			else
-				value = value.to_s
-			end	
-		end
-		raise "value false #{path_array}" if nil == value
-		value
-	end
-	def self.__eval_value value
-		split_value = eval_split value
-		if 1 < split_value.length then
-			value = ''
-			is_static = true
-			#puts "value is split #{split_value.inspect}"
-			split_value.each do |bit|
-				if is_static then
-					value += bit
-				else
-					split_bit = bit.split '.'
-					is_only_eval = (value.empty? and 2 == split_value.length)
-					case split_bit.shift
-					when 'job'
-						evaled = __eval_path(@@job, split_bit, is_only_eval)
-					when 'output'
-						evaled = __eval_path(@@output, split_bit, is_only_eval)
-					else
-						evaled = "{#{bit}}"
-					end
-					if is_only_eval then
-						value = evaled
-					else
-						value += evaled if evaled
-					end
-				end
-				is_static = ! is_static
-			end
-		end
-		value
-	end
-	def self.__eval_hash_recursively data
-		data.each do |k,v|
-			if v.is_a? String then
-				data[k] = __eval_value v
-			elsif v.is_a? Hash then
-				__eval_hash_recursively data
-			end
 		end
 	end
 	def self.__trigger type

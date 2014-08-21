@@ -48,9 +48,9 @@ namespace :moviemasher do
 end
 namespace :test do
 	desc "Tests S3 put action"
-	task :s3, :bucket, :key, :file, :region, :acl, :content_type do | t, args |
+	task :s3, :bucket, :key, :file, :acl, :content_type, :region do | t, args |
 		if args[:bucket] and args[:key] and args[:file] and File.exists?(args[:file])
-			args[:region] = 'us-east-1' unless args[:region] and not args[:region].empty?
+			args[:region] = 'us-east-1' unless args[:region]
 			options = Hash.new
 			options[:acl] = args[:acl].to_sym if args[:acl]
 			options[:content_type] = args[:content_type] if args[:content_type]
