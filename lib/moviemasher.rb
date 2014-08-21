@@ -294,7 +294,7 @@ module MovieMasher
 			avb = __output_desires output
 			cmds = Array.new
 			#avb = (audio_graphs.empty? ? AVVideo : (video_graphs.empty? ? AVAudio : AVBoth))
-			puts "avb = #{avb}"
+			#puts "avb = #{avb}"
 			video_duration = FLOAT_ZERO
 			audio_duration = FLOAT_ZERO
 			out_path = __render_path output
@@ -951,7 +951,7 @@ module MovieMasher
 			cmd = graph.command output
 			raise "Could not build complex filter" if cmd.empty?
 			cmd += ",format=pix_fmts=yuv420p,fps=fps=#{output[:fps]}"
-			cmd = " -filter_complex '#{cmd}' -t #{duration} -vb 200M -r #{output[:fps]}"
+			cmd = " -filter_complex '#{cmd}' -t #{duration} -vb 200M -r #{output[:fps]} -s #{output[:dimensions]}"
 			cmd += __output_command intermediate_output, AVVideo
 			out_file = CONFIG['dir_temporary']
 			out_file += '/' unless out_file.end_with? '/'
@@ -1071,7 +1071,7 @@ module MovieMasher
 		if File.exists?(dir) then
 			kbs = gigs * 1024 * 1024
 			ds = __flush_directory_size_kb(dir)
-			puts "__flush_directory_size_kb #{dir} #{ds}"
+			#puts "__flush_directory_size_kb #{dir} #{ds}"
 		
 			result = __flush_cache_kb(dir, ds - kbs) if (ds > kbs)
 		end
@@ -1337,7 +1337,7 @@ module MovieMasher
 			__init_key output, :dimensions, '512x288'
 			__init_key output, :fill, MASH_FILL_NONE
 			__init_key output, :gain, MASH_VOLUME_NONE
-			__init_key output, :video_frequency, 44100
+			__init_key output, :audio_frequency, 44100
 			__init_key output, :video_bitrate, 4000
 		when TypeSequence
 			__init_key output, :backcolor, 'black'
@@ -1594,23 +1594,23 @@ module MovieMasher
 	def self.__output_command output, av_type, duration = nil
 		cmd = ''
 		unless AVVideo == av_type then # we have audio output
-			cmd += __cache_switch(output[:audio_bitrate], 'b:a', 'k')
-			cmd += __cache_switch(output[:audio_frequency], 'ar')
-			cmd += __cache_switch(output[:audio_codec], 'c:a')
+			cmd += __cache_switch(output[:audio_bitrate], 'b:a', 'k') if output[:audio_bitrate]
+			cmd += __cache_switch(output[:audio_frequency], 'ar') if output[:audio_frequency]
+			cmd += __cache_switch(output[:audio_codec], 'c:a') if output[:audio_codec]
 		end
 		unless AVAudio == av_type then # we have visual output
 			case output[:type]
 			when TypeVideo
-				cmd += __cache_switch(output[:dimensions], 's')
+				cmd += __cache_switch(output[:dimensions], 's') if output[:dimensions]
 				cmd += __cache_switch(output[:video_format], 'f:v') if output[:video_format]
-				cmd += __cache_switch(output[:video_codec], 'c:v') 
-				cmd += __cache_switch(output[:video_bitrate], 'b:v', 'k')
-				cmd += __cache_switch(output[:fps], 'r')
+				cmd += __cache_switch(output[:video_codec], 'c:v') if output[:video_codec]
+				cmd += __cache_switch(output[:video_bitrate], 'b:v', 'k') if output[:video_bitrate]
+				cmd += __cache_switch(output[:fps], 'r') if output[:fps]
 			when TypeImage
-				cmd += __cache_switch(output[:quality], 'quality')
+				cmd += __cache_switch(output[:quality], 'quality') if output[:quality]
 			when TypeSequence
-				cmd += __cache_switch(output[:quality], 'quality')
-				cmd += __cache_switch(output[:fps], 'r')
+				cmd += __cache_switch(output[:quality], 'quality') if output[:quality]
+				cmd += __cache_switch(output[:fps], 'r') if output[:fps]
 			end
 		end
 		cmd
@@ -1768,8 +1768,11 @@ module MovieMasher
 			end
 		end
 	end
+	def self.__s3 source
+		(source[:region] ? AWS::S3.new(:region => source[:region]) : AWS::S3.new)
+	end
 	def self.__s3_bucket source
-		s3 = AWS::S3.new(:region => (source[:region] || 'us-east-1'))
+		s3 = __s3 source
 		s3.buckets[source[:bucket]]
 	end
 	def self.__transfer_file mode, source_path, out_file
@@ -1820,8 +1823,7 @@ module MovieMasher
 		when SourceTypeS3
 			if file then
 				file = __transfer_file_from_data file
-				puts "__transfer_file_destination #{file} #{destination_path}"
-				
+				#puts "__transfer_file_destination #{file} #{destination_path}"
 				files = Array.new
 				uploading_directory = File.directory?(file)
 				if uploading_directory then
@@ -1833,15 +1835,19 @@ module MovieMasher
 				else 
 					files << file
 				end
-				
 				files.each do |file|
-					puts "file = #{file}"
 					bucket_key = destination_path
 					bucket_key += File.basename(file) if bucket_key.end_with? '/'
-					puts "bucket_key = #{bucket_key}"
 					mime_type = __cache_get_info file, 'Content-Type'
 					bucket = __s3_bucket destination
-					bucket.objects[bucket_key].write(Pathname.new(file), :acl => destination[:acl].to_sym, :content_type => mime_type)
+					puts "destination: #{destination.inspect}"
+					puts "bucket_key: #{bucket_key}"
+					bucket_object = bucket.objects[bucket_key]
+					options = Hash.new
+					options[:acl] = destination[:acl].to_sym if destination[:acl]
+					options[:content_type] = mime_type
+					puts "write options: #{options}"
+					bucket_object.write(Pathname.new(file), options)
 				end
 			end
 		when SourceTypeHttp, SourceTypeHttps

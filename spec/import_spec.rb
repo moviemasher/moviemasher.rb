@@ -5,7 +5,6 @@ describe File.basename(__FILE__) do
 	context "audio to waveform png" do
 		it "generates file of correct dimensions" do
 			job, processed_job = spec_job_mash_simple 'audio_file', 'waveform_png'
-			
 		end
 	end
 	context "audio to audio" do

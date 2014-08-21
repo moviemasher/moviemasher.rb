@@ -1,12 +1,8 @@
 
 require_relative 'spec_helper'
 
-describe "Rendering..." do
+describe File.basename(__FILE__) do
 	context "MovieMasher.process" do
-		end
-		it "correctly renders a video file" do
-			spec_job_mash_simple 'video_16x9'
-		end
 		it "correctly renders mash transition" do
 			spec_job_mash_simple 'mash_transition'
 		end
@@ -30,5 +26,9 @@ describe "Rendering..." do
 		end
 		it "correctly renders mash pan" do
 			spec_job_mash_simple 'mash_pan'	
+		end
+		it "correctly renders a video file" do
+			spec_job_mash_simple 'video_16x9'
+		end
 	end
 end

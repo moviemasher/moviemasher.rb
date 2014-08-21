@@ -1,11 +1,10 @@
 
 require_relative 'spec_helper'
 
-describe "Sources..." do
+describe File.basename(__FILE__) do
 	before(:all) do
 		spec_start_redis
 	end
-	
 	context "__directory_path_name" do
 		it "correctly deals with leading and trailing slashes" do
 			source = {:directory => 'DIR/', :path => '/PATH.ext'}
@@ -60,9 +59,10 @@ describe "Sources..." do
 			input = job[:inputs].first
 			source = input[:source]
 			source_path = "#{__dir__}/#{source[:path]}"
-			bucket = S3.buckets[source[:bucket]]
+			s3 = MovieMasher.__s3 source
+			s3.buckets.create source[:bucket] 
+			bucket = s3.buckets[source[:bucket]]
 			path_name = Pathname.new("#{__dir__}/media/#{source[:path]}")
-			S3.buckets.create source[:bucket] 
 			bucket.objects[source[:path]].write(path_name, :content_type => 'image/jpeg')
 			path = MovieMasher.__cache_input input
 			url = "#{source[:type]}://#{source[:bucket]}.s3.amazonaws.com/#{source[:path]}"

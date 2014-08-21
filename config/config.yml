@@ -5,6 +5,7 @@ test:
   path_wav2png: wav2png
   dir_temporary: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherTemporary
   dir_cache: log/cache
+  cache_gigs: 3
   path_log: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherLog
   queue_idle_timeout: 40
   queue_initial_timeout: nil
