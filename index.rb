@@ -34,11 +34,6 @@ CONFIG['path_log'] = File.expand_path CONFIG['path_log']
 
 IDER = UUID.new
 
-S3 = AWS::S3.new
-SQS = AWS::SQS.new
-# queue will be nil if their URL is not defined in config.yml
-SQS_QUEUE = (CONFIG['queue_url'] ? SQS.queues[CONFIG['queue_url']] : nil)
-
 #require_relative 'lib/moviemasher' # first, so ElementClasses is defined
 require_all "#{__dir__}/lib"
 

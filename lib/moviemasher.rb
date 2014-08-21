@@ -189,19 +189,7 @@ module MovieMasher
 				File.delete working_file
 				sleep 1
 			else # see if there's one in the queue
-				if SQS_QUEUE and run_seconds > (Time.now + QueueReceiveMessagesWaitTime - start) then
-					message = SQS_QUEUE.receive_message(:wait_time_seconds => QueueReceiveMessagesWaitTime)
-					if message then
-						begin
-							job = JSON.parse(message.body)
-							job['id'] = message.id unless job['id']
-							File.open("#{CONFIG['dir_queue']}/#{message.id}.json", 'w') { |file| file.write(job.to_json) } 
-						rescue Exception => e
-							LOG.error{ "Job could not be parsed as json: #{message.body}" }
-						end
-						message.delete
-					end
-				end
+				__sqs_request(run_seconds, start) if CONFIG['queue_url']
 			end
 		end
 	end
@@ -607,13 +595,17 @@ module MovieMasher
 				end
 			end
 		when SourceTypeS3
-			bucket = S3.buckets[source[:bucket]]
+			bucket = __s3_bucket source
 			bucket_key = __directory_path_name source
     		object = bucket.objects[bucket_key]
 			object_read_data = object.read
 			File.open(out_file, 'w') { |file| file.write(object_read_data) }
 		end
 		out_file
+	end
+	def self.__s3_bucket source
+		s3 = AWS::S3.new(:region => (source[:region] || 'us-east-1'))
+		s3.buckets[source[:bucket]]
 	end
 	def self.__cache_switch(value, prefix = '', suffix = '')
 		switch = ''
@@ -1034,7 +1026,7 @@ module MovieMasher
 	end
 	def self.__flush_cache_files(dir, gigs = 0)
 		result = false
-		if File.exists(dir) then
+		if File.exists?(dir) then
 			kbs = gigs * 1024 * 1024
 			ds = __flush_directory_size_kb(dir)
 			result = __flush_cache_kb(dir, ds - kbs) if (ds > kbs)
@@ -1687,6 +1679,33 @@ module MovieMasher
 		end
 		url
 	end
+	def self.__sqs_request run_seconds, start
+		unless @@queue then
+			region = CONFIG['queue_region'] || 'us-east-1'
+			sqs = AWS::SQS.new(:region => region)
+			# queue will be nil if their URL is not defined in config.yml
+			@@queue = sqs.queues[CONFIG['queue_url']]
+		end
+		if @@queue and run_seconds > (Time.now + QueueReceiveMessagesWaitTime - start) then
+			message = @@queue.receive_message(:wait_time_seconds => QueueReceiveMessagesWaitTime)
+			if message then
+				job = nil
+				begin
+					job = JSON.parse(message.body)
+					begin
+						job['id'] = message.id unless job['id']
+						File.open("#{CONFIG['dir_queue']}/#{message.id}.json", 'w') { |file| file.write(job.to_json) } 
+						message.delete
+					rescue Exception => e
+						LOG.error{ "Job could not be written to: #{CONFIG['dir_queue']}" }
+					end
+				rescue Exception => e
+					LOG.error{ "Job could not be parsed as json: #{message.body}" }
+					message.delete
+				end
+			end
+		end
+	end
 	def self.__transfer_file mode, source_file, out_file
 		source_file = "/#{source_file}" unless source_file.start_with? '/'
 		out_file = "/#{out_file}" unless out_file.start_with? '/'
@@ -1755,8 +1774,7 @@ module MovieMasher
 					bucket_key += File.basename(file) if bucket_key.end_with? '/'
 					puts "bucket_key = #{bucket_key}"
 					mime_type = __cache_get_info file, 'Content-Type'
-				
-					bucket = S3.buckets[destination[:bucket]]
+					bucket = __s3_bucket destination
 					bucket.objects[bucket_key].write(Pathname.new(file), :acl => destination[:acl].to_sym, :content_type => mime_type)
 				end
 			end
