@@ -32,8 +32,7 @@ module MovieMasher
 	MASH_FILL_NONE = 'none'
 	MASH_FILL_STRETCH = 'stretch'
 	MASH_FILL_CROP = 'crop'
-	MASH_FILL_SCALE = 'scale'
-	
+	MASH_FILL_SCALE = 'scale'	
 	MASH_VOLUME_NONE = FLOAT_ONE
 	MASH_VOLUME_MUTE = FLOAT_ZERO
 	INTERMEDIATE_AUDIO_EXTENSION = 'wav' # file extension for audio portion
@@ -42,6 +41,7 @@ module MovieMasher
 	PIPE_VIDEO_EXTENSION = 'mpg' # used for piped and concat files
 	PIPE_VIDEO_FORMAT = 'yuv4mpegpipe' # -f:v switch for piped and concat files
 	
+	@@queue = nil
 	@@formats = nil
 	@@codecs = nil
 	@@job = nil
@@ -1847,7 +1847,7 @@ module MovieMasher
 					bucket_object = bucket.objects[bucket_key]
 					options = Hash.new
 					options[:acl] = destination[:acl].to_sym if destination[:acl]
-					options[:content_type] = mime_type
+					options[:content_typ] = mime_type
 					puts "write options: #{options}"
 					bucket_object.write(Pathname.new(file), options)
 				end
