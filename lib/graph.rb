@@ -24,13 +24,13 @@ module MovieMasher
 			raise "input is not a hash #{input}" unless input.is_a? Hash
 			raise "input hash has no type #{input}" unless input[:type]
 			case input[:type]
-			when MovieMasher::TypeVideo
+			when MovieMasher::Type::Video
 				layer = VideoLayer.new input
-			when MovieMasher::TypeTransition
+			when MovieMasher::Type::Transition
 				layer = TransitionLayer.new input
-			when MovieMasher::TypeImage
+			when MovieMasher::Type::Image
 				layer = ImageLayer.new input
-			when MovieMasher::TypeTheme
+			when MovieMasher::Type::Theme
 				layer = ThemeLayer.new input
 			else
 				raise "input hash type invalid #{input}" 
@@ -69,17 +69,17 @@ module MovieMasher
 		end
 		def __get_range
 			range = MovieMasher::FrameRange.new(@input[:start], 1, 1)
-			range.scale(@input[:fps]) if TypeVideo == @input[:type]
+			range.scale(@input[:fps]) if Type::Video == @input[:type]
 			range
 		end	
 		def __get_time key
-			length = FLOAT_ZERO
-			if float_gtr(@input[key], FLOAT_ZERO) then
+			length = MovieMasher::Float::Zero
+			if Float.gtr(@input[key], MovieMasher::Float::Zero) then
 				sym = "#{key.id2name}_is_relative".to_sym
 				if @input[sym] then
-					if float_gtr(@input[:duration], FLOAT_ZERO) then
+					if Float.gtr(@input[:duration], MovieMasher::Float::Zero) then
 						if '%' == @input[sym] then
-							length = (@input[key] * @input[:duration]) / FLOAT_HUNDRED
+							length = (@input[key] * @input[:duration]) / MovieMasher::Float::Hundred
 						else 
 							length = @input[:duration] - @input[key]
 						end
@@ -87,7 +87,7 @@ module MovieMasher
 				else 
 					length = @input[key]
 				end
-			elsif :length == key and float_gtr(@input[:duration], FLOAT_ZERO) then
+			elsif :length == key and Float.gtr(@input[:duration], MovieMasher::Float::Zero) then
 				@input[key] = @input[:duration] - __get_trim
 				length = @input[key]
 			end
@@ -108,7 +108,7 @@ module MovieMasher
 			@fps_filter = HashFilter.new('fps', :fps => 0)
 			chain << @fps_filter
 			# we need a trim because the video we'll build from image will be artificially long
-			@trim_filter = HashFilter.new('trim', :duration => float_precision(@input[:length_seconds]))
+			@trim_filter = HashFilter.new('trim', :duration => Float.precision(@input[:length_seconds]))
 			chain << @trim_filter
 			@chains << chain
 			chain << @fps_filter
@@ -120,7 +120,7 @@ module MovieMasher
 			@trim_filter.parameters[:duration] = duration
 			raise "input has no cached_file #{@input.inspect}" unless @input[:cached_file]
 			file = @input[:cached_file]
-			output_type_is_video = (TypeVideo == options[:mm_job_output][:type])
+			output_type_is_video = (Type::Video == options[:mm_job_output][:type])
 			@fps_filter.disabled = (not output_type_is_video)
 			@trim_filter.disabled = (not output_type_is_video)
 			file = __video_from_image(file, duration, fps) if output_type_is_video
@@ -134,22 +134,19 @@ module MovieMasher
 			raise "no frame_time from #{duration}@#{fps} #{frame_time.inspect}" unless 0 < frame_time.frame
 			parent_dir = File.dirname img_file
 			base_name = File.basename img_file
-			out_file = "#{parent_dir}/#{base_name}-#{duration}-#{fps}.#{PIPE_VIDEO_EXTENSION}" # INTERMEDIATE_VIDEO_EXTENSION
+			out_file = "#{parent_dir}/#{base_name}-#{duration}-#{fps}.#{Intermediate::VideoExtension}" 
 		
 			unless File.exists?(out_file) then
 				cmd = ''
-				cmd += MovieMasher::__cache_switch('1', 'loop')
-				cmd += MovieMasher::__cache_switch(frame_time.fps, 'r')
-				cmd += MovieMasher::__cache_switch(img_file, 'i')
-				cmd += MovieMasher::__cache_switch('format=pix_fmts=yuv420p', 'filter_complex')
-				cmd += MovieMasher::__cache_switch(PIPE_VIDEO_FORMAT, 'f:v')
+				cmd += shell_switch('1', 'loop')
+				cmd += shell_switch(frame_time.fps, 'r')
+				cmd += shell_switch(img_file, 'i')
+				cmd += shell_switch('format=pix_fmts=yuv420p', 'filter_complex')
+				cmd += shell_switch(Intermediate::VideoFormat, 'f:v')
 		
-				# (fps.to_f * duration.to_f).floor
-				cmd += MovieMasher::__cache_switch(frame_time.frame, 'vframes')
-				cmd += MovieMasher::__cache_switch(float_precision(frame_time.get_seconds), 't')
+				cmd += shell_switch(frame_time.frame, 'vframes')
+				cmd += shell_switch(Float.precision(frame_time.get_seconds), 't')
 				MovieMasher::app_exec cmd, out_file
-				#file_duration = __cache_get_info out_file, 'duration'
-				#raise "Durations don't match #{file_duration} #{duration}" unless float_cmp(file_duration, duration)
 			end
 			out_file
 		end
@@ -175,18 +172,18 @@ module MovieMasher
 			filter = nil
 			trim_seconds = @input[:trim_seconds] || __get_trim
 			length_seconds = @input[:length_seconds] || __get_length
-			trim_beginning = float_gtr(trim_seconds, FLOAT_ZERO)
-			trim_end = float_gtr(length_seconds, FLOAT_ZERO) and (@input[:duration] > (trim_seconds + length_seconds))
+			trim_beginning = Float.gtr(trim_seconds, MovieMasher::Float::Zero)
+			trim_end = Float.gtr(length_seconds, MovieMasher::Float::Zero) and (@input[:duration].to_f > (trim_seconds + length_seconds))
 			if trim_beginning or trim_end then
 				# start and duration look at timestamp and change it
-				filter = HashFilter.new('trim', :duration => float_precision(length_seconds))
-				filter.parameters[:start] = float_precision(trim_seconds) if trim_beginning
+				filter = HashFilter.new('trim', :duration => Float.precision(length_seconds))
+				filter.parameters[:start] = Float.precision(trim_seconds) if trim_beginning
 			end
 			filter
 		end
 		def command options
 			raise "command with empty options" unless options
-			output_type_is_video = ((! options[:mm_job_output]) || (TypeVideo == options[:mm_job_output][:type]))
+			output_type_is_video = ((! options[:mm_job_output]) || (Type::Video == options[:mm_job_output][:type]))
 			@fps_filter.disabled = (not output_type_is_video)
 			@trim_filter.disabled = (not output_type_is_video) if @trim_filter
 			@filter_timestamps.disabled = (not output_type_is_video)
@@ -217,7 +214,7 @@ module MovieMasher
 		end
 	end
 	class FillChain
-		def initialize input_dimensions = nil, fill = MASH_FILL_STRETCH
+		def initialize input_dimensions = nil, fill = Mash::FillStretch
 			@input_dimensions = input_dimensions
 			@fill = fill
 		end
@@ -241,44 +238,44 @@ module MovieMasher
 				target_w_f = target_w.to_f
 				target_h_f = target_h.to_f
 				#puts "#{orig_w_f}x#{orig_h_f} != #{target_w_f}x#{target_h_f}"
-				simple_scale = (MASH_FILL_STRETCH == @fill)
+				simple_scale = (Mash::FillStretch == @fill)
 				if not simple_scale then
-					fill_is_scale = (MASH_FILL_SCALE == @fill)
+					fill_is_scale = (Mash::FillScale == @fill)
 					ratio_w = target_w_f / orig_w_f
 					ratio_h = target_h_f / orig_h_f
-					ratio = (fill_is_scale ? float_min(ratio_h, ratio_w) : float_max(ratio_h, ratio_w))
-					simple_scale = (MASH_FILL_NONE == @fill)
+					ratio = (fill_is_scale ? Float.min(ratio_h, ratio_w) : Float.max(ratio_h, ratio_w))
+					simple_scale = (Mash::FillNone == @fill)
 					if simple_scale then
 						target_w = (orig_w_f * ratio).to_i
 						target_h = (orig_h_f * ratio).to_i
-						#puts "#{orig_w}x#{orig_h} / #{ratio} (float_max(#{ratio_h}, #{ratio_w})) = #{target_w}x#{target_h}"
+						#puts "#{orig_w}x#{orig_h} / #{ratio} (Float.max(#{ratio_h}, #{ratio_w})) = #{target_w}x#{target_h}"
 					else
 						target_w_scaled = target_w_f / ratio
 						target_h_scaled = target_h_f / ratio
-						simple_scale = (float_cmp(orig_w_f, target_w_scaled) and float_cmp(orig_h_f, target_h_scaled))
+						simple_scale = (Float.cmp(orig_w_f, target_w_scaled) and Float.cmp(orig_h_f, target_h_scaled))
 					end
 				end
 				if not simple_scale then
-					if (float_gtr(orig_w_f, target_w_scaled) or float_gtr(orig_h_f, target_h_scaled))
+					if (Float.gtr(orig_w_f, target_w_scaled) or Float.gtr(orig_h_f, target_h_scaled))
 						cmd = 'crop='
 						cmd += "w=#{target_w_scaled.to_i}"
 						cmd += ":h=#{target_h_scaled.to_i}"
-						cmd += ":x=#{((orig_w_f - target_w_scaled) / FLOAT_TWO).ceil.to_i}"
-						cmd += ":y=#{((orig_h_f - target_h_scaled) / FLOAT_TWO).ceil.to_i}"
+						cmd += ":x=#{((orig_w_f - target_w_scaled) / MovieMasher::Float::Two).ceil.to_i}"
+						cmd += ":y=#{((orig_h_f - target_h_scaled) / MovieMasher::Float::Two).ceil.to_i}"
 						cmds << cmd	
 					else
 						cmd = 'pad='
 						cmd += "w=#{target_w_scaled.to_i}"
 						cmd += ":h=#{target_h_scaled.to_i}"
-						cmd += ":x=#{((target_w_scaled - orig_w_f) / FLOAT_TWO).floor.to_i}"
-						cmd += ":y=#{((target_h_scaled - orig_h_f) / FLOAT_TWO).floor.to_i}"
+						cmd += ":x=#{((target_w_scaled - orig_w_f) / MovieMasher::Float::Two).floor.to_i}"
+						cmd += ":y=#{((target_h_scaled - orig_h_f) / MovieMasher::Float::Two).floor.to_i}"
 						cmd += ":color=#{options[:mm_backcolor]}"
 						cmds << cmd	
 					end
 					simple_scale = ! ((orig_w == target_w) or (orig_h == target_h))
 				end
 				cmds << "scale=w=#{target_w}:h=#{target_h}" if simple_scale
-				cmds << 'setsar=sar=1:max=1' if MASH_FILL_STRETCH == @fill
+				cmds << 'setsar=sar=1:max=1' if Mash::FillStretch == @fill
 			end
 			cmds.join ','
 		end
@@ -467,7 +464,7 @@ module MovieMasher
 			esc = '~'
 			# expand variables
 			value_str = value_str.dup
-			value_str.gsub!(MovieMasher::RegexVariables) do |match|
+			value_str.gsub!(Regexes::Variables) do |match|
 				match_str = match.to_s
 				#puts "MATCH: #{match_str}"
 				match_sym = match_str.to_sym
@@ -599,7 +596,7 @@ module MovieMasher
 			graph_cmds = Array.new
 			layer_options = output_options(output)
 			case output[:type]
-			when TypeImage, TypeSequence
+			when Type::Image, Type::Sequence
 				graph_cmds << @layers[1].command(layer_options)
 			else
 				layer_length = @layers.length
@@ -666,7 +663,7 @@ module MovieMasher
 				input_end = input_range.end_time.get_seconds
 				if range_start > input_start or range_end < input_end then
 					cmd += ",trim=duration=#{@render_range.length_seconds}"
-					cmd += ":start=#{float_precision(range_start - input_start)}" if range_start > input_start
+					cmd += ":start=#{Float.precision(range_start - input_start)}" if range_start > input_start
 					cmd += ',setpts=expr=PTS-STARTPTS'
 				end
 			end

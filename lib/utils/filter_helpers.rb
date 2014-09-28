@@ -3,7 +3,7 @@ module MovieMasher
 		def self.mm_textfile param_string, scope
 			params = __params_from_str param_string
 			text = params.join ','
-			job_path = MovieMasher.output_path scope[:mm_job_output]
+			job_path = MovieMasher.output_path
 			FileUtils.mkdir_p(job_path)
 			job_path += UUID.new.generate
 			job_path += '.txt'
@@ -22,7 +22,13 @@ module MovieMasher
 		def self.__font_from_scope font_id, scope
 			mash = scope[:mm_job_input][:source]
 			raise "found no mash source in job input #{scope[:mm_job_input]}" unless mash
-			font = MovieMasher.mash_search(mash, font_id)
+			font = nil
+			mash[:media].each do |item|
+				if font_id == item[:id]
+					font = item
+					break
+				end
+			end
 			raise "found no font with id #{font_id} in mash #{mash}" unless font
 			font
 		end
@@ -100,7 +106,7 @@ module MovieMasher
 			all_ints = true
 			params.map! do |p|
 				p = p.to_f
-				all_ints = false if all_ints and not float_cmp(p.floor, p)
+				all_ints = false if all_ints and not Float.cmp(p.floor, p)
 				p
 			end
 			p = params.max
@@ -112,7 +118,7 @@ module MovieMasher
 			all_ints = true
 			params.map! do |p|
 				p = p.to_f
-				all_ints = false if all_ints and not float_cmp(p.floor, p)
+				all_ints = false if all_ints and not Float.cmp(p.floor, p)
 				p
 			end
 			p = params.min
@@ -126,7 +132,7 @@ module MovieMasher
 		end
 #		def self.mm_times param_string, scope
 #			params = __params_from_str param_string
-#			total = FLOAT_ONE
+#			total = MovieMasher::Float::One
 #			params.each do |param|
 #				total *= param.to_f
 #			end

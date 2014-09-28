@@ -1,0 +1,5 @@
+{
+	"type": "file",
+	"path": "log/output/{job.id}",
+	"method": "move"
+}

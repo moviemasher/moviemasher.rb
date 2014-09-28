@@ -1,0 +1,6 @@
+
+support using instance id as password into editor
+
+test local uploading
+
+Freeze frame

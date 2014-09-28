@@ -1,0 +1,12 @@
+{
+	"type": "image",
+	"fill": "none",
+	"source": {
+		"id": "image_vert_lg_4x3",
+		"type": "file",
+		"path": "media/image",
+		"name": "large-3x4",
+		"extension": "png",
+		"method": "symlink"
+	}
+}

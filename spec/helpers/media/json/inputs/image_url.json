@@ -1,0 +1,5 @@
+{
+	"type": "image",
+	"id": "image_url",	
+	"url": "http://test.localhost:4568/s3/image/large-4x3.png"
+}

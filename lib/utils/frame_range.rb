@@ -15,7 +15,7 @@ module MovieMasher
 			super(start, rate)
 		end
 		def length_seconds(precision = 3)
-			float_precision((@length.to_f / @fps.to_f), precision)
+			Float.precision((@length.to_f / @fps.to_f), precision)
 		end
 		def length_time
 			FrameTime.new(length, fps)

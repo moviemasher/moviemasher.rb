@@ -1,0 +1,10 @@
+{
+	"type": "video",
+	"duration": "10",
+	"source": {
+		"type": "file",
+		"id": "video_file",
+		"path": "media/video/video_16x9.mov",
+		"method": "symlink"
+	}
+}

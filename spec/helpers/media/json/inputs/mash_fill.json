@@ -1,0 +1,62 @@
+{
+	"type": "mash",
+	"source": {
+		"id": "mash_fill",
+		"quantize": 10,
+		"backcolor": "blue",
+		"label": "Fills",
+		"media": [{
+			"id": "horzlg",
+			"type": "image",
+			"source": "image/large-4x3.png"
+		},{
+			"id": "vertlg",
+			"type": "image",
+			"source": "image/large-3x4.png"
+		}],
+		"tracks": {
+			"video": [
+				{
+					"type": "video",
+					"clips": [{
+						"id": "horzlg",
+						"fill": "scale",
+						"frame": 0,
+						"length": 20
+					},{
+						"id": "horzlg",
+						"fill": "crop",
+						"frame": 20,
+						"length": 20
+					},{
+						"id": "horzlg",
+						"fill": "stretch",
+						"frame": 40,
+						"length": 20
+					},{
+						"id": "vertlg",
+						"fill": "scale",
+						"frame": 60,
+						"length": 20
+					},{
+						"id": "vertlg",
+						"fill": "crop",
+						"frame": 80,
+						"length": 20
+					},{
+						"id": "vertlg",
+						"fill": "stretch",
+						"frame": 100,
+						"length": 20
+					}]
+				}
+			],
+			"audio": [
+				{
+					"type": "audio",
+					"clips": []
+				}
+			]
+		}
+	}
+}

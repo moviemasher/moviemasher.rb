@@ -1,6 +1,5 @@
 .DS_Store
 log/*
 tmp/*
-spec/media/image/*
-spec/media/video/*
-spec/media/audio/*
+Gemfile.lock
+spec/helpers/media/video/*

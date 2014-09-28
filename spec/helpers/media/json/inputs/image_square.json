@@ -1,0 +1,12 @@
+{
+	"type": "image",
+	"fill": "none",
+	"source": {
+		"id": "image_square",
+		"type": "file",
+		"path": "media/image",
+		"name": "large-1x1",
+		"extension": "png",
+		"method": "symlink"
+	}
+}

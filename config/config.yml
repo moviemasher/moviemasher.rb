@@ -3,28 +3,36 @@ test:
   path_ecasound: ecasound
   path_sox: sox
   path_wav2png: wav2png
-  dir_temporary: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherTemporary
+  path_du: du
+  dir_temporary: log/temporary
+  keep_temporary_files: true
   dir_cache: log/cache
+  dir_error: log/error
   cache_gigs: 3
-  path_log: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherLog
+  dir_log: log/moviemasher
+  log_level: debug
   queue_idle_timeout: 40
   queue_initial_timeout: nil
   queue_wait_time_seconds: 5
   queue_visibility_timeout: 360
   dir_queue: /Library/WebServer/stage.moviemasher.com/DemoAngular/MovieMasherQueue
   process_queues_seconds: 55
+  s3_read_at_once: true
 production:
   path_ffmpeg: /usr/local/bin/ffmpeg
   path_ecasound: /usr/bin/ecasound
   path_sox: /usr/local/bin/sox
   path_wav2png: /usr/bin/wav2png
+  path_du: /usr/bin/du
   dir_temporary: /tmp/moviemasher/temporary
   dir_cache: /tmp/moviemasher/cache
+  dir_error: 
   cache_gigs: 3
-  path_log: /var/log/moviemasher
+  dir_log: /var/log/moviemasher
   queue_idle_timeout: 40
   queue_initial_timeout: nil
   queue_wait_time_seconds: 5
   queue_visibility_timeout: 360
+  queue_receive_wait_seconds: 2
   process_queues_seconds: 55
   dir_queue: /var/www/private/queue

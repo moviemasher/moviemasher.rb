@@ -1,0 +1,304 @@
+{
+	"type": "mash",
+	"source": {
+		"id": "mash_pan_overlay",
+		"quantize": 10,
+		"backcolor": "rgb( 255, 0, 0 )",
+		"label": "Ken Burns",
+		"media": [{
+			"id": "drummers",
+			"type": "video",
+			"audio": 0,
+			"duration": 10,
+			"source": "video/drummers.mov"
+		},{
+			"label": "Scale",
+			"type": "scaler",
+			"id": "com.moviemasher.scaler.scale",
+			"properties": { 
+				"scale": { "type": "size1", "value": 0.50 }
+			},
+			"filters": [
+				{
+					"id": "scale",
+					"parameters": [
+						{
+							"name": "width",
+							"value":"mm_horz(scale)"
+						},{
+							"name": "height",
+							"value":"mm_vert(scale)"
+						}
+					]
+				},{
+					"id": "setsar",
+					"parameters": [
+						{
+							"name": "sar",
+							"value":"1"
+						},{
+							"name": "max",
+							"value":"1"
+						}
+					]
+				}
+			]
+		},{
+			"label": "Overlay",
+			"type": "merger",
+			"id": "com.moviemasher.merger.overlay",
+			"properties": { 
+				"left": { "type": "pixel", "value": 0 },
+				"top": { "type": "pixel", "value": 0 }
+			},
+			"filters": [
+				{
+					"id": "overlay",
+					"parameters": [
+						{
+							"name": "x",
+							"value":"left*(mm_width-overlay_w)"
+						},{
+							"name": "y",
+							"value":"top*(mm_height-overlay_h)"
+						}
+					]
+				}
+			]
+		},{
+			"id": "cable",
+			"type": "image",
+			"source": "image/medium-1x1.png"
+		},{
+			"id": "windmills",
+			"type": "image",
+			"source": "image/medium-4x3.png"
+		},{
+			"id": "grid",
+			"type": "image",
+			"source": "image/medium-16x9.png"
+		},
+		{
+			"label": "Ken Burns",
+			"type": "scaler",
+			"id": "com.moviemasher.scaler.kenburns",
+			"properties": { 
+				"scale": { "type": "size1", "value": 1.25 },
+				"direction": { "type": "direction8", "value": 0 }
+			},
+			"filters": [
+				{
+					"id": "scale",
+					"parameters": [
+						{
+							"name": "width",
+							"value":"mm_cmp(mm_input_width, mm_input_height, -1, mm_max(mm_width, mm_height) * scale)"
+						},{
+							"name": "height",
+							"value":"mm_cmp(mm_input_width, mm_input_height, mm_max(mm_width, mm_height) * scale, -1)"
+						}
+					]
+				},{
+					"id": "setsar",
+					"parameters": [
+						{
+							"name": "sar",
+							"value":"1"
+						},{
+							"name": "max",
+							"value":"1"
+						}
+					]
+				},{
+					"id": "crop",
+					"parameters": [
+						{
+							"name": "w",
+							"value":"mm_cmp(mm_input_width, mm_input_height, in_h, in_w)"
+						},{
+							"name": "h",
+							"value":"mm_cmp(mm_input_width, mm_input_height, in_h, in_w)"
+						},{
+							"name": "x",
+							"value":"(in_w-out_w)/2"
+						},{
+							"name": "y",
+							"value":"(in_h-out_h)/2"
+						}
+					]
+				},{
+					"id": "crop",
+					"parameters": [
+						{
+							"name": "w",
+							"value":"mm_width"
+						},{
+							"name": "h",
+							"value":"mm_height"
+						},{
+							"name": "x",
+							"value":[
+								{
+									"condition": "(direction == '0') or (direction == '2')",
+									"value": "(in_w-out_w)/2"
+								},{
+									"condition": "(direction == '1') or (direction == '5')",
+									"value": "((in_w-mm_max(mm_width, mm_height))*mm_t)"
+								},{
+									"condition": "(direction == '4')",
+									"value": "floor((in_w-mm_max(mm_width, mm_height))*mm_t)"
+								},{
+									"condition": "(direction == '3') or (direction == '7')",
+									"value": "((in_w - mm_max(mm_width, mm_height))-((in_w - mm_max(mm_width, mm_height))*mm_t))"
+								},{
+									"condition": "(direction == '6')",
+									"value": "ceil((in_w - mm_max(mm_width, mm_height))-((in_w - mm_max(mm_width, mm_height))*mm_t))"
+								}							
+							]
+						},{
+							"name": "y",
+							"value":[
+								{
+									"condition": "(direction == '1') or (direction == '3')",
+									"value": "(in_h-out_h)/2"
+								},{
+									"condition": "(direction == '0') or (direction == '7')",
+									"value": "((in_w-mm_max(mm_width, mm_height))-((in_w-mm_max(mm_width, mm_height))*mm_t))"
+								},{
+									"condition": "(direction == '4')",
+									"value": "floor((in_w-mm_max(mm_width, mm_height))-((in_w-mm_max(mm_width, mm_height))*mm_t))"
+								},{
+									"condition": "(direction == '2') or (direction == '5')",
+									"value": "((in_w-mm_max(mm_width, mm_height))*mm_t)"
+								},{
+									"condition": "(direction == '6')",
+									"value": "ceil((in_w-mm_max(mm_width, mm_height))*mm_t)"
+								}							
+							]
+						}
+					]
+				}
+			]
+		}
+		],
+		"tracks": {
+			"video": [
+				{
+					"type": "video",
+					"clips": [{
+						"id": "cable",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 0
+						},
+						"frame": 0,
+						"length": 55
+					},{
+						"id": "windmills",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 1
+						},
+						"frame": 55,
+						"length": 55
+					},{
+						"id": "grid",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 2
+						},
+						"frame": 110,
+						"length": 55
+					},{
+						"id": "windmills",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 3
+						},
+						"frame": 165,
+						"length": 55
+					},{
+						"id": "windmills",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 4
+						},
+						"frame": 220,
+						"length": 55
+					},{
+						"id": "cable",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 5
+						},
+						"frame": 275,
+						"length": 55
+					},{
+						"id": "windmills",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 6
+						},
+						"frame": 330,
+						"length": 55
+					},{
+						"id": "cable",
+						"scaler": {
+							"id": "com.moviemasher.scaler.kenburns",
+							"scale": 1.5,
+							"direction": 7
+						},
+						"frame": 385,
+						"length": 55
+					}]
+				},{
+					"type": "video",
+					"clips": [{
+						"id": "drummers",
+						"effects": [],
+						"frame": 20,
+						"length": 70,
+						"merger": {
+							"id": "com.moviemasher.merger.overlay",
+							"left": 0.5,
+							"top": 0.5
+						},
+						"scaler": {
+							"id": "com.moviemasher.scaler.scale",
+							"scale": 0.5
+						}
+					},
+					{
+						"id": "drummers",
+						"effects": [],
+						"trim": 30,
+						"frame": 100,
+						"length": 30,
+						"merger": {
+							"id": "com.moviemasher.merger.overlay",
+							"left": 1,
+							"top": 0
+						},
+						"scaler": {
+							"id": "com.moviemasher.scaler.scale",
+							"scale": 0.5
+						}
+					}]
+				}
+			],
+			"audio": [
+				{
+					"type": "audio",
+					"clips": []
+				}
+			]
+		}
+	}
+}
