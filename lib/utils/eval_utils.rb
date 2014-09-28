@@ -1,6 +1,6 @@
 
 def eval_split(s)
-	s.to_s.split(Regexes::Evaluations)
+	s.to_s.split(/{([^}]*)}/)
 end
 
 def eval_path ob, path_array

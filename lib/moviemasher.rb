@@ -640,7 +640,7 @@ module MovieMasher
 		esc = '~'
 		# expand variables
 		value_str = value_str.dup
-		value_str.gsub!(Regexes::Variables) do |match|
+		value_str.gsub!(/([\w]+)/) do |match|
 			match_str = match.to_s
 			match_sym = match_str.to_sym
 			if scope[match_sym] then
@@ -1506,23 +1506,8 @@ module MovieMasher
 				@@job[:progress][:uploaded] += 1
 				__trigger :progress
 			end
+		
 		when Type::Http, Type::Https
-				files.each do |file|
-					bucket_key = destination_path
-					bucket_key += File.basename(file) if bucket_key.end_with? '/'
-					mime_type = __cache_get_info file, 'Content-Type'
-					bucket = __s3_bucket destination
-					puts "destination: #{destination.inspect}"
-					puts "bucket_key: #{bucket_key}"
-					bucket_object = bucket.objects[bucket_key]
-					options = Hash.new
-					options[:acl] = destination[:acl].to_sym if destination[:acl]
-					options[:content_type] = mime_type
-					puts "write options: #{options}"
-					bucket_object.write(Pathname.new(file), options)
-				end
-			end
-		when SourceTypeHttp, SourceTypeHttps
 			url = "#{destination[:type]}://#{destination[:host]}"
 			url += '/' unless destination_path.start_with? '/'
 			url += destination_path

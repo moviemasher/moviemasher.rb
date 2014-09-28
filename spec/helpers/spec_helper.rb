@@ -14,7 +14,7 @@ def spec_file dir, name
 end
 def spec_job_simple(input = nil, output = nil, destination = nil)
 	job = Hash.new
-	job['id'] = UUID.new.generate
+	job['id'] = input
 	job['inputs'] = Array.new
 	job['outputs'] = Array.new
 	job['destination'] = spec_file('destinations', destination) if destination

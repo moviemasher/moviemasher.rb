@@ -464,7 +464,7 @@ module MovieMasher
 			esc = '~'
 			# expand variables
 			value_str = value_str.dup
-			value_str.gsub!(Regexes::Variables) do |match|
+			value_str.gsub!(/([\w]+)/) do |match|
 				match_str = match.to_s
 				#puts "MATCH: #{match_str}"
 				match_sym = match_str.to_sym
