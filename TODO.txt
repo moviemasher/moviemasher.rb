@@ -1,6 +1,5 @@
-
-support using instance id as password into editor
-
+Support default font!!
+Freeze frame!!
 test local uploading
-
-Freeze frame
+archiving 
+test making input.type optional

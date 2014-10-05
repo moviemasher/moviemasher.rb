@@ -4,7 +4,7 @@ require_relative 'helpers/spec_helper'
 describe File.basename(__FILE__) do
 	context "square image into 19:6 image" do
 		it "correctly scales down to width" do		
-			job, processed_job = spec_job_mash_simple 'image_square', 'image_16x9_jpg'
+			job, processed_job = spec_process_job_files 'image_square', 'image_16x9_jpg'
 			output = job['outputs'][0]
 			input = job['inputs'][0]
 			destination_file = spec_job_output_path job, processed_job
@@ -19,7 +19,7 @@ describe File.basename(__FILE__) do
 	end
 	context "square video to 19:6 sequence" do
 		it "correctly scales down to width" do
-			job, processed_job = spec_job_mash_simple('video_square_file', 'sequence_16x9_jpg')
+			job, processed_job = spec_process_job_files('video_square_file', 'sequence_16x9_jpg')
 			output = job['outputs'][0]
 			input = job['inputs'][0]
 			destination_file = spec_job_output_path job, processed_job
@@ -34,17 +34,17 @@ describe File.basename(__FILE__) do
 	end
 	context "audio to audio" do
 		it "generates file of correct duration" do
-			spec_job_mash_simple 'audio_file', 'audio_mp3'
+			spec_process_job_files 'audio_file', 'audio_mp3'
 		end
 	end
 	context "audio to waveform png" do
 		it "generates file of correct dimensions" do
-			job, processed_job = spec_job_mash_simple 'audio_file', 'waveform_png'
+			job, processed_job = spec_process_job_files 'audio_file', 'waveform_png'
 		end
 	end
 	context "4:3 image into square image" do
 		it "correctly scales down to height when input is landscale" do		
-			job, processed_job = spec_job_mash_simple 'image_horz_lg_4x3', 'image_square_jpg'
+			job, processed_job = spec_process_job_files 'image_horz_lg_4x3', 'image_square_jpg'
 			output = job['outputs'][0]
 			input = job['inputs'][0]
 			destination_file = spec_job_output_path job, processed_job
@@ -58,7 +58,7 @@ describe File.basename(__FILE__) do
 			expect(rendered_dimensions[1].to_i).to eq output_dimensions[1].to_i
 		end
 		it "correctly scales down to width when input is portrait" do		
-			job, processed_job = spec_job_mash_simple 'image_vert_lg_4x3', 'image_square_jpg'
+			job, processed_job = spec_process_job_files 'image_vert_lg_4x3', 'image_square_jpg'
 			output = job['outputs'][0]
 			input = job['inputs'][0]
 			destination_file = spec_job_output_path job, processed_job
@@ -72,7 +72,7 @@ describe File.basename(__FILE__) do
 	end
 	context "4:3 image into 19:6 image" do
 		it "correctly scales down to width when input is landscale" do		
-			job, processed_job = spec_job_mash_simple 'image_horz_lg_4x3', 'image_16x9_jpg'
+			job, processed_job = spec_process_job_files 'image_horz_lg_4x3', 'image_16x9_jpg'
 			output = job['outputs'][0]
 			input = job['inputs'][0]
 			destination_file = spec_job_output_path job, processed_job
@@ -84,7 +84,7 @@ describe File.basename(__FILE__) do
 			expect(rendered_dimensions[1].to_i).to_not eq output_dimensions[1].to_i
 		end
 		it "correctly scales down to width when input is portrait" do		
-			job, processed_job = spec_job_mash_simple 'image_vert_lg_4x3', 'image_16x9_jpg'
+			job, processed_job = spec_process_job_files 'image_vert_lg_4x3', 'image_16x9_jpg'
 			output = job['outputs'][0]
 			input = job['inputs'][0]
 			destination_file = spec_job_output_path job, processed_job

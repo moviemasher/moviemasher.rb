@@ -16,12 +16,15 @@ module MovieMasher
 		end
 		def self.rgba param_string, scope = nil
 			params = __params_from_str param_string
-			params.push (params.pop.to_f * 255.to_f).to_i
-			"0x%02x%02x%02x%02x" % params
+			alpha = params.pop.to_f
+			result = "0x%02x%02x%02x" % params
+			result = "#{result}@#{alpha}"
+			MovieMasher.__log(:debug) { "rgba(#{param_string}) #{result}" }
+			result
 		end
 		def self.__font_from_scope font_id, scope
 			mash = scope[:mm_job_input][:source]
-			raise "found no mash source in job input #{scope[:mm_job_input]}" unless mash
+			raise Error::JobInput.new "found no mash source in job input #{scope[:mm_job_input]}" unless mash
 			font = nil
 			mash[:media].each do |item|
 				if font_id == item[:id]
@@ -29,45 +32,53 @@ module MovieMasher
 					break
 				end
 			end
-			raise "found no font with id #{font_id} in mash #{mash}" unless font
+			font = Defaults.module_for_type Type::Font unless font
+			raise Error::JobInput.new "found no font with id #{font_id} in mash #{mash}" unless font
 			font
 		end
 		def self.mm_fontfile param_string, scope
 			params = __params_from_str param_string
 			font_id = params.join ','
 			font = __font_from_scope font_id, scope
-			raise "font has not been cached #{font}" unless font[:cached_file]
-			font[:cached_file] # font[:family]
+			raise Error::JobInput.new "font has not been cached #{font}" unless font[:cached_file]
+			font[:cached_file] 
 		end
 		def self.mm_fontfamily param_string, scope
 			params = __params_from_str param_string
 			font_id = params.join ','
 			font = __font_from_scope font_id, scope
-			raise "font has no family" unless font[:family]
+			raise Error::JobInput.new "font has no family" unless font[:family]
 			font[:family]
 		end
 		def self.mm_horz param_string, scope
 			params = __params_from_str param_string
-			param_string = params.join(',')
-			param_sym = param_string.to_sym
-			if scope[param_sym] then
-				(scope[:mm_width].to_f * scope[param_sym].to_f).round.to_i.to_s
+			value = params.join(',')
+			param_sym = value.to_sym
+			value = scope[param_sym] if scope[param_sym]
+			value = Evaluate.equation value
+			if value.respond_to? :round
+				result = (scope[:mm_width].to_f * value.to_f).round.to_i.to_s
 			else
-				"(#{scope[:mm_width]}*#{param_string})"
+				result = "(#{scope[:mm_width]}*#{value})"
 			end
+			#MovieMasher.__log(:info) { "mm_horz(#{param_string}) = #{result}" }
+			result
 		end
 		def self.mm_vert param_string, scope
 			params = __params_from_str param_string
-			param_string = params.join(',')
-			param_sym = param_string.to_sym
-			if scope[param_sym] then
-				(scope[:mm_height].to_f * scope[param_sym].to_f).round.to_i.to_s
+			value = params.join(',')
+			param_sym = value.to_sym
+			value = scope[param_sym] if scope[param_sym]
+			value = Evaluate.equation value
+			if value.respond_to? :round
+				result = (scope[:mm_height].to_f * value).round.to_i.to_s 
 			else
-				"(#{scope[:mm_height]}*#{param_string})"
+				result = "(#{scope[:mm_height]}*#{value})"
 			end
+			#MovieMasher.__log(:info) { "mm_vert(#{param_string}) = #{result}" }
 		end
 		def self.mm_dir_horz param_string, scope
-			raise "mm_dir_horz no parameters #{param_string}" if param_string.empty?
+			raise Error::JobInput.new "mm_dir_horz no parameters #{param_string}" if param_string.empty?
 			params = __params_from_str param_string
 			#puts "mm_dir_horz #{param_string}} #{params.join ','}"
 			case params[0].to_i # direction value
@@ -78,7 +89,7 @@ module MovieMasher
 			when 3, 6, 7
 				"((#{params[1]}-#{params[2]})*#{params[3]})"
 			else 
-				raise "unknown direction #{params[0]}"
+				raise Error::JobInput.new "unknown direction #{params[0]}"
 			end
 		end
 		def self.mm_paren param_string, scope
@@ -86,7 +97,7 @@ module MovieMasher
 			"(#{params.join ','})"
 		end
 		def self.mm_dir_vert param_string, scope
-			raise "mm_dir_vert no parameters #{param_string}" if param_string.empty?
+			raise Error::JobInput.new "mm_dir_vert no parameters #{param_string}" if param_string.empty?
 			params = __params_from_str param_string
 			#puts "mm_dir_vert #{param_string} #{params.join ','}"
 			result = case params[0].to_i # direction value
@@ -97,71 +108,59 @@ module MovieMasher
 			when 2, 5, 6
 				"((#{params[2]}-#{params[1]})*#{params[3]})"
 			else 
-				raise "unknown direction #{params[0]}"
+				raise Error::JobInput.new "unknown direction #{params[0]}"
 			end
 			result
 		end
 		def self.mm_max param_string, scope
 			params = __params_from_str param_string
 			all_ints = true
+			evaluated_all = true
 			params.map! do |p|
-				p = p.to_f
-				all_ints = false if all_ints and not Float.cmp(p.floor, p)
+				p = Evaluate.equation p
+				if p.respond_to? :round
+					all_ints = false if all_ints and not Float.cmp(p.floor, p)
+				else
+					evaluated_all = false
+				end
 				p
 			end
-			p = params.max
-			p = p.to_i if all_ints
+			if evaluated_all 
+				p = params.max
+				p = p.to_i if all_ints
+			else
+				p = "max(#{params.join ','})"
+			end
 			p
 		end
 		def self.mm_min param_string, scope
 			params = __params_from_str param_string
 			all_ints = true
+			evaluated_all = true
 			params.map! do |p|
-				p = p.to_f
-				all_ints = false if all_ints and not Float.cmp(p.floor, p)
+				p = Evaluate.equation p
+				if p.respond_to? :round
+					all_ints = false if all_ints and not Float.cmp(p.floor, p)
+				else
+					evaluated_all = false
+				end
 				p
 			end
-			p = params.min
-			p = p.to_i if all_ints
+			if evaluated_all 
+				p = params.max
+				p = p.to_i if all_ints
+			else
+				p = "min(#{params.join ','})"
+			end
 			p
 		end
 		def self.mm_cmp param_string, scope
 			params = __params_from_str param_string
 			#puts "mm_cmp (#{params[0].to_f} > #{params[1].to_f} ? #{params[2]} : #{params[3]}) = #{(params[0].to_f > params[1].to_f ? params[2] : params[3])}"
-			(params[0].to_f > params[1].to_f ? params[2] : params[3])
+			param_0 = Evaluate.equation params[0], true
+			param_1 = Evaluate.equation params[0], true
+			(param_0 > param_1 ? params[2] : params[3])
 		end
-#		def self.mm_times param_string, scope
-#			params = __params_from_str param_string
-#			total = MovieMasher::Float::One
-#			params.each do |param|
-#				total *= param.to_f
-#			end
-#			total
-#		end
-#		def self.mm_divide param_string, scope
-#			params = __params_from_str param_string
-#			#puts "mm_divide #{params[0]} / #{params[1]} = #{params[0].to_f / params[1].to_f}"
-#			params[0].to_f / params[1].to_f
-#		end
-#		def self.mm_dir_is_vert param_string, scope
-#			params = __params_from_str param_string
-#			case params[0].to_i
-#			when 1, 3
-#				params[2]
-#			else 
-#				params[1]
-#			end
-#			
-#		end
-#		def self.mm_dir_is_horz param_string, scope
-#			params = __params_from_str param_string
-#			case params[0].to_i
-#			when 0, 2
-#				params[2]
-#			else 
-#				params[1]
-#			end
-#		end
 		def self.__params_from_str param_string
 			param_string = param_string.split(',') if param_string.is_a?(String)
 			param_string.map! { |p| p.is_a?(String) ? p.strip : p }

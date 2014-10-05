@@ -6,11 +6,11 @@
 		"backcolor": "blue",
 		"label": "Fills",
 		"media": [{
-			"id": "horzlg",
+			"id": "large-4x3",
 			"type": "image",
 			"source": "image/large-4x3.png"
 		},{
-			"id": "vertlg",
+			"id": "large-3x4",
 			"type": "image",
 			"source": "image/large-3x4.png"
 		}],
@@ -19,32 +19,32 @@
 				{
 					"type": "video",
 					"clips": [{
-						"id": "horzlg",
+						"id": "large-4x3",
 						"fill": "scale",
 						"frame": 0,
 						"length": 20
 					},{
-						"id": "horzlg",
+						"id": "large-4x3",
 						"fill": "crop",
 						"frame": 20,
 						"length": 20
 					},{
-						"id": "horzlg",
+						"id": "large-4x3",
 						"fill": "stretch",
 						"frame": 40,
 						"length": 20
 					},{
-						"id": "vertlg",
+						"id": "large-3x4",
 						"fill": "scale",
 						"frame": 60,
 						"length": 20
 					},{
-						"id": "vertlg",
+						"id": "large-3x4",
 						"fill": "crop",
 						"frame": 80,
 						"length": 20
 					},{
-						"id": "vertlg",
+						"id": "large-3x4",
 						"fill": "stretch",
 						"frame": 100,
 						"length": 20

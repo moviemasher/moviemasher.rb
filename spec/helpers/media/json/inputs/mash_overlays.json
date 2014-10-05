@@ -5,75 +5,14 @@
 		"quantize": 10,
 		"label": "Overlays",
 		"backcolor": "red",
-		"media": [{
-			"id": "drummers",
-			"type": "video",
-			"audio": 0,
-			"duration": 10,
-			"source": "video/drummers.mov"
-		},{
-			"label": "Overlay",
-			"type": "transform",
-			"id": "com.moviemasher.transform.overlay",
-			"properties": { 
-				"scale": { "type": "size1", "value": 0.50 },
-				"left": { "type": "pixel", "value": 0 },
-				"top": { "type": "pixel", "value": 0 }
-			},
-			"filters": [
-				{
-					"id": "scale",
-					"parameters": [
-						{
-							"name": "width",
-							"value":"mm_horz(scale)"
-						},{
-							"name": "height",
-							"value":"mm_vert(scale)"
-						}
-					]
-				},
-				{
-					"id": "setsar",
-					"parameters": [
-						{
-							"name": "sar",
-							"value":"1"
-						},{
-							"name": "max",
-							"value":"1"
-						}
-					]
-				},
-				{
-					"id": "overlay",
-					"parameters": [
-						{
-							"name": "x",
-							"value":"left*(mm_width-overlay_w)"
-						},{
-							"name": "y",
-							"value":"top*(mm_height-overlay_h)"
-						}
-					]
-				}
-			]
-		},
-		{
-			"label": "Color",
-			"type": "theme",
-			"id": "com.moviemasher.theme.color",
-			"properties": { 
-				"color": { "type": "rgb", "value": "red" }
-			},
-			"filters": [{
-				"id": "color",
-				"parameters":[{
-					"name": "color",
-					"value":"color"
-				}]
-			}]
-		}
+		"media": [
+			{
+				"id": "drummers",
+				"type": "video",
+				"audio": 0,
+				"duration": 10,
+				"source": "video/drummers.mov"
+			}
 		],
 		"tracks": {
 			"video": [

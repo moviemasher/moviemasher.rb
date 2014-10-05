@@ -4,6 +4,8 @@ module MovieMasher
 	@@configuration = Hash.new
 	@@formats = nil
 	@@job = nil
+	@@output = nil
+	@@log = nil
 	@@queue = nil
 	def self.app_exec(cmd, out_file = '', duration = nil, precision = 1, app = 'ffmpeg')
 		#puts "app_exec #{app}"
@@ -13,30 +15,31 @@ module MovieMasher
 		FileUtils.mkdir_p(File.dirname(out_file)) if outputs_file
 		whole_cmd += " #{out_file}" if out_file and not out_file.empty?
 		#puts whole_cmd
-		if @@job
-			@@job[:commands] << whole_cmd 
-			__log(:debug) { whole_cmd }
-		end
+		
+		@@job[:commands] << whole_cmd if @@job
+		__log(:debug) { whole_cmd }
+		
 		result = Open3.capture3(whole_cmd).join "\n"
 		if outputs_file and not out_file.include?('%') then	
 			unless File.exists?(out_file) and File.size?(out_file)
 				__log(:debug) { result }
-				raise "failed to generate file #{cmd.gsub(';', ";\n")}" 
+				raise Error::JobRender.new result
 			end
 			if duration then
 				audio_duration = cache_get_info(out_file, 'audio_duration')
 				video_duration = cache_get_info(out_file, 'video_duration')
-				__log(:debug) { "audio_duration: #{audio_duration} video_duration: #{video_duration}" }
+				__log(:debug) { "rendered file with audio_duration: #{audio_duration} video_duration: #{video_duration}" }
 				unless audio_duration or video_duration
-					__log(:debug) { result }
-					raise "could not determine if #{duration} == duration of #{out_file}" 
+					__log(:warn) { result }
+					raise Error::JobRender.new result, "could not determine if #{duration} == duration of #{out_file}" 
 				end
 				unless Float.cmp(duration, video_duration.to_f, precision) or Float.cmp(duration, audio_duration.to_f, precision)
-					__log(:debug) { result }
-					raise "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration} #{out_file}" 
+					__log(:warn) { result }
+					raise Error::JobRender.new result, "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration} #{out_file}" 
 				end
 			end
 		end 
+		__log(:debug) { result }
 		result
 	end
 	def self.codecs
@@ -56,6 +59,7 @@ module MovieMasher
 				aws_config = Hash.new
 				config.each do |key_str,v|
 					key_str = key_str.id2name if v.is_a? Symbol
+					key_str = key_str.dup
 					key_sym = key_str.to_sym
 					@@configuration[key_sym] = v
 					if key_str.start_with? 'aws_' then
@@ -72,7 +76,7 @@ module MovieMasher
 						if :dir_log == sym then
 							aws_config[:logger] = Logger.new "#{@@configuration[sym]}/aws.log"
 							@@log = Logger.new("#{@@configuration[sym]}/transcoder.log", 7, 1048576 * 100)
-							@@log.level = ('production' == ENV['RACK_ENV'] ? Logger::DEBUG : Logger::INFO)
+							@@log.level = Logger::DEBUG #('production' == ENV['RACK_ENV'] ? Logger::DEBUG : Logger::INFO)
 						end
 					end
 				end
@@ -85,17 +89,18 @@ module MovieMasher
 		@@formats
 	end
 	def self.output_path dont_append_slash = nil
-		raise "output_path called without active job and output" unless @@job and @@output
+		raise Error::State.new "output_path called without active job and output" unless @@job and @@output
 		path = __path_job
 		path += @@output[:identifier]
 		path += '/' unless dont_append_slash
 		path
 	end
 	def self.process orig_job
-		#puts "MovieMasher.process"
-		raise "job false or not a Hash" unless orig_job and orig_job.is_a? Hash 
-		job = Marshal.load(Marshal.dump(orig_job))
+		rescued_exception = nil
 		begin
+			__log_transcoder(:debug) { "process called" }
+			raise Error::JobInput.new "job false or not a Hash" unless orig_job and orig_job.is_a? Hash 
+			job = Marshal.load(Marshal.dump(orig_job))
 			@@job = job
 			hash_keys_to_symbols! @@job
 			# create internal identifier for job
@@ -111,7 +116,6 @@ module MovieMasher
 			log_level = configuration[:log_level] unless log_level and not log_level.empty?
 			log_level = 'info' unless log_level and not log_level.empty?
 			log_level = log_level.upcase
-			#puts "log_level #{log_level} #{Logger.const_defined?(log_level)}"
 			log_level = (Logger.const_defined?(log_level) ? Logger.const_get(log_level) : Logger::INFO)
 			@@job[:logger].level = log_level
 			__init_job
@@ -119,9 +123,9 @@ module MovieMasher
 			File.open(path_job + 'job.json', 'w') { |f| f.write(@@job.to_json) }
 			
 			unless @@job[:error]
-				__log(:debug) { "job parsed and initialized" }
+				__log(:info) { "job parsed and initialized" }
 				input_ranges = Array.new
-				copy_files = Hash.new # key is value of input[:copy] (basename for copied input)
+				copy_files = Hash.new # key is value of input[:copy] (name for copied input)
 				video_outputs = 0
 				audio_outputs = 0
 				# start to figure steps needed for progress
@@ -156,9 +160,10 @@ module MovieMasher
 				end
 				#TODO: add outputs to progress
 				__trigger :initiate
-				
+			end
+			unless @@job[:error]
+				__log(:info) { "job initiated" }
 				@@job[:inputs].each do |input|
-					break if @@job[:error]
 					input_url = input[:input_url]
 					if input_url then
 						# if it's a mash we don't yet know whether it has desired content types
@@ -186,9 +191,15 @@ module MovieMasher
 					if (Type::Mash == input[:type]) and __has_desired?(__input_has(input), outputs_desire) then
 						__cache_job_mash input, outputs_desire
 					end
+					break if @@job[:error]
 				end
+			end
+			unless @@job[:error]
+				__log(:info) { "job cached" }
 				# everything that needs to be cached is now cached
 				__set_timing
+				#puts "video_outputs: #{video_outputs}"
+				#puts "audio_outputs: #{audio_outputs}"
 				if 0 < video_outputs then
 					# make sure visual outputs have dimensions, using input's for default
 					input_dimensions = __input_dimensions
@@ -200,6 +211,7 @@ module MovieMasher
 				end
 				video_graphs = ((0 == video_outputs) ? Array.new : __filter_graphs_video(@@job[:inputs]))
 				audio_graphs = ((0 == audio_outputs) ? Array.new : __filter_graphs_audio(@@job[:inputs]))
+				
 				@@job[:progress][:rendering] += @@job[:outputs].length * (video_graphs.length + audio_graphs.length)		
 				@@job[:outputs].each do |output|
 					@@output = output
@@ -207,63 +219,81 @@ module MovieMasher
 					@@job[:progress][:rendered] += 1 + (video_graphs.length + audio_graphs.length)
 					@@job[:progress][:uploading] += ((output[:fps].to_f * output[:duration]).floor - 1) if Type::Sequence == output[:type]
 					__trigger :progress
+					break if @@job[:error]
 				end
+			end
+			unless @@job[:error]
 				@@job[:outputs].each do |output|
 					@@output = output
 					__transfer_job_output
+					break if @@job[:error]
 				end
+				__log(:info) { "job transfered" } unless @@job[:error]
 			end
 		rescue Exception => e
-			__log(:debug) { e.backtrace.join "\n" }
-			__log(:error) { e.message }
-			__trigger :error
+			rescued_exception = e
 		end
 		begin
-			__trigger :complete
-		rescue Exception => e
-			__log(:debug) { e.backtrace.join "\n" }
-			__log(:error) { e.message }
-		ensure
-			if @@job[:error] and configuration[:dir_error] and not configuration[:dir_error].empty? then
-				FileUtils.mv path_job, configuration[:dir_error] + File.basename(path_job)
-			else
-				FileUtils.rm_r path_job unless configuration[:keep_temporary_files]
+			if rescued_exception # raised while processing job
+				rescued_exception = __log_exception rescued_exception
+				__trigger :error
 			end
+		rescue Exception => e
+			rescued_exception = e
+		end
+		begin
+			rescued_exception = __log_exception(rescued_exception) if rescued_exception
+			__trigger :complete
+			__log(:info) { "job completed" }
+		rescue Exception => e
+			rescued_exception = e
+		end
+		begin
+			rescued_exception = __log_exception(rescued_exception) if rescued_exception
+			job_path = path_job
+			if @@job[:error] and configuration[:dir_error] and not configuration[:dir_error].empty? then
+				FileUtils.mv job_path, configuration[:dir_error] + File.basename(job_path)
+			else
+				FileUtils.rm_r job_path unless configuration[:keep_temporary_files]
+			end
+		rescue Exception => e
+			rescued_exception = e
+		ensure
 			@@output = nil
 			@@job = nil
 		end
+		rescued_exception = __log_exception(rescued_exception) if rescued_exception
 		flush_cache_files configuration[:dir_cache], configuration[:cache_gigs]
 		job
 	end
-	def self.process_queues rake_args
+	def self.process_queues
 		run_seconds = configuration[:process_queues_seconds]
 		start = Time.now
 		oldest_file = nil
-		working_file = "#{configuration[:dir_queue]}/working.json"
+		working_file = "#{configuration[:dir_queue]}working.json"
 		while run_seconds > (Time.now - start)
 			if File.exists? working_file
 				# if this process didn't create it, we must have crashed on it in a previous run
-				puts "#{Time.now} MovieMasher.process_queues found active job:\n#{File.read working_file}" unless oldest_file
+				__log_transcoder(:error) { "deleting previously active job:\n#{File.read working_file}" } unless oldest_file
 				File.delete working_file
 			end
-			#puts "looking for job in #{configuration[:dir_queue]}"
-			oldest_file = Dir["#{configuration[:dir_queue]}/*.json"].sort_by{ |f| File.mtime(f) }.first
+			oldest_file = Dir["#{configuration[:dir_queue]}*.json"].sort_by{ |f| File.mtime(f) }.first
 			if oldest_file then
-				puts "started #{oldest_file}"
+				__log_transcoder(:info) { "started #{oldest_file}" }
 				File.rename oldest_file, working_file
 				json_str = File.read working_file
 				job = nil
 				begin
 					job = JSON.parse json_str
 					unless job and job.is_a? Hash 
-						puts "parsed job was false or not a Hash: #{oldest_file} #{json_str}" 
+						__log_transcoder(:error) { "parsed job was false or not a Hash: #{oldest_file} #{json_str}" }
 						job = nil
 					end
 				rescue JSON::ParserError
-					puts "job could not be parsed as json: #{oldest_file} #{json_str}" 
+					__log_transcoder(:error) { "job could not be parsed as json: #{oldest_file} #{json_str}" }
 				end
 				process job if job
-				puts "finished #{oldest_file}"
+				__log_transcoder(:info) { "finished #{oldest_file}" }
 				File.delete working_file
 				sleep 1
 			else # see if there's one in the queue
@@ -271,10 +301,9 @@ module MovieMasher
 			end
 		end
 	end
-	def self.__assure_sequence_complete
+	def self.__assure_sequence_complete result
 		dir_path = @@output[:rendering]
 		if File.directory? dir_path then
-			
 			first_frame = @@output[:begin]
 			frame_count = (@@output[:increment].to_f * @@output[:fps].to_f * @@output[:duration]).floor.to_i
 			padding = (first_frame + frame_count).to_s.length
@@ -286,27 +315,26 @@ module MovieMasher
 					last_file = file_path
 				else
 					if last_file then
-						puts "MovieMasher.__assure_sequence_complete creating #{file_path}"
+						__log(:warn) { "creating #{File.basename file_path} as link to #{File.basename last_file} in sequence" }
 						File.symlink last_file, file_path
 					else
-						raise "NO sequence files found"
+						raise Error::JobRender.new result, "could not generate any sequence files"
 						break
 					end
 				end
 			end
-		else
-			puts "NOT DIR: #{dir_path}"
 		end
 	end
 	def self.__audio_from_file path
-		raise "__audio_from_file with invalid path" unless path and (not path.empty?) and File.exists? path
+		#puts "__audio_from_file #{path}"
+		raise Error::Parameter.new "__audio_from_file with invalid path" unless path and (not path.empty?) and File.exists? path
 		out_file = "#{File.dirname path}/#{File.basename path}-intermediate.#{Intermediate::AudioExtension}"
 		unless File.exists? out_file then
 			cmds = Array.new
 			cmds << shell_switch(path, 'i')
 			cmds << shell_switch(2, 'ac')
 			cmds << shell_switch(44100, 'ar')
-			app_exec cmds.join(' '), out_file
+			app_exec cmds.join, out_file
 		end
 		out_file
 	end
@@ -320,29 +348,32 @@ module MovieMasher
 			@@output[:rendering] = ( Type::Sequence == @@output[:type] ? File.dirname(out_path) : out_path)
 			unless Type::Audio == avb then # we've got video
 				if 0 < video_graphs.length then
-					if 1 == video_graphs.length then
+					if 1 == video_graphs.length and video_graphs.first.raw then
 						graph = video_graphs[0]
 						video_duration = graph.duration
 						cmd = graph.command @@output
-						raise "Could not build complex filter" if cmd.empty?
+						raise Error::JobInput.new "could not build complex filter" if cmd.empty?
 					else 
 						cmd = __filter_graphs_concat @@output, video_graphs
-						raise "Could not build complex filter" if cmd.empty?
+						raise Error::JobInput.new "Could not build complex filter" if cmd.empty?
 						video_graphs.each do |graph|
 							video_duration += graph.duration
 						end
 					end
+					cmds << shell_switch(@@output[:fps], 'r') if @@output[:fps]
 					cmds << shell_switch("'#{cmd}'", 'filter_complex')
-				else avb = Type::Audio
+				else 
+					avb = Type::Audio
 				end
 			end
+			#puts "__output_desires #{avb}"
 			unless Type::Video == avb then # we've got audio
 				audio_graphs_count = audio_graphs.length
 				if 0 < audio_graphs_count then
 					data = audio_graphs[0]
 					if 1 == audio_graphs_count and 1 == data[:loop] and (not Mash.gain_changes(data[:gain])) and Float.cmp(data[:start_seconds], Float::Zero) then
 						# just one non-looping graph, starting at zero with no gain change
-						raise "zero length #{data.inspect}" unless Float.gtr(data[:length_seconds], Float::Zero)
+						raise Error::JobInput.new "zero length #{data.inspect}" unless Float.gtr(data[:length_seconds], Float::Zero)
 						audio_duration = data[:length_seconds]
 						data[:waved_file] = __audio_from_file(data[:cached_file]) unless data[:waved_file]
 					else 
@@ -355,15 +386,15 @@ module MovieMasher
 							loops = data[:loop] || 1
 							volume = data[:gain]
 							start = data[:start_seconds]
-							raise "negative start time" unless Float.gtre(start, Float::Zero)
-							raise "zero length #{data.inspect}" unless Float.gtr(data[:length_seconds], Float::Zero)
+							raise Error::JobInput.new "negative start time #{data.inspect}" unless Float.gtre(start, Float::Zero)
+							raise Error::JobInput.new "zero length #{data.inspect}" unless Float.gtr(data[:length_seconds], Float::Zero)
 							data[:waved_file] = __audio_from_file(data[:cached_file]) unless data[:waved_file]
 							audio_cmd += " -a:#{counter} -i "
 							counter += 1
 							audio_cmd += 'audioloop,' if 1 < loops
 							audio_cmd += "playat,#{data[:start_seconds]},"
 							audio_cmd += "select,#{data[:trim_seconds]},#{data[:length_seconds]}"
-							audio_cmd += ",#{data[:waved_file]}"
+							audio_cmd += ",typeselect,.raw,#{data[:waved_file]}"
 							audio_cmd += " -t:{Float.string data[:length_seconds]}" if 1 < loops
 							if Mash.gain_changes(volume) then
 								volume = volume.to_s unless volume.is_a?(String)
@@ -379,7 +410,7 @@ module MovieMasher
 									audio_cmd += ",#{Float.precision(start + pos)},#{val}"
 								end
 							end
-							#puts "audio_duration #{data[:start_seconds]} + #{data[:length_seconds]}"
+							#puts "audio_duration = #{data[:start_seconds]} + #{data[:length_seconds]}"
 							audio_duration = Float.max(audio_duration, data[:start_seconds] + data[:length_seconds])
 						end
 						audio_cmd += ' -a:all -z:mixmode,sum'
@@ -409,12 +440,14 @@ module MovieMasher
 					else
 						cmds << shell_switch(data[:waved_file], 'i')
 						unless Float.cmp(data[:trim_seconds], Float::Zero) and Float.cmp(data[:length_seconds], data[:duration_seconds]) then
-							cmds << shell_switch("'atrim=start=#{data[:trim_seconds]}:duration=#{audio_duration},asetpts=expr=T-STARTT'", 'af') 
+							cmds << shell_switch("'atrim=start=#{data[:trim_seconds]}:duration=#{audio_duration},asetpts=expr=PTS-STARTPTS'", 'af') 
 						end
+						cmds << shell_switch(1, 'async')
 				
 					end
 				else
 					avb = Type::Video
+					#puts "no audio graphs"
 				end
 			end
 			unless cmds.empty? then # we've got audio and/or video
@@ -425,11 +458,10 @@ module MovieMasher
 				cmd += __output_command @@output, avb, duration
 				cmd = '-y ' + cmd
 				duration = nil if Type::Image == @@output[:type] or Type::Sequence == @@output[:type]
-				raise "duration does not match length #{duration} != #{@@job[:duration]}" if duration and not Float.cmp(duration, @@job[:duration])
-				#puts "DURATIONS\nduration:\n#{duration}\nvideo: #{video_duration}\naudio: #{audio_duration}\noutput: #{@@output[:duration]}\njob: #{@@job[:duration]}"
+				raise Error::JobInput.new "graph duration does not match job duration #{duration} != #{@@job[:duration]}" if duration and not Float.cmp(duration, @@job[:duration])
 				do_single_pass = (not type_is_video_or_audio)
 				unless do_single_pass then
-					pass_log_file = "#{File.dirname @@output[:rendering]}/#{@@output[:identifier]}"
+					pass_log_file = "#{File.dirname @@output[:rendering]}/#{@@output[:identifier]}.txt"
 					cmd_pass_1 = "#{cmd} -pass 1 -passlogfile #{pass_log_file} -f #{@@output[:extension]}"
 					cmd_pass_2 = "#{cmd} -pass 2 -passlogfile #{pass_log_file}"
 					begin
@@ -442,14 +474,13 @@ module MovieMasher
 					end
 				end
 				if do_single_pass then
-					app_exec cmd, out_path, duration, @@output[:precision]
-					__assure_sequence_complete if Type::Sequence == @@output[:type]
+					result = app_exec cmd, out_path, duration, @@output[:precision]
+					__assure_sequence_complete(result) if Type::Sequence == @@output[:type]
 				end
 			end
 		end
 	end
 	def self.__cache_input input, base_source = nil, input_url = nil
-		#puts "__cache_input #{input}, #{base_source}, #{input_url} "
 		input_url = __input_url(input, base_source) unless input_url
 		cache_url_path = nil
 		if input_url then
@@ -466,12 +497,15 @@ module MovieMasher
 						source = new_source
 					end
 				end
-				raise "no source for #{input_url}" unless source
-				__cache_source source, cache_url_path
-				raise "could not cache #{input_url}" unless File.exists? cache_url_path
+				raise Error::JobInput.new "no source for #{input_url}" unless source
+				__cache_source source, input_url, cache_url_path
+				raise Error::JobInput.new "could not cache #{input_url}" unless File.exists? cache_url_path
 			end
-			#puts "cached_file #{cache_url_path} #{input}"
 			input[:cached_file] = cache_url_path
+			unless input[:type] then
+				input[:type] = cache_file_type(cache_url_path)
+				__init_input input
+			end
 			case input[:type]
 			when Type::Video
 				input[:duration] = cache_get_info(cache_url_path, 'duration').to_f unless input[:duration] and Float.gtr(input[:duration], Float::Zero)
@@ -484,11 +518,10 @@ module MovieMasher
 				input[:duration] = cache_get_info(cache_url_path, 'video_duration').to_f unless Float.gtr(input[:duration], Float::Zero)
 			when Type::Image 
 				input[:dimensions] = cache_get_info(cache_url_path, 'dimensions')
-				#puts "INPUT DIMENSIONS #{input[:dimensions]} for #{input_url}"
-				raise "could not determine image dimensions" unless input[:dimensions]
+				raise Error::JobInput.new "could not determine image dimensions" unless input[:dimensions]
 			end
 		else
-			raise "could not produce an input_url #{input}"
+			raise Error::JobInput.new "could not produce an input_url #{input}"
 		end
 		cache_url_path
 	end
@@ -496,7 +529,6 @@ module MovieMasher
 		mash = input[:source]
 		base_source = (input[:base_source] || @@job[:base_source])
 		mash[:media].each do |media|
-			#puts "__cache_job_mash media #{media[:type]} #{media}"
 			case media[:type]
 			when Type::Video, Type::Audio, Type::Image, Type::Font
 				if __has_desired?(__input_has(media), outputs_desire) then
@@ -510,21 +542,15 @@ module MovieMasher
 			end
 		end
 	end
-	def self.__cache_source source, out_file
+	def self.__cache_source source, input_url, out_file
 		FileUtils.mkdir_p(File.dirname(out_file))
 		case source[:type]
 		when Type::File
 			source_path = __directory_path_name_source source
 			__transfer_file(source[:method], source_path, out_file) if File.exists? source_path
 		when Type::Http, Type::Https
-			url = "#{source[:type]}://#{source[:host]}"
-			path = __directory_path_name_source source
-			url += '/' unless path.start_with? '/'
-			url += path
-			uri = URI url
+			uri = URI input_url
 			uri.port = source[:port] if source[:port]
-			#params = { :limit => 10, :page => 3 }
-			#uri.query = URI.encode_www_form(params)
 			Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
 				request = Net::HTTP::Get.new uri
 				http.request request do |response|
@@ -535,7 +561,7 @@ module MovieMasher
 							end
 						end
 					else
-						puts "got #{response.code} response code"
+						__log(:warn) {"got #{response.code} response code from #{input_url}"}
 					end
 				end
 			end
@@ -575,15 +601,26 @@ module MovieMasher
 		key = destination[:key]
 		unless key 
 			file_name = __transfer_file_name destination
-			file_name = __transfer_file_name(@@output) if file_name.empty? 
+			if file_name.empty?
+				paths = Array.new
+				file_name = Path.strip_slashes @@output[:path]
+				paths << file_name unless file_name.empty?
+				unless Type::Sequence == @@output[:type]
+					# otherwise we mean the directory, since name is something like 0%3d.jpg
+					file_name = __transfer_file_name(@@output)
+					paths << file_name unless file_name.empty?
+				end
+				file_name = paths.join '/'
+			end
 			key = __transfer_directory destination
 			unless file_name.empty?
 				key += '/' unless key.end_with? '/'
 				key += file_name
 			end
 		end
-		eval_value key, __eval_scope
+		Evaluate.value key, __eval_scope
 	end
+	
 	def self.__eval_scope
 		scope = Hash.new
 		scope[:job] = @@job
@@ -591,125 +628,116 @@ module MovieMasher
 		scope[:log] = Proc.new { File.read(__path_job + 'log.txt') }
 		scope
 	end
-	def self.__filter_scope_map scope, stack, key
-		parameters = stack[key]
-		if parameters then
-			parameters.map! do |param|
-				raise "__filter_scope_map #{key} got empty param #{stack} #{param}" unless param and not param.empty?
-				__filter_scope_call scope, param
-			end
-		end
-		((parameters and (not parameters.empty?)) ? parameters : nil)
-	end
-	def self.__filter_scope_call scope, stack
-		raise "__filter_scope_call got false stack #{scope}" unless stack
-		result = ''
-		if stack.is_a? String then
-			result = stack
-		else
-			array = __filter_scope_map scope, stack, :params
-			if array then
-				raise "WTF" if array.empty?
-				if stack[:function] then
-					func_sym = stack[:function].to_sym
-					if FilterHelpers.respond_to? func_sym then
-						result = FilterHelpers.send func_sym, array, scope
-						raise "got false from  #{stack[:function]}(#{array.join ','})" unless result
-						
-						result = result.to_s unless result.is_a? String
-						raise "got empty from #{stack[:function]}(#{array.join ','})" if result.empty?
-					else
-						result = "#{stack[:function]}(#{array.join ','})"
-					end
-				else
-					result = "(#{array.join ','})"
-				end
-			end
-			array = __filter_scope_map scope, stack, :prepend
-			result = array.join('') + result if array
-			array = __filter_scope_map scope, stack, :append
-			result += array.join('') if array
-		end
-			raise "__filter_scope_call has no result #{stack}" if result.empty?
-		result
-	end 
-	def self.__filter_parse_scope_value scope, value_str
-		#puts "value_str = #{value_str}"
-	 	level = 0
-		deepest = 0
-		esc = '~'
-		# expand variables
-		value_str = value_str.dup
-		value_str.gsub!(/([\w]+)/) do |match|
-			match_str = match.to_s
-			match_sym = match_str.to_sym
-			if scope[match_sym] then
-				scope[match_sym].to_s 
-			else
-				match_str
-			end
-		end
-		#puts "value_str = #{value_str}"
-
-	 	value_str.gsub!(/[()]/) do |paren|
-	 		result = paren.to_s
-	 		case result
-	 		when '('
-	 			level += 1
-	 			deepest = [deepest, level].max
-	 			result = result + level.to_s + esc
-	 		when ')'
-	 			result = result + level.to_s + esc
-	 			level -= 1
-	 		end
-	 		result
-	 	end
-	 	#puts "value_str = #{value_str}"
-	 	while 0 < deepest
-			value_str.gsub!(Regexp.new("([a-z_]+)[(]#{deepest}[#{esc}]([^)]+)[)]#{deepest}[#{esc}]")) do |m|
-				#puts "level #{level} #{m}"
-				method = $1
-				param_str = $2
-				params = param_str.split(',')
-				params.each do |param|
-					param.strip!
-					param.gsub!(Regexp.new("([()])[0-9]+[#{esc}]")) {$1}
-				end
-				func_sym = method.to_sym
-				if FilterHelpers.respond_to? func_sym then
-					result = FilterHelpers.send func_sym, params, scope
-					raise "got false from  #{method}(#{params.join ','})" unless result
-					
-					result = result.to_s unless result.is_a? String
-					raise "got empty from #{method}(#{params.join ','})" if result.empty?
-				else
-					result = "#{method}(#{params.join ','})"
-				end
-				result			
-			end
-			deepest -= 1
-	 		#puts "value_str = #{value_str}"
-	 	end
-	 	# remove any lingering markers
-	 	value_str.gsub!(Regexp.new("([()])[0-9]+[#{esc}]")) { $1 }
-	 	# remove whitespace
-	 	value_str.gsub!(/\s/, '')
-	 	#puts "value_str = #{value_str}"
-	 	value_str
-	end
-	def self.__filter_scope_binding scope
-		bind = binding
-		scope.each do |k,v|
-			bind.eval "#{k.id2name}='#{v}'"
-		end
-		bind
-	end
+#	def self.__filter_scope_map scope, stack, key
+#		parameters = stack[key]
+#		if parameters then
+#			parameters.map! do |param|
+#				raise Error::JobInput.new "__filter_scope_map #{key} got empty param #{stack} #{param}" unless param and not param.empty?
+#				__filter_scope_call scope, param
+#			end
+#		end
+#		((parameters and (not parameters.empty?)) ? parameters : nil)
+#	end
+#	def self.__filter_scope_call scope, stack
+#		raise Error::JobInput.new "__filter_scope_call got false stack #{scope}" unless stack
+#		result = ''
+#		if stack.is_a? String then
+#			result = stack
+#		else
+#			array = __filter_scope_map scope, stack, :params
+#			if array then
+#				if stack[:function] then
+#					func_sym = stack[:function].to_sym
+#					if FilterHelpers.respond_to? func_sym then
+#						result = FilterHelpers.send func_sym, array, scope
+#						raise Error::JobInput.new "got false from  #{stack[:function]}(#{array.join ','})" unless result
+#						
+#						result = result.to_s unless result.is_a? String
+#						raise Error::JobInput.new "got empty from #{stack[:function]}(#{array.join ','})" if result.empty?
+#					else
+#						result = "#{stack[:function]}(#{array.join ','})"
+#					end
+#				else
+#					result = "(#{array.join ','})"
+#				end
+#			end
+#			array = __filter_scope_map scope, stack, :prepend
+#			result = array.join('') + result if array
+#			array = __filter_scope_map scope, stack, :append
+#			result += array.join('') if array
+#		end
+#			raise Error::JobInput.new "__filter_scope_call has no result #{stack}" if result.empty?
+#		result
+#	end 
+#	def self.__filter_parse_scope_value scope, value_str
+#	 	level = 0
+#		deepest = 0
+#		esc = '~'
+#		# expand variables
+#		value_str = value_str.dup
+#		value_str.gsub!(/([\w]+)/) do |match|
+#			match_str = match.to_s
+#			match_sym = match_str.to_sym
+#			if scope[match_sym] then
+#				scope[match_sym].to_s 
+#			else
+#				match_str
+#			end
+#		end
+#	 	value_str.gsub!(/[()]/) do |paren|
+#	 		result = paren.to_s
+#	 		case result
+#	 		when '('
+#	 			level += 1
+#	 			deepest = [deepest, level].max
+#	 			result = result + level.to_s + esc
+#	 		when ')'
+#	 			result = result + level.to_s + esc
+#	 			level -= 1
+#	 		end
+#	 		result
+#	 	end
+#	 	while 0 < deepest
+#			value_str.gsub!(Regexp.new("([a-z_]+)[(]#{deepest}[#{esc}]([^)]+)[)]#{deepest}[#{esc}]")) do |m|
+#				method = $1
+#				param_str = $2
+#				params = param_str.split(',')
+#				params.each do |param|
+#					param.strip!
+#					param.gsub!(Regexp.new("([()])[0-9]+[#{esc}]")) {$1}
+#				end
+#				func_sym = method.to_sym
+#				if FilterHelpers.respond_to? func_sym then
+#					result = FilterHelpers.send func_sym, params, scope
+#					raise Error::JobInput.new "got false from  #{method}(#{params.join ','})" unless result
+#					
+#					result = result.to_s unless result.is_a? String
+#					raise Error::JobInput.new "got empty from #{method}(#{params.join ','})" if result.empty?
+#				else
+#					result = "#{method}(#{params.join ','})"
+#				end
+#				result			
+#			end
+#			deepest -= 1
+#	 	end
+#	 	# remove any lingering markers
+#	 	value_str.gsub!(Regexp.new("([()])[0-9]+[#{esc}]")) { $1 }
+#	 	# remove whitespace
+#	 	value_str.gsub!(/\s/, '')
+#	 	value_str
+#	end
+#	def self.__filter_scope_binding scope
+#		bind = binding
+#		scope.each do |k,v|
+#			bind.eval "#{k.id2name}='#{v}'"
+#		end
+#		bind
+#	end
 	def self.__filter_graphs_audio inputs
 		graphs = Array.new
 		start_counter = Float::Zero	
 		inputs.each do |input|
 			next if input[:no_audio]
-			#puts "INPUT: #{input}\n"
 			case input[:type]
 			when Type::Video, Type::Audio
 				data = Hash.new
@@ -725,18 +753,18 @@ module MovieMasher
 			when Type::Mash
 				quantize = input[:source][:quantize]
 				audio_clips = Mash.clips_having_audio input[:source]
+				#puts "audio_clips.length: #{audio_clips.length}"
 				audio_clips.each do |clip|
-					unless clip[:cached_file] then
-						media = Mash.search input[:source], clip[:id]
-						raise "could not find media for clip #{clip[:id]}" unless media
-						clip[:cached_file] = media[:cached_file] || raise("could not find cached file")
-						clip[:duration] = media[:duration]
-					end
+					media = Mash.media input[:source], clip[:id]
+					raise Error::JobInput.new "could not find media for clip #{clip[:id]}" unless media
+					clip[:cached_file] = media[:cached_file] || raise("could not find cached file")
+					clip[:duration] = media[:duration]
+					clip[:no_audio] = media[:no_audio] unless clip[:no_audio]
+					next if clip[:no_audio]
 					data = Hash.new
 					data[:type] = clip[:type]
 					data[:trim_seconds] = clip[:trim_seconds]
 					data[:length_seconds] = clip[:length_seconds]
-					#puts "start_seconds = #{input[:start]} + #{quantize} * #{clip[:frame]}"
 					data[:start_seconds] = input[:start].to_f + clip[:frame].to_f / quantize.to_f
 					data[:cached_file] = clip[:cached_file]
 					data[:gain] = clip[:gain]
@@ -750,44 +778,47 @@ module MovieMasher
 	end
 	def self.__filter_graphs_concat output, graphs
 		cmds = Array.new
-		intermediate_output = __output_intermediate
-		intermediate_output[:fps] = output[:fps]
-		intermediate_output[:dimensions] = output[:dimensions]
+		#intermediate_output = __output_intermediate
+		#intermediate_output[:fps] = output[:fps]
+		#intermediate_output[:dimensions] = output[:dimensions]
 		graphs.length.times do |index|
 			graph = graphs[index]
 			duration = graph.duration
 			cmd = graph.command output
-			raise "Could not build complex filter" if cmd.empty?
+			raise Error::JobInput.new "Could not build complex filter" if cmd.empty?
 			# yuv444p, yuv422p, yuv420p, yuv411p
-			cmd += ",format=pix_fmts=yuv420p"
+			#cmd += ",format=pix_fmts=yuv420p"
+			#cmd += ",format=pix_fmts=rgba"-pix_fmt yuv420p
 			#,fps=fps=#{output[:fps]}
-			cmd = " -filter_complex '#{cmd}' -t #{duration}"
-			cmd += __output_command intermediate_output, Type::Video
-			out_file = "#{output_path}concat-#{cmds.length}.#{intermediate_output[:extension]}"
+			cmd = " -filter_complex '#{cmd}' -t #{duration} "
+			cmd += __output_command output, Type::Video
+			out_file = "#{output_path}concat-#{cmds.length}.#{output[:extension]}"
 			cmd = '-y' + cmd
-			app_exec cmd, out_file			
-			cmds << "movie=filename=#{out_file}[concat#{cmds.length}]"
+			app_exec cmd, out_file
+			cmd = "movie=filename=#{out_file}"
+			cmd += "[concat#{cmds.length}]" if 1 < graphs.length
+			cmds << cmd
 		end
-		cmd = ''
-		cmds.length.times do |i|
-			cmd += "[concat#{i}]"
+		if 1 < cmds.length
+			cmd = ''
+			cmds.length.times do |i|
+				cmd += "[concat#{i}]"
+			end
+			cmd += "concat=n=#{cmds.length}"
+			cmds << cmd
 		end
-		cmd += "concat=n=#{cmds.length}" #,format=pix_fmts=yuv420p
-		cmds << cmd
 		cmds.join ';'
 	end
 	def self.__filter_graphs_video inputs
 		graphs = Array.new
-		raise "__filter_graphs_video already called" unless 0 == graphs.length
+		raise Error::State.new "__filter_graphs_video already called" unless 0 == graphs.length
 		inputs.each do |input|
-			#puts "input #{input}"
 			next if input[:no_video]
 			case input[:type]
 			when Type::Mash
 				mash = input[:source]
 				all_ranges = Mash.video_ranges mash
 				all_ranges.each do |range|
-					#puts "mash Graph.new #{range.inspect}"
 					graph = Graph.new input, range, mash[:backcolor]
 					clips = Mash.clips_in_range mash, range, Type::TrackVideo
 					if 0 < clips.length then
@@ -797,25 +828,23 @@ module MovieMasher
 							case clip[:type]
 							when Type::Video, Type::Image
 								# media properties were copied to clip BEFORE file was cached, so repeat now
-								media = Mash.search mash, clip[:id]
-								raise "could not find media for clip #{clip[:id]}" unless media
+								media = Mash.media mash, clip[:id]
+								raise Error::JobInput.new "could not find media for clip #{clip[:id]}" unless media
 								clip[:cached_file] = media[:cached_file] || raise("could not find cached file #{media}")
+								clip[:no_video] = media[:no_video] unless clip[:no_video]
 								clip[:dimensions] = media[:dimensions] || raise("could not find dimensions #{clip} #{media}")
 							end	
 							if Type::Transition == clip[:type] then
-								raise "found two transitions within #{range.inspect}" if transition_layer
+								raise Error::JobInput.new "found two transitions within #{range.inspect}" if transition_layer
 								transition_layer = graph.create_layer clip
 							elsif 0 == clip[:track] then
 								transitioning_clips << clip
 							end
 						end
 						if transition_layer then
-							#puts "transitioning_clips[0][:frame] #{transitioning_clips[0][:frame]}" if 0 < transitioning_clips.length
-							#puts "transitioning_clips[1][:frame] #{transitioning_clips[1][:frame]}" if 1 < transitioning_clips.length
-							raise "too many clips on track zero" if 2 < transitioning_clips.length
+							raise Error::JobInput.new "too many clips on track zero" if 2 < transitioning_clips.length
 							if 0 < transitioning_clips.length then
 								transitioning_clips.each do |clip| 
-									#puts "graph.new_layer clip"
 									transition_layer.layers << graph.new_layer(clip)
 								end 
 							end
@@ -824,7 +853,6 @@ module MovieMasher
 							next if transition_layer and 0 == clip[:track] 
 							case clip[:type]
 							when Type::Video, Type::Image, Type::Theme
-								#puts "graph.create_layer clip"
 								graph.create_layer clip
 							end
 						end
@@ -832,7 +860,6 @@ module MovieMasher
 					graphs << graph
 				end
 			when Type::Video, Type::Image
-				#puts "Graph.new #{input[:range].inspect}"
 				graph = Graph.new input, input[:range]
 				graph.create_layer(input)
 				graphs << graph
@@ -848,30 +875,6 @@ module MovieMasher
 		filter[:parameters] = parameters
 		filter
   	end
-	def self.__filter_merger_default
-		filter_config = Hash.new
-		filter_config[:type] = Type::Merger
-		filter_config[:filters] = Array.new
-		overlay_config = Hash.new
-		overlay_config[:id] = 'overlay'
-		overlay_config[:parameters] = Array.new
-		overlay_config[:parameters] << {:name => 'x', :value => '0'}
-		overlay_config[:parameters] << {:name => 'y', :value => '0'}
-		filter_config[:filters] << overlay_config
-		filter_config
-	end
-	def self.__filter_scaler_default
-		filter_config = Hash.new
-		filter_config[:type] = Type::Scaler
-		filter_config[:filters] = Array.new
-		scale_config = Hash.new
-		scale_config[:id] = 'scale'
-		scale_config[:parameters] = Array.new
-		scale_config[:parameters] << {:name => 'width', :value => 'mm_width'}
-		scale_config[:parameters] << {:name => 'height', :value => 'mm_height'}
-		filter_config[:filters] << scale_config
-		filter_config
-	end
 	def self.__get_length output
 		__get_time output, :length
 	end
@@ -929,7 +932,7 @@ module MovieMasher
 		input[:frame] = (input[:frame] ? input[:frame].to_f : Float::Zero)
 		# TODO: allow for no start or length in video clips
 		# necessitating caching of media if its duration unknown
-		raise "mash clips must have length" unless input[:length] and 0 < input[:length]
+		raise Error::JobInput.new "mash clips must have length" unless input[:length] and 0 < input[:length]
 		input[:range] = FrameRange.new input[:frame], input[:length], mash[:quantize]
 		input[:length_seconds] = input[:range].length_seconds unless input[:length_seconds]
 		input[:track] = track_index if track_index 
@@ -945,10 +948,14 @@ module MovieMasher
 		when Type::Transition
 			input[:to] = Hash.new unless input[:to]
 			input[:from] = Hash.new unless input[:from]
-			input[:to][:merger] = __filter_merger_default unless input[:to][:merger]
-			input[:to][:scaler] = __filter_scaler_default unless input[:to][:scaler] or input[:to][:fill]
-			input[:from][:merger] = __filter_merger_default unless input[:from][:merger]
-			input[:from][:scaler] = __filter_scaler_default unless input[:from][:scaler] or input[:from][:fill]
+			input[:to][:merger] = Defaults.module_for_type(:merger) unless input[:to][:merger]
+			input[:to][:scaler] = Defaults.module_for_type(:scaler) unless input[:to][:scaler] or input[:to][:fill]
+			input[:from][:merger] = Defaults.module_for_type(:merger) unless input[:from][:merger]
+			input[:from][:scaler] = Defaults.module_for_type(:scaler) unless input[:from][:scaler] or input[:from][:fill]
+			__init_clip_media(input[:to][:merger], mash, Type::Merger)
+			__init_clip_media(input[:from][:merger], mash, Type::Merger)
+			__init_clip_media(input[:to][:scaler], mash, Type::Scaler)
+			__init_clip_media(input[:from][:scaler], mash, Type::Scaler)
 		when Type::Video, Type::Audio
 			input[:trim] = 0 unless input[:trim]
 			input[:trim_seconds] = input[:trim].to_f / mash[:quantize] unless input[:trim_seconds]
@@ -958,23 +965,17 @@ module MovieMasher
 		__init_input_ranges input
 		input
   	end
-	def self.__init_clip_media clip, mash
-		if clip[:id] then
-			media = Mash.search mash, clip[:id]
-			if media then
-				media.each do |k,v|
-					clip[k] = v unless clip[k]
-				end 
-			else
-				media = Marshal.load(Marshal.dump(clip))
-				mash[:media] << media
-			end
-		end
+	def self.__init_clip_media clip, mash, type = nil
+		raise Error::JobInput.new "clip has no id #{clip}" unless clip[:id]
+		media = Mash.media_search type, clip, mash
+		raise Error::JobInput.new "#{clip[:id]} #{type ? type : 'media'} not found in mash" unless media
+		media.each do |k,v|
+			clip[k] = v unless clip[k]
+		end 
 	end
   	def self.__init_destination destination
   		__init_key destination, :identifier, UUID.new.generate	
   		__init_key(destination, :acl, 'public-read') if Type::S3 == destination[:type]
-  		
   	end
 	def self.__init_input input
 		__init_time input, :trim
@@ -997,8 +998,10 @@ module MovieMasher
 		end
 	end
  	def self.__init_input_ranges input
-		input[:effects].each do |effect|
-			effect[:range] = input[:range]
+ 		if input[:effects] then
+			input[:effects].each do |effect|
+				effect[:range] = input[:range]
+			end
 		end
 		input[:merger][:range] = input[:range] if input[:merger] 	
 		input[:scaler][:range] = input[:range] if input[:scaler]
@@ -1041,11 +1044,6 @@ module MovieMasher
 	end
 	def self.__init_key output, key, default
 		output[key] = default if ((not output[key]) or output[key].to_s.empty?)
-#		if default.is_a?(Float) then
-#			output[key] = output[key].to_f if 
-#		else
-#			output[key] = output[key].to_i if default.is_a?(Integer) 
-#		end
 	end
 	def self.__init_mash mash
 		mash[:quantize] = (mash[:quantize] ? mash[:quantize].to_f : Float::One)
@@ -1061,10 +1059,10 @@ module MovieMasher
 				track[:clips] = Array.new unless track[:clips] and track[:clips].is_a? Array
 				track[:clips].each do |clip|
 					__init_clip clip, mash, track_index, track_type
-					__init_clip_media(clip[:merger], mash) if clip[:merger]
-					__init_clip_media(clip[:scaler], mash) if clip[:scaler]
+					__init_clip_media(clip[:merger], mash, :merger) if clip[:merger]
+					__init_clip_media(clip[:scaler], mash, :scaler) if clip[:scaler]
 					clip[:effects].each do |effect|
-						__init_clip_media effect, mash
+						__init_clip_media effect, mash, :effect
 					end
 				end
 				clip = track[:clips].last
@@ -1133,14 +1131,14 @@ module MovieMasher
 	end
 	def self.__init_raw_input input
 	
-		input[:effects] = Array.new unless input[:effects] and input[:effects].is_a? Array
-		input[:merger] = __filter_merger_default unless input[:merger]
-		input[:scaler] = __filter_scaler_default unless input[:scaler] or input[:fill]
-		
 		input_type = input[:type]
 		is_av = [Type::Video, Type::Audio].include? input_type
 		is_v = [Type::Video, Type::Image, Type::Frame].include? input_type
-		
+
+		input[:effects] = Array.new unless input[:effects] and input[:effects].is_a? Array
+		input[:merger] = Defaults.module_for_type(:merger) unless input[:merger]
+		input[:scaler] = Defaults.module_for_type(:scaler) unless input[:scaler] or input[:fill]
+	
 		# set volume with default of none (no adjustment)
 		__init_key(input, :gain, Mash::VolumeNone) if is_av
 		__init_key(input, :fill, Mash::FillStretch) if is_v
@@ -1159,8 +1157,9 @@ module MovieMasher
 		when Type::Mash
 			__init_input_mash input
 		when Type::Video
-			input[:speed] = (input[:speed] ? Float::One : input[:speed].to_f) 
+			input[:speed] = (input[:speed] ? input[:speed].to_f : Float::One) 
 			input[:no_audio] = ! Float.cmp(Float::One, input[:speed])
+			#puts "__init_raw_input #{input[:label]} no_audio: #{input[:no_audio]} #{input[:speed]}"
 			input[:no_video] = false
 		when Type::Audio
 			__init_key input, :loop, 1
@@ -1238,23 +1237,34 @@ module MovieMasher
 						url = URI.join(base_url, url).to_s
 					end
 				end
-			elsif input[:source].is_a? Hash then
-				url = __source_url input[:source]
+			elsif input[:source].is_a?(Hash)  then
+				unless Type::Mash == input[:type] and Mash.hash?(input[:source]) then
+					url = __source_url input[:source]
+				end
 			end
 		end
 		url
 	end
 	def self.__log type, &proc
-		raise "__log called with no active job" unless @@job
-		if :error == type then
-			@@job[:error] = proc.call
+		if @@job then
+			@@job[:error] = proc.call if :error == type
+			@@job[:logger].send(type, &proc) 
 		end
-		@@job[:logger].send(type, proc.call) if @@job[:logger].send((type.id2name + '?').to_sym) 
+		__log_transcoder(type, &proc) if 'debug' == configuration[:log_level]
+	end
+	def self.__log_exception rescued_exception
+		unless rescued_exception.is_a? Error::Job
+			str =  "#{rescued_exception.backtrace.join "\n"}\n#{rescued_exception.message}" 
+			puts str # so it gets in cron log as well
+			__log_transcoder(:error) { str }
+			
+		end
+		__log(:debug) { rescued_exception.backtrace.join "\n" }
+		__log(:error) { rescued_exception.message }
+		nil # so we can assign in a oneliner
 	end
 	def self.__log_transcoder type, &proc
-		if @@log and @@log.send((type.id2name + '?').to_sym) then
-			@@log.send(type, proc.call)
-		end
+		@@log.send(type, proc.call) if @@log and @@log.send((type.id2name + '?').to_sym)
 	end
 	def self.__output_command output, av_type, duration = nil
 		cmds = Array.new
@@ -1290,25 +1300,25 @@ module MovieMasher
 			Type::Both
 		end
 	end
-	def self.__output_intermediate
-		output = Hash.new 
-		output[:type] = Type::Video
-		output[:video_format] = Intermediate::VideoFormat
-		output[:extension] = Intermediate::VideoExtension
-		#output[:video_codec] = 'libx264 -preset ultrafast -level 41'
-		#output[:extension] = 'mp4'
-		output[:video_bitrate] = '-vb 200M'
-		output
-		#final_output
-	end
+#	def self.__output_intermediate
+#		output = Hash.new 
+#		output[:type] = Type::Video
+#		output[:video_format] = Intermediate::VideoFormat
+#		output[:extension] = Intermediate::VideoExtension
+#		#output[:video_codec] = 'libx264 -preset ultrafast -level 41'
+#		#output[:extension] = 'mp4'
+#		output[:video_bitrate] = '-vb 200M'
+#		output
+#		#final_output
+#	end
 	def self.__path_job
-		raise "__path_job called with no active job" unless @@job
+		raise Error::State.new "__path_job called with no active job" unless @@job
 		path = configuration[:dir_temporary]
 		path += @@job[:identifier] + '/'
 		path
 	end
 	def self.__render_path
-		raise "__render_path called without active job and output" unless @@job and @@output
+		raise Error::State.new "__render_path called without active job and output" unless @@job and @@output
 		out_file = output_path true
 		out_file += '/' + @@output[:sequence] if Type::Sequence == @@output[:type]
 		out_file += '.' + @@output[:extension]
@@ -1350,8 +1360,6 @@ module MovieMasher
 		source[:host] = uri.host #=> "foo.com"
 		source[:path] = uri.path #=> "/posts"
 		source[:port] = uri.port
-		#uri.query #=> "id=30&limit=5"
-		#uri.fragment #=> "time=1305298413"
 		source
 	end
 	def self.__source_url input_source
@@ -1362,24 +1370,17 @@ module MovieMasher
 			else
 				url = "#{input_source[:type]}://"
 				case input_source[:type]
-				when Type::File
-					url += __directory_path_name_source input_source
 				when Type::Http, Type::Https
 					url += input_source[:host] if input_source[:host]
-					path = __directory_path_name_source input_source
-					url += '/' unless path.start_with? '/'
-					url += path
 				when Type::S3
 					url += "#{input_source[:bucket]}." if input_source[:bucket] and not input_source[:bucket].empty?
 					url += 's3'
 					url += "-#{input_source[:region]}" if input_source[:region] and not input_source[:region].empty?
 					url += '.amazonaws.com'
-					path = __directory_path_name_source input_source
-					url += '/' unless path.start_with? '/'
-					url += path
-				else
-					url = nil
 				end
+				path = __directory_path_name_source input_source
+				url += '/' unless path.start_with? '/'
+				url += path
 			end
 		end
 		url
@@ -1393,7 +1394,7 @@ module MovieMasher
 			# queue will be nil if their URL is not defined in config.yml
 			@@queue = sqs.queues[configuration[:queue_url]]
 		end
-		wait_time = configuration[:queue_receive_wait_seconds] || 0
+		wait_time = configuration[:queue_wait_time_seconds] || 0
 		if @@queue and run_seconds > (Time.now + wait_time - start) then
 			message = @@queue.receive_message(:wait_time_seconds => wait_time)
 			if message then
@@ -1402,13 +1403,14 @@ module MovieMasher
 					job = JSON.parse(message.body)
 					begin
 						job['id'] = message.id unless job['id']
-						File.open("#{configuration[:dir_queue]}/#{message.id}.json", 'w') { |file| file.write(job.to_json) } 
+						File.open("#{configuration[:dir_queue]}#{message.id}.json", 'w') { |file| file.write(job.to_json) } 
 						message.delete
 					rescue Exception => e
-						puts "job could not be written to: #{configuration[:dir_queue]}" 
+						__log_exception e
 					end
 				rescue Exception => e
-					puts "job could not be parsed as json: #{message.body}" 
+					__log_exception e
+					__log_transcoder(:error) { "job could not be parsed as json: #{message.body}"  }
 					message.delete
 				end
 			end
@@ -1423,23 +1425,16 @@ module MovieMasher
 	end
 	def self.__transfer_directory transfer
 		bits = Array.new
-		bits << '' # so it starts with slash when we join at end
 		bit = transfer[:directory]
-		if bit then
-			bit['/'] = '' if bit.start_with?('/') or bit.end_with?('/')
-			bits << bit
-		end
+		bits << Path.strip_slashes(bit) if bit
 		bit = transfer[:path]
-		if bit then
-			bit['/'] = '' if bit.start_with?('/') or bit.end_with?('/')
-			bits << bit
-		end
-		bits.join '/'
+		bits << Path.strip_slashes(bit) if bit
+		Path.add_slash_start(bits.join '/')
 	end
 	def self.__transfer_file mode, source_path, out_file
-		source_path = "/#{source_path}" unless source_path.start_with? '/'
+		source_path = Path.add_slash_start source_path
 		if File.exists? source_path
-			out_file = "/#{out_file}" unless out_file.start_with? '/'
+			out_file = Path.add_slash_start out_file
 			case mode
 			when Method::Symlink
 				FileUtils.symlink source_path, out_file
@@ -1448,13 +1443,10 @@ module MovieMasher
 			when Method::Move
 				FileUtils.move source_path, out_file
 			end
-			raise "could not #{mode} #{source_path} to #{out_file}" unless File.exists? out_file
-		else
-			raise 
+			raise Error::JobDestination.new "could not #{mode} #{source_path} to #{out_file}" unless File.exists? out_file
 		end
-	rescue 
-		puts "could not #{mode} #{source_path} to #{out_file}"
-		raise
+	rescue Exception => e
+		__log_exception e
 	end
 	def self.__transfer_file_from_data file
 		unless file.is_a? String then
@@ -1464,104 +1456,97 @@ module MovieMasher
 		end
 		file
 	end
-	def self.__transfer_file_destination file, destination
-		
-		# just use directory if we output a sequence
-		file = File.dirname(file) + '/' if file.include? '%'
-
-		destination_path = __directory_path_name_destination destination
-		destination_path = File.dirname(destination_path) + '/' if destination_path.include? '%'
-		case destination[:type]
-		when Type::File
-			FileUtils.mkdir_p(File.dirname(destination_path))
-			destination[:file] = destination_path
-			__transfer_file destination[:method], file, destination_path
-			@@job[:progress][:uploaded] += (File.directory?(file) ? Dir.entries(file).length : 1)
-			__trigger :progress
-		when Type::S3
-			files = Array.new
-			uploading_directory = File.directory?(file)
-			if uploading_directory then
-				file += '/' unless file.end_with? '/'
-				Dir.entries(file).each do |f|
-					f = file + f
-					files << f unless File.directory?(f)
-				end
-			else 
-				files << file
-			end
-			files.each do |file|
-				bucket_key = destination_path
-				bucket_key += File.basename(file) if bucket_key.end_with? '/'
-				mime_type = cache_file_mime file, true
-				bucket = __s3_bucket destination
-				#puts "destination: #{destination.inspect}"
-				#puts "bucket_key: #{bucket_key}"
-				bucket_object = bucket.objects[bucket_key]
-				options = Hash.new
-				options[:acl] = destination[:acl].to_sym if destination[:acl]
-				options[:content_type] = mime_type
-				#puts "write options: #{options}"
-				bucket_object.write(Pathname.new(file), options)
-				@@job[:progress][:uploaded] += 1
-				__trigger :progress
-			end
-		
-		when Type::Http, Type::Https
-			url = "#{destination[:type]}://#{destination[:host]}"
-			url += '/' unless destination_path.start_with? '/'
-			url += destination_path
-			uri = URI(url)
-			uri.port = destination[:port].to_i if destination[:port]
-			uploading_directory = File.directory?(file)
-			files = Array.new
-			if uploading_directory then
-				file += '/' unless file.end_with? '/'
-				Dir.entries(file).each do |f|
-					f = file + f
-					files << f unless File.directory?(f)
-				end
-			else 
-				files << file
-			end
-			files.each do |file|
-				file_name = File.basename file
-				mime_type = cache_file_mime file, true
-				io = File.open(file)
-				raise "could not open file #{file}" unless io
-				req = Net::HTTP::Post::Multipart.new(uri.path, "key" => destination_path, "file" => UploadIO.new(io, mime_type, file_name))
-				raise "could not construct request" unless req
-				req.basic_auth(destination[:user], destination[:pass]) if destination[:user] and destination[:pass]
-				res = Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
-					result = http.request(req)
-					__log(:debug) {"uploaded #{file}\n#{result.body}"}
-				end
-				io.close 
-				@@job[:progress][:uploaded] += 1
-				__trigger :progress
-			end
-		end
-	end
 	def self.__transfer_file_name transfer	
-		name = transfer[:name] || ''
+		name = Path.strip_slashes transfer[:name]
 		name += '.' + transfer[:extension] if transfer[:extension]
 		name
 	end
 	def self.__transfer_job_output
 		destination = @@output[:destination] || @@job[:destination]
-		raise "output #{output[:identifier]} has no destination" unless destination 
+		raise Error::JobInput.new "output has no destination" unless destination 
 		file = @@output[:rendering]
+		raise Error::Parameter.new "outpt rendering path with percent sign #{file}" if file.include? '%'
 		if File.exists?(file) then
 			if destination[:archive] || @@output[:archive] then
-				raise "TODO: __transfer_job_output needs support for archive option"
+				raise Error::Todo.new "__transfer_job_output needs support for archive option"
 			end
-			__transfer_file_destination file, destination
+			destination_path = __directory_path_name_destination destination
+			raise Error::Parameter.new "got invalid destination path with percent sign #{destination_path}" if destination_path.include? '%'
+			case destination[:type]
+			when Type::File
+				FileUtils.mkdir_p(File.dirname(destination_path))
+				__transfer_file destination[:method], file, destination_path
+				destination[:file] = destination_path # for spec tests to find file...
+				@@job[:progress][:uploaded] += (File.directory?(file) ? Dir.entries(file).length : 1)
+				__trigger :progress
+			when Type::S3
+				files = Array.new
+				uploading_directory = File.directory?(file)
+				if uploading_directory then
+					file = Path.add_slash_end file
+					Dir.entries(file).each do |f|
+						f = file + f
+						files << f unless File.directory?(f)
+					end
+				else 
+					files << file
+				end
+				files.each do |file|
+					mime_type = cache_file_mime(file, true) unless mime_type # assume all are the same
+					bucket_key = Path.strip_slash_start destination_path
+					bucket_key += Path.add_slash_start(File.basename(file)) if uploading_directory
+					bucket = __s3_bucket destination
+					bucket_object = bucket.objects[bucket_key]
+					options = Hash.new
+					options[:acl] = destination[:acl].to_sym if destination[:acl]
+					options[:content_type] = mime_type
+					__log_transcoder(:debug) { "s3 write to #{bucket_key}" }
+					bucket_object.write(Pathname.new(file), options)
+					@@job[:progress][:uploaded] += 1
+					__trigger :progress
+				end
+		
+			when Type::Http, Type::Https
+				url = "#{destination[:type]}://#{destination[:host]}"
+				url += Path.add_slash_start destination_path
+				uri = URI(url)
+				uri.port = destination[:port].to_i if destination[:port]
+				uploading_directory = File.directory?(file)
+				files = Array.new
+				if uploading_directory then
+					file += '/' unless file.end_with? '/'
+					Dir.entries(file).each do |f|
+						f = file + f
+						files << f unless File.directory?(f)
+					end
+				else 
+					files << file
+				end
+				files.each do |file|
+					file_name = File.basename file
+					mime_type = cache_file_mime file, true
+					io = File.open(file)
+					raise Error::Object.new "could not open file #{file}" unless io
+					req = Net::HTTP::Post::Multipart.new(uri.path, "key" => destination_path, "file" => UploadIO.new(io, mime_type, file_name))
+					raise Error::JobDestination.new "could not construct multipart POST request" unless req
+					req.basic_auth(destination[:user], destination[:pass]) if destination[:user] and destination[:pass]
+					res = Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
+						result = http.request(req)
+						__log(:debug) {"uploaded #{file}\n#{result.body}"}
+					end
+					io.close 
+					@@job[:progress][:uploaded] += 1
+					__trigger :progress
+				end
+			end
 		else
 			__log(:warn) { "file was not rendered #{file}" }
 			__log(:error) { "required output not rendered" } if @@output[:required]
 		end
 	end
 	def self.__trigger type
+		__log_transcoder(:debug) { "__trigger #{type.id2name}" }
+			
 		dont_trigger = false
 		unless :progress == type then
 			dont_trigger = @@job[:calledback][type]
@@ -1580,7 +1565,7 @@ module MovieMasher
 				if data then
 					if data.is_a?(Hash) or data.is_a?(Array) then
 						data = Marshal.load(Marshal.dump(data)) 
-						eval_recursively data, __eval_scope
+						Evaluate.recursively data, __eval_scope
 					else # only arrays and hashes supported
 						data = nil  
 					end
@@ -1612,7 +1597,7 @@ module MovieMasher
 			req = nil
 			if data and not data.empty? then
 				req = Net::HTTP::Post.new(uri)
-				__log(:debug) {"posting callback #{uri.to_s} #{data.to_json}"}
+				__log(:debug) {"posting callback #{uri.to_s}"}
 				req.body = data.to_json
 			else # simple get request
 				__log(:debug) {"getting callback #{uri.to_s}"}

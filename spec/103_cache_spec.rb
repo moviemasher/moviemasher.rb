@@ -4,7 +4,7 @@ require_relative 'helpers/spec_helper'
 describe File.basename(__FILE__) do
 	context "__cache_input" do
 		it "correctly saves cached file when source is file object" do
-			job = hash_keys_to_symbols!(spec_job_simple 'image_file')
+			job = hash_keys_to_symbols!(spec_job_from_files 'image_file')
 			input = job[:inputs].first
 			source = input[:source]
 			source[:directory] = __dir__

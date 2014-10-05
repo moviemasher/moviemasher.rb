@@ -9,7 +9,7 @@ describe File.basename(__FILE__) do
 			output[:fps] = 30
 			output[:dimensions] = '320x240'
 			backcolor = 'red'
-			expect(graph.command output).to eq 'color=color=blue:duration=2.0:size=320x240:rate=30'
+			expect(graph.command output).to eq 'color=color=blue:size=320x240:duration=2.0:rate=30'
 		end
 		it "returns correct filter string for simple video" do
 			graph = MovieMasher::Graph.new(Hash.new, MovieMasher::FrameRange.new(0, 2, 1), 'blue')
@@ -28,7 +28,7 @@ describe File.basename(__FILE__) do
 			MovieMasher::__init_input input
 			MovieMasher::__init_output output
 			graph.create_layer input
-			expect(graph.command output).to eq 'color=color=blue:duration=2.0:size=320x240:rate=30[layer0];movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30,setpts=expr=PTS-STARTPTS,scale=width=320:height=240[layer1];[layer0][layer1]overlay=x=0:y=0'
+			expect(graph.command output).to eq 'color=color=blue:size=320x240:duration=2.0:rate=30[layer0];movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30.0,setpts=expr=PTS-STARTPTS,scale=width=320.0:height=240.0[layer1];[layer0][layer1]overlay=x=0.0:y=0.0'
 		end
 	end
 	context "HashFilter#command" do
@@ -38,11 +38,11 @@ describe File.basename(__FILE__) do
 		end
 		it "returns correct filter string for simple evaluated filter" do
 			filter = MovieMasher::HashFilter.new 'filter', :param1 => 'value1', :param2 => 'value2'
-			expect(filter.command :value1 => 1, :value2 => 2).to eq 'filter=param1=1:param2=2'
+			expect(filter.command :value1 => 1, :value2 => 2).to eq 'filter=param1=1.0:param2=2.0'
 		end
 		it "returns correct filter string for evaluated filter" do
 			filter = MovieMasher::HashFilter.new 'filter', :param1 => 'value1+value2', :param2 => 'value2*2'
-			expect(filter.command :value1 => 1, :value2 => 2).to eq 'filter=param1=1+2:param2=2*2'
+			expect(filter.command :value1 => 1, :value2 => 2).to eq 'filter=param1=3.0:param2=4.0'
 		end
 	end
 	context "VideoLayer#command" do
@@ -72,7 +72,7 @@ describe File.basename(__FILE__) do
 			
 			
 			
-			expect(chain.command options).to eq 'movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30,setpts=expr=PTS-STARTPTS,crop=w=533:h=400:x=34:y=0,scale=w=320:h=240'
+			expect(chain.command options).to eq 'movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30.0,setpts=expr=PTS-STARTPTS,scale=w=320.0:h=240.0,setsar=sar=1.0:max=1.0'
 		end
 	end
 	

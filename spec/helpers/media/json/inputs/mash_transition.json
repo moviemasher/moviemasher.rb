@@ -5,114 +5,31 @@
 		"quantize": 10,
 		"backcolor": "red",
 		"label": "Transition",
-		"media": [{
-			"id": "cable",
-			"type": "image",
-			"source": "image/medium-1x1.png"
-		},
-		{
-			"id": "windmills",
-			"type": "image",
-			"source": "image/medium-4x3.png"
-		},
-		{
-			"label": "Crossfade",
-			"type": "transition",
-			"id": "com.moviemasher.transition.crossfade",
-			"to": {
-				"filters": [
-					{
-						"id": "fade",
-						"parameters": [
-							{
-								"name": "alpha",
-								"value":"1"
-							},
-							{
-								"name": "type",
-								"value":"in"
-							},
-							{
-								"name": "duration",
-								"value":"mm_duration"
-							}
-						]
-					}
-				]
+		"media": [
+			{
+				"id": "medium-1x1",
+				"type": "image",
+				"source": "image/medium-1x1.png"
+			},
+			{
+				"id": "medium-4x3",
+				"type": "image",
+				"source": "image/medium-4x3.png"
+			},
+			{
+				"id": "drummers",
+				"type": "video",
+				"duration": 10,
+				"source": "video/drummers.mov"
 			}
-		},
-		{
-			"label": "Overlay",
-			"type": "merger",
-			"id": "com.moviemasher.merger.overlay",
-			"properties": { 
-				"left": { "type": "pixel", "value": 0 },
-				"top": { "type": "pixel", "value": 0 }
-			},
-			"filters": [
-				{
-					"id": "overlay",
-					"parameters": [
-						{
-							"name": "x",
-							"value":"left*(mm_width-overlay_w)"
-						},{
-							"name": "y",
-							"value":"top*(mm_height-overlay_h)"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "drummers",
-			"type": "video",
-			"duration": 10,
-			"source": "video/drummers.mov"
-		},
-		{
-			"label": "Scale",
-			"type": "scaler",
-			"id": "com.moviemasher.scaler.scale",
-			"properties": { 
-				"scale": { "type": "size1", "value": 0.50 }
-			},
-			"filters": [
-				{
-					"id": "scale",
-					"parameters": [
-						{
-							"name": "width",
-							"value":"mm_horz(scale)"
-						},{
-							"name": "height",
-							"value":"mm_vert(scale)"
-						}
-					]
-				},{
-					"id": "setsar",
-					"parameters": [
-						{
-							"name": "sar",
-							"value":"1"
-						},{
-							"name": "max",
-							"value":"1"
-						}
-					]
-				}
-			]
-		}
 		],
-		"fonts": [],
-		"effects": [],
 		"tracks": {
 			"video": [
 				{
 					"type": "video",
 					"clips": [
 						{
-							"id": "cable",
+							"id": "medium-1x1",
 							"fill": "crop",
 							"frame": 0,
 							"length": 50
@@ -121,7 +38,7 @@
 							"frame": 20,
 							"length": 30
 						},{
-							"id": "windmills",
+							"id": "medium-4x3",
 							"fill": "crop",
 							"frame": 20,
 							"length": 50
@@ -136,7 +53,7 @@
 						"frame": 10,
 						"length": 20,
 						"merger": {
-							"id": "com.moviemasher.merger.overlay",
+							"id": "com.moviemasher.merger.constrained",
 							"left": 0.5,
 							"top": 0.5
 						},
@@ -152,7 +69,7 @@
 						"frame": 40,
 						"length": 20,
 						"merger": {
-							"id": "com.moviemasher.merger.overlay",
+							"id": "com.moviemasher.merger.constrained",
 							"left": 1,
 							"top": 0
 						},

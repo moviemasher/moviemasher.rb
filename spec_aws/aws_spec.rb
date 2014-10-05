@@ -11,7 +11,7 @@ describe File.basename(__FILE__) do
 	end
 	context "__cache_input" do
 		it "correctly saves cached file when source is s3 object" do
-			job = hash_keys_to_symbols!(spec_job_simple 'image_s3')
+			job = hash_keys_to_symbols!(spec_job_from_files 'image_s3')
 			input = job[:inputs].first
 			source = input[:source]
 			source_path = "#{__dir__}/../spec/#{source[:path]}"
@@ -29,7 +29,7 @@ describe File.basename(__FILE__) do
 		end
 		it "correctly saves cached file when source is url" do
 			# grab the file we saved to s3 via http 
-			job = hash_keys_to_symbols!(spec_job_simple 'image_url')
+			job = hash_keys_to_symbols!(spec_job_from_files 'image_url')
 			input = job[:inputs].first
 			input = MovieMasher.__init_input(input)
 			source = input[:source]

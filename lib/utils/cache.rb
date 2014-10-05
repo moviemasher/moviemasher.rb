@@ -41,7 +41,7 @@ def cache_file_type path, dont_set = nil
 	result
 end
 def cache_get_info file_path, type
-	raise "bad parameters #{file_path}, #{type}" unless type and file_path and (not (type.empty? or file_path.empty?))
+	raise Error::Parameter.new "false or empty file_path or type #{file_path}, #{type}" unless type and file_path and (not (type.empty? or file_path.empty?))
 	result = nil
 	if File.exists?(file_path) then
 		info_file = cache_meta_path type, file_path
