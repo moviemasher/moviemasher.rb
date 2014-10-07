@@ -1,5 +1,4 @@
 require './index'
-
 task :environment
 
 namespace :moviemasher do

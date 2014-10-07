@@ -63,8 +63,10 @@ end
 ModularMedia = Hash.new
 def spec_modular_media
 	if ModularMedia.empty?
-		js_dir = "#{__dir__}/../../../moviemasher.js/angular/module"
-		Dir["#{js_dir}/*/*.json"].each do |json_file|
+		js_dir = "#{__dir__}/../../../angular-moviemasher/app/module"
+		js_dirs = Dir["#{js_dir}/*/*.json"]
+		js_dirs += Dir["#{js_dir}/*/*/*.json"]
+		js_dirs.each do |json_file|
 			json_text = File.read json_file
 			json_text = "[#{json_text}]" unless json_text.start_with? '['
 			medias = JSON.parse(json_text)

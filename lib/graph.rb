@@ -1,23 +1,5 @@
 
 module MovieMasher	
-	class ColorLayer 
-		attr_writer :color, :duration, :size, :rate
-		def initialize duration = nil
-			raise Error::JobInput.new "ColorLayer with no duration" unless duration
-			@duration = duration
-		end
-		def command options
-			raise Error::JobInput.new "ColorLayer with no color #{options}" unless options[:mm_backcolor]
-			raise Error::JobInput.new "ColorLayer with no size #{options}" unless options[:mm_dimensions]
-			#raise Error::JobInput.new "ColorLayer with no rate #{options}" unless options[:mm_fps]
-			result = "color=color=#{options[:mm_backcolor]}:size=#{options[:mm_dimensions]}:duration=#{@duration}:rate=#{options[:mm_fps]}"
-			#result += ",drawbox=color=0x00000000:width=#{options[:mm_width]}:height=#{options[:mm_height]}"
-			result
-		end
-		def range
-			nil
-		end
-	end
 	class Graph
 		def duration
 			dur = @render_range.length_seconds
@@ -480,6 +462,9 @@ module MovieMasher
 							scope[:mm_in_h] = @@outsize['h'] 
 							#puts "<< #{scope[:mm_in_w]}x#{scope[:mm_in_h]} #{@id}"
 						end
+					else 
+						scope[:mm_in_w] = 'in_w'
+						scope[:mm_in_h] = 'in_h'
 					end
 				end
 				cmd = command_parameters(scope)
@@ -694,6 +679,30 @@ module MovieMasher
 			super
 		end
 	end
+	class ColorLayer < Filter
+		attr_writer :duration #, :color, :size, :rate
+		def initialize duration = nil
+			raise Error::JobInput.new "ColorLayer with no duration" unless duration
+			@duration = duration
+			super 'color', {}
+		end
+		def command options
+			raise Error::JobInput.new "ColorLayer with no color #{options}" unless options[:mm_backcolor]
+			raise Error::JobInput.new "ColorLayer with no size #{options}" unless options[:mm_dimensions]
+			#raise Error::JobInput.new "ColorLayer with no rate #{options}" unless options[:mm_fps]
+			@parameters[:color] = options[:mm_backcolor]
+			@parameters[:size] = options[:mm_dimensions]
+			@parameters[:duration] = @duration
+			@parameters[:rate] = options[:mm_fps]
+			@@outsize['w'] = options[:mm_width]
+			@@outsize['h'] = options[:mm_height]
+			super
+		end
+		def range
+			nil
+		end
+	end
+
 	class HashFilter < Filter
 		def command_parameters scope
 			cmds = Array.new

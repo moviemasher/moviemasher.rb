@@ -1596,7 +1596,8 @@ module MovieMasher
 			uri.port = destination[:port].to_i if destination[:port]
 			req = nil
 			if data and not data.empty? then
-				req = Net::HTTP::Post.new(uri)
+				headers = {"Content-Type" => "application/json"}
+				req = Net::HTTP::Post.new(uri, headers)
 				__log(:debug) {"posting callback #{uri.to_s}"}
 				req.body = data.to_json
 			else # simple get request
@@ -1604,6 +1605,7 @@ module MovieMasher
 				req = Net::HTTP::Get.new(uri)
 			end
 			req.basic_auth(destination[:user], destination[:pass]) if destination[:user] and destination[:pass]
+			
 			res = Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
 				result = http.request(req)
 				if '200' == result.code then

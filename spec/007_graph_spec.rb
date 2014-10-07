@@ -9,7 +9,7 @@ describe File.basename(__FILE__) do
 			output[:fps] = 30
 			output[:dimensions] = '320x240'
 			backcolor = 'red'
-			expect(graph.command output).to eq 'color=color=blue:size=320x240:duration=2.0:rate=30'
+			expect(graph.command output).to eq 'color=color=blue:size=320x240:duration=2.0:rate=30.0'
 		end
 		it "returns correct filter string for simple video" do
 			graph = MovieMasher::Graph.new(Hash.new, MovieMasher::FrameRange.new(0, 2, 1), 'blue')
@@ -28,7 +28,7 @@ describe File.basename(__FILE__) do
 			MovieMasher::__init_input input
 			MovieMasher::__init_output output
 			graph.create_layer input
-			expect(graph.command output).to eq 'color=color=blue:size=320x240:duration=2.0:rate=30[layer0];movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30.0,setpts=expr=PTS-STARTPTS,scale=width=320.0:height=240.0[layer1];[layer0][layer1]overlay=x=0.0:y=0.0'
+			expect(graph.command output).to eq 'color=color=blue:size=320x240:duration=2.0:rate=30.0[layer0];movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30.0,setpts=expr=PTS-STARTPTS,scale=width=320.0:height=240.0[layer1];[layer0][layer1]overlay=x=0.0:y=0.0'
 		end
 	end
 	context "HashFilter#command" do
