@@ -1,13 +1,12 @@
-ENV['RACK_ENV'] = 'test'
-
-# delete previous log directory
-FileUtils.rm_rf "#{__dir__}/../../log" if File.directory? "#{__dir__}/../../log"
-
-require_relative '../../index'
 require 'rspec'
 require 'rack/test'
-
 include RSpec::Matchers
+
+# delete previous log directory !!
+FileUtils.rm_rf "#{__dir__}/../../log" if File.directory? "#{__dir__}/../../log"
+
+require_relative '../../lib/moviemasher.rb'
+MovieMasher.configure "#{__dir__}/config.yml"
 
 def spec_file dir, name
 	JSON.parse(File.read("#{__dir__}/media/json/#{dir}/#{name}.json"))

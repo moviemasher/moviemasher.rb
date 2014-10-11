@@ -6,6 +6,9 @@ describe File.basename(__FILE__) do
 		it "correctly renders mash transition" do
 			spec_process_job_files 'mash_transition'
 		end
+		it "correctly renders mash pan" do
+			spec_process_job_files 'mash_pan'	
+		end
 		it "correctly renders mash overlays" do
 			spec_process_job_files 'mash_overlays'
 		end
@@ -21,9 +24,6 @@ describe File.basename(__FILE__) do
 		it "correctly renders mash text" do
 			spec_process_job_files 'mash_text'	
 			#expect(true).to be_false
-		end
-		it "correctly renders mash pan" do
-			spec_process_job_files 'mash_pan'	
 		end
 		it "correctly renders a video file" do
 			spec_process_job_files 'video_16x9'

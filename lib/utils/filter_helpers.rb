@@ -1,6 +1,6 @@
 module MovieMasher
 	class FilterHelpers
-		def self.mm_textfile param_string, scope
+		def self.mm_textfile param_string, mash, scope
 			params = __params_from_str param_string
 			text = params.join ','
 			job_path = MovieMasher.output_path
@@ -10,11 +10,11 @@ module MovieMasher
 			File.open(job_path, 'w') {|f| f.write(text) }
 			job_path
 		end
-		def self.rgb param_string, scope = nil
+		def self.rgb param_string, mash = nil, scope = nil
 			params = __params_from_str param_string
 			"0x%02x%02x%02x" % params
 		end
-		def self.rgba param_string, scope = nil
+		def self.rgba param_string, mash = nil, scope = nil
 			params = __params_from_str param_string
 			alpha = params.pop.to_f
 			result = "0x%02x%02x%02x" % params
@@ -22,35 +22,21 @@ module MovieMasher
 			MovieMasher.__log(:debug) { "rgba(#{param_string}) #{result}" }
 			result
 		end
-		def self.__font_from_scope font_id, scope
-			mash = scope[:mm_job_input][:source]
-			raise Error::JobInput.new "found no mash source in job input #{scope[:mm_job_input]}" unless mash
-			font = nil
-			mash[:media].each do |item|
-				if font_id == item[:id]
-					font = item
-					break
-				end
-			end
-			font = Defaults.module_for_type Type::Font unless font
-			raise Error::JobInput.new "found no font with id #{font_id} in mash #{mash}" unless font
-			font
-		end
-		def self.mm_fontfile param_string, scope
+		def self.mm_fontfile param_string, mash, scope
 			params = __params_from_str param_string
 			font_id = params.join ','
-			font = __font_from_scope font_id, scope
+			font = __font_from_scope font_id, mash, scope
 			raise Error::JobInput.new "font has not been cached #{font}" unless font[:cached_file]
 			font[:cached_file] 
 		end
-		def self.mm_fontfamily param_string, scope
+		def self.mm_fontfamily param_string, mash, scope
 			params = __params_from_str param_string
 			font_id = params.join ','
-			font = __font_from_scope font_id, scope
+			font = __font_from_scope font_id, mash, scope
 			raise Error::JobInput.new "font has no family" unless font[:family]
 			font[:family]
 		end
-		def self.mm_horz param_string, scope
+		def self.mm_horz param_string, mash, scope
 			params = __params_from_str param_string
 			value = params.join(',')
 			param_sym = value.to_sym
@@ -64,7 +50,7 @@ module MovieMasher
 			#MovieMasher.__log(:info) { "mm_horz(#{param_string}) = #{result}" }
 			result
 		end
-		def self.mm_vert param_string, scope
+		def self.mm_vert param_string, mash, scope
 			params = __params_from_str param_string
 			value = params.join(',')
 			param_sym = value.to_sym
@@ -77,7 +63,7 @@ module MovieMasher
 			end
 			#MovieMasher.__log(:info) { "mm_vert(#{param_string}) = #{result}" }
 		end
-		def self.mm_dir_horz param_string, scope
+		def self.mm_dir_horz param_string, mash, scope
 			raise Error::JobInput.new "mm_dir_horz no parameters #{param_string}" if param_string.empty?
 			params = __params_from_str param_string
 			#puts "mm_dir_horz #{param_string}} #{params.join ','}"
@@ -92,11 +78,11 @@ module MovieMasher
 				raise Error::JobInput.new "unknown direction #{params[0]}"
 			end
 		end
-		def self.mm_paren param_string, scope
+		def self.mm_paren param_string, mash, scope
 			params = __params_from_str param_string
 			"(#{params.join ','})"
 		end
-		def self.mm_dir_vert param_string, scope
+		def self.mm_dir_vert param_string, mash, scope
 			raise Error::JobInput.new "mm_dir_vert no parameters #{param_string}" if param_string.empty?
 			params = __params_from_str param_string
 			#puts "mm_dir_vert #{param_string} #{params.join ','}"
@@ -112,7 +98,7 @@ module MovieMasher
 			end
 			result
 		end
-		def self.mm_max param_string, scope
+		def self.mm_max param_string, mash, scope
 			params = __params_from_str param_string
 			all_ints = true
 			evaluated_all = true
@@ -133,7 +119,7 @@ module MovieMasher
 			end
 			p
 		end
-		def self.mm_min param_string, scope
+		def self.mm_min param_string, mash, scope
 			params = __params_from_str param_string
 			all_ints = true
 			evaluated_all = true
@@ -154,12 +140,17 @@ module MovieMasher
 			end
 			p
 		end
-		def self.mm_cmp param_string, scope
+		def self.mm_cmp param_string, mash, scope
 			params = __params_from_str param_string
 			#puts "mm_cmp (#{params[0].to_f} > #{params[1].to_f} ? #{params[2]} : #{params[3]}) = #{(params[0].to_f > params[1].to_f ? params[2] : params[3])}"
 			param_0 = Evaluate.equation params[0], true
 			param_1 = Evaluate.equation params[0], true
 			(param_0 > param_1 ? params[2] : params[3])
+		end
+		def self.__font_from_scope font_id, mash, scope
+			font = Mash.media_search Type::Font, font_id, mash
+			raise Error::JobInput.new "found no font with id #{font_id} in mash #{mash}" unless font
+			font
 		end
 		def self.__params_from_str param_string
 			param_string = param_string.split(',') if param_string.is_a?(String)

@@ -7,19 +7,19 @@
 		"label": "Pan",
 		"media": [
 			{
-				"id": "large-4x3",
+				"id": "medium-4x3",
 				"type": "image",
-				"source": "image/large-4x3.png"
+				"source": "image/medium-4x3.png"
 			},
 			{
-				"id": "large-16x9",
+				"id": "medium-16x9",
 				"type": "image",
-				"source": "image/large-16x9.png"
+				"source": "image/medium-16x9.png"
 			},
 			{
-				"id": "large-1x1",
+				"id": "medium-1x1",
 				"type": "image",
-				"source": "image/large-1x1.png"
+				"source": "image/medium-1x1.png"
 			}
 		],
 		"tracks": {
@@ -27,7 +27,7 @@
 				{
 					"type": "video",
 					"clips": [{
-						"id": "large-1x1",
+						"id": "medium-1x1",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,
@@ -36,7 +36,7 @@
 						"frame": 0,
 						"length": 55
 					},{
-						"id": "large-1x1",
+						"id": "medium-1x1",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,
@@ -45,7 +45,7 @@
 						"frame": 55,
 						"length": 55
 					},{
-						"id": "large-4x3",
+						"id": "medium-4x3",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,
@@ -54,7 +54,7 @@
 						"frame": 110,
 						"length": 55
 					},{
-						"id": "large-4x3",
+						"id": "medium-4x3",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,
@@ -63,7 +63,7 @@
 						"frame": 165,
 						"length": 55
 					},{
-						"id": "large-1x1",
+						"id": "medium-1x1",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,
@@ -72,7 +72,7 @@
 						"frame": 220,
 						"length": 55
 					},{
-						"id": "large-1x1",
+						"id": "medium-1x1",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,
@@ -81,7 +81,7 @@
 						"frame": 275,
 						"length": 55
 					},{
-						"id": "large-16x9",
+						"id": "medium-16x9",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,
@@ -90,7 +90,7 @@
 						"frame": 330,
 						"length": 55
 					},{
-						"id": "large-16x9",
+						"id": "medium-16x9",
 						"scaler": {
 							"id": "com.moviemasher.scaler.pan",
 							"scale": 1.25,

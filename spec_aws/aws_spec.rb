@@ -20,7 +20,7 @@ describe File.basename(__FILE__) do
 			bucket = s3.buckets[source[:bucket]]
 			path_name = Pathname.new("#{__dir__}/../spec/helpers/media/#{source[:path]}")
 			bucket.objects[source[:path]].write(path_name, :content_type => 'image/jpeg')
-			path = MovieMasher.__cache_input input
+			path = MovieMasher.__cache_input(input, MovieMasher.__input_url(input))
 			url = "#{source[:type]}://#{source[:bucket]}.s3.amazonaws.com/#{source[:path]}"
 			url = MovieMasher.__hash url
 			expect(path).to eq "#{MovieMasher.configuration[:dir_cache]}#{url}/cached#{File.extname(source[:path])}"
@@ -33,7 +33,7 @@ describe File.basename(__FILE__) do
 			input = job[:inputs].first
 			input = MovieMasher.__init_input(input)
 			source = input[:source]
-			path = MovieMasher.__cache_input input
+			path = MovieMasher.__cache_input(input, MovieMasher.__input_url(input))
 			url = MovieMasher.__hash source
 			expect(path).to eq "#{MovieMasher.configuration[:dir_cache]}#{url}/cached#{File.extname(source)}"
 			expect(File.exists? path).to be_true

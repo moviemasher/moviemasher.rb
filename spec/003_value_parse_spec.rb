@@ -2,7 +2,7 @@
 require_relative 'helpers/spec_helper'
 
 describe File.basename(__FILE__) do
-	let(:filter) { MovieMasher::Filter.new 'id'}
+	let(:filter) { MovieMasher::EvaluatedFilter.new({:id => 'id'}, {}, {}) }
 	context "__filter_parse_scope_value" do
 		it "returns value when sent just identifier: identifier" do
 			value = "identifier"

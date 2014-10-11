@@ -22,6 +22,7 @@ def flush_cache_kb(dir, kbs_to_flush)
 			next if ((bits.length < 2) || (! bits[1]) || bits[1].empty?)
 			next if (bits[1] == dir)
 			dir = bits[1]
+			next unless File.directory? dir
 			dir += '/' unless dir.end_with?('/')
 			cached = cache_get_info(dir, 'cached')
 			# try to determine from modification time

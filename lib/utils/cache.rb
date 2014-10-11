@@ -21,8 +21,12 @@ end
 def cache_file_mime path, dont_set = nil
 	mime = cache_get_info path, 'Content-Type'
 	if not mime then
-		ext = File.extname(path)
-		mime = Rack::Mime.mime_type(ext)
+		type = MIME::Types.of(path).first
+		if type 
+			mime = type.simplified
+		else
+			mime = Rack::Mime.mime_type(File.extname(path))
+		end
 		#puts "LOOKING UP MIME: #{ext} #{mime}"
 		cache_set_info(path, 'Content-Type', mime) if mime and not dont_set
 	end

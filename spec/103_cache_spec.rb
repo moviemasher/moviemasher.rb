@@ -8,7 +8,7 @@ describe File.basename(__FILE__) do
 			input = job[:inputs].first
 			source = input[:source]
 			source[:directory] = __dir__
-			path = MovieMasher.__cache_input input
+			path = MovieMasher.__cache_input(input, MovieMasher.__input_url(input))
 			url = "#{source[:type]}://#{__dir__}/#{source[:path]}/#{source[:name]}.#{source[:extension]}"
 			url = MovieMasher.__hash url
 			expect(path).to eq "#{MovieMasher.configuration[:dir_cache]}#{url}/cached.#{source[:extension]}"

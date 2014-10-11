@@ -40,6 +40,7 @@ module MovieMasher
 		# serious code errors
 		class Critical < Runtime; end
 		class Parameter < Critical; end
+		class Configuration < Critical; end
 		class Object < Critical; end
 		class State < Critical; end
 	end
