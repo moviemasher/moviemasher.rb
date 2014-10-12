@@ -4,12 +4,18 @@
 *Ruby library for mashing video, audio and images with filters in FFmpeg* 
 
 ---
-Use the API in moviemasher.rb to encode mashups of video, audio, and images in FFmpeg and Ecasound. It provides a simplified syntax for describing complex compositing, transforming and mixing operations.  
+Use moviemasher.rb to encode mashups of video, audio, and images in FFmpeg and Ecasound. It provides a simplified syntax for describing complex compositing, transforming and mixing operations.  
 
-### Usage
+### Basic Usage
 
-require 'moviemasher.rb'
-
+	require 'moviemasher'
+	job = { :inputs => [], :outputs => [], :destination = {} }
+	job[:inputs] << { :type => 'video', :source => 'video.mov', :trim => 5 }
+	job[:inputs] << { :type => 'image', :source => 'image.jpg', :length => 2 }
+	job[:inputs] << { :type => 'audio', :source => 'audio.mp3', :gain => 1.5 }
+	job[:outputs] << { :type => 'video', :name => 'output.mp4', :video_codec => 'libx264' }
+	job[:destination][:path] = '~/'
+	MovieMasher.process job
 
 ### Requirements
 - ffmpeg

@@ -1,2 +1,1 @@
-
-* * * * * cd /home/ec2-user/moviemasher.rb; /home/ec2-user/bin/rake moviemasher:process_queues >> /var/log/moviemasher/transcoder_cron.log 2>&1 &
+* * * * * cd /home/ec2-user/moviemasher.rb; export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin:/home/ec2-user/bin; rake moviemasher:process_queues >> /var/log/moviemasher/moviemasher.rb.cron.log 2>&1 &

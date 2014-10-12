@@ -1,29 +1,37 @@
-require './index'
 task :environment
 
 namespace :moviemasher do
-	desc "Initializes instance based on metadata"
+	desc "If json user data supplied then write it to config, otherwise start web server"
 	task :init do 
+		require 'json'
+		puts "#{Time.now} moviemasher:init called, checking for user data"
 		cmd = '/opt/aws/bin/ec2-metadata --user-data'
+		puts cmd
 		stdin, stdout, stderr = Open3.capture3 cmd
+		puts stdin
 		no_user_data = stdin.start_with?('user-data: not available')
 		if no_user_data then
-			cmd = '/sbin/service httpd start'
-			stdin, stdout, stderr = Open3.capture3 cmd
+			puts "#{Time.now} instance was started without user data, starting web server"
+			cmd = '/sbin/service httpd restart'
+			puts cmd
+			result = Open3.capture3 cmd
+			puts result
 		else
 			stdin['user-data: '] = ''
 			begin
 				parsed = JSON.parse stdin
 				user_data_file = "#{__dir__}/config/userdata.json"
 				File.open(user_data_file, 'w') { |f| f.write(stdin) }
-			rescue
-				puts "could not parse user-data as JSON"
+				puts "#{Time.now} saved JSON user data to #{user_data_file}"
+			rescue Exception => e
+				puts "#{Time.now} could not parse user data as JSON #{e.message}"
 				puts stdin
 			end
 		end
 	end
 	desc "Checks SQS and directory queues"
 	task :process_queues do
+		require './index'
 		puts "#{Time.now} moviemasher:process_queues called"
 		STDOUT.flush
 		stop_file = "#{MovieMasher.configuration[:dir_temporary]}disable_process_queues.txt"

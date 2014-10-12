@@ -28,7 +28,7 @@ module MovieMasher
 		outputs_file = (out_file and (not out_file.empty?) and ('/dev/null' != out_file))
 		whole_cmd = configuration["path_#{app}".to_sym]
 		whole_cmd += ' ' + cmd
-		FileUtils.mkdir_p(File.dirname(out_file)) if outputs_file
+		file_safe(File.dirname(out_file)) if outputs_file
 		whole_cmd += " #{out_file}" if out_file and not out_file.empty?
 		#puts whole_cmd
 		
@@ -104,10 +104,10 @@ module MovieMasher
 					# expand directory and create if needed
 					@@configuration[sym] = File.expand_path(@@configuration[sym])
 					@@configuration[sym] += '/' unless @@configuration[sym].end_with? '/'
-					FileUtils.mkdir_p(@@configuration[sym]) unless File.directory?(@@configuration[sym])
+					file_safe(@@configuration[sym]) unless File.directory?(@@configuration[sym])
 					if :dir_log == sym then
-						aws_config[:logger] = Logger.new "#{@@configuration[sym]}/aws.log"
-						@@log = Logger.new("#{@@configuration[sym]}/transcoder.log", 7, 1048576 * 100)
+						aws_config[:logger] = Logger.new "#{@@configuration[sym]}/moviemasher.rb.aws.log"
+						@@log = Logger.new("#{@@configuration[sym]}/moviemasher.rb.log", 7, 1048576 * 100)
 						log_level = (@@configuration[:log_level] || 'info').upcase
 						@@log.level = (Logger.const_defined?(log_level) ? Logger.const_get(log_level) : Logger::INFO)
 					end
@@ -118,6 +118,11 @@ module MovieMasher
 				AWS.config(aws_config) unless aws_config.empty?
 			end
 		end
+	end
+	def self.file_safe path = nil
+		options = Hash.new
+		options[:mode] = configuration[:chmod_dir_new] if configuration[:chmod_dir_new]
+		FileUtils.makedirs path, options
 	end
 	def self.formats
 		@@formats = app_exec('-formats') unless @@formats
@@ -142,7 +147,7 @@ module MovieMasher
 			@@job[:identifier] = UUID.new.generate
 			# create directory for job (uses identifier)
 			path_job = __path_job
-			FileUtils.mkdir_p path_job
+			file_safe path_job
 			# copy orig_job to job directory
 			File.open(path_job + 'job_orig.json', 'w') { |f| f.write(orig_job.to_json) }
 			# create log for job and set log level
@@ -252,7 +257,15 @@ module MovieMasher
 				@@job[:progress][:rendering] += @@job[:outputs].length * (video_graphs.length + audio_graphs.length)		
 				@@job[:outputs].each do |output|
 					@@output = output
-					__build_output video_graphs, audio_graphs
+					begin
+						__build_output video_graphs, audio_graphs
+					rescue Error::Job => e
+						__log(:warn) { "output failed to render: #{e.message}" }
+						raise if output[:required]
+					rescue Exception => e
+						__log_transcoder(:error) {"ERROR: #{e.message}"}
+						raise
+					end
 					@@job[:progress][:rendered] += 1 + (video_graphs.length + audio_graphs.length)
 					@@job[:progress][:uploading] += ((output[:fps].to_f * output[:duration]).floor - 1) if Type::Sequence == output[:type]
 					__trigger :progress
@@ -580,10 +593,12 @@ module MovieMasher
 		end
 	end
 	def self.__cache_source source, input_url, out_file
-		FileUtils.mkdir_p(File.dirname(out_file))
+		file_safe(File.dirname(out_file))
 		case source[:type]
 		when Type::File
-			source_path = __directory_path_name_source source
+			source_path = input_url.dup
+			source_path['file:'] = ''
+			#__directory_path_name_source source
 			if File.exists? source_path
 				__transfer_file(source[:method], source_path, out_file) 
 			else
@@ -1169,11 +1184,11 @@ module MovieMasher
 					end
 					base_url = __source_url base_source
 					if base_url then
-						
 						base_url = Path.add_slash_end base_url
 						url = Path.strip_slash_start url
 						url = URI.join(base_url, url).to_s
 					end
+					__log(:warn) { "using source #{base_source} #{base_url} #{url}" }
 				end
 			elsif input[:source].is_a?(Hash)  then
 				unless Type::Mash == input[:type] and Mash.hash?(input[:source]) then
@@ -1363,14 +1378,16 @@ module MovieMasher
 		if File.exists? source_path
 			out_file = Path.add_slash_start out_file
 			case mode
-			when Method::Symlink
-				FileUtils.symlink source_path, out_file
 			when Method::Copy
 				FileUtils.copy source_path, out_file
 			when Method::Move
 				FileUtils.move source_path, out_file
+			else # Method::Symlink
+				FileUtils.symlink source_path, out_file
 			end
 			raise Error::JobDestination.new "could not #{mode} #{source_path} to #{out_file}" unless File.exists? out_file
+		else 
+			
 		end
 	rescue Exception => e
 		__log_exception e
@@ -1395,7 +1412,7 @@ module MovieMasher
 			raise Error::Parameter.new "got invalid destination path with percent sign #{destination_path}" if destination_path.include? '%'
 			case destination[:type]
 			when Type::File
-				FileUtils.mkdir_p(File.dirname(destination_path))
+				file_safe(File.dirname(destination_path))
 				__transfer_file destination[:method], file, destination_path
 				destination[:file] = destination_path # for spec tests to find file...
 				@@job[:progress][:uploaded] += (File.directory?(file) ? Dir.entries(file).length : 1)
@@ -1503,7 +1520,7 @@ module MovieMasher
 		destination_path = Evaluate.value destination_path, __eval_scope
 		case destination[:type]
 		when Type::File
-			FileUtils.mkdir_p(File.dirname(destination_path))
+			file_safe(File.dirname(destination_path))
 			destination[:file] = destination_path
 			if data then
 				file = "#{__path_job}trigger_data-#{UUID.new.generate}.json"

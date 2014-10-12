@@ -3,10 +3,9 @@ module MovieMasher
 		def self.mm_textfile param_string, mash, scope
 			params = __params_from_str param_string
 			text = params.join ','
-			job_path = MovieMasher.output_path
-			FileUtils.mkdir_p(job_path)
-			job_path += UUID.new.generate
-			job_path += '.txt'
+			job_path = MovieMasher.output_path true
+			MovieMasher.file_safe job_path
+			job_path = "#{job_path}/#{UUID.new.generate}.txt"
 			File.open(job_path, 'w') {|f| f.write(text) }
 			job_path
 		end

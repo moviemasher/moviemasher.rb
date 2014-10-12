@@ -2,5 +2,5 @@ start on stopped rc RUNLEVEL=[S3]
 task
 script
  cd /home/ec2-user/moviemasher.rb
- /usr/bin/rake moviemasher:init >> /var/log/moviemasher/transcoder_init.log 2>&1 &
+ rake moviemasher:init >> /var/log/moviemasher/moviemasher.rb.init.log 2>&1 &
 end script
