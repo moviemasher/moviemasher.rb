@@ -1328,6 +1328,7 @@ module MovieMasher
 		url
 	end
 	def self.__sqs
+		require 'aws-sdk' unless defined? AWS
 		((configuration[:queue_region] and not configuration[:queue_region].empty?) ? AWS::SQS.new(:region => configuration[:queue_region]) : AWS::SQS.new)
 	end
 	def self.__sqs_request run_seconds, start
@@ -1359,6 +1360,7 @@ module MovieMasher
 		end
 	end
 	def self.__s3 source
+		require 'aws-sdk' unless defined? AWS
 		((source[:region] and not source[:region].empty?) ? AWS::S3.new(:region => source[:region]) : AWS::S3.new)
 	end
 	def self.__s3_bucket source
