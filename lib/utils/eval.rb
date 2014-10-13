@@ -9,7 +9,7 @@ module MovieMasher
 				evaluated = eval fs
 				evaluated = evaluated.to_f
 			rescue Exception => e
-				MovieMasher.__log(:warn) { "could not evaluate '#{fs}' #{e.message}" }
+				#MovieMasher.__log(:debug) { "could not evaluate '#{fs}' #{e.message}" }
 				raise Error::JobInput.new "evaluation of equation failed #{fs} #{e.message}" if raise_on_fail
 			end
 			evaluated

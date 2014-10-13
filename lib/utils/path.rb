@@ -1,6 +1,16 @@
 module MovieMasher
 	module Path
 		Slash = '/'
+		def self.concat s1, s2
+			s1 = '' unless s1
+			s2 = '' unless s2
+			if s1.empty? or s2.empty?
+				s1 += s2
+			else
+				s1 = add_slash_end(s1) + strip_slash_start(s2)
+			end
+			s1
+		end
 		def self.add_slashes s
 			add_slash_start(add_slash_end(s))
 		end

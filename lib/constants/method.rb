@@ -3,5 +3,8 @@ module MovieMasher
 		Symlink = 'symlink'
 		Move = 'move'
 		Copy = 'copy'
+		Get = 'get'
+		Post = 'post'
+		Put = 'put'
 	end
 end

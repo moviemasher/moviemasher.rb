@@ -6,6 +6,6 @@
 		"bucket": "test",
 		"path": "media/image",
 		"name": "small-1x1",
-		"extention": "png"
+		"extension": "png"
 	}
 }

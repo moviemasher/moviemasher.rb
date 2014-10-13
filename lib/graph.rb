@@ -51,24 +51,6 @@ module MovieMasher
 			end
 			layer
 		end
-		def command_range_trim input_range
-			#puts "command_range_trim #{input_range}"
-			cmd = ''
-			if @render_range and not input_range.is_equal_to_time_range?(@render_range) then
-				#puts "@render_range #{@render_range.inspect}"
-				#puts "input_range #{input_range.inspect}"
-				range_start = @render_range.get_seconds
-				range_end = @render_range.end_time.get_seconds
-				input_start = input_range.get_seconds
-				input_end = input_range.end_time.get_seconds
-				if range_start > input_start or range_end < input_end then
-					cmd += ",trim=duration=#{@render_range.length_seconds}"
-					cmd += ":start=#{Float.precision(range_start - input_start)}" if range_start > input_start
-					cmd += ',setpts=expr=PTS-STARTPTS'
-				end
-			end
-			cmd
-		end			
 	end
 	class MashGraph < Graph
 		def add_new_layer input
@@ -83,8 +65,7 @@ module MovieMasher
 			layer_length.times do |i|
 				layer = @layers[i]
 				cmd = layer.layer_command graph_scope, @job_output
-				#puts "no layer range #{layer}" unless layer.range
-				cmd += command_range_trim(layer.range) if layer.range
+				cmd += layer.command_trim @render_range, @job_output
 				cmd += "[#{@label_name}#{i}]" if 1 < layer_length
 				graph_cmds << cmd
 			end
@@ -134,8 +115,7 @@ module MovieMasher
 		def graph_command output
 			super
 			cmd = @layer.layer_command graph_scope, @job_output
-			#puts "no layer range #{@layer}" unless @layer.range
-			cmd += command_range_trim(@layer.range) if @layer.range
+			cmd += @layer.command_trim @render_range, @job_output
 			cmd
 		end
 		def initialize input # a video or image input
@@ -144,7 +124,6 @@ module MovieMasher
 		end
 	end
 	class InputLayer # all layers - RawInputLayer, ModuleInputLayer
-		attr_reader :range
 		attr_reader :input
 		def merger_command scope
 			@merger_chain.chain_command scope, @job_output
@@ -187,6 +166,26 @@ module MovieMasher
 			end
 			cmds.join(',')
 		end
+		def command_trim render_range, job_output
+			input_range = range
+			#puts "command_range_trim #{input_range}"
+			cmd = ''
+			if render_range and input_range and not input_range.is_equal_to_time_range?(render_range) then
+				#puts "render_range #{render_range.inspect}"
+				#puts "input_range #{input_range.inspect}"
+				range_start = render_range.get_seconds
+				range_end = render_range.end_time.get_seconds
+				input_start = input_range.get_seconds
+				input_end = input_range.end_time.get_seconds
+				if range_start > input_start or range_end < input_end then
+					cmd += ",trim=duration=#{render_range.length_seconds}"
+					cmd += ":start=#{Float.precision(range_start - input_start)}" if range_start > input_start
+					cmd += ',setpts=expr=PTS-STARTPTS'
+				end
+			end
+			cmd
+		end			
+
 		def range
 			(@input ? @input[:range] : nil)
 		end
@@ -252,17 +251,31 @@ module MovieMasher
 		end
 		def layer_command scope, job_output
 			fps = scope[:mm_fps]
-			duration = @input[:length_seconds] || __get_length
 			@fps_filter.hash[:fps] = fps
-			@trim_filter.hash[:duration] = duration
 			raise Error::JobInput.new "input has no cached_file #{@input.inspect}" unless @input[:cached_file]
 			file = @input[:cached_file]
 			output_type_is_not_video = (Type::Video != job_output[:type])
 			@fps_filter.disabled = output_type_is_not_video
 			@trim_filter.disabled = output_type_is_not_video
-			file = __video_from_image(file, duration, fps) unless output_type_is_not_video
+			if should_convert? job_output
+				duration = @input[:length_seconds] || __get_length
+				file = __video_from_image(file, duration, fps) unless output_type_is_not_video #
+			else
+				duration = scope[:mm_render_range].length_seconds
+			end
+			@trim_filter.hash[:duration] = duration
 			@movie_filter.hash[:filename] = file
 			super
+		end
+		def should_convert? job_output
+			false #(Type::Video == job_output[:type]) and '.png' != File.extname(@input[:cached_file])
+		end
+		def command_trim render_range, job_output
+			cmd = super
+			unless cmd.empty?
+				cmd = '' unless should_convert? job_output
+			end
+			cmd
 		end
 		def __video_from_image img_file, duration, fps
 			frame_time = FrameTime.new ((duration.to_f) * fps.to_f).round.to_i, fps
@@ -344,6 +357,9 @@ module MovieMasher
 		def layer_command scope, job_output
 			@filter.filter_command scope, job_output
 		end
+		def command_trim render_range, job_output
+			''
+		end
 		def range 
 			nil
 		end
@@ -420,7 +436,7 @@ module MovieMasher
 			@layer_chains[1][:scaler] = ModuleFilterChain.new(@input[:to][:scaler], @job_input, @input)
 			#puts "initialize_chains #{@job_input}" unless @job_input[:source]
 			mash_source = @job_input[:source]
-			puts mash_source unless mash_source[:backcolor]
+			#puts mash_source unless mash_source[:backcolor]
 			mash_color = mash_source[:backcolor]
 			@color_layer = ColorLayer.new(@input[:range].length_seconds, mash_color)
 		end

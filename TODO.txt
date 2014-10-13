@@ -1,5 +1,0 @@
-
-support freeze frame
-test local/sqs import/export
-support archiving of output
-support transparent images

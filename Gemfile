@@ -18,7 +18,7 @@ gem "rake", 			"= 10.3.2"
 #gem 'rspec', 			'= 2.14.1'
 
 # for spec tests in /spec_aws - see README there
-#gem 'redis', 			"3.0.1"
-#gem "hiredis", 		"0.4.5"
-#gem "httparty", 		"0.11.0"
-#gem "sinatra", 		"1.4.2"
+gem 'redis', 			"3.0.1"
+gem "hiredis", 		"0.4.5"
+gem "httparty", 		"0.11.0"
+gem "sinatra", 		"1.4.2"

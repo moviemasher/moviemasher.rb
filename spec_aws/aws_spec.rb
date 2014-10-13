@@ -14,16 +14,20 @@ describe File.basename(__FILE__) do
 			job = hash_keys_to_symbols!(spec_job_from_files 'image_s3')
 			input = job[:inputs].first
 			source = input[:source]
-			source_path = "#{__dir__}/../spec/#{source[:path]}"
+			source_frag = "#{source[:path]}/#{source[:name]}.#{source[:extension]}"
+			source_path = "#{__dir__}/../spec/#{source_frag}"
 			s3 = MovieMasher.__s3 source
 			s3.buckets.create source[:bucket] 
 			bucket = s3.buckets[source[:bucket]]
-			path_name = Pathname.new("#{__dir__}/../spec/helpers/media/#{source[:path]}")
-			bucket.objects[source[:path]].write(path_name, :content_type => 'image/jpeg')
+			path_name = Pathname.new("#{__dir__}/../spec/helpers/#{source_frag}")
+			path_name = File.expand_path path_name
+			#puts "path_name = #{path_name}"
+			expect(File.exists? path_name).to be_true
+			bucket.objects[source_frag].write(path_name, :content_type => 'image/jpeg')
 			path = MovieMasher.__cache_input(input, MovieMasher.__input_url(input))
-			url = "#{source[:type]}://#{source[:bucket]}.s3.amazonaws.com/#{source[:path]}"
+			url = "#{source[:type]}://#{source[:bucket]}.s3.amazonaws.com/#{source_frag}"
 			url = MovieMasher.__hash url
-			expect(path).to eq "#{MovieMasher.configuration[:dir_cache]}#{url}/cached#{File.extname(source[:path])}"
+			expect(path).to eq "#{MovieMasher.configuration[:dir_cache]}#{url}/cached#{File.extname(source_frag)}"
 			expect(File.exists? path).to be_true
 			expect(FileUtils.identical? path, path_name).to be_true
 		end

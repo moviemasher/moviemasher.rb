@@ -1,7 +1,7 @@
 cache_gigs: 3
 chmod_dir_new: 0775
 dir_cache: /tmp/moviemasher/cache
-dir_error: nil
+dir_error: 
 dir_log: /var/log/moviemasher
 dir_queue: /tmp/moviemasher/queue
 dir_temporary: /tmp/moviemasher/temporary
@@ -14,6 +14,6 @@ path_sox: sox
 path_wav2png: wav2png
 process_queues_seconds: 55
 queue_idle_timeout: 40
-queue_initial_timeout: nil
+queue_initial_timeout: 
 queue_visibility_timeout: 360
 queue_wait_time_seconds: 2

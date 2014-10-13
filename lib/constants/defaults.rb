@@ -38,6 +38,12 @@ module MovieMasher
 			scale_config[:parameters] << {:name => 'width', :value => 'mm_width'}
 			scale_config[:parameters] << {:name => 'height', :value => 'mm_height'}
 			config[:filters] << scale_config
+			setsar_config = Hash.new
+			setsar_config[:id] = 'setsar'
+			setsar_config[:parameters] = Array.new
+			setsar_config[:parameters] << {:name => 'sar', :value => '1'}
+			setsar_config[:parameters] << {:name => 'max', :value => '1'}
+			config[:filters] << setsar_config
 			config
 		end
 		def self.module_for_type type, media_id = nil

@@ -119,11 +119,7 @@ module MovieMasher
 				if ob_or_id
 					media_ob = media(mash, ob_or_id) if mash
 					media_ob = Defaults.module_for_type(type, ob_or_id) unless media_ob
-				else
-					puts "not ob_or_id"
 				end
-			else
-				puts "not type and ob_or_id "
 			end
 			media_ob
 		end

@@ -122,6 +122,7 @@ module MovieMasher
 	def self.file_safe path = nil
 		options = Hash.new
 		options[:mode] = configuration[:chmod_dir_new] if configuration[:chmod_dir_new]
+		#puts path
 		FileUtils.makedirs path, options
 	end
 	def self.formats
@@ -467,7 +468,8 @@ module MovieMasher
 						audio_cmd += ' -o'
 						audio_path = "#{output_path}audio-#{__hash audio_cmd}.#{Intermediate::AudioExtension}"
 						unless File.exists? audio_path then
-							app_exec(audio_cmd, audio_path, audio_duration, 5, 'ecasound')
+							#puts "precision #{@@output[:precision]} #{@@output}"
+							app_exec(audio_cmd, audio_path, audio_duration, @@output[:precision], 'ecasound')
 						end
 						data = Hash.new
 						data[:type] = Type::Audio
@@ -537,6 +539,8 @@ module MovieMasher
 			unless File.exists? cache_url_path then
 				source = input[:source]
 				if source.is_a? String then
+					#puts "source is string #{source}"
+					#puts "input_url = #{input_url}"
 					if source == input_url then
 						source = __source_from_uri(URI input_url)
 					else 
@@ -583,6 +587,7 @@ module MovieMasher
 			when Type::Video, Type::Audio, Type::Image, Type::Font
 				if __has_desired?(__input_has(media), outputs_desire) then
 					input_url = __input_url media, base_source, module_source
+					"puts __input_url #{input_url}"
 					if input_url then
 						@@job[:cached][input_url] = __cache_input media, input_url, base_source, module_source
 						@@job[:progress][:downloaded] += 1
@@ -597,16 +602,18 @@ module MovieMasher
 		case source[:type]
 		when Type::File
 			source_path = input_url.dup
-			source_path['file:'] = ''
-			#__directory_path_name_source source
+			source_path['file://'] = ''
+			source_path = File.expand_path source_path
 			if File.exists? source_path
 				__transfer_file(source[:method], source_path, out_file) 
 			else
 				__log(:error) { "file does not exist #{source_path}" }
 			end
 		when Type::Http, Type::Https
+			#puts "retrieving #{input_url}"
 			uri = URI input_url
 			uri.port = source[:port] if source[:port]
+			__transfer_uri_parameters uri, source
 			Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
 				request = Net::HTTP::Get.new uri
 				http.request request do |response|
@@ -617,7 +624,7 @@ module MovieMasher
 							end
 						end
 						mime_type = response['content-type']
-						puts "MIME: #{mime_type}"
+						#puts "MIME: #{mime_type}"
 						cache_set_info(out_file, 'Content-Type', mime_type) if mime_type
 					else
 						__log(:warn) {"got #{response.code} response code from #{input_url}"}
@@ -629,6 +636,7 @@ module MovieMasher
 			bucket_key = __directory_path_name_source source
     		object = bucket.objects[bucket_key]
     		if configuration[:s3_read_at_once] then
+    			#puts "reading from S3 #{bucket_key}"
     			object_read_data = object.read
 				File.open(out_file, 'wb') { |file| file.write(object_read_data) } if object_read_data
 			else
@@ -647,35 +655,22 @@ module MovieMasher
 	def self.__directory_path_name_source source
 		key = source[:key]
 		unless key
-			key = __transfer_directory source
-			file_name = __transfer_file_name source
-			unless file_name.empty?
-				key += '/' unless key.end_with? '/'
-				key += file_name
-			end
+			key = Path.concat __transfer_directory(source), __transfer_file_name(source)
 		end
 		key
 	end
 	def self.__directory_path_name_destination destination
 		key = destination[:key]
-		unless key 
+		unless key
 			file_name = __transfer_file_name destination
-			if file_name.empty?
-				paths = Array.new
-				file_name = Path.strip_slashes @@output[:path]
-				paths << file_name unless file_name.empty?
-				unless Type::Sequence == @@output[:type]
-					# otherwise we mean the directory, since name is something like 0%3d.jpg
-					file_name = __transfer_file_name(@@output)
-					paths << file_name unless file_name.empty?
+			if file_name.empty? # destination didn't supply on
+				file_name = @@output[:path]
+				if Type::Sequence != @@output[:type]
+					file_name = Path.concat file_name, __transfer_file_name(@@output)
 				end
-				file_name = paths.join '/'
 			end
-			key = __transfer_directory destination
-			unless file_name.empty?
-				key += '/' unless key.end_with? '/'
-				key += file_name
-			end
+			key = __transfer_directory(destination)
+			key = Path.concat key, file_name
 		end
 		Evaluate.value key, __eval_scope
 	end
@@ -775,6 +770,7 @@ module MovieMasher
 				all_ranges.each do |range|
 					graph = MashGraph.new input, range
 					clips = Mash.clips_in_range mash, range, Type::TrackVideo
+					__log_transcoder(:warn) { "#{clips.length} clip(s) at #{range.description}" }
 					if 0 < clips.length then
 						transition_layer = nil
 						transitioning_clips = Array.new
@@ -917,9 +913,34 @@ module MovieMasher
 			clip[k] = v unless clip[k]
 		end 
 	end
+	def self.__init_transfer transfer
+		__init_key transfer, :type, Type::File
+		__init_key transfer, :identifier, UUID.new.generate	
+	end
+	def self.__init_source source
+		__init_transfer source
+		if source 
+			case source[:type]
+			when Type::File
+				__init_key source, :method, Method::Symlink 
+			when Type::Http
+				__init_key source, :method, Method::Get 
+			end
+    	end
+	end
   	def self.__init_destination destination
-  		__init_key destination, :identifier, UUID.new.generate	
-  		__init_key(destination, :acl, 'public-read') if Type::S3 == destination[:type]
+ 		__init_transfer destination
+ 		if destination
+			case destination[:type]
+			when Type::S3
+				__init_key destination, :acl, 'public-read' 
+			when Type::File
+				__init_key destination, :method, Method::Move 
+			when Type::Http
+				__init_key destination, :method, Method::Post 
+				#puts "DESTINATION PARAMETERS #{destination[:parameters]}"
+			end
+    	end
   	end
 	def self.__init_input input
 		__init_time input, :trim
@@ -958,17 +979,19 @@ module MovieMasher
 				@@job[:cached] = Hash.new
 				@@job[:calledback] = Hash.new
 				@@job[:progress] = Hash.new() { 0 }
-				
 				@@job[:commands] = Array.new
-				
+				__init_source @@job[:base_source]
+				__init_source @@job[:module_source]
 				@@job[:inputs].each do |input| 
 					__init_input input
+					__init_source input[:base_source]
+					__init_source input[:module_source]
 				end
 				@@job[:callbacks].each do |callback|
 					__init_callback callback
 				end
 				found_destination = !! @@job[:destination]
-				__init_destination @@job[:destination] if found_destination
+				__init_destination @@job[:destination]
 				@@job[:outputs].each do |output| 
 					__init_output output
 					destination = output[:destination]
@@ -984,11 +1007,12 @@ module MovieMasher
 		else
 			__log(:error) { 'job inputs invalid' }
 		end
-		
 	end
 	def self.__init_key output, key, default
-		if ((not output[key]) or output[key].to_s.empty?)
-			output[key] = default 
+		if output
+			if ((not output[key]) or output[key].to_s.empty?)
+				output[key] = default 
+			end
 		end
 	end
 	def self.__init_mash mash
@@ -1028,21 +1052,29 @@ module MovieMasher
 		output[:filter_graphs][:video] = Array.new unless Type::Audio == output[:desires]
 		output[:filter_graphs][:audio] = Array.new unless Type::Video == output[:desires]
 		output[:identifier] = UUID.new.generate
+		
 		__init_key output, :name, ((Type::Sequence == output[:type]) ? '{output.sequence}' : output[:type])
+		unless output[:extension] # try to determine from name if it has one
+			output_name_extension = File.extname output[:name]
+			if output_name_extension and not output_name_extension.empty?
+				output[:name] = File.basename output[:name], output_name_extension
+				output[:extension] = output_name_extension.delete '.'
+			end
+		end
 		case output[:type]
 		when Type::Video
-			__init_key output, :backcolor, 'black'
+			__init_key output, :backcolor, 'rgb(0,0,0)'
 			__init_key output, :fps, 30
 			__init_key output, :precision, 1
-			__init_key output, :extension, 'flv'
-			__init_key output, :video_codec, 'flv'
+			__init_key output, :extension, 'mp4'
+			__init_key output, :video_codec, 'libx264 -preset ultrafast -level 41 -movflags faststart'
 			__init_key output, :audio_bitrate, 224
-			__init_key output, :audio_codec, 'libmp3lame'
+			__init_key output, :audio_codec, 'aac -strict experimental'
 			__init_key output, :dimensions, '512x288'
 			__init_key output, :fill, Mash::FillNone
 			__init_key output, :gain, Mash::VolumeNone
 			__init_key output, :audio_frequency, 44100
-			__init_key output, :video_bitrate, 4000
+			__init_key output, :video_bitrate, 2000
 		when Type::Sequence
 			__init_key output, :backcolor, 'black'
 			__init_key output, :fps, 10
@@ -1069,6 +1101,7 @@ module MovieMasher
 			output[:no_video] = true
 		when Type::Waveform
 			__init_key output, :backcolor, 'FFFFFF'
+			__init_key output, :precision, 0
 			__init_key output, :dimensions, '8000x32'
 			__init_key output, :forecolor, '000000'
 			__init_key output, :extension, 'png'
@@ -1184,9 +1217,17 @@ module MovieMasher
 					end
 					base_url = __source_url base_source
 					if base_url then
+						#puts "base_url = #{base_url}"
+						#puts "url = #{url}"
+						
 						base_url = Path.add_slash_end base_url
 						url = Path.strip_slash_start url
-						url = URI.join(base_url, url).to_s
+						if Type::File == base_source[:type]
+							url = Path.concat base_url, url
+						else
+							
+							url = URI.join(base_url, url).to_s
+						end
 					end
 					__log(:warn) { "using source #{base_source} #{base_url} #{url}" }
 				end
@@ -1200,7 +1241,9 @@ module MovieMasher
 	end
 	def self.__log type, &proc
 		if @@job then
-			@@job[:error] = proc.call if :error == type
+			if :error == type
+				@@job[:error] = proc.call 
+			end
 			@@job[:logger].send(type, &proc) 
 		end
 		__log_transcoder(type, &proc) if 'debug' == configuration[:log_level]
@@ -1320,9 +1363,7 @@ module MovieMasher
 					url += "-#{input_source[:region]}" if input_source[:region] and not input_source[:region].empty?
 					url += '.amazonaws.com'
 				end
-				path = __directory_path_name_source input_source
-				url += '/' unless path.start_with? '/'
-				url += path
+				url += Path.add_slash_start __directory_path_name_source(input_source)
 			end
 		end
 		url
@@ -1368,17 +1409,14 @@ module MovieMasher
 		s3.buckets[source[:bucket]]
 	end
 	def self.__transfer_directory transfer
-		bits = Array.new
-		bit = transfer[:directory]
-		bits << Path.strip_slashes(bit) if bit
-		bit = transfer[:path]
-		bits << Path.strip_slashes(bit) if bit
-		Path.add_slash_start(bits.join '/')
+		Path.concat transfer[:directory], transfer[:path]
 	end
 	def self.__transfer_file mode, source_path, out_file
-		source_path = Path.add_slash_start source_path
+		#source_path = Path.add_slash_start source_path
+		source_path = File.expand_path source_path
 		if File.exists? source_path
-			out_file = Path.add_slash_start out_file
+			#out_file = Path.add_slash_start out_file
+			out_file = File.expand_path out_file
 			case mode
 			when Method::Copy
 				FileUtils.copy source_path, out_file
@@ -1388,8 +1426,6 @@ module MovieMasher
 				FileUtils.symlink source_path, out_file
 			end
 			raise Error::JobDestination.new "could not #{mode} #{source_path} to #{out_file}" unless File.exists? out_file
-		else 
-			
 		end
 	rescue Exception => e
 		__log_exception e
@@ -1411,6 +1447,7 @@ module MovieMasher
 				raise Error::Todo.new "__transfer_job_output needs support for archive option"
 			end
 			destination_path = __directory_path_name_destination destination
+			#puts "destination_path = #{destination_path}"
 			raise Error::Parameter.new "got invalid destination path with percent sign #{destination_path}" if destination_path.include? '%'
 			case destination[:type]
 			when Type::File
@@ -1432,9 +1469,9 @@ module MovieMasher
 					files << file
 				end
 				files.each do |file|
-					
 					bucket_key = Path.strip_slash_start destination_path
-					bucket_key += Path.add_slash_start(File.basename(file)) if uploading_directory
+					bucket_key = Path.concat(bucket_key, File.basename(file)) if uploading_directory
+					#puts "bucket_key = #{bucket_key}"
 					bucket = __s3_bucket destination
 					bucket_object = bucket.objects[bucket_key]
 					options = Hash.new
@@ -1451,6 +1488,9 @@ module MovieMasher
 				url += Path.add_slash_start destination_path
 				uri = URI(url)
 				uri.port = destination[:port].to_i if destination[:port]
+				#puts "calling __transfer_uri_parameters for upload"
+				__transfer_uri_parameters uri, destination
+				#puts "called __transfer_uri_parameters #{uri}"
 				uploading_directory = File.directory?(file)
 				files = Array.new
 				if uploading_directory then
@@ -1466,13 +1506,17 @@ module MovieMasher
 					file_name = File.basename file
 					io = File.open(file)
 					raise Error::Object.new "could not open file #{file}" unless io
-					upload_io = UploadIO.new(io, mime_type, file_name)
-					req = Net::HTTP::Post::Multipart.new(uri.path, "key" => destination_path, "file" => upload_io)
+					upload_io = UploadIO.new(io, output_content_type, file_name)
+					req = Net::HTTP::Post::Multipart.new(uri, "key" => destination_path, "file" => upload_io)
 					raise Error::JobDestination.new "could not construct multipart POST request" unless req
 					req.basic_auth(destination[:user], destination[:pass]) if destination[:user] and destination[:pass]
 					res = Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
 						result = http.request(req)
-						__log(:debug) {"uploaded #{file}\n#{result.body}"}
+						if '200' == result.code then
+							__log(:debug) {"uploaded #{file} #{uri}\n#{result.body}"}
+						else
+							__log(:error) { "#{result.code} upload response #{result.body}" }
+						end
 					end
 					io.close 
 					@@job[:progress][:uploaded] += 1
@@ -1482,6 +1526,30 @@ module MovieMasher
 		else
 			__log(:warn) { "file was not rendered #{file}" }
 			__log(:error) { "required output not rendered" } if @@output[:required]
+		end
+	end
+	def self.__transfer_uri_parameters uri, destination
+		if uri and destination
+			parameters = destination[:parameters]
+			if parameters and not parameters.empty?
+				if parameters.is_a?(Hash) then
+					#puts "copying parameters #{parameters}"
+					parameters = Marshal.load(Marshal.dump(parameters)) 
+					#puts "evaluating parameters #{parameters}"
+					Evaluate.recursively parameters, __eval_scope
+					#puts "encoding parameters #{parameters}"
+					parameters = URI.encode_www_form(parameters)
+					#puts "setting query parameters #{parameters}"
+					uri.query = parameters
+					
+				else
+					#puts "parmeters is not a hash #{parameters}"
+				end
+			else 
+				#puts "EMPTY #{parameters} #{destination}"
+			end
+		else
+			#puts "EMPTY uri #{uri} or destination #{destination}"
 		end
 	end
 	def self.__trigger type
@@ -1531,11 +1599,10 @@ module MovieMasher
 			end
 		when Type::Http, Type::Https
 			url = "#{destination[:type]}://#{destination[:host]}"
-			path = __directory_path_name_source destination
-			url += '/' unless path.start_with? '/'
-			url += path
+			url += Path.add_slash_start __directory_path_name_source(destination)
 			uri = URI(url)
 			uri.port = destination[:port].to_i if destination[:port]
+			__transfer_uri_parameters uri, destination
 			req = nil
 			if data and not data.empty? then
 				headers = {"Content-Type" => "application/json"}
