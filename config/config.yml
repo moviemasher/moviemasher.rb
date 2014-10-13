@@ -1,17 +1,17 @@
 cache_gigs: 3
-chmod_dir_new: 0775
-dir_cache: /tmp/moviemasher/cache
-dir_error: 
-dir_log: /var/log/moviemasher
-dir_queue: /tmp/moviemasher/queue
-dir_temporary: /tmp/moviemasher/temporary
+chmod_directory_new: 0775
+cache_directory: /tmp/moviemasher/cache
+error_directory: 
+log_directory: /var/log/moviemasher
+queue_directory: /tmp/moviemasher/queue
+temporary_directory: /tmp/moviemasher/temporary
 keep_temporary_files: false
 log_level: info
-path_du: du
-path_ecasound: ecasound
-path_ffmpeg: ffmpeg
-path_sox: sox
-path_wav2png: wav2png
+du_path: du
+ecasound_path: ecasound
+ffmpeg_path: ffmpeg
+sox_path: sox
+wav2png_path: wav2png
 process_queues_seconds: 55
 queue_idle_timeout: 40
 queue_initial_timeout: 

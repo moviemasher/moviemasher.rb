@@ -29,7 +29,7 @@ describe File.basename(__FILE__) do
 #			key = destination[:path] + '/' + File.basename(file)
 #			data = bucket.objects[key].read
 #			expect(data).to_not be_nil
-#			tmp_file = File.expand_path "#{MovieMasher.configuration[:dir_temporary]}/s3-#{File.basename(file)}"
+#			tmp_file = File.expand_path "#{MovieMasher.configuration[:temporary_directory]}/s3-#{File.basename(file)}"
 #			File.open(tmp_file, 'w') { |file| file.write(data) }
 #			expect(FileUtils.identical? tmp_file, file).to be_true
 #		end
@@ -44,7 +44,7 @@ describe File.basename(__FILE__) do
 #			bucket = S3.buckets['test']
 #			data = bucket.objects[key].read
 #			expect(data).to_not be_nil
-#			tmp_file = File.expand_path "#{MovieMasher.configuration[:dir_temporary]}/http-#{File.basename(file)}"
+#			tmp_file = File.expand_path "#{MovieMasher.configuration[:temporary_directory]}/http-#{File.basename(file)}"
 #			File.open(tmp_file, 'w') { |file| file.write(data) }
 #			expect(FileUtils.identical? tmp_file, file).to be_true
 #		end

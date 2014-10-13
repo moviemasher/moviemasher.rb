@@ -27,7 +27,7 @@ describe File.basename(__FILE__) do
 			path = MovieMasher.__cache_input(input, MovieMasher.__input_url(input))
 			url = "#{source[:type]}://#{source[:bucket]}.s3.amazonaws.com/#{source_frag}"
 			url = MovieMasher.__hash url
-			expect(path).to eq "#{MovieMasher.configuration[:dir_cache]}#{url}/cached#{File.extname(source_frag)}"
+			expect(path).to eq "#{MovieMasher.configuration[:cache_directory]}#{url}/cached#{File.extname(source_frag)}"
 			expect(File.exists? path).to be_true
 			expect(FileUtils.identical? path, path_name).to be_true
 		end
@@ -39,7 +39,7 @@ describe File.basename(__FILE__) do
 			source = input[:source]
 			path = MovieMasher.__cache_input(input, MovieMasher.__input_url(input))
 			url = MovieMasher.__hash source
-			expect(path).to eq "#{MovieMasher.configuration[:dir_cache]}#{url}/cached#{File.extname(source)}"
+			expect(path).to eq "#{MovieMasher.configuration[:cache_directory]}#{url}/cached#{File.extname(source)}"
 			expect(File.exists? path).to be_true
 		end
 	end

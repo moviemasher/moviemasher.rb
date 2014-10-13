@@ -14,9 +14,9 @@ A job specifies multiple media inputs to be encoded together into one or more ou
 - **add** titling as an effect or theme with custom fonts
 - **transfer** encoded files to a web host or to S3 with aws-sdk
  
- Media inputs can reside on the local drive, a remote web host or in Amazon's S3 service. Likewise, encoded outputs can be placed on the local drive, a remote web host or in S3. Remote transfers can be authenticated, and if the local host is an EC2 instance then its role can be used for S3 transfers (or any mechanism supported by aws-sdk).
-
 The project includes a rake task that can be routinelly called to watch a folder for job description files, or to poll an SQS queue as well. There are also configuration files for supporting applications like cron, logrotate and upstart, though these are optimized for AWS LINUX deployment and probably need tweaking for your system.
+
+ Media inputs can reside on the local drive, a remote web host or in Amazon's S3 service. Likewise, encoded outputs can be placed on the local drive, a remote web host or in S3. Remote transfers can be authenticated, and if the local host is an EC2 instance then its role can be used for S3 transfers (or any mechanism supported by aws-sdk).
 
 
 ### Basic Usage

@@ -26,7 +26,7 @@ module MovieMasher
 	def self.app_exec(cmd, out_file = '', duration = nil, precision = 1, app = 'ffmpeg')
 		#puts "app_exec #{app}"
 		outputs_file = (out_file and (not out_file.empty?) and ('/dev/null' != out_file))
-		whole_cmd = configuration["path_#{app}".to_sym]
+		whole_cmd = configuration["#{app}_path".to_sym]
 		whole_cmd += ' ' + cmd
 		file_safe(File.dirname(out_file)) if outputs_file
 		whole_cmd += " #{out_file}" if out_file and not out_file.empty?
@@ -92,10 +92,10 @@ module MovieMasher
 					aws_config[key_str.to_sym] = v
 				end
 			end
-			[:dir_cache, :dir_error, :dir_log, :dir_queue, :dir_temporary].each do |sym|
+			[:cache_directory, :error_directory, :log_directory, :queue_directory, :temporary_directory].each do |sym|
 				is_defined = @@configuration[sym] and not @@configuration[sym].empty?
 				case sym
-				when :dir_error, :dir_log 
+				when :error_directory, :log_directory 
 					# optional
 				else
 					raise Error::Configuration.new "#{sym.id2name} must be defined" unless is_defined
@@ -105,7 +105,7 @@ module MovieMasher
 					@@configuration[sym] = File.expand_path(@@configuration[sym])
 					@@configuration[sym] += '/' unless @@configuration[sym].end_with? '/'
 					file_safe(@@configuration[sym]) unless File.directory?(@@configuration[sym])
-					if :dir_log == sym then
+					if :log_directory == sym then
 						aws_config[:logger] = Logger.new "#{@@configuration[sym]}/moviemasher.rb.aws.log"
 						@@log = Logger.new("#{@@configuration[sym]}/moviemasher.rb.log", 7, 1048576 * 100)
 						log_level = (@@configuration[:log_level] || 'info').upcase
@@ -121,7 +121,7 @@ module MovieMasher
 	end
 	def self.file_safe path = nil
 		options = Hash.new
-		options[:mode] = configuration[:chmod_dir_new] if configuration[:chmod_dir_new]
+		options[:mode] = configuration[:chmod_directory_new] if configuration[:chmod_directory_new]
 		#puts path
 		FileUtils.makedirs path, options
 	end
@@ -302,8 +302,8 @@ module MovieMasher
 		begin
 			rescued_exception = __log_exception(rescued_exception) if rescued_exception
 			job_path = path_job
-			if @@job[:error] and configuration[:dir_error] and not configuration[:dir_error].empty? then
-				FileUtils.mv job_path, configuration[:dir_error] + File.basename(job_path)
+			if @@job[:error] and configuration[:error_directory] and not configuration[:error_directory].empty? then
+				FileUtils.mv job_path, configuration[:error_directory] + File.basename(job_path)
 			else
 				FileUtils.rm_r job_path unless configuration[:keep_temporary_files]
 			end
@@ -314,21 +314,21 @@ module MovieMasher
 			@@job = nil
 		end
 		rescued_exception = __log_exception(rescued_exception) if rescued_exception
-		flush_cache_files configuration[:dir_cache], configuration[:cache_gigs]
+		flush_cache_files configuration[:cache_directory], configuration[:cache_gigs]
 		job
 	end
 	def self.process_queues
 		run_seconds = configuration[:process_queues_seconds]
 		start = Time.now
 		oldest_file = nil
-		working_file = "#{configuration[:dir_queue]}working.json"
+		working_file = "#{configuration[:queue_directory]}working.json"
 		while run_seconds > (Time.now - start)
 			if File.exists? working_file
 				# if this process didn't create it, we must have crashed on it in a previous run
 				__log_transcoder(:error) { "deleting previously active job:\n#{File.read working_file}" } unless oldest_file
 				File.delete working_file
 			end
-			oldest_file = Dir["#{configuration[:dir_queue]}*.json"].sort_by{ |f| File.mtime(f) }.first
+			oldest_file = Dir["#{configuration[:queue_directory]}*.json"].sort_by{ |f| File.mtime(f) }.first
 			if oldest_file then
 				__log_transcoder(:info) { "started #{oldest_file}" }
 				File.rename oldest_file, working_file
@@ -650,7 +650,7 @@ module MovieMasher
 		out_file
 	end
 	def self.__cache_url_path url
-		configuration[:dir_cache] + __hash(url) + '/cached' + File.extname(url)
+		configuration[:cache_directory] + __hash(url) + '/cached' + File.extname(url)
 	end
 	def self.__directory_path_name_source source
 		key = source[:key]
@@ -1298,7 +1298,7 @@ module MovieMasher
 	end
 	def self.__path_job
 		raise Error::State.new "__path_job called with no active job" unless @@job
-		path = configuration[:dir_temporary]
+		path = configuration[:temporary_directory]
 		path += @@job[:identifier] + '/'
 		path
 	end
@@ -1387,7 +1387,7 @@ module MovieMasher
 					job = JSON.parse(message.body)
 					begin
 						job['id'] = message.id unless job['id']
-						File.open("#{configuration[:dir_queue]}#{message.id}.json", 'w') { |file| file.write(job.to_json) } 
+						File.open("#{configuration[:queue_directory]}#{message.id}.json", 'w') { |file| file.write(job.to_json) } 
 						message.delete
 					rescue Exception => e
 						__log_exception e
