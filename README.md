@@ -84,4 +84,4 @@ The visual composition of inputs is controlled by *effect, scaler* and *merger* 
 - archiving of outputs not yet supported
 - freeze frame not yet supported
 - audio still being done in Ecasound
-
+- due to size considerations, video files not included in spec tests (eventually tests will generate their own to work with)
