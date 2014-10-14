@@ -26,7 +26,7 @@ describe File.basename(__FILE__) do
 			MovieMasher::__init_input input
 			MovieMasher::__init_output output
 			graph.add_new_layer input
-			expect(graph.graph_command output).to eq 'color=color=blue:duration=2.0:size=320x240:rate=30[layer0];movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30,setpts=expr=PTS-STARTPTS,scale=width=320.0:height=240.0,trim=duration=2.0:start=3.0,setpts=expr=PTS-STARTPTS[layer1];[layer0][layer1]overlay=x=0.0:y=0.0'
+			expect(graph.graph_command output).to eq 'color=color=blue:duration=2.0:size=320x240:rate=30[layer0];movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30,setpts=expr=PTS-STARTPTS,scale=width=320.0:height=240.0,setsar=sar=1.0:max=1.0,trim=duration=2.0:start=3.0,setpts=expr=PTS-STARTPTS[layer1];[layer0][layer1]overlay=x=0.0:y=0.0'
 		end
 	end
 	context "EvaluatedFilter#filter_command" do

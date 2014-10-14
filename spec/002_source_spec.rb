@@ -15,11 +15,11 @@ describe File.basename(__FILE__) do
 		end
 		it "correctly returns file url for file source with just path" do
 			source = {:type => 'file', :path => 'PATH'}
-			expect(MovieMasher.__source_url source).to eq "#{source[:type]}://#{source[:path]}"
+			expect(MovieMasher.__source_url source).to eq "#{source[:type]}:///#{source[:path]}"
 		end
 		it "correctly returns file url for file source with path, name and extension" do
 			source = {:type => 'file', :path => 'PATH', :name => 'NAME', :extension => 'EXTENSION'}
-			expect(MovieMasher.__source_url source).to eq "#{source[:type]}://#{source[:path]}/#{source[:name]}.#{source[:extension]}"
+			expect(MovieMasher.__source_url source).to eq "#{source[:type]}:///#{source[:path]}/#{source[:name]}.#{source[:extension]}"
 		end
 	end
 	context "__input_url" do
