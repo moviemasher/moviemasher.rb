@@ -23,69 +23,67 @@
 				"source": "video/drummers.mov"
 			}
 		],
-		"tracks": {
-			"video": [
-				{
-					"type": "video",
-					"clips": [
-						{
-							"id": "medium-1x1",
-							"fill": "crop",
-							"frame": 0,
-							"length": 50
-						},{
-							"id": "com.moviemasher.transition.crossfade",
-							"frame": 20,
-							"length": 30
-						},{
-							"id": "medium-4x3",
-							"fill": "crop",
-							"frame": 20,
-							"length": 50
-						}
-					]
+		"video": [
+			{
+				"type": "video",
+				"clips": [
+					{
+						"id": "medium-1x1",
+						"fill": "crop",
+						"frame": 0,
+						"frames": 50
+					},{
+						"id": "com.moviemasher.transition.crossfade",
+						"frame": 20,
+						"frames": 30
+					},{
+						"id": "medium-4x3",
+						"fill": "crop",
+						"frame": 20,
+						"frames": 50
+					}
+				]
+			},
+			{
+				"type": "video",
+				"clips": [{
+					"id": "drummers",
+					"effects": [],
+					"frame": 10,
+					"frames": 20,
+					"merger": {
+						"id": "com.moviemasher.merger.constrained",
+						"left": 0.5,
+						"top": 0.5
+					},
+					"scaler": {
+						"id": "com.moviemasher.scaler.scale",
+						"scale": 0.5
+					}
 				},
 				{
-					"type": "video",
-					"clips": [{
-						"id": "drummers",
-						"effects": [],
-						"frame": 10,
-						"length": 20,
-						"merger": {
-							"id": "com.moviemasher.merger.constrained",
-							"left": 0.5,
-							"top": 0.5
-						},
-						"scaler": {
-							"id": "com.moviemasher.scaler.scale",
-							"scale": 0.5
-						}
+					"id": "drummers",
+					"effects": [],
+					"trim": 30,
+					"frame": 40,
+					"frames": 20,
+					"merger": {
+						"id": "com.moviemasher.merger.constrained",
+						"left": 1,
+						"top": 0
 					},
-					{
-						"id": "drummers",
-						"effects": [],
-						"trim": 30,
-						"frame": 40,
-						"length": 20,
-						"merger": {
-							"id": "com.moviemasher.merger.constrained",
-							"left": 1,
-							"top": 0
-						},
-						"scaler": {
-							"id": "com.moviemasher.scaler.scale",
-							"scale": 0.5
-						}
-					}]
-				}
-			],
-			"audio": [
-				{
-					"type": "audio",
-					"clips": []
-				}
-			]
-		}
+					"scaler": {
+						"id": "com.moviemasher.scaler.scale",
+						"scale": 0.5
+					}
+				}]
+			}
+		],
+		"audio": [
+			{
+				"type": "audio",
+				"clips": []
+			}
+		]
 	}
 }

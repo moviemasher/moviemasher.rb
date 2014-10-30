@@ -7,6 +7,6 @@
 		"path": "media/image",
 		"name": "large-3x4",
 		"extension": "png",
-		"method": "symlink"
+		"method": "copy"
 	}
 }

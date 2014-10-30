@@ -1,5 +1,8 @@
 task :environment
 
+PathUser = "#{__dir__}/../config/userdata.json"
+PathConfig = "#{__dir__}/../config/config.yml"
+
 namespace :moviemasher do
 	desc "If json user data supplied then write it to config, otherwise start web server"
 	task :init do 
@@ -20,7 +23,7 @@ namespace :moviemasher do
 			stdin['user-data: '] = ''
 			begin
 				parsed = JSON.parse stdin
-				user_data_file = "#{__dir__}/config/userdata.json"
+				user_data_file = PathUser
 				File.open(user_data_file, 'w') { |f| f.write(stdin) }
 				puts "#{Time.now} saved JSON user data to #{user_data_file}"
 			rescue Exception => e
@@ -31,10 +34,12 @@ namespace :moviemasher do
 	end
 	desc "Checks SQS and directory queues"
 	task :process_queues do
-		require './index'
+		require_relative 'lib/moviemasher'
+		MovieMasher.configure PathConfig
+		MovieMasher.configure PathUser
 		puts "#{Time.now} moviemasher:process_queues called"
 		STDOUT.flush
-		stop_file = "#{MovieMasher.configuration[:temporary_directory]}disable_process_queues.txt"
+		stop_file = "#{MovieMasher.configuration[:render_directory]}disable_process_queues.txt"
 		if not File.exists? stop_file then
 			begin
 				File.open(stop_file, "w") {}
@@ -43,7 +48,7 @@ namespace :moviemasher do
 				puts "#{Time.now} moviemasher:process_queues caught #{e.message}"
 				raise
 			ensure
-				puts "#{Time.now} moviemasher:process_queues completed without exception"
+				puts "#{Time.now} moviemasher:process_queues completed"
 				File.delete(stop_file) if File.exists?(stop_file)
 			end
 		else

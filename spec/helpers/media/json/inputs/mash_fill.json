@@ -14,49 +14,47 @@
 			"type": "image",
 			"source": "image/large-3x4.png"
 		}],
-		"tracks": {
-			"video": [
-				{
-					"type": "video",
-					"clips": [{
-						"id": "large-4x3",
-						"fill": "scale",
-						"frame": 0,
-						"length": 20
-					},{
-						"id": "large-4x3",
-						"fill": "crop",
-						"frame": 20,
-						"length": 20
-					},{
-						"id": "large-4x3",
-						"fill": "stretch",
-						"frame": 40,
-						"length": 20
-					},{
-						"id": "large-3x4",
-						"fill": "scale",
-						"frame": 60,
-						"length": 20
-					},{
-						"id": "large-3x4",
-						"fill": "crop",
-						"frame": 80,
-						"length": 20
-					},{
-						"id": "large-3x4",
-						"fill": "stretch",
-						"frame": 100,
-						"length": 20
-					}]
-				}
-			],
-			"audio": [
-				{
-					"type": "audio",
-					"clips": []
-				}
-			]
-		}
+		"video": [
+			{
+				"type": "video",
+				"clips": [{
+					"id": "large-4x3",
+					"fill": "scale",
+					"frame": 0,
+					"frames": 20
+				},{
+					"id": "large-4x3",
+					"fill": "crop",
+					"frame": 20,
+					"frames": 20
+				},{
+					"id": "large-4x3",
+					"fill": "stretch",
+					"frame": 40,
+					"frames": 20
+				},{
+					"id": "large-3x4",
+					"fill": "scale",
+					"frame": 60,
+					"frames": 20
+				},{
+					"id": "large-3x4",
+					"fill": "crop",
+					"frame": 80,
+					"frames": 20
+				},{
+					"id": "large-3x4",
+					"fill": "stretch",
+					"frame": 100,
+					"frames": 20
+				}]
+			}
+		],
+		"audio": [
+			{
+				"type": "audio",
+				"clips": []
+			}
+		]
 	}
 }

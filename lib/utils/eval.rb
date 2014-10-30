@@ -9,16 +9,73 @@ module MovieMasher
 				evaluated = eval fs
 				evaluated = evaluated.to_f
 			rescue Exception => e
-				#MovieMasher.__log(:debug) { "could not evaluate '#{fs}' #{e.message}" }
 				raise Error::JobInput.new "evaluation of equation failed #{fs} #{e.message}" if raise_on_fail
 			end
 			evaluated
 		end
-		def self.split(s)
+		def self.object data, scope = nil
+			scope = Hash.new unless scope
+			keys = (data.is_a?(Array) ? (0..(data.length-1)) : data.keys)
+			values = (data.is_a?(Array) ? data : data.values)
+			keys.each do |k|
+				v = data[k]
+				if __is_eval_object? v
+					object v, scope
+				else
+					data[k] = value v.to_s, scope
+				end
+			end
+		end
+		def self.value v, scope
+			split_value = __split v
+			if 1 < split_value.length then # otherwise there are no curly braces
+				v = ''
+				is_static = true
+				split_value.each do |bit|
+					if is_static then
+						v += bit
+					else
+						split_bit = bit.split '.'
+						scope_child = __scope_target split_bit, scope # shifts off of split_bit
+						evaled = nil
+						if scope_child 
+							if __is_eval_object? scope_child
+								evaled = __value(scope_child, split_bit)
+							elsif scope_child.is_a? Proc
+								evaled = scope_child.call
+							else 
+								evaled = scope_child
+							end
+						end
+						if __is_eval_object? evaled
+							v = evaled
+						else
+							v = "#{v}#{evaled}"
+						end
+					end
+					is_static = ! is_static
+				end
+			end
+			v
+		end
+		private
+		def self.__is_eval_object? object
+			(object.is_a?(Hash) or object.is_a?(Array) or object.is_a?(JobHash))
+		end
+		def self.__scope_target split_bit, scope
+			scope_child = nil
+			while not split_bit.empty?
+				first_key = split_bit.shift
+				scope_child = scope[first_key.to_sym]
+				break if scope_child
+			end
+			scope_child
+		end
+		def self.__split(s)
 			s.to_s.split(/{([^}]*)}/)
 		end
-		def self.path ob, path_array
-			value = ob
+		def self.__value ob, path_array
+			v = ob
 			key = path_array.shift
 			if key then
 				if key.to_i.to_s == key then
@@ -26,63 +83,16 @@ module MovieMasher
 				else
 					key = key.to_sym 
 				end
-				value = value[key]
-				if value.is_a?(Array) or value.is_a?(Hash) then
-					value = path(value, path_array) unless path_array.empty?
+				v = v[key]
+				if __is_eval_object? v
+					v = __value(v, path_array) unless path_array.empty?
 				else
-					value = value.to_s
+					v = v.to_s		
 				end
 			else
-				raise Error::State.new "path got empty path_array for #{ob}"
+				raise Error::State.new "__value got empty path_array for #{ob}"
 			end
-			value
-		end
-		def self.recursively data, scope = nil
-			scope = Hash.new unless scope
-			keys = (data.is_a?(Hash) ? data.keys : (0..(data.length-1)))
-			values = (data.is_a?(Hash) ? data.values : data)
-			keys.each do |k|
-				v = data[k]
-				if v.is_a?(Hash) or v.is_a?(Array) then
-					recursively v, scope
-				else
-					data[k] = value v.to_s, scope
-				end
-			end
-		end
-		def self.value value, scope
-			split_value = split value
-			if 1 < split_value.length then # otherwise there are no curly braces
-				value = ''
-				is_static = true
-				#puts "value is split #{split_value.inspect}"
-				split_value.each do |bit|
-					if is_static then
-						value += bit
-					else
-						split_bit = bit.split '.'
-						first_key = split_bit.shift
-						scope_child = scope[first_key.to_sym]
-						evaled = nil
-						if scope_child 
-							if scope_child.is_a?(Hash) or scope_child.is_a?(Array)
-								evaled = path(scope_child, split_bit)
-							elsif scope_child.is_a? Proc
-								evaled = scope_child.call
-							else 
-								evaled = scope_child
-							end
-						end
-						if evaled.is_a?(Hash) or evaled.is_a?(Array)
-							value = evaled
-						else
-							value = "#{value}#{evaled}"
-						end
-					end
-					is_static = ! is_static
-				end
-			end
-			value
+			v
 		end
 	end
 end

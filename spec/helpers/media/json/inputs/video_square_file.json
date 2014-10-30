@@ -5,6 +5,6 @@
 		"type": "file",
 		"id": "video_square",
 		"path": "media/video/video_square.mpg",
-		"method": "symlink"
+		"method": "copy"
 	}
 }

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module MovieMasher - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/callback.rb
+    <li>lib/constants/av.rb
+    <li>lib/constants/defaults.rb
+    <li>lib/constants/error.rb
+    <li>lib/constants/fill.rb
+    <li>lib/constants/gain.rb
+    <li>lib/constants/info.rb
+    <li>lib/constants/intermediate.rb
+    <li>lib/constants/method.rb
+    <li>lib/graph.rb
+    <li>lib/input.rb
+    <li>lib/job.rb
+    <li>lib/job_hash.rb
+    <li>lib/mash.rb
+    <li>lib/moviemasher.rb
+    <li>lib/output.rb
+    <li>lib/source.rb
+    <li>lib/transfer.rb
+    <li>lib/utils/eval.rb
+    <li>lib/utils/filter_helpers.rb
+    <li>lib/utils/float_util.rb
+    <li>lib/utils/path.rb
+    <li>lib/utils/time_range.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    <nav id="sections-section" class="section">
+  <h3 class="section-header">Sections</h3>
+  <ul class="link-list">
+    
+      <li><a href="#5Buntitled-5D"></a></li>
+    
+      <li><a href="#Public">Public</a></li>
+    
+  </ul>
+</nav>
+
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li ><a href="#method-c-configuration">::configuration</a>
+    
+    <li ><a href="#method-c-configure">::configure</a>
+    
+    <li ><a href="#method-c-process">::process</a>
+    
+    <li ><a href="#method-c-process_queues">::process_queues</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="./README_md.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./MovieMasher.html">MovieMasher</a>
+  
+    <li><a href="./MovieMasher/AV.html">MovieMasher::AV</a>
+  
+    <li><a href="./MovieMasher/Callback.html">MovieMasher::Callback</a>
+  
+    <li><a href="./MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="./MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
+  
+    <li><a href="./MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
+  
+    <li><a href="./MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
+  
+    <li><a href="./MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="./MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="./MovieMasher/Error.html">MovieMasher::Error</a>
+  
+    <li><a href="./MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
+  
+    <li><a href="./MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
+  
+    <li><a href="./MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
+  
+    <li><a href="./MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
+  
+    <li><a href="./MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+    <li><a href="./MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
+  
+    <li><a href="./MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
+  
+    <li><a href="./MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
+  
+    <li><a href="./MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
+  
+    <li><a href="./MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
+  
+    <li><a href="./MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
+  
+    <li><a href="./MovieMasher/Error/State.html">MovieMasher::Error::State</a>
+  
+    <li><a href="./MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
+  
+    <li><a href="./MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
+  
+    <li><a href="./MovieMasher/Fill.html">MovieMasher::Fill</a>
+  
+    <li><a href="./MovieMasher/Filter.html">MovieMasher::Filter</a>
+  
+    <li><a href="./MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
+  
+    <li><a href="./MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
+  
+    <li><a href="./MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
+  
+    <li><a href="./MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
+  
+    <li><a href="./MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
+  
+    <li><a href="./MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
+  
+    <li><a href="./MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+  
+    <li><a href="./MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
+  
+    <li><a href="./MovieMasher/Gain.html">MovieMasher::Gain</a>
+  
+    <li><a href="./MovieMasher/Graph.html">MovieMasher::Graph</a>
+  
+    <li><a href="./MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
+  
+    <li><a href="./MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
+  
+    <li><a href="./MovieMasher/Info.html">MovieMasher::Info</a>
+  
+    <li><a href="./MovieMasher/Input.html">MovieMasher::Input</a>
+  
+    <li><a href="./MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
+  
+    <li><a href="./MovieMasher/Job.html">MovieMasher::Job</a>
+  
+    <li><a href="./MovieMasher/JobHash.html">MovieMasher::JobHash</a>
+  
+    <li><a href="./MovieMasher/Layer.html">MovieMasher::Layer</a>
+  
+    <li><a href="./MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
+  
+    <li><a href="./MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
+  
+    <li><a href="./MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
+  
+    <li><a href="./MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
+  
+    <li><a href="./MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
+  
+    <li><a href="./MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
+  
+    <li><a href="./MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
+  
+    <li><a href="./MovieMasher/Mash.html">MovieMasher::Mash</a>
+  
+    <li><a href="./MovieMasher/Method.html">MovieMasher::Method</a>
+  
+    <li><a href="./MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="./MovieMasher/Path.html">MovieMasher::Path</a>
+  
+    <li><a href="./MovieMasher/Source.html">MovieMasher::Source</a>
+  
+    <li><a href="./MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
+  
+    <li><a href="./MovieMasher/Transfer.html">MovieMasher::Transfer</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module MovieMasher</h1>
+
+  <div id="description" class="description">
+    
+<p>Handles global configuration and high level processing of <a
+href="MovieMasher/Job.html">Job</a> objects. The <a
+href="MovieMasher.html#method-c-process_queues">::process_queues</a> method
+will look for jobs in a directory and optionally an SQS queue for a period
+of time, calling <a href="MovieMasher.html#method-c-process">::process</a>
+for each one found. No configuration is required, though be aware that no
+download cache is maintained by default.</p>
+
+<pre class="ruby"><span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">configure</span> :<span class="ruby-identifier">render_directory</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;./temp&#39;</span>
+<span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">process</span> <span class="ruby-string">&#39;./job.json&#39;</span>
+<span class="ruby-comment"># =&gt; #&lt;MovieMasher::Job:0x007fa34300abc0&gt;</span>
+</pre>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-configuration" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">configuration</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the configuration Hash with Symbol keys.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="configuration-source">
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">configuration</span>
+  <span class="ruby-identifier">configure</span> <span class="ruby-keyword">nil</span> 
+  <span class="ruby-identifier">@@configuration</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- configuration-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- configuration-method -->
+
+    
+      <div id="method-c-configure" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">configure</span><span
+            class="method-args">(hash_or_path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>hash_or_path
+<dd>
+<p>Set one or more configuration options. If supplied a String, it&#39;s
+assumed to be a path to a JSON or YML file and converted to a Hash. The
+Hash can use a String or Symbol for each key. The following keys are
+supported:</p>
+<dl class="rdoc-list note-list"><dt>chmod_directory_new
+<dd>
+<p>Mode to use when creating directories, default: 0775</p>
+</dd><dt>log_directory
+<dd>
+<p>Where to put log file, default: /var/log/moviemasher</p>
+</dd><dt>log_level
+<dd>
+<p>Logger output level (debug, info, warn, error), default: info</p>
+</dd><dt>download_directory
+<dd>
+<p>Where to downloaded files, default: <strong>render_directory</strong></p>
+</dd><dt>download_directory_size
+<dd>
+<p>Integer/String target cache size, default: 0M</p>
+</dd><dt>render_directory
+<dd>
+<p>Where to build files, default: /tmp/moviemasher/temporary</p>
+</dd><dt>queue_directory
+<dd>
+<p>Where to look for job files, default: /tmp/moviemasher/queue</p>
+</dd><dt>process_queues_seconds
+<dd>
+<p>How long to watch queues for jobs, default: 55</p>
+</dd><dt>aws_OPTIONS
+<dd>
+<p>passed to the AWS.config method if specified, default: empty</p>
+</dd><dt>queue_url
+<dd>
+<p>SQS queue endpoint to poll for jobs, default: empty</p>
+</dd><dt>queue_wait_time_seconds
+<dd>
+<p>How long to wait for SQS messages, default: 2</p>
+</dd><dt>APP_path
+<dd>
+<p><a href="MovieMasher/Path.html">Path</a> to du, ecasound, ffmpeg, ffprobe,
+sox, wav2png, default: APP</p>
+</dd><dt>error_directory
+<dd>
+<p>Where to put failed job directories, default: empty</p>
+</dd><dt>render_keep
+<dd>
+<p>If false build files are removed, default: false</p>
+</dd></dl>
+</dd></dl>
+
+<p>Returns nothing.</p>
+
+<p>Raises <a
+href="MovieMasher/Error/Configuration.html">Error::Configuration</a> if
+String supplied doesn&#39;t have json/yml extension or if
+<strong>render_directory</strong> is empty.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="configure-source">
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">configure</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-identifier">aws_config</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">empty?</span> 
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">hash_or_path</span>
+        <span class="ruby-keyword">case</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">extname</span> <span class="ruby-identifier">hash_or_path</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.yml&#39;</span>
+          <span class="ruby-identifier">hash_or_path</span> = <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">hash_or_path</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;.json&#39;</span>
+          <span class="ruby-identifier">hash_or_path</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">hash_or_path</span>))
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;unsupported configuration file type #{hash_or_path}&quot;</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Hash</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-comment"># grab all keys in configuration starting with aws_, to pass to AWS if needed</span>
+      <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key_str</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">key_str</span> = <span class="ruby-identifier">key_str</span>.<span class="ruby-identifier">id2name</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">key_str</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Symbol</span>
+        <span class="ruby-identifier">key_str</span> = <span class="ruby-identifier">key_str</span>.<span class="ruby-identifier">dup</span>
+        <span class="ruby-identifier">key_sym</span> = <span class="ruby-identifier">key_str</span>.<span class="ruby-identifier">to_sym</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">key_str</span>.<span class="ruby-identifier">start_with?</span> <span class="ruby-string">&#39;aws_&#39;</span> <span class="ruby-keyword">then</span>
+          <span class="ruby-identifier">key_str</span>[<span class="ruby-string">&#39;aws_&#39;</span>] = <span class="ruby-string">&#39;&#39;</span>
+          <span class="ruby-identifier">aws_config</span>[<span class="ruby-identifier">key_str</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">v</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">@@configuration</span>[<span class="ruby-identifier">key_sym</span>] = <span class="ruby-identifier">v</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  
+  [<span class="ruby-value">:render_directory</span>, <span class="ruby-value">:download_directory</span>, <span class="ruby-value">:queue_directory</span>, <span class="ruby-value">:error_directory</span>, <span class="ruby-value">:log_directory</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sym</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">@@configuration</span>[<span class="ruby-identifier">sym</span>] <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">@@configuration</span>[<span class="ruby-identifier">sym</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-comment"># expand directory and create if needed</span>
+      <span class="ruby-identifier">@@configuration</span>[<span class="ruby-identifier">sym</span>] = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">@@configuration</span>[<span class="ruby-identifier">sym</span>])
+      <span class="ruby-identifier">__file_safe</span> <span class="ruby-identifier">@@configuration</span>[<span class="ruby-identifier">sym</span>]
+      <span class="ruby-keyword">if</span> <span class="ruby-value">:log_directory</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sym</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">aws_config</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">aws_config</span>[<span class="ruby-value">:logger</span>] = <span class="ruby-constant">Logger</span>.<span class="ruby-identifier">new</span> <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">@@configuration</span>[<span class="ruby-identifier">sym</span>], <span class="ruby-string">&#39;moviemasher.rb.aws.log&#39;</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;#{sym.id2name} must be defined&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-value">:render_directory</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sym</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">aws_config</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;aws-sdk&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">defined?</span> <span class="ruby-constant">AWS</span>
+    <span class="ruby-constant">AWS</span>.<span class="ruby-identifier">config</span>(<span class="ruby-identifier">aws_config</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">aws_config</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- configure-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- configure-method -->
+
+    
+      <div id="method-c-process" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process</span><span
+            class="method-args">(object_or_path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>object_or_path
+<dd>
+<p><a href="MovieMasher/Job.html">Job</a> object or String/Hash to be passed
+to <a href="MovieMasher/Job.html#method-c-new">MovieMasher::Job.new</a>
+along with <a
+href="MovieMasher.html#method-c-configuration">::configuration</a>. After
+the <a
+href="MovieMasher/Job.html#method-i-process">MovieMasher::Job#process</a>
+method is called, its render directory is either moved to
+<strong>error_directory</strong> (if that option is not empty and a problem
+arose during processing) or deleted (unless <strong>render_keep</strong> is
+true). The <strong>download_directory</strong> will also be pruned to
+assure its size is not greater than
+<strong>download_directory_size</strong>.</p>
+</dd></dl>
+
+<p>Returns <a href="MovieMasher/Job.html">Job</a> object with
+<strong>error</strong> key set if problem arose.Raises <a
+href="MovieMasher/Error/Configuration.html">Error::Configuration</a> if
+<strong>render_directory</strong> is empty.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process-source">
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">process</span> <span class="ruby-identifier">object_or_path</span>
+  <span class="ruby-identifier">__log_transcoder</span>(<span class="ruby-value">:debug</span>) { <span class="ruby-node">&quot;process called #{object_or_path}&quot;</span> }
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">@@job</span> = (<span class="ruby-identifier">object_or_path</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Job</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">object_or_path</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Job</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object_or_path</span>, <span class="ruby-identifier">configuration</span>))
+  <span class="ruby-keyword">begin</span> <span class="ruby-comment"># try to process job</span>
+    <span class="ruby-identifier">@@job</span>.<span class="ruby-identifier">process</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">@@job</span>[<span class="ruby-value">:error</span>]
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span> 
+    <span class="ruby-identifier">__log_exception</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">begin</span> <span class="ruby-comment"># try to move or remove job&#39;s render directory</span>
+    <span class="ruby-identifier">job_directory</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:render_directory</span>], <span class="ruby-identifier">@@job</span>.<span class="ruby-identifier">identifier</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">job_directory</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">@@job</span>[<span class="ruby-value">:error</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:error_directory</span>] <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:error_directory</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-keyword">then</span>
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span> <span class="ruby-identifier">job_directory</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:error_directory</span>]
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm_r</span> <span class="ruby-identifier">job_directory</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:render_keep</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">__log_exception</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">ensure</span>
+    <span class="ruby-identifier">@@job</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">begin</span> <span class="ruby-comment"># try to flush the download directory</span>
+    <span class="ruby-identifier">directory</span> = <span class="ruby-identifier">@@configuration</span>[<span class="ruby-value">:download_directory</span>]
+    <span class="ruby-identifier">directory</span> = <span class="ruby-identifier">@@configuration</span>[<span class="ruby-value">:render_directory</span>] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">directory</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">directory</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">__flush_downloads</span> <span class="ruby-identifier">directory</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:download_directory_size</span>]
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">__log_exception</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">result</span> <span class="ruby-comment"># what was @@job</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- process-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- process-method -->
+
+    
+      <div id="method-c-process_queues" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_queues</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loops for <strong>process_queues_seconds</strong> searching for the oldest
+JSON or YML formatted job file in <strong>queue_directory</strong>, as well
+as polling <strong>queue_url</strong> for an SQS message. If the later is
+found its body is expected to be a JSON formatted job and its identifier is
+used to populate the <strong>id</strong> key (if that&#39;s empty), as well
+as the basename of the file saved to the <strong>queue_directory</strong>.
+The message is immediately deleted from the queue.</p>
+
+<p>When a file is found it&#39;s renamed &#39;working.json&#39; and its path
+is passed to the <a href="MovieMasher.html#method-c-process">::process</a>
+method before it&#39;s deleted. This method should not raise an Exception,
+but if it does it is not trapped here so queue processing will stop and the
+file will not be deleted. When process_queues is subsequently called the
+contents of the file are logged as an error before it is deleted without
+retrying.</p>
+
+<p>Returns nothing.</p>
+
+<p>Raises <a
+href="MovieMasher/Error/Configuration.html">Error::Configuration</a> if
+<strong>queue_directory</strong> or <strong>render_directory</strong> is
+empty.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process_queues-source">
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 179</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">process_queues</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;queue_directory not found in configuration&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_directory</span>] <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_directory</span>].<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">run_seconds</span> = <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:process_queues_seconds</span>]
+  <span class="ruby-identifier">start</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-identifier">oldest_file</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">working_file</span> = <span class="ruby-node">&quot;#{configuration[:queue_directory]}working.json&quot;</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">run_seconds</span> <span class="ruby-operator">&gt;</span> (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">start</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">working_file</span>
+      <span class="ruby-comment"># if this process didn&#39;t create it, we must have crashed on it in a previous run</span>
+      <span class="ruby-identifier">__log_transcoder</span>(<span class="ruby-value">:error</span>) { <span class="ruby-node">&quot;deleting previously active job:\n#{File.read working_file}&quot;</span> } <span class="ruby-keyword">unless</span> <span class="ruby-identifier">oldest_file</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">working_file</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">oldest_file</span> = <span class="ruby-constant">Dir</span>[<span class="ruby-node">&quot;#{configuration[:queue_directory]}*.json&quot;</span>].<span class="ruby-identifier">sort_by</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">mtime</span>(<span class="ruby-identifier">f</span>) }.<span class="ruby-identifier">first</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">oldest_file</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">__log_transcoder</span>(<span class="ruby-value">:info</span>) { <span class="ruby-node">&quot;started #{oldest_file}&quot;</span> }
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">rename</span> <span class="ruby-identifier">oldest_file</span>, <span class="ruby-identifier">working_file</span>
+      <span class="ruby-identifier">process</span> <span class="ruby-identifier">working_file</span>
+      <span class="ruby-identifier">__log_transcoder</span>(<span class="ruby-value">:info</span>) { <span class="ruby-node">&quot;finished #{oldest_file}&quot;</span> }
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span> <span class="ruby-identifier">working_file</span>
+      <span class="ruby-identifier">sleep</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">else</span> <span class="ruby-comment"># see if one can be copied from the queue</span>
+      <span class="ruby-identifier">__sqs_request</span>(<span class="ruby-identifier">run_seconds</span>, <span class="ruby-identifier">start</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_url</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_url</span>].<span class="ruby-identifier">empty?</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- process_queues-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- process_queues-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+  
+  
+  <section id="Public" class="documentation-section">
+    
+    <div class="documentation-section-title">
+      <h2 class="section-header">
+        Public
+      </h2>
+      <span class="section-click-top">
+        <a href="#top">&uarr; top</a>
+      </span>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+  </section><!-- Public -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

@@ -1,5 +1,5 @@
 {
 	"type": "file",
 	"path": "helpers/media",
-	"method": "symlink"
+	"method": "copy"
 }

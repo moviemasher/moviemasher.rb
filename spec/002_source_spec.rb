@@ -2,38 +2,38 @@
 require_relative 'helpers/spec_helper'
 
 describe File.basename(__FILE__) do
-	context "__directory_path_name_source" do
+	context "__path_for_transfer" do
 		it "correctly deals with leading and trailing slashes" do
 			source = {:directory => 'DIR/', :path => '/PATH.ext'}
-			expect(MovieMasher.__directory_path_name_source source).to eq 'DIR/PATH.ext'
+			expect(MovieMasher::Job.send :__path_for_transfer, source).to eq 'DIR/PATH.ext'
 		end
 	end
-	context "__source_url" do
+	context "__url_for_source" do
 		it "correctly returns url if defined" do
 			source = {:url => 'URL'}
-			expect(MovieMasher.__source_url source).to eq source[:url]
+			expect(MovieMasher::Job.send :__url_for_source, source).to eq source[:url]
 		end
 		it "correctly returns file url for file source with just path" do
 			source = {:type => 'file', :path => 'PATH'}
-			expect(MovieMasher.__source_url source).to eq "#{source[:type]}:///#{source[:path]}"
+			expect(MovieMasher::Job.send :__url_for_source, source).to eq "#{source[:type]}:///#{source[:path]}"
 		end
 		it "correctly returns file url for file source with path, name and extension" do
 			source = {:type => 'file', :path => 'PATH', :name => 'NAME', :extension => 'EXTENSION'}
-			expect(MovieMasher.__source_url source).to eq "#{source[:type]}:///#{source[:path]}/#{source[:name]}.#{source[:extension]}"
+			expect(MovieMasher::Job.send :__url_for_source, source).to eq MovieMasher::Path.concat "#{source[:type]}:///#{source[:path]}", "#{source[:name]}.#{source[:extension]}"
 		end
 	end
-	context "__input_url" do
+	context "__url_for_input" do
 		it "correctly returns url when source is simple url" do
 			input = { :type =>"image", :url => "http://www.example.com:1234/path/to/file.jpg" }
-			input = MovieMasher.__init_input(input)
-			url = MovieMasher.__input_url input
+			input = MovieMasher::Job.send :__init_input, input
+			url = MovieMasher::Job.send :__url_for_input, input
 			expect(url).to eq input[:url]
 		end
 		it "correctly returns file url when source is file object" do
 			input = { :type => "image", :source => { :type => "file", :path => "/path/to", :name => "file", :extension => "jpg" } }
-			url = MovieMasher.__input_url input
+			url = MovieMasher::Job.send :__url_for_input, input
 			source = input[:source]
-			expect(url).to eq "#{source[:type]}://#{source[:path]}/#{source[:name]}.#{source[:extension]}"
+			expect(url).to eq MovieMasher::Path.concat "#{source[:type]}://#{source[:path]}", "#{source[:name]}.#{source[:extension]}"
 		end
 	end
 end

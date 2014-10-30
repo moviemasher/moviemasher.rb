@@ -6,25 +6,23 @@
 		"label": "Ten Seconds of Green",
 		"backcolor": "red",
 		"media": [],
-		"tracks": {
-			"video": [
-				{
-					"type": "video",
-					"clips": [{
-						"id": "com.moviemasher.theme.color",
-						"effects": [],
-						"frame": 0,
-						"length": 100,
-						"color": "green"
-					}]
-				}
-			],
-			"audio": [
-				{
-					"type": "audio",
-					"clips": []
-				}
-			]
-		}
+		"video": [
+			{
+				"type": "video",
+				"clips": [{
+					"id": "com.moviemasher.theme.color",
+					"effects": [],
+					"frame": 0,
+					"frames": 100,
+					"color": "green"
+				}]
+			}
+		],
+		"audio": [
+			{
+				"type": "audio",
+				"clips": []
+			}
+		]
 	}
 }

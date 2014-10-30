@@ -1,12 +1,12 @@
 {
 	"type": "image",
-	"length": 3,
+	"frames": 3,
 	"source": {
 		"id": "image_file",
 		"type": "file",
 		"path": "helpers/media/image",
 		"name": "small-1x1",
 		"extension": "png",
-		"method": "symlink"
+		"method": "copy"
 	}
 }

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class MovieMasher::Job - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/job.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="JobHash.html">MovieMasher::JobHash</a>
+  
+  
+  </ul>
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-base_source">#base_source</a>
+    
+    <li ><a href="#method-i-callbacks">#callbacks</a>
+    
+    <li ><a href="#method-i-destination">#destination</a>
+    
+    <li ><a href="#method-i-error">#error</a>
+    
+    <li ><a href="#method-i-id">#id</a>
+    
+    <li ><a href="#method-i-inputs">#inputs</a>
+    
+    <li ><a href="#method-i-log">#log</a>
+    
+    <li ><a href="#method-i-log_entry">#log_entry</a>
+    
+    <li ><a href="#method-i-module_source">#module_source</a>
+    
+    <li ><a href="#method-i-outputs">#outputs</a>
+    
+    <li ><a href="#method-i-process">#process</a>
+    
+    <li ><a href="#method-i-progress">#progress</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="../README_md.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../MovieMasher.html">MovieMasher</a>
+  
+    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
+  
+    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
+  
+    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
+  
+    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
+  
+    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
+  
+    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
+  
+    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
+  
+    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
+  
+    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
+  
+    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
+  
+    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
+  
+    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
+  
+    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
+  
+    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
+  
+    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
+  
+    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
+  
+    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
+  
+    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
+  
+    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
+  
+    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
+  
+    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
+  
+    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
+  
+    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
+  
+    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
+  
+    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
+  
+    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
+  
+    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
+  
+    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+  
+    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
+  
+    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
+  
+    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
+  
+    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
+  
+    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
+  
+    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
+  
+    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
+  
+    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
+  
+    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
+  
+    <li><a href="../MovieMasher/JobHash.html">MovieMasher::JobHash</a>
+  
+    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
+  
+    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
+  
+    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
+  
+    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
+  
+    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
+  
+    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
+  
+    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
+  
+    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
+  
+    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
+  
+    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
+  
+    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
+  
+    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
+  
+    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
+  
+    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class MovieMasher::Job</h1>
+
+  <div id="description" class="description">
+    
+<p>Represents a single transcoding operation. Once <a
+href="Job.html#method-i-process">process</a> is called all of the job&#39;s
+<a href="Job.html#method-i-inputs">inputs</a> are downloaded and combined
+together into one mashup, which is then rendered into each of the formats
+specified by the job&#39;s <a href="Job.html#method-i-outputs">outputs</a>.</p>
+
+<p>These rendered files are then uploaded to the job&#39;s <a
+href="Job.html#method-i-destination">destination</a>, or to the
+output&#39;s if it has one defined. At junctures during processing the
+job&#39;s#callbacks are requested, so as to alert remote systems of job
+status.</p>
+
+<pre class="ruby"><span class="ruby-comment"># construct a job and process it</span>
+<span class="ruby-identifier">job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&#39;./job.json&#39;</span>, :<span class="ruby-identifier">render_directory</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;./temp&#39;</span>
+<span class="ruby-identifier">job</span>.<span class="ruby-identifier">process</span>
+<span class="ruby-comment"># =&gt; true</span>
+<span class="ruby-identifier">job</span>[:<span class="ruby-identifier">duration</span>]
+<span class="ruby-comment"># =&gt; 360</span>
+<span class="ruby-identifier">job</span>.<span class="ruby-identifier">progress</span>
+<span class="ruby-comment"># =&gt; {:rendering=&gt;1, :uploading=&gt;1, :downloading=&gt;1, :downloaded=&gt;1, :rendered=&gt;1, :uploaded=&gt;1}</span>
+</pre>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(hash_or_path, configuration = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create a new <a href="Job.html">Job</a> object from a nested structure or a
+file path.</p>
+<dl class="rdoc-list note-list"><dt>hash_or_path
+<dd>
+<p>Hash or String expected to be a path to a JSON or YML file, which will be
+parse to the Hash.</p>
+</dd></dl>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="JobHash.html#method-c-new">MovieMasher::JobHash.new</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 632</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">hash_or_path</span>, <span class="ruby-identifier">configuration</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@logger</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@audio_graphs</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@video_graphs</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@configuration</span> = <span class="ruby-identifier">configuration</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">super</span> <span class="ruby-constant">Job</span>.<span class="ruby-identifier">__hash_from_path</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-ivar">@outputs_desire</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">__init_hash</span> <span class="ruby-ivar">@hash</span>
+  <span class="ruby-identifier">path_job</span> = <span class="ruby-identifier">__path_job</span>
+  <span class="ruby-identifier">__file_safe</span> <span class="ruby-identifier">path_job</span>
+  <span class="ruby-comment"># write massaged job json to job directory</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">path_job</span>, <span class="ruby-string">&#39;job.json&#39;</span>), <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_json</span>) 
+  <span class="ruby-comment"># if we encountered a parsing error, log it</span>
+  <span class="ruby-identifier">log_entry</span>(<span class="ruby-value">:error</span>) { <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>] } <span class="ruby-keyword">if</span> <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-base_source" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">base_source</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+<dd>
+<p>Resolves relative paths within <a
+href="Input.html#method-i-source">MovieMasher::Input#source</a> and
+Media#source String values.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="base_source-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 613</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">base_source</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- base_source-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- base_source-method -->
+
+    
+      <div id="method-i-callbacks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">callbacks</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>Array
+<dd>
+<p>Zero or more <a href="Callback.html">Callback</a> objects.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="callbacks-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 615</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">callbacks</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- callbacks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- callbacks-method -->
+
+    
+      <div id="method-i-destination" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destination</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+<dd>
+<p>Shared by all <a href="Output.html">Output</a> objects that don&#39;t have
+one of their own.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="destination-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 617</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destination</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- destination-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- destination-method -->
+
+    
+      <div id="method-i-error" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">error</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Problem encountered during new or <a
+href="Job.html#method-i-process">process</a>. If the source of the problem
+is a command line application then lines from its output that include
+common phrases will be included. Problems encountered during rendering of
+optional outputs are not included - check <a
+href="Job.html#method-i-log">log</a> for a warning instead.</p>
+
+<p>Returns String that could be multiline and/or quite long.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="error-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 624</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">error</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- error-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- error-method -->
+
+    
+      <div id="method-i-id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">id</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>String
+<dd>
+<p>user supplied identifier.</p>
+</dd><dt>Default
+<dd>
+<p>Nil, or messageId if the <a href="Job.html">Job</a> originated from an SQS
+message.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="id-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 627</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">id</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- id-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- id-method -->
+
+    
+      <div id="method-i-inputs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">inputs</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>Array
+<dd>
+<p>One or more <a href="Input.html">Input</a> objects.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="inputs-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 647</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">inputs</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- inputs-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- inputs-method -->
+
+    
+      <div id="method-i-log" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">log</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>String
+<dd>
+<p>Current content of the job&#39;s log file.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="log-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 649</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">log</span>
+  <span class="ruby-identifier">proc</span> = <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
+  <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- log-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- log-method -->
+
+    
+      <div id="method-i-log_entry" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">log_entry</span><span
+            class="method-args">(type, &proc)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p><a href="Output.html">Output</a> to the job&#39;s log file. If
+<strong>type</strong> is :error then job will be halted and its <a
+href="Job.html#method-i-error">error</a> will be set to the result of
+<strong>proc</strong>.</p>
+<dl class="rdoc-list note-list"><dt>type
+<dd>
+<p>Symbol :debug, :info, :warn or :error.</p>
+</dd><dt>proc
+<dd>
+<p>Proc returning a string representing log entry.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="log_entry-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 658</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">log_entry</span> <span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>
+  <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword">if</span> <span class="ruby-value">:error</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
+  <span class="ruby-identifier">logger_job</span> = <span class="ruby-identifier">__logger</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">logger_job</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">logger_job</span>.<span class="ruby-identifier">send</span> (<span class="ruby-identifier">type</span>.<span class="ruby-identifier">id2name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?&#39;</span>).<span class="ruby-identifier">to_sym</span>
+    <span class="ruby-identifier">logger_job</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;debug&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@configuration</span>[<span class="ruby-value">:log_level</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- log_entry-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- log_entry-method -->
+
+    
+      <div id="method-i-module_source" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">module_source</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+<dd>
+<p>Resolves relative font paths within Media#source String values.</p>
+</dd><dt>Default
+<dd>
+<p><a href="Job.html#method-i-base_source">base_source</a></p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="module_source-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 670</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">module_source</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- module_source-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- module_source-method -->
+
+    
+      <div id="method-i-outputs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">outputs</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>Array
+<dd>
+<p>One or more <a href="Output.html">Output</a> objects.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="outputs-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 667</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">outputs</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- outputs-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- outputs-method -->
+
+    
+      <div id="method-i-process" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Downloads assets for each <a href="Input.html">Input</a>, renders each <a
+href="Output.html">Output</a> and uploads to#destination or <a
+href="Output.html#method-i-destination">MovieMasher::Output#destination</a>
+so long as <a href="Job.html#method-i-error">error</a> is false.</p>
+
+<p>Returns true if processing succeeded, otherwise false - check <a
+href="Job.html#method-i-error">error</a> fordetails.</p>
+
+<p>Raises <a href="Error/Job.html">Error::Job</a> or subclass depending on
+processing stage - <a href="Error/JobInput.html">Error::JobInput</a>, <a
+href="Error/JobRender.html">Error::JobRender</a>, <a
+href="Error/JobUpload.html">Error::JobUpload</a>.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 679</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span> 
+  <span class="ruby-identifier">rescued_exception</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">__process_download</span>
+    <span class="ruby-identifier">__process_render</span>
+    <span class="ruby-identifier">__process_upload</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span> 
+    <span class="ruby-identifier">rescued_exception</span> = <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">rescued_exception</span> <span class="ruby-keyword">then</span> 
+      <span class="ruby-comment"># encountered a showstopper (not one raised from optional output)</span>
+      <span class="ruby-identifier">rescued_exception</span> = <span class="ruby-identifier">__log_exception</span> <span class="ruby-identifier">rescued_exception</span>
+      <span class="ruby-identifier">__callback</span> <span class="ruby-value">:error</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">rescued_exception</span> = <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">rescued_exception</span> = <span class="ruby-identifier">__log_exception</span> <span class="ruby-identifier">rescued_exception</span>
+    <span class="ruby-identifier">__callback</span> <span class="ruby-value">:complete</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">rescued_exception</span> = <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-operator">!</span> <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- process-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- process-method -->
+
+    
+      <div id="method-i-progress" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">progress</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Current status of processing. The following keys are available:</p>
+<dl class="rdoc-list note-list"><dt>:downloading
+<dd>
+<p>number of files referenced by inputs</p>
+</dd><dt>:downloaded
+<dd>
+<p>number of input files transferred</p>
+</dd><dt>:rendering
+<dd>
+<p>number of outputs to render</p>
+</dd><dt>:rendered
+<dd>
+<p>number of outputs rendered</p>
+</dd><dt>:uploading
+<dd>
+<p>number of files referenced by outputs</p>
+</dd><dt>:uploaded
+<dd>
+<p>number of output files transferred</p>
+</dd><dt>:calling
+<dd>
+<p>number of non-progress callbacks to trigger</p>
+</dd><dt>:called
+<dd>
+<p>number of non-progress callbacks triggered</p>
+</dd></dl>
+
+<p>Initial values for keys ending on &#39;ing&#39; are based on information
+supplied in the job description and might change after <a
+href="Job.html#method-i-process">process</a> is called. For instance, if a
+mash input uses a remote source then <strong>downloading</strong> might
+increase once it&#39;s downloaded and parsed for nested media files.</p>
+
+<p>Returns Hash object with Symbol keys and Integer values.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="progress-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 722</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">progress</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+          </div><!-- progress-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- progress-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

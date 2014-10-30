@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class MovieMasher::FilterEvaluated - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/graph.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="Filter.html">MovieMasher::Filter</a>
+  
+</nav>
+
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-__coerce">#__coerce</a>
+    
+    <li ><a href="#method-i-__command_name_value">#__command_name_value</a>
+    
+    <li ><a href="#method-i-__filter_dimension_keys">#__filter_dimension_keys</a>
+    
+    <li ><a href="#method-i-__filter_is_source-3F">#__filter_is_source?</a>
+    
+    <li ><a href="#method-i-__filter_parse_scope_value">#__filter_parse_scope_value</a>
+    
+    <li ><a href="#method-i-__filter_scope_binding">#__filter_scope_binding</a>
+    
+    <li ><a href="#method-i-command_parameters">#command_parameters</a>
+    
+    <li class="calls-super" ><a href="#method-i-filter_command">#filter_command</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="../README_md.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../MovieMasher.html">MovieMasher</a>
+  
+    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
+  
+    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
+  
+    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
+  
+    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
+  
+    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
+  
+    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
+  
+    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
+  
+    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
+  
+    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
+  
+    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
+  
+    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
+  
+    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
+  
+    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
+  
+    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
+  
+    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
+  
+    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
+  
+    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
+  
+    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
+  
+    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
+  
+    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
+  
+    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
+  
+    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
+  
+    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
+  
+    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
+  
+    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
+  
+    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
+  
+    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
+  
+    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+  
+    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
+  
+    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
+  
+    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
+  
+    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
+  
+    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
+  
+    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
+  
+    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
+  
+    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
+  
+    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
+  
+    <li><a href="../MovieMasher/JobHash.html">MovieMasher::JobHash</a>
+  
+    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
+  
+    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
+  
+    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
+  
+    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
+  
+    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
+  
+    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
+  
+    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
+  
+    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
+  
+    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
+  
+    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
+  
+    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
+  
+    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
+  
+    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
+  
+    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class MovieMasher::FilterEvaluated</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-parameters" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">parameters</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(filter_config, mash_input = nil, applied_input = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Filter.html#method-c-new">MovieMasher::Filter.new</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 222</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">filter_config</span>, <span class="ruby-identifier">mash_input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">applied_input</span> = <span class="ruby-keyword">nil</span> <span class="ruby-comment"># same as filter_config for themes</span>
+  <span class="ruby-keyword">super</span> <span class="ruby-identifier">filter_config</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-ivar">@mash_input</span> = <span class="ruby-identifier">mash_input</span>
+  <span class="ruby-ivar">@applied_input</span> = <span class="ruby-identifier">applied_input</span>
+  <span class="ruby-ivar">@config</span> = <span class="ruby-identifier">filter_config</span>
+  <span class="ruby-ivar">@parameters</span> = <span class="ruby-ivar">@config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Parameter</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;no config&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@config</span>
+  <span class="ruby-comment">#raise Error::Parameter.new &quot;no applied_input&quot; unless @applied_input</span>
+  <span class="ruby-comment">#raise Error::Parameter.new &quot;no mash_input&quot; unless @mash_input</span>
+ <span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-__coerce" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__coerce</span><span
+            class="method-args">(s)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__coerce-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 352</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__coerce</span> <span class="ruby-identifier">s</span>
+  <span class="ruby-identifier">sf</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_f</span>
+  <span class="ruby-identifier">sfs</span> = <span class="ruby-identifier">sf</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sfs</span>
+    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">sf</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">si</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">sis</span> = <span class="ruby-identifier">si</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">si</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sis</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __coerce-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __coerce-method -->
+
+    
+      <div id="method-i-__command_name_value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__command_name_value</span><span
+            class="method-args">(name, value, scope, job_output)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__command_name_value-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 232</span>
+ <span class="ruby-keyword">def</span> <span class="ruby-identifier">__command_name_value</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
+   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;__command_name_value got nil value&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>
+  <span class="ruby-comment">#puts &quot;__command_name_value #{value}&quot;</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Array</span> 
+    <span class="ruby-identifier">bind</span> = <span class="ruby-identifier">__filter_scope_binding</span> <span class="ruby-identifier">scope</span>
+    <span class="ruby-identifier">condition_is_true</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-identifier">value</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conditional</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">condition</span> = <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:condition</span>]
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:is</span>]
+        <span class="ruby-comment"># not strict equality since we may have numbers and strings</span>
+        <span class="ruby-identifier">condition</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;==&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:is</span>].<span class="ruby-identifier">to_s</span>;
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>]
+        <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>] = <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>].<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Array</span>
+        <span class="ruby-identifier">condition</span> = <span class="ruby-string">&#39;[&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>].<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;,&#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;].include?((&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">condition</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;).&#39;</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>][<span class="ruby-value">0</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">?</span> <span class="ruby-string">&#39;to_s&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;to_i&#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;)&#39;</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">condition_is_true</span> = <span class="ruby-identifier">bind</span>.<span class="ruby-identifier">eval</span>(<span class="ruby-identifier">condition</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">condition_is_true</span> <span class="ruby-keyword">then</span>
+        <span class="ruby-identifier">result</span> = <span class="ruby-identifier">__filter_parse_scope_value</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:value</span>].<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">job_output</span>
+        <span class="ruby-keyword">break</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;no conditions were true&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">condition_is_true</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">__filter_parse_scope_value</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">job_output</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">equation</span> <span class="ruby-identifier">result</span>
+   <span class="ruby-ivar">@evaluated</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">result</span>
+  <span class="ruby-node">&quot;#{name}=#{result.to_s}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __command_name_value-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __command_name_value-method -->
+
+    
+      <div id="method-i-__filter_dimension_keys" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__filter_dimension_keys</span><span
+            class="method-args">(filter_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__filter_dimension_keys-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 334</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_dimension_keys</span> <span class="ruby-identifier">filter_id</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">filter_id</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;crop&#39;</span>
+    {<span class="ruby-value">:w</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;out_w&#39;</span>], <span class="ruby-value">:h</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&#39;h&#39;</span>, <span class="ruby-string">&#39;out_h&#39;</span>] }
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;scale&#39;</span>, <span class="ruby-string">&#39;pad&#39;</span>
+    {<span class="ruby-value">:w</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;width&#39;</span>], <span class="ruby-value">:h</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&#39;h&#39;</span>, <span class="ruby-string">&#39;height&#39;</span>] }
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __filter_dimension_keys-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __filter_dimension_keys-method -->
+
+    
+      <div id="method-i-__filter_is_source-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__filter_is_source?</span><span
+            class="method-args">(filter_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__filter_is_source-3F-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 344</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_is_source?</span> <span class="ruby-identifier">filter_id</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">filter_id</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;color&#39;</span>, <span class="ruby-string">&#39;movie&#39;</span>
+    <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">else</span> 
+    <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __filter_is_source-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __filter_is_source-3F-method -->
+
+    
+      <div id="method-i-__filter_parse_scope_value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__filter_parse_scope_value</span><span
+            class="method-args">(scope, value_str, job_output = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__filter_parse_scope_value-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 262</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_parse_scope_value</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">value_str</span>, <span class="ruby-identifier">job_output</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
+    <span class="ruby-comment">#puts &quot;value_str = #{value_str}&quot;</span>
+    <span class="ruby-identifier">level</span> = <span class="ruby-value">0</span>
+    <span class="ruby-identifier">deepest</span> = <span class="ruby-value">0</span>
+    <span class="ruby-identifier">esc</span> = <span class="ruby-string">&#39;~&#39;</span>
+    <span class="ruby-comment"># expand variables</span>
+    <span class="ruby-identifier">value_str</span> = <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">dup</span>
+    <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/([\w]+)/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">match_str</span> = <span class="ruby-identifier">match</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-identifier">match_sym</span> = <span class="ruby-identifier">match_str</span>.<span class="ruby-identifier">to_sym</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>[<span class="ruby-identifier">match_sym</span>] <span class="ruby-keyword">then</span>
+        <span class="ruby-identifier">scope</span>[<span class="ruby-identifier">match_sym</span>].<span class="ruby-identifier">to_s</span> 
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">match_str</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment">#puts &quot;value_str = #{value_str}&quot;</span>
+
+    <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/[()]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">paren</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">result</span> = <span class="ruby-identifier">paren</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-keyword">case</span> <span class="ruby-identifier">result</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;(&#39;</span>
+        <span class="ruby-identifier">level</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+        <span class="ruby-identifier">deepest</span> = [<span class="ruby-identifier">deepest</span>, <span class="ruby-identifier">level</span>].<span class="ruby-identifier">max</span>
+        <span class="ruby-identifier">result</span> = <span class="ruby-node">&quot;(#{level}#{esc}&quot;</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;)&#39;</span>
+        <span class="ruby-identifier">result</span> = <span class="ruby-node">&quot;)#{level}#{esc}&quot;</span>
+        <span class="ruby-identifier">level</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">result</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment">#puts &quot;value_str = #{value_str}&quot;</span>
+    <span class="ruby-keyword">while</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">deepest</span>
+      <span class="ruby-comment">#puts &quot;PRE #{deepest}: #{value_str}&quot;</span>
+      <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;([a-z_]+)[(]#{deepest}[#{esc}](.*?)[)]#{deepest}[#{esc}]&quot;</span>)) <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">method</span> = <span class="ruby-node">$1</span>
+        <span class="ruby-identifier">param_str</span> = <span class="ruby-node">$2</span>
+        <span class="ruby-identifier">params</span> = <span class="ruby-identifier">param_str</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
+        <span class="ruby-identifier">params</span>.<span class="ruby-identifier">map!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">param</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">param</span>.<span class="ruby-identifier">strip</span> <span class="ruby-comment">#!</span>
+          <span class="ruby-comment">#param.gsub!(Regexp.new(&quot;([()])[0-9]+[#{esc}]&quot;)) { $1 }</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">func_sym</span> = <span class="ruby-identifier">method</span>.<span class="ruby-identifier">to_sym</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-identifier">func_sym</span> <span class="ruby-keyword">then</span>
+          <span class="ruby-identifier">result</span> = <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">func_sym</span>, <span class="ruby-identifier">params</span>, <span class="ruby-ivar">@mash_input</span>[<span class="ruby-value">:source</span>], <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
+          <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;got false from #{method}(#{params.join &#39;,&#39;})&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>
+          <span class="ruby-identifier">result</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
+          <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;got empty from #{method}(#{params.join &#39;,&#39;})&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">result</span> = <span class="ruby-node">&quot;#{method}(#{params.join &#39;,&#39;})&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">result</span>      
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-comment">#puts &quot;POST METHODS #{deepest}: #{value_str}&quot;</span>
+      <span class="ruby-comment"># replace all simple equations in parentheses</span>
+      <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;[(]#{deepest}[#{esc}](.*?)[)]#{deepest}[#{esc}]&quot;</span>)) <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">evaluated</span> = <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">equation</span> <span class="ruby-node">$1</span>
+        <span class="ruby-identifier">evaluated</span> = <span class="ruby-node">&quot;(#{evaluated})&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">evaluated</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:round</span>
+        <span class="ruby-identifier">evaluated</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-comment">#puts &quot;POST EQUATIONS #{deepest}: #{value_str}&quot;</span>
+      <span class="ruby-identifier">deepest</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># remove any lingering markers</span>
+    <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;([()])[0-9]+[#{esc}]&quot;</span>)) { <span class="ruby-node">$1</span> }
+    <span class="ruby-comment"># remove whitespace</span>
+    <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/\s/</span>, <span class="ruby-string">&#39;&#39;</span>)
+    <span class="ruby-comment">#puts &quot;value_str = #{value_str}&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">equation</span> <span class="ruby-identifier">value_str</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __filter_parse_scope_value-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __filter_parse_scope_value-method -->
+
+    
+      <div id="method-i-__filter_scope_binding" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__filter_scope_binding</span><span
+            class="method-args">(scope)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__filter_scope_binding-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 363</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_scope_binding</span> <span class="ruby-identifier">scope</span>
+  <span class="ruby-identifier">bind</span> = <span class="ruby-identifier">binding</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
+    <span class="ruby-identifier">scope</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">evaluate</span> = <span class="ruby-node">&quot;#{k.id2name} = __coerce &#39;#{v}&#39;&quot;</span>
+      <span class="ruby-comment">#puts &quot;__filter_scope_binding evaluate = #{evaluate}&quot;</span>
+      <span class="ruby-identifier">bind</span>.<span class="ruby-identifier">eval</span> <span class="ruby-identifier">evaluate</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">bind</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __filter_scope_binding-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __filter_scope_binding-method -->
+
+    
+      <div id="method-i-command_parameters" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_parameters</span><span
+            class="method-args">(scope, job_output)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_parameters-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_parameters</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
+  <span class="ruby-identifier">cmds</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@parameters</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;parameters must be an array&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@parameters</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Array</span>
+    <span class="ruby-ivar">@parameters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">parameter</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;parameter is not a hash #{parameter}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">parameter</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Hash</span>
+      <span class="ruby-comment">#puts &quot;#{parameter[:name]}=#{parameter[:value]}&quot;</span>
+      <span class="ruby-identifier">name</span> = <span class="ruby-identifier">parameter</span>[<span class="ruby-value">:name</span>]
+      <span class="ruby-identifier">evaluated</span> = <span class="ruby-identifier">parameter</span>[<span class="ruby-value">:value</span>]
+      <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">__command_name_value</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">evaluated</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">join</span> <span class="ruby-string">&#39;:&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_parameters-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_parameters-method -->
+
+    
+      <div id="method-i-filter_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">filter_command</span><span
+            class="method-args">(scope = nil, job_output = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Filter.html#method-i-filter_command">MovieMasher::Filter#filter_command</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="filter_command-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 165</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_command</span> <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">job_output</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-ivar">@evaluated</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">cmds</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">@@outsize</span>[<span class="ruby-string">&#39;w&#39;</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">@@outsize</span>[<span class="ruby-string">&#39;h&#39;</span>]
+        <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_w</span>] = <span class="ruby-identifier">@@outsize</span>[<span class="ruby-string">&#39;w&#39;</span>] 
+        <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_h</span>] = <span class="ruby-identifier">@@outsize</span>[<span class="ruby-string">&#39;h&#39;</span>] 
+        <span class="ruby-comment">#puts &quot;&lt;&lt; #{scope[:mm_in_w]}x#{scope[:mm_in_h]} #{@id}&quot;</span>
+      <span class="ruby-keyword">else</span> 
+        <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_w</span>] = <span class="ruby-string">&#39;in_w&#39;</span>
+        <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_h</span>] = <span class="ruby-string">&#39;in_h&#39;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">command_parameters</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">cmd</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;=&#39;</span>
+      <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">join</span> <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">dimension_keys</span> = <span class="ruby-identifier">__filter_dimension_keys</span> <span class="ruby-ivar">@id</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">dimension_keys</span> 
+      <span class="ruby-identifier">dimension_keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">w_or_h</span>, <span class="ruby-identifier">keys</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@evaluated</span>[<span class="ruby-identifier">key</span>]
+            <span class="ruby-identifier">evaluated</span> = <span class="ruby-ivar">@evaluated</span>[<span class="ruby-identifier">key</span>]
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">evaluated</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:round</span>
+              <span class="ruby-identifier">@@outsize</span>[<span class="ruby-identifier">w_or_h</span>] = <span class="ruby-identifier">evaluated</span>
+              <span class="ruby-comment">#puts &quot;&gt;&gt; #{w_or_h} =&gt; #{@@outsize[w_or_h]} = #{@evaluated[key]} #{@id}&quot;</span>
+            <span class="ruby-comment">#else</span>
+            <span class="ruby-comment">#puts &quot;! &gt;&gt; #{evaluated} = #{@evaluated[key]} #{@id}&quot;</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-keyword">break</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span> 
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@evaluated</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">cmd</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- filter_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- filter_command-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

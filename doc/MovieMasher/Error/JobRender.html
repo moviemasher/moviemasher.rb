@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class MovieMasher::Error::JobRender - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/constants/error.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+</nav>
+
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="../../README_md.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../MovieMasher.html">MovieMasher</a>
+  
+    <li><a href="../../MovieMasher/AV.html">MovieMasher::AV</a>
+  
+    <li><a href="../../MovieMasher/Callback.html">MovieMasher::Callback</a>
+  
+    <li><a href="../../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
+  
+    <li><a href="../../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
+  
+    <li><a href="../../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
+  
+    <li><a href="../../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../../MovieMasher/Error.html">MovieMasher::Error</a>
+  
+    <li><a href="../../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
+  
+    <li><a href="../../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
+  
+    <li><a href="../../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
+  
+    <li><a href="../../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
+  
+    <li><a href="../../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+    <li><a href="../../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
+  
+    <li><a href="../../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
+  
+    <li><a href="../../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
+  
+    <li><a href="../../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
+  
+    <li><a href="../../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
+  
+    <li><a href="../../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
+  
+    <li><a href="../../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
+  
+    <li><a href="../../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
+  
+    <li><a href="../../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
+  
+    <li><a href="../../MovieMasher/Fill.html">MovieMasher::Fill</a>
+  
+    <li><a href="../../MovieMasher/Filter.html">MovieMasher::Filter</a>
+  
+    <li><a href="../../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
+  
+    <li><a href="../../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
+  
+    <li><a href="../../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
+  
+    <li><a href="../../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
+  
+    <li><a href="../../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
+  
+    <li><a href="../../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
+  
+    <li><a href="../../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+  
+    <li><a href="../../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
+  
+    <li><a href="../../MovieMasher/Gain.html">MovieMasher::Gain</a>
+  
+    <li><a href="../../MovieMasher/Graph.html">MovieMasher::Graph</a>
+  
+    <li><a href="../../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
+  
+    <li><a href="../../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
+  
+    <li><a href="../../MovieMasher/Info.html">MovieMasher::Info</a>
+  
+    <li><a href="../../MovieMasher/Input.html">MovieMasher::Input</a>
+  
+    <li><a href="../../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
+  
+    <li><a href="../../MovieMasher/Job.html">MovieMasher::Job</a>
+  
+    <li><a href="../../MovieMasher/JobHash.html">MovieMasher::JobHash</a>
+  
+    <li><a href="../../MovieMasher/Layer.html">MovieMasher::Layer</a>
+  
+    <li><a href="../../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
+  
+    <li><a href="../../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
+  
+    <li><a href="../../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
+  
+    <li><a href="../../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
+  
+    <li><a href="../../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
+  
+    <li><a href="../../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
+  
+    <li><a href="../../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
+  
+    <li><a href="../../MovieMasher/Mash.html">MovieMasher::Mash</a>
+  
+    <li><a href="../../MovieMasher/Method.html">MovieMasher::Method</a>
+  
+    <li><a href="../../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../../MovieMasher/Path.html">MovieMasher::Path</a>
+  
+    <li><a href="../../MovieMasher/Source.html">MovieMasher::Source</a>
+  
+    <li><a href="../../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
+  
+    <li><a href="../../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class MovieMasher::Error::JobRender</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(ffmpeg_result, msg = "failed to render")</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/constants/error.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">ffmpeg_result</span>, <span class="ruby-identifier">msg</span> = <span class="ruby-string">&quot;failed to render&quot;</span>
+  <span class="ruby-identifier">error_lines</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">error_lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">msg</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">msg</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ffmpeg_result</span>
+    <span class="ruby-identifier">lines</span> = <span class="ruby-identifier">ffmpeg_result</span>.<span class="ruby-identifier">split</span> <span class="ruby-string">&quot;\n&quot;</span>
+    <span class="ruby-identifier">failure_words</span> = [<span class="ruby-string">&#39;Error&#39;</span>, <span class="ruby-string">&#39;Invalid&#39;</span>, <span class="ruby-string">&#39;Failed&#39;</span>]
+    <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">failure_words</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">failure_word</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">failure_word</span>
+          <span class="ruby-identifier">error_lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/^\[.*\] /</span>).<span class="ruby-identifier">last</span>.<span class="ruby-identifier">strip</span>
+          <span class="ruby-keyword">break</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@msg</span> = <span class="ruby-identifier">error_lines</span>.<span class="ruby-identifier">join</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">error_lines</span>.<span class="ruby-identifier">empty?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

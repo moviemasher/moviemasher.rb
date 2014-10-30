@@ -14,30 +14,28 @@
 				"source": "video/drummers.mov"
 			}
 		],
-		"tracks": {
-			"video": [
-				{
-					"type": "video",
-					"clips": [{
-						"id": "com.moviemasher.theme.color",
-						"effects": [],
-						"frame": 0,
-						"length": 10,
-						"color": "blue"
-					},{
-						"id": "drummers",
-						"effects": [],
-						"frame": 10,
-						"length": 10
-					}]
-				}
-			],
-			"audio": [
-				{
-					"type": "audio",
-					"clips": []
-				}
-			]
-		}
+		"video": [
+			{
+				"type": "video",
+				"clips": [{
+					"id": "com.moviemasher.theme.color",
+					"effects": [],
+					"frame": 0,
+					"frames": 10,
+					"color": "blue"
+				},{
+					"id": "drummers",
+					"effects": [],
+					"frame": 10,
+					"frames": 10
+				}]
+			}
+		],
+		"audio": [
+			{
+				"type": "audio",
+				"clips": []
+			}
+		]
 	}
 }

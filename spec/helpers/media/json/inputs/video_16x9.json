@@ -5,6 +5,6 @@
 		"type": "file",
 		"id": "video_file",
 		"path": "media/video/video_16x9.mov",
-		"method": "symlink"
+		"method": "copy"
 	}
 }

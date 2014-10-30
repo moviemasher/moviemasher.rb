@@ -1,4 +1,4 @@
-[![Image](https://github.com/moviemasher/moviemasher.rb/blob/master/README/logo-120x60.png "MovieMasher.com")](http://moviemasher.com)
+![Image](https://github.com/moviemasher/angular-moviemasher/raw/master/README/logo-120x60.png "MovieMasher.com")
 **[moviemasher.js](https://github.com/moviemasher/moviemasher.js "stands below angular-moviemasher, providing audiovisual playback handling and edit support in a web browser") | [angular-moviemasher](https://github.com/moviemasher/angular-moviemasher "sits between moviemasher.js and moviemasher.rb, providing an editing GUI and simple CMS middleware layer") | moviemasher.rb**
 
 *Ruby library for mashing up video, images and audio utilizing FFmpeg and Ecasound* 
@@ -19,21 +19,21 @@ As part of job processing it can download media inputs from remote hosts and upl
 
 The project includes a rake task that can be routinely called to watch a folder for job description files, as well as an example crontab entry that calls it. Recall that ruby scripts run from cron lack your user's environmental variables, so you'll probably need to edit the paths to binary directories in the entry to match your system.
 
-### Amazon Web Services Integration
-There are optional configuration settings that support two specific AWS offerings: S3 for media storage and SQS for job queueing. If set to use an SQS queue then it will be polled as part of the folder watching process for job files. The ruby aws-sdk is utilized to interface with SQS, so access key details can be provided in the configuration or environmental variables or in a role if deployed on an EC2 instance. 
+### AWS Integration
+There are optional configuration settings that support two specific Amazon Web Services offerings: S3 for media storage and SQS for job queueing. If set to use an SQS queue then it will be polled as part of the folder watching process for job files. The ruby aws-sdk is utilized to interface with SQS, so access key details can be provided in the configuration or environmental variables or in a role if deployed on an EC2 instance. 
 
 Similarly, aws-sdk is utilized for S3 interactions so if access key details are present then buckets can be used either as sources for media inputs or destinations for media outputs within job descriptions. These are authenticated requests, so the buckets do not have to be public.
 
 Additionally, the Movie Masher AMI is available in Marketplace and includes moviemasher.rb and all supporting applications. When launched it looks for  user data supplied in JSON format and merges it into the default configuration, so it's possible to supply SQS options on startup. The cron job described above is installed, so a configured SQS queue will immediately start being polled for jobs. Otherwise the instance will start up apache to serve the angular-moviemasher project, preconfigured to utilize the local moviemasher.rb process (the instance id acts as a shared password).
 
-### Basic Ruby Usage
+### Basic Usage
 
 	require_relative 'lib/moviemasher.rb'
 	job = { :inputs => [], :base_source => {}, :outputs => [], :destination => {} }
 	job[:base_source][:path] = job[:destination][:path] = '~/'
 	job[:inputs] << { :type => 'video', :source => 'input.mov', :fill => 'crop' }
 	job[:inputs] << { :type => 'image', :source => 'input.jpg', :length => 2 }
-	job[:inputs] << { :type => 'audio', :source => 'input.mp3', :trim => 10 }
+	job[:inputs] << { :type => 'audio', :source => 'input.mp3', :offset => 10 }
 	job[:outputs] << { :type => 'video', :name => 'output.mp4' }
 	MovieMasher.process job
 
@@ -45,7 +45,7 @@ In addition to raw media (video, audio and images) it's also possible to output 
 
 The visual composition of inputs is controlled by *effect, scaler* and *merger* media, which are all arrangements of FFmpeg *filters*. Only a subset of filters and their parameters are supported at this time, but they include basics like crop, scale, fade and drawtext. That last one relies on *font* media, the last of the modular types. 
 
-### How to Install and Use
+### How to Install
 1. install ffmpeg, ecasound, sox and du programs
 2. install ruby and builder
 3. `bundle install` in project directory installs required gems from Gemfile
@@ -54,7 +54,7 @@ The visual composition of inputs is controlled by *effect, scaler* and *merger* 
 6. optionally install calling crontab entry found at config/moviemasher.cron after checking binary paths in it
 
 ### Requirements
-- ffmpeg
+- ffmpeg with ffprobe
 - ecasound
 - sox
 - du
@@ -68,20 +68,30 @@ The visual composition of inputs is controlled by *effect, scaler* and *merger* 
 - rack gem
 - aws-sdk gem
 
-### Developer Steps
+### Developer Setup
 1. uncomment entries in Gemfile related to spec tests
 2. `bundle install` from project directory installs additional gems
 3. `rspec spec` will run the core tests
+4. The following with regenerate the doc directory:
+	rdoc --visibility=public --main='README.md' -o doc --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude='/spec' --exclude='/log/' --exclude='/Gemfile' --exclude='/config/' --exclude='/index.rb' --exclude='/doc/' --exclude='/Rakefile'
 
 ##### To run tests in spec_aws
 1. install and launch clientside_aws 
 2. uncomment other entries in Gemfile 
 3. `bundle install` from project directory installs additional gems
 
-##### Known issues in Version 4.0.07
-- little documentation - see PHP in angular-moviemasher project for job construction examples
+##### Known issues in Version 4.0.08
 - local/sqs import/export has not been thoroughly tested
 - archiving of outputs not yet supported
 - freeze frame not yet supported
 - audio still being done in Ecasound
 - due to size considerations, video files not included in spec tests (eventually tests will generate their own to work with)
+
+##### Migrating from Version 4.0.07
+- The `length` key in clips has been renamed `frames`.
+- The `audio` and `video` keys in mash tracks have been moved to mash.
+- The `tracks` key in mashes has been removed. 
+- The `fps` key in outputs has been renamed `video_rate`.
+- The `audio_frequency` key in outputs has been renamed `audio_rate`.
+- The `trim` key in inputs has been renamed `offset`.
+

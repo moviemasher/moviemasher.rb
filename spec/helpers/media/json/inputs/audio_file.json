@@ -4,6 +4,6 @@
 		"id": "audio_file",
 		"type": "file",
 		"path": "media/audio/D_Celt-8 Bar_140.mp3",
-		"method": "symlink"
+		"method": "copy"
 	}
 }

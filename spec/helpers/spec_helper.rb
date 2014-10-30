@@ -26,6 +26,7 @@ end
 def spec_job_from_files(input_id = nil, output_id = nil, destination_id = nil)
 	job = Hash.new
 	job['id'] = input_id
+	job['log_level'] = 'debug'
 	job['inputs'] = Array.new
 	job['outputs'] = Array.new
 	job['destination'] = spec_file('destinations', destination_id) if destination_id
@@ -33,13 +34,13 @@ def spec_job_from_files(input_id = nil, output_id = nil, destination_id = nil)
 	job['outputs'] << spec_file('outputs', output_id) if output_id
 	mod_media = nil
 	job['inputs'].each do |input|
-		if MovieMasher::Type::Mash == input['type']
+		if MovieMasher::Input::TypeMash == input['type']
 			# modular media needs to be loaded
 			mash = input['source'] 
 			if MovieMasher::Mash.hash? mash
 				referenced = Hash.new
-				mash['tracks'].each do |track_type, tracks|
-					tracks.each do |track|
+				MovieMasher::Mash::Tracks.each do |track_type|
+					mash[track_type].each do |track|
 						MovieMasher::Mash.media_count_for_clips(mash, track['clips'], referenced)  
 					end
 				end
@@ -76,8 +77,8 @@ def spec_modular_media
 	end
 	ModularMedia
 end
-def spec_job_output_path job, processed_job
-	destination = processed_job[:destination]	
+def spec_job_output_path job
+	destination = job[:destination]	
 	dest_path = destination[:file]
 	if dest_path and File.directory?(dest_path) then
 		dest_path = Dir["#{dest_path}/*"].first
@@ -86,37 +87,35 @@ def spec_job_output_path job, processed_job
 	dest_path
 end
 def spec_process_job_files(input_id, output = 'video_h264', destination = 'file_log')
-	job = spec_job input_id, output, destination
-	output = job['outputs'][0]
-	input = job['inputs'][0]	
+	job_data = spec_job input_id, output, destination
+	job = MovieMasher::Job.new job_data, MovieMasher.configuration
+	output = job.outputs.first
+	input = job.inputs.first
 	processed_job = MovieMasher.process job
-	if processed_job[:error]
-		puts processed_job[:error] 
-		puts processed_job[:commands]
+	if job[:error] then
+		puts job[:error] 
+		puts job[:commands]
 	end
-	expect(processed_job[:error]).to be_nil
-	#puts processed_job.inspect
-	destination_file = spec_job_output_path job, processed_job
+	expect(job[:error]).to be_nil
+	destination_file = spec_job_output_path job
 	expect(destination_file).to_not be_nil
-	#puts "destination_file exists #{File.exists? destination_file} #{destination_file}"
 	expect(File.exists?(destination_file)).to be_true
-	case output['type']
-	when MovieMasher::Type::Audio, MovieMasher::Type::Video
-		spec_expect_duration destination_file, processed_job[:duration]
+	case output[:type]
+	when MovieMasher::Output::TypeAudio, MovieMasher::Output::TypeVideo
+		spec_expect_duration job, destination_file, job[:duration]
 	end
-	spec_expect_dimensions(destination_file, output['dimensions']) if MovieMasher::Type::Mash == input['type']
-	spec_expect_fps(destination_file, output['fps']) if MovieMasher::Type::Video == output['type'] 
-	
+	spec_expect_dimensions(job, destination_file, output[:dimensions]) if MovieMasher::Input::TypeMash == input['type']
+	spec_expect_fps(job, destination_file, output[:video_rate]) if MovieMasher::Output::TypeVideo == output['type'] 
 	[job, processed_job]
 end
-def spec_expect_duration destination_file, duration
-	expect(cache_get_info(destination_file, 'duration').to_f).to be_within(0.1).of duration
+def spec_expect_duration job, destination_file, duration
+	expect(job.send(:__get_info, destination_file, 'duration').to_f).to be_within(0.1).of duration
 end
-def spec_expect_fps destination_file, fps
-	expect(cache_get_info(destination_file, 'fps').to_i).to eq fps.to_i
+def spec_expect_fps job, destination_file, fps
+	expect(job.send(:__get_info, destination_file, 'fps').to_i).to eq fps.to_i
 end
-def spec_expect_dimensions destination_file, dimensions
-	expect(cache_get_info(destination_file, 'dimensions')).to eq dimensions
+def spec_expect_dimensions job, destination_file, dimensions
+	expect(job.send(:__get_info, destination_file, 'dimensions')).to eq dimensions
 end
 
 RSpec.configure do |config|

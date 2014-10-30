@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class MovieMasher::FrameTime - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/utils/frame_time.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li ><a href="#method-c-from_seconds">::from_seconds</a>
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-__gcd">#__gcd</a>
+    
+    <li ><a href="#method-i-__lcm">#__lcm</a>
+    
+    <li ><a href="#method-i-add">#add</a>
+    
+    <li ><a href="#method-i-copy_time">#copy_time</a>
+    
+    <li ><a href="#method-i-description">#description</a>
+    
+    <li ><a href="#method-i-divide">#divide</a>
+    
+    <li ><a href="#method-i-fps">#fps</a>
+    
+    <li ><a href="#method-i-frame">#frame</a>
+    
+    <li ><a href="#method-i-frame-3D">#frame=</a>
+    
+    <li ><a href="#method-i-frame_for_rate">#frame_for_rate</a>
+    
+    <li ><a href="#method-i-get_seconds">#get_seconds</a>
+    
+    <li ><a href="#method-i-get_time_range">#get_time_range</a>
+    
+    <li ><a href="#method-i-is_equal_to_time-3F">#is_equal_to_time?</a>
+    
+    <li ><a href="#method-i-less_than-3F">#less_than?</a>
+    
+    <li ><a href="#method-i-max">#max</a>
+    
+    <li ><a href="#method-i-min">#min</a>
+    
+    <li ><a href="#method-i-multiply">#multiply</a>
+    
+    <li ><a href="#method-i-ratio">#ratio</a>
+    
+    <li ><a href="#method-i-scale">#scale</a>
+    
+    <li ><a href="#method-i-subtract">#subtract</a>
+    
+    <li ><a href="#method-i-synchronize">#synchronize</a>
+    
+    <li ><a href="#method-i-valid-3F">#valid?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="../README_md.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../MovieMasher.html">MovieMasher</a>
+  
+    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
+  
+    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
+  
+    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
+  
+    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
+  
+    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
+  
+    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
+  
+    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
+  
+    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
+  
+    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
+  
+    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
+  
+    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
+  
+    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
+  
+    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
+  
+    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
+  
+    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
+  
+    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
+  
+    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
+  
+    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
+  
+    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
+  
+    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
+  
+    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
+  
+    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
+  
+    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
+  
+    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
+  
+    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
+  
+    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
+  
+    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
+  
+    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
+  
+    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+  
+    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
+  
+    <li><a href="../MovieMasher/FrameRange.html">MovieMasher::FrameRange</a>
+  
+    <li><a href="../MovieMasher/FrameTime.html">MovieMasher::FrameTime</a>
+  
+    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
+  
+    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
+  
+    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
+  
+    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
+  
+    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
+  
+    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
+  
+    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
+  
+    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
+  
+    <li><a href="../MovieMasher/JobHash.html">MovieMasher::JobHash</a>
+  
+    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
+  
+    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
+  
+    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
+  
+    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
+  
+    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
+  
+    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
+  
+    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
+  
+    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
+  
+    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
+  
+    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
+  
+    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
+  
+    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
+  
+    <li><a href="../MovieMasher/TypeTransfer.html">MovieMasher::TypeTransfer</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class MovieMasher::FrameTime</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-from_seconds" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">from_seconds</span><span
+            class="method-args">(seconds = 0, rate = 0, rounding = :round)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="from_seconds-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">from_seconds</span>(<span class="ruby-identifier">seconds</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">rate</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
+  <span class="ruby-constant">FrameTime</span>.<span class="ruby-identifier">new</span>((<span class="ruby-identifier">seconds</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span>).<span class="ruby-identifier">send</span>(<span class="ruby-identifier">rounding</span>).<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">rate</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- from_seconds-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- from_seconds-method -->
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(frame = 0, fps = 0)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">frame</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">fps</span> = <span class="ruby-value">0</span>)
+  <span class="ruby-ivar">@frame</span> = <span class="ruby-identifier">frame</span>.<span class="ruby-identifier">to_i</span>
+  <span class="ruby-ivar">@fps</span> = <span class="ruby-identifier">fps</span>.<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-__gcd" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__gcd</span><span
+            class="method-args">(a, b)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__gcd-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 138</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__gcd</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>) <span class="ruby-comment"># uint</span>
+  <span class="ruby-identifier">t</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">while</span> (<span class="ruby-identifier">b</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">t</span> = <span class="ruby-identifier">b</span>
+    <span class="ruby-identifier">b</span> = <span class="ruby-identifier">a</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">b</span>
+    <span class="ruby-identifier">a</span> = <span class="ruby-identifier">t</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">a</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __gcd-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __gcd-method -->
+
+    
+      <div id="method-i-__lcm" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__lcm</span><span
+            class="method-args">(a, b)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__lcm-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 147</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__lcm</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>)
+  (<span class="ruby-identifier">a</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">b</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">__gcd</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __lcm-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __lcm-method -->
+
+    
+      <div id="method-i-add" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="add-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-ivar">@frame</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">frame</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- add-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- add-method -->
+
+    
+      <div id="method-i-copy_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">copy_time</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="copy_time-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">copy_time</span>
+  <span class="ruby-constant">FrameTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@frame</span>, <span class="ruby-ivar">@fps</span>)  
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- copy_time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- copy_time-method -->
+
+    
+      <div id="method-i-description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="description-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
+  <span class="ruby-node">&quot;[FrameTime #{frame}@#{fps}]&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- description-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- description-method -->
+
+    
+      <div id="method-i-divide" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">divide</span><span
+            class="method-args">(number, rounding = :round)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="divide-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">divide</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
+  <span class="ruby-identifier">number</span> = <span class="ruby-identifier">number</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">number</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:to_f</span>
+  <span class="ruby-ivar">@frame</span> = (<span class="ruby-ivar">@frame</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">number</span>).<span class="ruby-identifier">send</span>(<span class="ruby-identifier">rounding</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- divide-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- divide-method -->
+
+    
+      <div id="method-i-fps" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fps</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fps-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fps</span>
+  <span class="ruby-ivar">@fps</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- fps-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- fps-method -->
+
+    
+      <div id="method-i-frame" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">frame</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="frame-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">frame</span>
+  <span class="ruby-ivar">@frame</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- frame-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- frame-method -->
+
+    
+      <div id="method-i-frame-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">frame=</span><span
+            class="method-args">(new_frame)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="frame-3D-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">frame=</span> <span class="ruby-identifier">new_frame</span>
+  <span class="ruby-ivar">@frame</span> = <span class="ruby-identifier">new_frame</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- frame-3D-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- frame-3D-method -->
+
+    
+      <div id="method-i-frame_for_rate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">frame_for_rate</span><span
+            class="method-args">(rate, rounding = :round)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="frame_for_rate-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">frame_for_rate</span>(<span class="ruby-identifier">rate</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
+  <span class="ruby-identifier">start</span> = <span class="ruby-ivar">@frame</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">rate</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@fps</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">start</span> = <span class="ruby-constant">FrameTime</span>.<span class="ruby-identifier">from_seconds</span>(<span class="ruby-identifier">get_seconds</span>, <span class="ruby-ivar">@fps</span>, <span class="ruby-identifier">rounding</span>).<span class="ruby-identifier">frame</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">start</span>  
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- frame_for_rate-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- frame_for_rate-method -->
+
+    
+      <div id="method-i-get_seconds" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_seconds</span><span
+            class="method-args">(precision = 3)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_seconds-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_seconds</span> <span class="ruby-identifier">precision</span> = <span class="ruby-value">3</span>
+  <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>((<span class="ruby-ivar">@frame</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@fps</span>.<span class="ruby-identifier">to_f</span>), <span class="ruby-identifier">precision</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_seconds-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_seconds-method -->
+
+    
+      <div id="method-i-get_time_range" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_time_range</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_time_range-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_time_range</span>
+  <span class="ruby-constant">FrameRange</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@frame</span>, <span class="ruby-value">1</span>, <span class="ruby-ivar">@fps</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_time_range-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_time_range-method -->
+
+    
+      <div id="method-i-is_equal_to_time-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_equal_to_time?</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="is_equal_to_time-3F-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_equal_to_time?</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-identifier">equal</span> = <span class="ruby-constant">FALSE</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">valid?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:valid</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">valid?</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@fps</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">fps</span>) <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">equal</span> = (<span class="ruby-ivar">@frame</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">frame</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># make copies so neither time is changed</span>
+      <span class="ruby-identifier">time1</span> = <span class="ruby-identifier">copy_time</span>
+      <span class="ruby-identifier">time2</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">copy_time</span>
+      <span class="ruby-identifier">time1</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">time2</span>
+      <span class="ruby-identifier">equal</span> = (<span class="ruby-identifier">time1</span>.<span class="ruby-identifier">frame</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">time2</span>.<span class="ruby-identifier">frame</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">equal</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- is_equal_to_time-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- is_equal_to_time-3F-method -->
+
+    
+      <div id="method-i-less_than-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">less_than?</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="less_than-3F-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">less_than?</span> <span class="ruby-identifier">time</span> 
+  <span class="ruby-identifier">less</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">valid?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:valid</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">valid?</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@fps</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">fps</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">less</span> = (<span class="ruby-ivar">@frame</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">frame</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># make copies so neither time is changed</span>
+      <span class="ruby-identifier">time1</span> = <span class="ruby-identifier">copy_time</span>
+      <span class="ruby-identifier">time2</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">copy_time</span>
+      <span class="ruby-identifier">time1</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">time2</span>
+      <span class="ruby-identifier">less</span> = (<span class="ruby-identifier">time1</span>.<span class="ruby-identifier">frame</span> <span class="ruby-operator">&lt;</span>  <span class="ruby-identifier">time2</span>.<span class="ruby-identifier">frame</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">less</span> 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- less_than-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- less_than-3F-method -->
+
+    
+      <div id="method-i-max" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">max</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="max-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">max</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">valid?</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">time</span>
+    <span class="ruby-ivar">@frame</span> = [<span class="ruby-identifier">time</span>.<span class="ruby-identifier">frame</span>, <span class="ruby-ivar">@frame</span>].<span class="ruby-identifier">max</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- max-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- max-method -->
+
+    
+      <div id="method-i-min" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">min</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="min-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">min</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:valid</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">valid?</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">time</span>
+    <span class="ruby-ivar">@frame</span> = [<span class="ruby-identifier">time</span>.<span class="ruby-identifier">frame</span>, <span class="ruby-ivar">@frame</span>].<span class="ruby-identifier">min</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- min-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- min-method -->
+
+    
+      <div id="method-i-multiply" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">multiply</span><span
+            class="method-args">(number, rounding = :round)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="multiply-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">multiply</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
+  <span class="ruby-identifier">number</span> = <span class="ruby-identifier">number</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">number</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:to_f</span>
+  <span class="ruby-ivar">@frame</span> = (<span class="ruby-ivar">@frame</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">number</span>).<span class="ruby-identifier">send</span>(<span class="ruby-identifier">rounding</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- multiply-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- multiply-method -->
+
+    
+      <div id="method-i-ratio" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ratio</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ratio-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 93</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ratio</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-identifier">n</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">valid?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:valid</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">valid?</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@fps</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">fps</span>) 
+      <span class="ruby-identifier">n</span> = <span class="ruby-ivar">@frame</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">frame</span>.<span class="ruby-identifier">to_f</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># make copies so neither time is changed</span>
+      <span class="ruby-identifier">time1</span> = <span class="ruby-identifier">copy_time</span>
+      <span class="ruby-identifier">time2</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">copy_time</span>
+      <span class="ruby-identifier">time1</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">time2</span>
+      <span class="ruby-identifier">n</span> = <span class="ruby-identifier">time1</span>.<span class="ruby-identifier">frame</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">time2</span>.<span class="ruby-identifier">frame</span>.<span class="ruby-identifier">to_f</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">n</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ratio-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ratio-method -->
+
+    
+      <div id="method-i-scale" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scale</span><span
+            class="method-args">(rate, rounding = :round)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="scale-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scale</span>(<span class="ruby-identifier">rate</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
+  <span class="ruby-identifier">rate</span> = <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:to_i</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">rate</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">rate</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@fps</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@fps</span>
+      <span class="ruby-identifier">floated</span> = <span class="ruby-ivar">@frame</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> (<span class="ruby-ivar">@fps</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span>)
+      <span class="ruby-identifier">floated</span> = <span class="ruby-identifier">floated</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">rounding</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">rounding</span>
+      <span class="ruby-ivar">@frame</span> = <span class="ruby-identifier">floated</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@fps</span> = <span class="ruby-identifier">rate</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- scale-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- scale-method -->
+
+    
+      <div id="method-i-subtract" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subtract</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="subtract-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subtract</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-identifier">subtracted</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">frame</span>
+  <span class="ruby-identifier">subtracted</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">subtracted</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@frame</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">subtracted</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@frame</span>
+  <span class="ruby-ivar">@frame</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">subtracted</span>
+  <span class="ruby-identifier">subtracted</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- subtract-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- subtract-method -->
+
+    
+      <div id="method-i-synchronize" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">synchronize</span><span
+            class="method-args">(time, rounding = :round)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="synchronize-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 126</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:fps</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:scale</span>) <span class="ruby-keyword">then</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">fps</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@fps</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">gcf</span> = <span class="ruby-identifier">__lcm</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">fps</span>, <span class="ruby-ivar">@fps</span>)
+      <span class="ruby-identifier">scale</span>(<span class="ruby-identifier">gcf</span>, <span class="ruby-identifier">rounding</span>)
+      <span class="ruby-identifier">time</span>.<span class="ruby-identifier">scale</span>(<span class="ruby-identifier">gcf</span>, <span class="ruby-identifier">rounding</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- synchronize-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- synchronize-method -->
+
+    
+      <div id="method-i-valid-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="valid-3F-source">
+            <pre><span class="ruby-comment"># File lib/utils/frame_time.rb, line 135</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid?</span>
+  (<span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@fps</span> <span class="ruby-keyword">and</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-ivar">@frame</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- valid-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- valid-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

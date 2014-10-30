@@ -29,124 +29,122 @@
 				"source": "image/medium-16x9.png"
 			},
 		],
-		"tracks": {
-			"video": [
-				{
-					"type": "video",
-					"clips": [{
-						"id": "medium-1x1",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 0
-						},
-						"frame": 0,
-						"length": 55
-					},{
-						"id": "medium-4x3",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 1
-						},
-						"frame": 55,
-						"length": 55
-					},{
-						"id": "medium-16x9",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 2
-						},
-						"frame": 110,
-						"length": 55
-					},{
-						"id": "medium-4x3",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 3
-						},
-						"frame": 165,
-						"length": 55
-					},{
-						"id": "medium-4x3",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 4
-						},
-						"frame": 220,
-						"length": 55
-					},{
-						"id": "medium-1x1",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 5
-						},
-						"frame": 275,
-						"length": 55
-					},{
-						"id": "medium-4x3",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 6
-						},
-						"frame": 330,
-						"length": 55
-					},{
-						"id": "medium-1x1",
-						"scaler": {
-							"id": "com.moviemasher.scaler.pan",
-							"scale": 1.5,
-							"direction": 7
-						},
-						"frame": 385,
-						"length": 55
-					}]
-				},{
-					"type": "video",
-					"clips": [{
-						"id": "drummers",
-						"effects": [],
-						"frame": 20,
-						"length": 70,
-						"merger": {
-							"id": "com.moviemasher.merger.overlay",
-							"left": 0.5,
-							"top": 0.5
-						},
-						"scaler": {
-							"id": "com.moviemasher.scaler.scale",
-							"scale": 0.5
-						}
+		"video": [
+			{
+				"type": "video",
+				"clips": [{
+					"id": "medium-1x1",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 0
 					},
-					{
-						"id": "drummers",
-						"effects": [],
-						"trim": 30,
-						"frame": 100,
-						"length": 30,
-						"merger": {
-							"id": "com.moviemasher.merger.overlay",
-							"left": 1,
-							"top": 0
-						},
-						"scaler": {
-							"id": "com.moviemasher.scaler.scale",
-							"scale": 0.5
-						}
-					}]
-				}
-			],
-			"audio": [
+					"frame": 0,
+					"frames": 55
+				},{
+					"id": "medium-4x3",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 1
+					},
+					"frame": 55,
+					"frames": 55
+				},{
+					"id": "medium-16x9",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 2
+					},
+					"frame": 110,
+					"frames": 55
+				},{
+					"id": "medium-4x3",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 3
+					},
+					"frame": 165,
+					"frames": 55
+				},{
+					"id": "medium-4x3",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 4
+					},
+					"frame": 220,
+					"frames": 55
+				},{
+					"id": "medium-1x1",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 5
+					},
+					"frame": 275,
+					"frames": 55
+				},{
+					"id": "medium-4x3",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 6
+					},
+					"frame": 330,
+					"frames": 55
+				},{
+					"id": "medium-1x1",
+					"scaler": {
+						"id": "com.moviemasher.scaler.pan",
+						"scale": 1.5,
+						"direction": 7
+					},
+					"frame": 385,
+					"frames": 55
+				}]
+			},{
+				"type": "video",
+				"clips": [{
+					"id": "drummers",
+					"effects": [],
+					"frame": 20,
+					"frames": 70,
+					"merger": {
+						"id": "com.moviemasher.merger.overlay",
+						"left": 0.5,
+						"top": 0.5
+					},
+					"scaler": {
+						"id": "com.moviemasher.scaler.scale",
+						"scale": 0.5
+					}
+				},
 				{
-					"type": "audio",
-					"clips": []
-				}
-			]
-		}
+					"id": "drummers",
+					"effects": [],
+					"trim": 30,
+					"frame": 100,
+					"frames": 30,
+					"merger": {
+						"id": "com.moviemasher.merger.overlay",
+						"left": 1,
+						"top": 0
+					},
+					"scaler": {
+						"id": "com.moviemasher.scaler.scale",
+						"scale": 0.5
+					}
+				}]
+			}
+		],
+		"audio": [
+			{
+				"type": "audio",
+				"clips": []
+			}
+		]
 	}
 }

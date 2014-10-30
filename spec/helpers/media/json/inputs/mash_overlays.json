@@ -14,64 +14,62 @@
 				"source": "video/drummers.mov"
 			}
 		],
-		"tracks": {
-			"video": [
-				{
-					"type": "video",
-					"clips": [{
-						"id": "com.moviemasher.theme.color",
-						"effects": [],
-						"frame": 0,
-						"length": 50,
-						"color": "blue"
-					},{
-						"id": "com.moviemasher.theme.color",
-						"effects": [],
-						"frame": 50,
-						"length": 70,
-						"color": "green"
-					},{
-						"id": "com.moviemasher.theme.color",
-						"effects": [],
-						"frame": 120,
-						"length": 20,
-						"color": "yellow"
-					}]
+		"video": [
+			{
+				"type": "video",
+				"clips": [{
+					"id": "com.moviemasher.theme.color",
+					"effects": [],
+					"frame": 0,
+					"frames": 50,
+					"color": "blue"
 				},{
-					"type": "video",
-					"clips": [{
-						"id": "drummers",
-						"effects": [],
-						"frame": 20,
-						"length": 70,
-						"transform": {
-							"id": "com.moviemasher.transform.overlay",
-							"scale": 0.5,
-							"left": 0.5,
-							"top": 0.5
-						}
-					},
-					{
-						"id": "drummers",
-						"effects": [],
-						"trim": 30,
-						"frame": 100,
-						"length": 30,
-						"transform": {
-							"id": "com.moviemasher.transform.overlay",
-							"scale": 0.5,
-							"left": 1,
-							"top": 0
-						}
-					}]
-				}
-			],
-			"audio": [
+					"id": "com.moviemasher.theme.color",
+					"effects": [],
+					"frame": 50,
+					"frames": 70,
+					"color": "green"
+				},{
+					"id": "com.moviemasher.theme.color",
+					"effects": [],
+					"frame": 120,
+					"frames": 20,
+					"color": "yellow"
+				}]
+			},{
+				"type": "video",
+				"clips": [{
+					"id": "drummers",
+					"effects": [],
+					"frame": 20,
+					"frames": 70,
+					"transform": {
+						"id": "com.moviemasher.transform.overlay",
+						"scale": 0.5,
+						"left": 0.5,
+						"top": 0.5
+					}
+				},
 				{
-					"type": "audio",
-					"clips": []
-				}
-			]
-		}
+					"id": "drummers",
+					"effects": [],
+					"trim": 30,
+					"frame": 100,
+					"frames": 30,
+					"transform": {
+						"id": "com.moviemasher.transform.overlay",
+						"scale": 0.5,
+						"left": 1,
+						"top": 0
+					}
+				}]
+			}
+		],
+		"audio": [
+			{
+				"type": "audio",
+				"clips": []
+			}
+		]
 	}
 }
