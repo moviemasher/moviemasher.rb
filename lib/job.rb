@@ -135,7 +135,7 @@ module MovieMasher
 		def self.__init_callback callback
 			if callback
 				__init_key callback, :trigger, Callback::TriggerComplete
-				__init_destination transfer # not using returned Transfer object, but callback Hash was inited
+				__init_destination callback # not using returned Transfer object, but callback Hash was inited
 				case callback[:trigger]
 				when 'progress'
 					__init_key callback, :progress_seconds, 10	
