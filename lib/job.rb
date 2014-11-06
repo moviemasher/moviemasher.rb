@@ -132,10 +132,10 @@ module MovieMasher
 			end
 			hash
 		end
-		def self.__init_callback callback
+		def self.__init_callback job, callback
 			if callback
 				__init_key callback, :trigger, Callback::TriggerComplete
-				__init_destination callback # not using returned Transfer object, but callback Hash was inited
+				__init_destination job, callback # not using returned Transfer object, but callback Hash was inited
 				case callback[:trigger]
 				when 'progress'
 					__init_key callback, :progress_seconds, 10	
@@ -252,7 +252,7 @@ module MovieMasher
 				input
 			end
 			job[:callbacks].map! do |callback|
-				callback = __init_callback callback
+				callback = __init_callback job, callback
 				job[:progress][:calling] += 1 unless 'progress' == callback[:trigger]
 				callback
 			end
