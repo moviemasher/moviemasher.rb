@@ -49,7 +49,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/utils/path.rb
+    <li>lib/util/path.rb
   </ul>
 </nav>
 
@@ -92,9 +92,7 @@
 
   <ul>
   
-    <li class="file"><a href="../LICENSE.html">LICENSE</a>
-  
-    <li class="file"><a href="../README_md.html">README</a>
+    <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
   </ul>
 </nav>
@@ -119,6 +117,8 @@
     <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
   
@@ -180,6 +180,8 @@
   
     <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
   
+    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
+  
     <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
   
     <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
@@ -187,8 +189,6 @@
     <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
   
     <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="../MovieMasher/JobHash.html">MovieMasher::JobHash</a>
   
     <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
   
@@ -283,7 +283,7 @@
 
           
           <div class="method-source-code" id="add_slash_end-source">
-            <pre><span class="ruby-comment"># File lib/utils/path.rb, line 7</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_slash_end</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-node">&quot;#{s}#{Slash}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">end_with?</span> <span class="ruby-constant">Slash</span>
@@ -318,7 +318,7 @@
 
           
           <div class="method-source-code" id="add_slash_start-source">
-            <pre><span class="ruby-comment"># File lib/utils/path.rb, line 12</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_slash_start</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-node">&quot;#{Slash}#{s}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">start_with?</span> <span class="ruby-constant">Slash</span>
@@ -353,7 +353,7 @@
 
           
           <div class="method-source-code" id="add_slashes-source">
-            <pre><span class="ruby-comment"># File lib/utils/path.rb, line 4</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_slashes</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">add_slash_start</span>(<span class="ruby-identifier">add_slash_end</span>(<span class="ruby-identifier">s</span>))
 <span class="ruby-keyword">end</span></pre>
@@ -386,7 +386,7 @@
 
           
           <div class="method-source-code" id="concat-source">
-            <pre><span class="ruby-comment"># File lib/utils/path.rb, line 17</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">s1</span>, <span class="ruby-identifier">s2</span>
   <span class="ruby-identifier">s1</span> = <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s1</span>
   <span class="ruby-identifier">s2</span> = <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s2</span>
@@ -426,7 +426,7 @@
 
           
           <div class="method-source-code" id="strip_slash_end-source">
-            <pre><span class="ruby-comment"># File lib/utils/path.rb, line 30</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">strip_slash_end</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-identifier">s</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">end_with?</span> <span class="ruby-constant">Slash</span>
@@ -461,7 +461,7 @@
 
           
           <div class="method-source-code" id="strip_slash_start-source">
-            <pre><span class="ruby-comment"># File lib/utils/path.rb, line 35</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">strip_slash_start</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-identifier">s</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">start_with?</span> <span class="ruby-constant">Slash</span>
@@ -496,7 +496,7 @@
 
           
           <div class="method-source-code" id="strip_slashes-source">
-            <pre><span class="ruby-comment"># File lib/utils/path.rb, line 27</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">strip_slashes</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">strip_slash_start</span>(<span class="ruby-identifier">strip_slash_end</span>(<span class="ruby-identifier">s</span>))
 <span class="ruby-keyword">end</span></pre>

@@ -1,18 +1,10 @@
+ENV['RACK_ENV'] = 'test'
 
-# 	redis-server --port 6380 &
-#	cd /path/to/clientside_aws
-# 	rvm gemset use clientside_aws
-#	RACK_ENV=test ruby ./index.rb -p 4568 &
-
-require 'redis'
-require 'httparty'
-require 'sinatra'
-
-require_relative '../../../clientside_aws/aws_mock'
-require_relative '../../../clientside_aws/clientside_aws/s3'
-
+require 'bundler/setup'
+require 'clientside_aws/mock'
+require_relative 'spec_helper'
+AWS.config :access_key_id => '...', :secret_access_key => '...'
 PIDS = Array.new
-AWS_REDIS = Redis.new(:host => "localhost", :port => 6380, :driver => :hiredis)
 
 def spec_start_redis
 	if PIDS.empty? then
@@ -34,8 +26,8 @@ def spec_stop_redis
 		PIDS.each do |pid|
 			Process.kill("KILL", pid) 
 		end
-		Process.waitall
 		PIDS.clear
+		#Process.waitall
 	end
 rescue Exception => e
 	puts "spec_stop_redis caught: #{e.message}"

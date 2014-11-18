@@ -72,7 +72,7 @@
   <ul class="link-list">
   
   
-    <li><a class="include" href="JobHash.html">MovieMasher::JobHash</a>
+    <li><a class="include" href="Hashable.html">MovieMasher::Hashable</a>
   
   
   </ul>
@@ -86,6 +86,12 @@
   <ul class="link-list">
     
     <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-resolved_hash">::resolved_hash</a>
+    
+    <li ><a href="#method-c-resolved_string">::resolved_string</a>
+    
+    <li ><a href="#method-c-string_type">::string_type</a>
     
     <li ><a href="#method-i-base_source">#base_source</a>
     
@@ -122,9 +128,7 @@
 
   <ul>
   
-    <li class="file"><a href="../LICENSE.html">LICENSE</a>
-  
-    <li class="file"><a href="../README_md.html">README</a>
+    <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
   </ul>
 </nav>
@@ -149,6 +153,8 @@
     <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
   
@@ -210,6 +216,8 @@
   
     <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
   
+    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
+  
     <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
   
     <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
@@ -217,8 +225,6 @@
     <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
   
     <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="../MovieMasher/JobHash.html">MovieMasher::JobHash</a>
   
     <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
   
@@ -327,24 +333,25 @@ parse to the Hash.</p>
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="JobHash.html#method-c-new">MovieMasher::JobHash.new</a>
+              <a href="Hashable.html#method-c-new">MovieMasher::Hashable.new</a>
             </div>
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 632</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 652</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">hash_or_path</span>, <span class="ruby-identifier">configuration</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-ivar">@logger</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-ivar">@audio_graphs</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-ivar">@video_graphs</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-ivar">@configuration</span> = <span class="ruby-identifier">configuration</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-keyword">super</span> <span class="ruby-constant">Job</span>.<span class="ruby-identifier">__hash_from_path</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-keyword">super</span> <span class="ruby-constant">Job</span>.<span class="ruby-identifier">resolved_hash</span> <span class="ruby-identifier">hash_or_path</span>
   <span class="ruby-ivar">@outputs_desire</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">__init_hash</span> <span class="ruby-ivar">@hash</span>
   <span class="ruby-identifier">path_job</span> = <span class="ruby-identifier">__path_job</span>
   <span class="ruby-identifier">__file_safe</span> <span class="ruby-identifier">path_job</span>
   <span class="ruby-comment"># write massaged job json to job directory</span>
-  <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">path_job</span>, <span class="ruby-string">&#39;job.json&#39;</span>), <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_json</span>) 
+  <span class="ruby-identifier">path_job</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">path_job</span>, <span class="ruby-string">&#39;job.json&#39;</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">path_job</span>, <span class="ruby-string">&#39;w&#39;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_json</span> }  
   <span class="ruby-comment"># if we encountered a parsing error, log it</span>
   <span class="ruby-identifier">log_entry</span>(<span class="ruby-value">:error</span>) { <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>] } <span class="ruby-keyword">if</span> <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -356,6 +363,140 @@ parse to the Hash.</p>
 
         
       </div><!-- new-method -->
+
+    
+      <div id="method-c-resolved_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">resolved_hash</span><span
+            class="method-args">(hash_or_path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="resolved_hash-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">resolved_hash</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-identifier">data</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
+    <span class="ruby-identifier">hash_or_path</span> = <span class="ruby-identifier">resolved_string</span> <span class="ruby-identifier">hash_or_path</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>
+      <span class="ruby-keyword">begin</span>
+        <span class="ruby-keyword">case</span> <span class="ruby-identifier">string_type</span> <span class="ruby-identifier">hash_or_path</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;yaml&#39;</span>
+          <span class="ruby-identifier">data</span> = <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span> <span class="ruby-identifier">hash_or_path</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;json&#39;</span>
+          <span class="ruby-identifier">data</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span> <span class="ruby-identifier">hash_or_path</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">data</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;unsupported configuration file type #{hash_or_path}&quot;</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+        <span class="ruby-identifier">data</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;job file could not be parsed: #{e.message}&quot;</span> 
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">data</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;job file could not be found: #{hash_or_path}&quot;</span> 
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">data</span> = <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">hash_or_path</span>)) <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Hash</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">__hash_keys_to_symbols!</span> <span class="ruby-identifier">data</span>
+  <span class="ruby-identifier">data</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- resolved_hash-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- resolved_hash-method -->
+
+    
+      <div id="method-c-resolved_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">resolved_string</span><span
+            class="method-args">(hash_or_path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="resolved_string-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">resolved_string</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">string_type</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;json&#39;</span>, <span class="ruby-string">&#39;yaml&#39;</span>
+    <span class="ruby-identifier">hash_or_path</span> 
+  <span class="ruby-keyword">else</span>
+    (<span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">hash_or_path</span> <span class="ruby-operator">?</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">hash_or_path</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- resolved_string-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- resolved_string-method -->
+
+    
+      <div id="method-c-string_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">string_type</span><span
+            class="method-args">(hash_or_path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="string_type-source">
+            <pre><span class="ruby-comment"># File lib/job.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">string_type</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">hash_or_path</span>[<span class="ruby-value">0</span>]
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;{&#39;</span>, <span class="ruby-string">&#39;[&#39;</span>
+    <span class="ruby-string">&#39;json&#39;</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;-&#39;</span>
+    <span class="ruby-string">&#39;yaml&#39;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- string_type-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- string_type-method -->
 
     
     </section><!-- public-class-method-details -->
@@ -388,7 +529,7 @@ Media#source String values.</p>
 
           
           <div class="method-source-code" id="base_source-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 613</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 633</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">base_source</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- base_source-source -->
           
@@ -422,7 +563,7 @@ Media#source String values.</p>
 
           
           <div class="method-source-code" id="callbacks-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 615</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 635</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">callbacks</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- callbacks-source -->
           
@@ -457,7 +598,7 @@ one of their own.</p>
 
           
           <div class="method-source-code" id="destination-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 617</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 637</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destination</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- destination-source -->
           
@@ -495,7 +636,7 @@ href="Job.html#method-i-log">log</a> for a warning instead.</p>
 
           
           <div class="method-source-code" id="error-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 624</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 644</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">error</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- error-source -->
           
@@ -533,7 +674,7 @@ message.</p>
 
           
           <div class="method-source-code" id="id-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 627</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 647</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">id</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- id-source -->
           
@@ -567,7 +708,7 @@ message.</p>
 
           
           <div class="method-source-code" id="inputs-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 647</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 668</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">inputs</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- inputs-source -->
           
@@ -601,7 +742,7 @@ message.</p>
 
           
           <div class="method-source-code" id="log-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 649</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 670</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">log</span>
   <span class="ruby-identifier">proc</span> = <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
   <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span>
@@ -645,14 +786,14 @@ href="Job.html#method-i-error">error</a> will be set to the result of
 
           
           <div class="method-source-code" id="log_entry-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 658</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 679</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">log_entry</span> <span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>
   <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword">if</span> <span class="ruby-value">:error</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
   <span class="ruby-identifier">logger_job</span> = <span class="ruby-identifier">__logger</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">logger_job</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">logger_job</span>.<span class="ruby-identifier">send</span> (<span class="ruby-identifier">type</span>.<span class="ruby-identifier">id2name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?&#39;</span>).<span class="ruby-identifier">to_sym</span>
     <span class="ruby-identifier">logger_job</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;debug&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@configuration</span>[<span class="ruby-value">:log_level</span>]
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;debug&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@configuration</span>[<span class="ruby-value">:verbose</span>]
 <span class="ruby-keyword">end</span></pre>
           </div><!-- log_entry-source -->
           
@@ -689,7 +830,7 @@ href="Job.html#method-i-error">error</a> will be set to the result of
 
           
           <div class="method-source-code" id="module_source-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 670</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 691</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">module_source</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- module_source-source -->
           
@@ -723,7 +864,7 @@ href="Job.html#method-i-error">error</a> will be set to the result of
 
           
           <div class="method-source-code" id="outputs-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 667</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 688</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">outputs</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- outputs-source -->
           
@@ -765,7 +906,7 @@ href="Error/JobUpload.html">Error::JobUpload</a>.</p>
 
           
           <div class="method-source-code" id="process-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 679</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 700</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span> 
   <span class="ruby-identifier">rescued_exception</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">begin</span>
@@ -854,7 +995,7 @@ increase once it&#39;s downloaded and parsed for nested media files.</p>
 
           
           <div class="method-source-code" id="progress-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 722</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 743</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">progress</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- progress-source -->
           

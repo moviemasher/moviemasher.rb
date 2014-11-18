@@ -1,27 +1,17 @@
+
 require 'rspec'
+require 'rack'
 require 'rack/test'
 include RSpec::Matchers
 
 # delete previous log directory !!
-FileUtils.rm_rf "#{__dir__}/../../log" if File.directory? "#{__dir__}/../../log"
+FileUtils.rm_rf "#{File.dirname(__FILE__)}/../../log" if File.directory? "#{File.dirname(__FILE__)}/../../log"
 
 require_relative '../../lib/moviemasher.rb'
-MovieMasher.configure "#{__dir__}/config.yml"
+MovieMasher.configure "#{File.dirname(__FILE__)}/config.yml"
 
 def spec_file dir, name
-	JSON.parse(File.read("#{__dir__}/media/json/#{dir}/#{name}.json"))
-end
-def spec_job(input_id, output_id = 'video_h264', destination = 'file_log')
-	job = spec_job_from_files input_id, output_id, destination
-	output = job['outputs'][0]
-	input = job['inputs'][0]
-	input['base_source'] = spec_file('sources', 'file_spec')
-	input['base_source']['directory'] = File.dirname __dir__
-	destination = job['destination']
-	#puts job.inspect
-	input['source']['directory'] = __dir__
-	destination['directory'] = File.dirname(File.dirname __dir__)
-	job
+	JSON.parse(File.read("#{File.dirname(__FILE__)}/media/json/#{dir}/#{name}.json"))
 end
 def spec_job_from_files(input_id = nil, output_id = nil, destination_id = nil)
 	job = Hash.new
@@ -48,11 +38,8 @@ def spec_job_from_files(input_id = nil, output_id = nil, destination_id = nil)
 				referenced.each do |media_id, reference|
 					unless reference[:media]
 						mod_media = spec_modular_media unless mod_media
-						if mod_media[media_id]
-							mash['media'] << mod_media[media_id]
-						else
-							raise "could not find or create media for #{media_id}"
-						end
+						return nil unless mod_media[media_id]
+						mash['media'] << mod_media[media_id]
 					end
 				end
 			end
@@ -63,7 +50,7 @@ end
 ModularMedia = Hash.new
 def spec_modular_media
 	if ModularMedia.empty?
-		js_dir = "#{__dir__}/../../../angular-moviemasher/app/module"
+		js_dir = "#{File.dirname(__FILE__)}/../../../angular-moviemasher/app/module"
 		js_dirs = Dir["#{js_dir}/*/*.json"]
 		js_dirs += Dir["#{js_dir}/*/*/*.json"]
 		js_dirs.each do |json_file|
@@ -87,7 +74,20 @@ def spec_job_output_path job
 	dest_path
 end
 def spec_process_job_files(input_id, output = 'video_h264', destination = 'file_log')
-	job_data = spec_job input_id, output, destination
+	job_data = spec_job_from_files input_id, output, destination
+	unless job_data
+		puts "SKIPPED #{input_id} - put angular-moviemasher with moviemasher.rb to test modules"
+		return [] 
+	end
+	output = job_data['outputs'][0]
+	input = job_data['inputs'][0]
+	input['base_source'] = spec_file('sources', 'file_spec')
+	input['base_source']['directory'] = File.dirname File.dirname(__FILE__)
+	destination = job_data['destination']
+	#puts job_data.inspect
+	input['source']['directory'] = File.dirname(__FILE__)
+	destination['directory'] = File.dirname(File.dirname File.dirname(__FILE__))
+
 	job = MovieMasher::Job.new job_data, MovieMasher.configuration
 	output = job.outputs.first
 	input = job.inputs.first

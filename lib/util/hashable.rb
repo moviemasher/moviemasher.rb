@@ -1,7 +1,7 @@
 
 module MovieMasher
 # Mix-in functionality for mocking a Hash.
-	module JobHash
+	module Hashable
 # Convenience getter for underlying data Hash.
 #
 # symbol - Symbol key into hash.
@@ -29,7 +29,7 @@ module MovieMasher
 		def initialize hash
 			hash = Hash.new unless hash and hash.is_a? Hash
 			@hash = hash
-			@identifier = UUID.new.generate
+			@identifier = UUID.new.generate if defined? UUID
 		end
 # Return deep copy of underlying Hash.
 		def to_hash
@@ -38,6 +38,12 @@ module MovieMasher
 # Return underlying Hash in JSON format.
 		def to_json state = nil
 			@hash.to_json state
+		end
+		def keys
+			@hash.keys
+		end
+		def values
+			@hash.values
 		end
 		protected
 		def _set symbol, value

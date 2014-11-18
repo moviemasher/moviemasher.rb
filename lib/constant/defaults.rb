@@ -21,7 +21,7 @@ module MovieMasher
 			config[:source] = Hash.new
 			config[:source][:method] = Method::Symlink
 			config[:source][:type] = Transfer::TypeFile
-			config[:cached_file] = "#{__dir__}/../../config/font/theleagueof-blackout/webfonts/blackout_two_am-webfont.ttf"
+			config[:cached_file] = "#{File.dirname(__FILE__)}/../../config/font/theleagueof-blackout/webfonts/blackout_two_am-webfont.ttf"
 			config[:family] = "Blackout Two AM"
 			config
 		end

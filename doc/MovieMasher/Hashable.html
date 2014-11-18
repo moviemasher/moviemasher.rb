@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>module MovieMasher::JobHash - RDoc Documentation</title>
+<title>module MovieMasher::Hashable - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -49,7 +49,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/job_hash.rb
+    <li>lib/util/hashable.rb
   </ul>
 </nav>
 
@@ -77,9 +77,13 @@
     
     <li ><a href="#method-i-identifier">#identifier</a>
     
+    <li ><a href="#method-i-keys">#keys</a>
+    
     <li ><a href="#method-i-to_hash">#to_hash</a>
     
     <li ><a href="#method-i-to_json">#to_json</a>
+    
+    <li ><a href="#method-i-values">#values</a>
     
   </ul>
 </nav>
@@ -92,9 +96,7 @@
 
   <ul>
   
-    <li class="file"><a href="../LICENSE.html">LICENSE</a>
-  
-    <li class="file"><a href="../README_md.html">README</a>
+    <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
   </ul>
 </nav>
@@ -119,6 +121,8 @@
     <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
   
@@ -180,6 +184,8 @@
   
     <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
   
+    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
+  
     <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
   
     <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
@@ -187,8 +193,6 @@
     <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
   
     <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="../MovieMasher/JobHash.html">MovieMasher::JobHash</a>
   
     <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
   
@@ -227,7 +231,7 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="module">module MovieMasher::JobHash</h1>
+  <h1 class="module">module MovieMasher::Hashable</h1>
 
   <div id="description" class="description">
     
@@ -272,11 +276,11 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/job_hash.rb, line 29</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">hash</span>
   <span class="ruby-identifier">hash</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hash</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Hash</span>
   <span class="ruby-ivar">@hash</span> = <span class="ruby-identifier">hash</span>
-  <span class="ruby-ivar">@identifier</span> = <span class="ruby-constant">UUID</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">generate</span>
+  <span class="ruby-ivar">@identifier</span> = <span class="ruby-constant">UUID</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">generate</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span> <span class="ruby-constant">UUID</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
@@ -319,7 +323,7 @@
 
           
           <div class="method-source-code" id="5B-5D-source">
-            <pre><span class="ruby-comment"># File lib/job_hash.rb, line 10</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">[]</span> <span class="ruby-identifier">symbol</span>
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -361,7 +365,7 @@
 
           
           <div class="method-source-code" id="5B-5D-3D-source">
-            <pre><span class="ruby-comment"># File lib/job_hash.rb, line 19</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">symbol</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>] = <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -394,7 +398,7 @@
 
           
           <div class="method-source-code" id="class_symbol-source">
-            <pre><span class="ruby-comment"># File lib/job_hash.rb, line 23</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">class_symbol</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;::&#39;</span>).<span class="ruby-identifier">last</span>.<span class="ruby-identifier">to_sym</span>
 <span class="ruby-keyword">end</span></pre>
@@ -430,7 +434,7 @@
 
           
           <div class="method-source-code" id="identifier-source">
-            <pre><span class="ruby-comment"># File lib/job_hash.rb, line 27</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">identifier</span>; <span class="ruby-ivar">@identifier</span>; <span class="ruby-keyword">end</span></pre>
           </div><!-- identifier-source -->
           
@@ -440,6 +444,39 @@
 
         
       </div><!-- identifier-method -->
+
+    
+      <div id="method-i-keys" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">keys</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="keys-source">
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">keys</span>
+  <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">keys</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- keys-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- keys-method -->
 
     
       <div id="method-i-to_hash" class="method-detail ">
@@ -461,7 +498,7 @@
 
           
           <div class="method-source-code" id="to_hash-source">
-            <pre><span class="ruby-comment"># File lib/job_hash.rb, line 35</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_hash</span>
   <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-ivar">@hash</span>))
 <span class="ruby-keyword">end</span></pre>
@@ -494,7 +531,7 @@
 
           
           <div class="method-source-code" id="to_json-source">
-            <pre><span class="ruby-comment"># File lib/job_hash.rb, line 39</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_json</span> <span class="ruby-identifier">state</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-identifier">state</span>
 <span class="ruby-keyword">end</span></pre>
@@ -506,6 +543,39 @@
 
         
       </div><!-- to_json-method -->
+
+    
+      <div id="method-i-values" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">values</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="values-source">
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">values</span>
+  <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">values</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- values-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- values-method -->
 
     
     </section><!-- public-instance-method-details -->

@@ -1,8 +1,8 @@
 download_directory: log/cache
-download_directory_size: 2M
+download_bytes: 2M
 error_directory: log/error
 render_directory: log/temporary
-render_keep: true
+render_save: true
 log_directory: log/moviemasher
 log_level: warn
 s3_read_at_once: true

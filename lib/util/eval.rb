@@ -60,7 +60,7 @@ module MovieMasher
 		end
 		private
 		def self.__is_eval_object? object
-			(object.is_a?(Hash) or object.is_a?(Array) or object.is_a?(JobHash))
+			(object.is_a?(Hash) or object.is_a?(Array) or object.is_a?(Hashable))
 		end
 		def self.__scope_target split_bit, scope
 			scope_child = nil

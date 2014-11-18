@@ -1,11 +1,15 @@
- # chmod_directory_new: 0775
- # error_directory:
- # render_keep: false
- # log_level: info
- # process_queues_seconds: 55
- # queue_wait_time_seconds: 2
-download_directory_size: 3
-download_directory: /tmp/moviemasher/cache
-log_directory: /var/log/moviemasher
-queue_directory: /tmp/moviemasher/queue
-render_directory: /tmp/moviemasher/temporary
+---
+:chmod_directory_new: '0775'
+:download_directory: /tmp/moviemasher/cache
+:download_bytes: 0M
+:error_directory: 
+:queue_url: 
+:log_directory: /var/log/moviemasher
+:verbose: info
+:process_seconds: 55
+:queue_directory: /tmp/moviemasher/queue
+:queue_wait_seconds: 2
+:render_directory: /tmp/moviemasher/temporary
+:render_save: false
+:aws_access_key_id: 
+:aws_secret_access_key: 

@@ -16,7 +16,51 @@ module MovieMasher
 #   job.progress
 #   # => {:rendering=>1, :uploading=>1, :downloading=>1, :downloaded=>1, :rendered=>1, :uploaded=>1}
 	class Job
-		include JobHash
+		include Hashable
+		def self.resolved_hash hash_or_path
+			data = Hash.new
+			if hash_or_path.is_a? String
+				hash_or_path = resolved_string hash_or_path
+				if hash_or_path
+					begin
+						case string_type hash_or_path
+						when 'yaml'
+							data = YAML::load hash_or_path
+						when 'json'
+							data = JSON.parse hash_or_path
+						else
+							data[:error] = "unsupported configuration file type #{hash_or_path}"
+						end
+					rescue Exception => e
+						data[:error] = "job file could not be parsed: #{e.message}" 
+					end
+				else
+					data[:error] = "job file could not be found: #{hash_or_path}" 
+				end
+			else
+				data = Marshal.load(Marshal.dump(hash_or_path)) if hash_or_path.is_a? Hash
+			end
+			__hash_keys_to_symbols! data
+			data
+		end
+		def self.resolved_string hash_or_path
+			case string_type hash_or_path
+			when 'json', 'yaml'
+				hash_or_path 
+			else
+				(File.exists? hash_or_path ? File.read(hash_or_path) : nil)
+			end
+		end
+		def self.string_type hash_or_path
+			case hash_or_path[0]
+			when '{', '['
+				'json'
+			when '-'
+				'yaml'
+			else
+				nil
+			end
+		end
 		private
 		def self.__audio_from_file path
 			raise Error::Parameter.new "__audio_from_file with invalid path" unless path and (not path.empty?) and File.exists? path
@@ -61,31 +105,7 @@ module MovieMasher
 			key = Path.concat key, file_name
 			Evaluate.value key, scope
 		end
-		def self.__hash_from_path hash_or_path
-			data = Hash.new
-			if hash_or_path.is_a? String
-				if File.exists? hash_or_path
-					begin
-						case File.extname hash_or_path
-						when '.yml'
-							data = YAML::load(File.open(hash_or_path))
-						when '.json'
-							data = JSON.parse(File.read(hash_or_path))
-						else
-							data[:error] = "unsupported configuration file type #{hash_or_path}"
-						end
-					rescue Exception => e
-						data[:error] = "job file could not be parsed: #{e.message}" 
-					end
-				else
-					data[:error] = "job file could not be found: #{hash_or_path}" 
-				end
-			else
-				data = Marshal.load(Marshal.dump(hash_or_path)) if hash_or_path.is_a? Hash
-			end
-			__hash_keys_to_symbols! data
-			data
-		end
+		
 		def self.__file_info type, ffmpeg_output
 			result = nil
 			if ffmpeg_output and not ffmpeg_output.empty?
@@ -634,12 +654,13 @@ module MovieMasher
 			@audio_graphs = nil
 			@video_graphs = nil
 			@configuration = configuration || Hash.new
-			super Job.__hash_from_path hash_or_path
+			super Job.resolved_hash hash_or_path
 			@outputs_desire = Job.__init_hash @hash
 			path_job = __path_job
 			__file_safe path_job
 			# write massaged job json to job directory
-			File.write(Path.concat(path_job, 'job.json'), @hash.to_json)	
+			path_job = Path.concat(path_job, 'job.json')
+			File.open(path_job, 'w') { |f| f << @hash.to_json }	
 			# if we encountered a parsing error, log it
 			log_entry(:error) { @hash[:error] } if @hash[:error]
 		end
@@ -661,7 +682,7 @@ module MovieMasher
 			if logger_job and logger_job.send (type.id2name + '?').to_sym
 				logger_job.send(type, &proc)
 			end
-			puts proc.call if 'debug' == @configuration[:log_level]
+			puts proc.call if 'debug' == @configuration[:verbose]
 		end
 # Array - One or more Output objects. 
 		def outputs; _get __method__; end
@@ -789,6 +810,7 @@ module MovieMasher
 			@audio_graphs
 		end
 		def __cache_input input, input_url, base_src = nil, module_src = nil
+			cache_url_path = nil
 			if input_url then
 				cache_url_path = __cache_url_path input_url
 				unless File.exists? cache_url_path then
@@ -833,6 +855,7 @@ module MovieMasher
 			end
 			progress[:downloaded] += 1
 			__callback :progress
+			cache_url_path
 		end
 		def __cache_job_mash input
 			mash = input[:source]
@@ -878,7 +901,6 @@ module MovieMasher
 									end
 								end
 								mime_type = response['content-type']
-								#puts "MIME: #{mime_type}"
 								__set_info(out_file, 'Content-Type', mime_type) if mime_type
 							else
 								log_entry(:warn) {"got #{response.code} response code from #{input_url}"}
@@ -890,13 +912,12 @@ module MovieMasher
 					bucket_key = Job.__path_for_transfer source
 					object = bucket.objects[bucket_key]
 					if @configuration[:s3_read_at_once] then
-						#puts "reading from S3 #{bucket_key}"
 						object_read_data = object.read
-						File.open(out_file, 'wb') { |file| file.write(object_read_data) } if object_read_data
+						File.open(out_file, 'wb') { |f| f << object_read_data } if object_read_data
 					else
 						File.open(out_file, 'wb') do |file|
 							object.read do |chunk|
-								file.write(chunk)
+								file << chunk
 							end
 						end
 					end
@@ -1018,6 +1039,7 @@ module MovieMasher
 			@hash[:commands] << whole_cmd
 			log_entry(:debug) { whole_cmd }
 			result = Open3.capture3(whole_cmd).join "\n"
+			#Process.waitall
 			if outputs_file and not out_file.include?('%') then	
 				unless File.exists?(out_file) and File.size?(out_file)
 					log_entry(:debug) { result }
@@ -1036,6 +1058,7 @@ module MovieMasher
 				end
 			end 
 			log_entry(:debug) { result }
+			#puts `ps aux | awk '{ print $8 " " $2 }' | grep -w Z`
 			result
 		end
 		def __execute_output_command output, cmd_hash
@@ -1045,7 +1068,7 @@ module MovieMasher
 			content = cmd_hash[:content]
 			if content
 				__file_safe File.dirname(out_path)
-				File.write(out_path, content)
+				File.open(out_path, 'w') { |f| f << content}	
 			else			
 				unless File.exists? out_path then
 					cmd = cmd_hash[:command]
@@ -1084,8 +1107,8 @@ module MovieMasher
 				type = MIME::Types.of(path).first
 				if type 
 					mime = type.simplified
-				else
-					mime = Rack::Mime.mime_type(File.extname(path))
+				#else
+				#	mime = Rack::Mime.mime_type(File.extname(path))
 				end
 				#puts "LOOKING UP MIME: #{ext} #{mime}"
 				__set_info(path, 'Content-Type', mime) if mime
@@ -1094,7 +1117,11 @@ module MovieMasher
 		end
 		def __file_safe path
 			options = Hash.new
-			options[:mode] = @configuration[:chmod_directory_new] if @configuration[:chmod_directory_new]
+			mod = @configuration[:chmod_directory_new]
+			if mod
+				mod = mod.to_i(8) if mod.is_a? String
+				options[:mode] = mod 
+			end
 			FileUtils.makedirs path, options
 		end
 		def __file_type path
@@ -1176,7 +1203,7 @@ module MovieMasher
 				__file_safe log_dir
 				@logger = Logger.new(Path.concat log_dir, 'log.txt')
 				log_level = @hash[:log_level]
-				log_level = @configuration[:log_level] unless log_level and not log_level.empty?
+				log_level = @configuration[:verbose] unless log_level and not log_level.empty?
 				log_level = 'info' unless log_level and not log_level.empty?
 				log_level = log_level.upcase
 				log_level = (Logger.const_defined?(log_level) ? Logger.const_get(log_level) : Logger::INFO)
@@ -1468,8 +1495,9 @@ module MovieMasher
 		end
 		def __s3 source
 			unless source[:s3] 
-				require 'aws-sdk' unless defined? AWS
-				source[:s3] = ((source[:region] and not source[:region].empty?) ? AWS::S3.new(:region => source[:region]) : AWS::S3.new)
+				#require 'aws-sdk' unless defined? AWS
+				region = ((source[:region] and not source[:region].empty?) ? source[:region] : nil)
+				source[:s3] = (region ? AWS::S3.new(:region => region) : AWS::S3.new)
 			end
 			source[:s3]
 		end
@@ -1479,7 +1507,7 @@ module MovieMasher
 		def __scope object = nil
 			scope = Hash.new
 			scope[:job] = self
-			scope[object.class_symbol] = object  if object and object.is_a? JobHash
+			scope[object.class_symbol] = object  if object and object.is_a? Hashable
 			scope
 		end
 		def __set_info(path, type, data)

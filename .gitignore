@@ -3,3 +3,4 @@ log/*
 tmp/*
 Gemfile.lock
 spec/helpers/media/video/*
+.bundle*

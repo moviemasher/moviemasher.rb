@@ -3,7 +3,7 @@ module MovieMasher
 #
 # 
 	class Mash
-		include JobHash
+		include Hashable
 		Audio = 'audio'
 		Effect = 'effect'
 		Font = 'font'

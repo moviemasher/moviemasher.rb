@@ -29,7 +29,7 @@ module MovieMasher
 #   }
 #
 	class Input
-		include JobHash
+		include Hashable
 		TypeAudio = 'audio'
 		TypeImage = 'image'
 		TypeMash = 'mash'

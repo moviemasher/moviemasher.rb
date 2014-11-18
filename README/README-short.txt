@@ -1,0 +1,1 @@
+Based on ruby:latest - includes FFmpeg, Ecasound, supporting AV libaries and moviemasher.rb

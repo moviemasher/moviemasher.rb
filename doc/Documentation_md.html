@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>README - RDoc Documentation</title>
+<title>Documentation - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -49,14 +49,9 @@
     <h3 class="section-header">Table of Contents</h3>
     <ul>
       <li><a href="#label-moviemasher.rb">moviemasher.rb</a>
-      <li><a href="#label-AWS+Integration">AWS Integration</a>
-      <li><a href="#label-Basic+Usage">Basic Usage</a>
-      <li><a href="#label-How+to+Install">How to Install</a>
-      <li><a href="#label-Requirements">Requirements</a>
-      <li><a href="#label-Developer+Setup">Developer Setup</a>
-      <li><a href="#label-To+run+tests+in+spec_aws">To run tests in spec_aws</a>
-      <li><a href="#label-Known+issues+in+Version+4.0.08">Known issues in Version 4.0.08</a>
-      <li><a href="#label-Migrating+from+Version+4.0.07">Migrating from Version 4.0.07</a>
+      <li><a href="#label-RDoc+Documentation">RDoc Documentation</a>
+      <li><a href="#label-Core+Classes%2FModules">Core Classes/Modules</a>
+      <li><a href="#label-Core+Usage">Core Usage</a>
     </ul>
   </nav>
 </div>
@@ -68,9 +63,7 @@
 
   <ul>
   
-    <li class="file"><a href="./LICENSE.html">LICENSE</a>
-  
-    <li class="file"><a href="./README_md.html">README</a>
+    <li class="file"><a href="./Documentation_md.html">Documentation</a>
   
   </ul>
 </nav>
@@ -95,6 +88,8 @@
     <li><a href="./MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
   
     <li><a href="./MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="./MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="./MovieMasher/Defaults.html">MovieMasher::Defaults</a>
   
@@ -156,6 +151,8 @@
   
     <li><a href="./MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
   
+    <li><a href="./MovieMasher/Hashable.html">MovieMasher::Hashable</a>
+  
     <li><a href="./MovieMasher/Info.html">MovieMasher::Info</a>
   
     <li><a href="./MovieMasher/Input.html">MovieMasher::Input</a>
@@ -163,8 +160,6 @@
     <li><a href="./MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
   
     <li><a href="./MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="./MovieMasher/JobHash.html">MovieMasher::JobHash</a>
   
     <li><a href="./MovieMasher/Layer.html">MovieMasher::Layer</a>
   
@@ -205,80 +200,38 @@
 <div id="documentation" class="description">
   
 <p><img
-src="https://github.com/moviemasher/angular-moviemasher/raw/master/README/logo-120x60.png"
-/>
-<strong><a
+src="https://github.com/moviemasher/moviemasher.rb/raw/master/README/logo-120x60.png"
+/> <strong><a
 href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> |
 <a
 href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
-| moviemasher.rb</strong></p>
+| <a
+href="https://github.com/moviemasher/moviemasher.rb">moviemasher.rb</a></strong></p>
 
 <p><em>Ruby library for mashing up video, images and audio utilizing FFmpeg
 and Ecasound</em></p>
 
 <h1 id="label-moviemasher.rb">moviemasher.rb<span><a href="#label-moviemasher.rb">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+<hr style="height: 1px">
 
-<p>Use moviemasher.rb to encode mashups of video, audio, and images from a
-JSON formatted job description. A job specifies multiple media inputs to be
-encoded together into one or more outputs, as well as where to find the
-inputs and where to place the outputs.</p>
+<h3 id="label-RDoc+Documentation">RDoc <a href="Documentation_md.html">Documentation</a><span><a href="#label-RDoc+Documentation">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<h5 id="label-Core+Classes%2FModules">Core Classes/Modules<span><a href="#label-Core+Classes%2FModules">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
 <ul><li>
-<p><strong>concatenate</strong> files together sequentially with trimming</p>
+<p><a href="MovieMasher.html">MovieMasher</a></p>
 </li><li>
-<p><strong>mix</strong> audio tracks together with variable fading</p>
+<p><a href="MovieMasher/Job.html">MovieMasher::Job</a></p>
 </li><li>
-<p><strong>composite</strong> visual tracks together with transformations</p>
+<p><a href="MovieMasher/Input.html">MovieMasher::Input</a></p>
 </li><li>
-<p><strong>add</strong> titling as an effect or theme with custom fonts</p>
+<p><a href="MovieMasher/Output.html">MovieMasher::Output</a></p>
 </li><li>
-<p><strong>transfer</strong> encoded files to remote hosts</p>
+<p><a href="MovieMasher/Transfer.html">MovieMasher::Transfer</a></p>
 </li><li>
-<p><strong>specify</strong> callbacks that alert your system of processing
-milestones</p>
+<p><a href="MovieMasher/Callback.html">MovieMasher::Callback</a></p>
 </li></ul>
 
-<p>The project aims to take the complexity out of describing common
-audio/video editing operations to command line programs, which handle the
-low level transcoding operations. The <a
-href="MovieMasher.html">MovieMasher</a> class turns your job into a series
-of commands and then manages their execution.</p>
-
-<p>As part of job processing it can download media inputs from remote hosts
-and upload media outputs as well. Using the same mechanisms it can also
-trigger callbacks as a job is started, during its processing and when
-it&#39;s completed so that external systems can be alerted.</p>
-
-<p>The project includes a rake task that can be routinely called to watch a
-folder for job description files, as well as an example crontab entry that
-calls it. Recall that ruby scripts run from cron lack your user&#39;s
-environmental variables, so you&#39;ll probably need to edit the paths to
-binary directories in the entry to match your system.</p>
-
-<h3 id="label-AWS+Integration">AWS Integration<span><a href="#label-AWS+Integration">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
-
-<p>There are optional configuration settings that support two specific Amazon
-Web Services offerings: S3 for media storage and SQS for job queueing. If
-set to use an SQS queue then it will be polled as part of the folder
-watching process for job files. The ruby aws-sdk is utilized to interface
-with SQS, so access key details can be provided in the configuration or
-environmental variables or in a role if deployed on an EC2 instance.</p>
-
-<p>Similarly, aws-sdk is utilized for S3 interactions so if access key details
-are present then buckets can be used either as sources for media inputs or
-destinations for media outputs within job descriptions. These are
-authenticated requests, so the buckets do not have to be public.</p>
-
-<p>Additionally, the Movie Masher AMI is available in Marketplace and includes
-moviemasher.rb and all supporting applications. When launched it looks for
-user data supplied in JSON format and merges it into the default
-configuration, so it&#39;s possible to supply SQS options on startup. The
-cron job described above is installed, so a configured SQS queue will
-immediately start being polled for jobs. Otherwise the instance will start
-up apache to serve the angular-moviemasher project, preconfigured to
-utilize the local moviemasher.rb process (the instance id acts as a shared
-password).</p>
-
-<h3 id="label-Basic+Usage">Basic Usage<span><a href="#label-Basic+Usage">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+<h5 id="label-Core+Usage">Core Usage<span><a href="#label-Core+Usage">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
 
 <pre class="ruby">    <span class="ruby-identifier">require_relative</span> <span class="ruby-string">&#39;lib/moviemasher.rb&#39;</span>
     <span class="ruby-identifier">job</span> = { :<span class="ruby-identifier">inputs</span> =<span class="ruby-operator">&gt;</span> [], :<span class="ruby-identifier">base_source</span> =<span class="ruby-operator">&gt;</span> {}, :<span class="ruby-identifier">outputs</span> =<span class="ruby-operator">&gt;</span> [], :<span class="ruby-identifier">destination</span> =<span class="ruby-operator">&gt;</span> {} }
@@ -318,111 +271,10 @@ supported at this time, but they include basics like crop, scale, fade and
 drawtext. That last one relies on <em>font</em> media, the last of the
 modular types.</p>
 
-<h3 id="label-How+to+Install">How to Install<span><a href="#label-How+to+Install">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
-<ol><li>
-<p>install ffmpeg, ecasound, sox and du programs</p>
-</li><li>
-<p>install ruby and builder</p>
-</li><li>
-<p><code>bundle install</code> in project directory installs required gems
-from Gemfile</p>
-</li><li>
-<p>edit config/config.yml configuration file to match paths on system and
-configure logging/debugging options</p>
-</li><li>
-<p><code>rake moviemasher:process_queues</code> searches watch folder and
-optional SQS queue for jobs</p>
-</li><li>
-<p>optionally install calling crontab entry found at config/moviemasher.cron
-after checking binary paths in it</p>
-</li></ol>
+<p><strong>To regenerate this documentation <code>cd</code> to project
+directory and execute:</strong></p>
 
-<h3 id="label-Requirements">Requirements<span><a href="#label-Requirements">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
-<ul><li>
-<p>ffmpeg with ffprobe</p>
-</li><li>
-<p>ecasound</p>
-</li><li>
-<p>sox</p>
-</li><li>
-<p>du</p>
-</li><li>
-<p>builder gem</p>
-</li><li>
-<p>require_all gem</p>
-</li><li>
-<p>json gem</p>
-</li><li>
-<p>uuid gem</p>
-</li><li>
-<p>mime-types gem</p>
-</li><li>
-<p>multipart-post gem</p>
-</li><li>
-<p>rake gem</p>
-</li><li>
-<p>rack gem</p>
-</li><li>
-<p>aws-sdk gem</p>
-</li></ul>
-
-<h3 id="label-Developer+Setup">Developer Setup<span><a href="#label-Developer+Setup">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
-<ol><li>
-<p>uncomment entries in Gemfile related to spec tests</p>
-</li><li>
-<p><code>bundle install</code> from project directory installs additional gems</p>
-</li><li>
-<p><code>rspec spec</code> will run the core tests</p>
-</li><li>
-<p>The following with regenerate the doc directory:
- rdoc --visibility=public
---main=&#39;README.md&#39; -o doc --fmt=darkfish --markup=tomdoc
---tab-width=2 --no-dcov --exclude=&#39;/spec&#39; --exclude=&#39;/log/&#39;
---exclude=&#39;/Gemfile&#39; --exclude=&#39;/config/&#39;
---exclude=&#39;/index.rb&#39; --exclude=&#39;/doc/&#39;
---exclude=&#39;/Rakefile&#39;</p>
-</li></ol>
-
-<h5 id="label-To+run+tests+in+spec_aws">To run tests in spec_aws<span><a href="#label-To+run+tests+in+spec_aws">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
-<ol><li>
-<p>install and launch clientside_aws</p>
-</li><li>
-<p>uncomment other entries in Gemfile</p>
-</li><li>
-<p><code>bundle install</code> from project directory installs additional gems</p>
-</li></ol>
-
-<h5 id="label-Known+issues+in+Version+4.0.08">Known issues in Version 4.0.08<span><a href="#label-Known+issues+in+Version+4.0.08">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
-<ul><li>
-<p>local/sqs import/export has not been thoroughly tested</p>
-</li><li>
-<p>archiving of outputs not yet supported</p>
-</li><li>
-<p>freeze frame not yet supported</p>
-</li><li>
-<p>audio still being done in Ecasound</p>
-</li><li>
-<p>due to size considerations, video files not included in spec tests
-(eventually tests will generate their own to work with)</p>
-</li></ul>
-
-<h5 id="label-Migrating+from+Version+4.0.07">Migrating from Version 4.0.07<span><a href="#label-Migrating+from+Version+4.0.07">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
-<ul><li>
-<p>The <code>length</code> key in clips has been renamed <code>frames</code>.</p>
-</li><li>
-<p>The <code>audio</code> and <code>video</code> keys in mash tracks have been
-moved to mash.</p>
-</li><li>
-<p>The <code>tracks</code> key in mashes has been removed.</p>
-</li><li>
-<p>The <code>fps</code> key in outputs has been renamed
-<code>video_rate</code>.</p>
-</li><li>
-<p>The <code>audio_frequency</code> key in outputs has been renamed
-<code>audio_rate</code>.</p>
-</li><li>
-<p>The <code>trim</code> key in inputs has been renamed <code>offset</code>.</p>
-</li></ul>
+<pre>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39; --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude=&#39;/spec&#39; --exclude=&#39;/log&#39; --exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39; --exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39; --exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39; --exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39; --exclude=&#39;/README&#39; --exclude=&#39;/LICENSE&#39;</pre>
 
 </div>
 

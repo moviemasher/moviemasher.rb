@@ -1,7 +1,7 @@
 task :environment
 
-PathUser = "#{__dir__}/../config/userdata.json"
-PathConfig = "#{__dir__}/../config/config.yml"
+PathUser = "#{File.dirname(__FILE__)}/../config/userdata.json"
+PathConfig = "#{File.dirname(__FILE__)}/../config/config.yml"
 
 namespace :moviemasher do
 	desc "If json user data supplied then write it to config, otherwise start web server"

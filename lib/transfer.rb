@@ -14,7 +14,7 @@ module MovieMasher
 # When building file paths, #directory and #path will automatically have slashes 
 # inserted between them as needed so trailing and leading slashes are optional. 
 	class Transfer
-		include JobHash
+		include Hashable
 		TypeFile = 'file'
 		TypeHttp = 'http'
 		TypeHttps = 'https'

@@ -1,19 +1,19 @@
+
+require 'cgi'
 require 'digest/sha2'
 require 'fileutils'
-require 'cgi'
+require 'json'
 require 'logger'  
 require 'mime/types'
 require 'net/http'
 require 'net/http/post/multipart'
 require 'open3'
-require 'rack'
 require 'require_all'
 require 'uri'
 require 'uuid'
 require 'yaml'
-require 'json'
 
-require_all __dir__
+require_rel '.'
 
 # Handles global configuration and high level processing of Job objects. The 
 # ::process_queues method will look for jobs in a directory and optionally an 
@@ -25,19 +25,7 @@ require_all __dir__
 #   MovieMasher.process './job.json'
 #   # => #<MovieMasher::Job:0x007fa34300abc0>
 module MovieMasher
-	@@configuration = {
-		:download_directory => '', # defaults to render_directory
-		:download_directory_size => '0M', # K = kilobytes, M = megabytes, G = gigabytes, otherwise bytes
-		:chmod_directory_new => 0775,
-		:error_directory => '',
-		:render_keep => false,
-		:log_directory => '/var/log/moviemasher',
-		:log_level => 'info',
-		:process_queues_seconds => 55,
-		:queue_directory => '/tmp/moviemasher/queue',
-		:queue_wait_time_seconds => 2,
-		:render_directory => '/tmp/moviemasher/temporary',
-	}
+	@@configuration = Configuration::Defaults.dup
 	@@job = nil
 	@@logger = nil
 	@@queue = nil
@@ -49,23 +37,7 @@ module MovieMasher
 	end
 # hash_or_path - Set one or more configuration options. If supplied a String, 
 # it's assumed to be a path to a JSON or YML file and converted to a Hash. The 
-# Hash can use a String or Symbol for each key. The following keys are 
-# supported: 
-#
-#                chmod_directory_new - Mode to use when creating directories, default: 0775
-#                log_directory - Where to put log file, default: /var/log/moviemasher
-#                log_level - Logger output level (debug, info, warn, error), default: info
-#                download_directory - Where to downloaded files, default: *render_directory*
-#                download_directory_size - Integer/String target cache size, default: 0M 
-#                render_directory - Where to build files, default: /tmp/moviemasher/temporary
-#                queue_directory - Where to look for job files, default: /tmp/moviemasher/queue
-#                process_queues_seconds - How long to watch queues for jobs, default: 55
-#                aws_OPTIONS - passed to the AWS.config method if specified, default: empty
-#                queue_url - SQS queue endpoint to poll for jobs, default: empty 
-#                queue_wait_time_seconds - How long to wait for SQS messages, default: 2
-#                APP_path - Path to du, ecasound, ffmpeg, ffprobe, sox, wav2png, default: APP
-#                error_directory - Where to put failed job directories, default: empty
-#                render_keep - If false build files are removed, default: false
+# Hash can use a String or Symbol for each key. See Config for supported keys. 
 #
 # Returns nothing. 
 #
@@ -119,17 +91,24 @@ module MovieMasher
 			AWS.config(aws_config) unless aws_config.empty?
 		end
 	end
+# Returns valediction for command line apps.
+	def self.goodbye
+		"#{Time.now} #{self.name} done"
+	end
+# Returns salutation for command line apps.
+	def self.hello 
+		"#{Time.now} #{self.name} version #{VERSION}"
+	end
 # object_or_path - Job object or String/Hash to be passed to Job.new along 
 # with ::configuration. After the MovieMasher::Job#process method is called, its render 
 # directory is either moved to *error_directory* (if that option is not empty 
 # and a problem arose during processing) or deleted (unless 
-# *render_keep* is true). The *download_directory* will also be pruned 
-# to assure its size is not greater than *download_directory_size*. 
+# *render_save* is true). The *download_directory* will also be pruned 
+# to assure its size is not greater than *download_bytes*. 
 #
 # Returns Job object with *error* key set if problem arose.
 # Raises Error::Configuration if *render_directory* is empty.
 	def self.process object_or_path
-		__log_transcoder(:debug) { "process called #{object_or_path}" }
 		result = @@job = (object_or_path.is_a?(Job) ? object_or_path : Job.new(object_or_path, configuration))
 		begin # try to process job
 			@@job.process unless @@job[:error]
@@ -142,7 +121,7 @@ module MovieMasher
 				if @@job[:error] and configuration[:error_directory] and not configuration[:error_directory].empty? then
 					FileUtils.mv job_directory, configuration[:error_directory]
 				else
-					FileUtils.rm_r job_directory unless configuration[:render_keep]
+					FileUtils.rm_r job_directory unless configuration[:render_save]
 				end
 			end
 		rescue Exception => e
@@ -153,13 +132,20 @@ module MovieMasher
 		begin # try to flush the download directory
 			directory = @@configuration[:download_directory]
 			directory = @@configuration[:render_directory] unless directory and not directory.empty?
-			__flush_downloads directory, configuration[:download_directory_size]
+			__flush_downloads directory, configuration[:download_bytes]
 		rescue Exception => e
 			__log_exception e
 		end
 		result # what was @@job
 	end
-# Loops for *process_queues_seconds* searching for the oldest JSON or YML 
+# Calls process for each item in array
+	def self.process_jobs array # of job strings or paths
+		array.each do |job_str|
+			process job_str
+		end
+		(array.empty? ? nil : array.length)
+	end
+# Loops for *process_seconds* searching for the oldest JSON or YML 
 # formatted job file in *queue_directory*, as well as polling *queue_url* for an 
 # SQS message. If the later is found its body is expected to be a JSON formatted 
 # job and its identifier is used to populate the *id* key (if that's empty), as 
@@ -176,29 +162,38 @@ module MovieMasher
 # Returns nothing.
 #
 # Raises Error::Configuration if *queue_directory* or *render_directory* is empty.
-	def self.process_queues
+	def self.process_queues process_seconds = nil
+		process_seconds = configuration[:process_seconds] unless process_seconds
+		process_seconds = process_seconds.to_i
 		raise Error::Configuration.new "queue_directory not found in configuration" unless configuration[:queue_directory] and not configuration[:queue_directory].empty?
-		run_seconds = configuration[:process_queues_seconds]
 		start = Time.now
-		oldest_file = nil
-		working_file = "#{configuration[:queue_directory]}working.json"
-		while run_seconds > (Time.now - start)
-			if File.exists? working_file
-				# if this process didn't create it, we must have crashed on it in a previous run
-				__log_transcoder(:error) { "deleting previously active job:\n#{File.read working_file}" } unless oldest_file
-				File.delete working_file
-			end
-			oldest_file = Dir["#{configuration[:queue_directory]}*.json"].sort_by{ |f| File.mtime(f) }.first
-			if oldest_file then
-				__log_transcoder(:info) { "started #{oldest_file}" }
-				File.rename oldest_file, working_file
+		Dir[Path.concat configuration[:queue_directory], 'working.*'].each do |working_file|
+			# if this process didn't create it, we must have crashed on it in a previous run
+			__log_transcoder(:error) { "deleting previously active job:\n#{File.read working_file}" }
+			File.delete working_file				
+		end
+		while (0 > process_seconds) or (process_seconds > (Time.now - start))
+			job = Dir[Path.concat configuration[:queue_directory], '*'].sort_by{ |f| File.mtime(f) }.first
+			if job then
+				__log_transcoder(:info) { "starting #{job}" }
+				working_file = "#{File.dirname job}/working#{File.extname job}"
+				File.rename job, working_file
 				process working_file
-				__log_transcoder(:info) { "finished #{oldest_file}" }
+				__log_transcoder(:info) { "finishing #{job}" }
 				File.delete working_file
-				sleep 1
 			else # see if one can be copied from the queue
-				__sqs_request(run_seconds, start) unless configuration[:queue_url].nil? or configuration[:queue_url].empty?
+				if (0 > process_seconds) or (process_seconds > (Time.now + configuration[:queue_wait_seconds] - start))
+					job = __sqs_request unless configuration[:queue_url].nil? or configuration[:queue_url].empty?
+					if job
+						__log_transcoder(:info) { "starting #{job[:id]}" }
+						process job 
+						__log_transcoder(:info) { "finishing #{job[:id]}" }
+					end
+				end
 			end
+			break if -1 == process_seconds
+			break if -2 == process_seconds and not found
+			sleep 0.01
 		end
 	end
 	private
@@ -213,7 +208,11 @@ module MovieMasher
 	def self.__file_safe path
 		unless File.directory? path
 			options = Hash.new
-			options[:mode] = @@configuration[:chmod_directory_new] if @@configuration[:chmod_directory_new]
+			mod = @@configuration[:chmod_directory_new]
+			if mod
+				mod = mod.to_i(8) if mod.is_a? String
+				options[:mode] = mod 
+			end
 			FileUtils.makedirs path, options
 		end
 	end
@@ -289,7 +288,7 @@ module MovieMasher
 	end
 	def self.__log type, &proc
 		 @@job.log_entry(type, &proc) if @@job
-		__log_transcoder(type, &proc) if 'debug' == configuration[:log_level]
+		__log_transcoder(type, &proc) if 'debug' == configuration[:verbose]
 	end
 	def self.__logger
 		unless @@logger
@@ -297,7 +296,7 @@ module MovieMasher
 			if log_dir and not log_dir.empty?
 				__file_safe log_dir
 				@@logger = Logger.new(Path.concat(log_dir, 'moviemasher.rb.log'), 7, 1048576 * 100)
-				log_level = (@@configuration[:log_level] || 'info').upcase
+				log_level = (@@configuration[:verbose] || 'info').upcase
 				@@logger.level = (Logger.const_defined?(log_level) ? Logger.const_get(log_level) : Logger::INFO)
 			end
 		end
@@ -316,6 +315,9 @@ module MovieMasher
 		nil # so we can assign in a oneliner
 	end
 	def self.__log_transcoder type, &proc
+		puts proc.call
+		#STDOUT.flush
+	
 		logger = __logger
 		if logger and logger.send((type.id2name + '?').to_sym)
 			logger.send(type, proc.call)
@@ -329,26 +331,20 @@ module MovieMasher
 		end
 		@@queue
 	end
-	def self.__sqs_request run_seconds, start
-		wait_time = configuration[:queue_wait_time_seconds] || 0
-		if run_seconds > (Time.now + wait_time - start) then
-			message = __sqs_queue.receive_message(:wait_time_seconds => wait_time)
-			if message then
-				job = nil
-				begin
-					job_data = JSON.parse(message.body)
-					begin
-						job_data['id'] = message.id unless job_data['id'] and not job_data['id'].to_s.empty?
-						File.open("#{configuration[:queue_directory]}#{message.id}.json", 'w') { |file| file.write(job_data.to_json) } 
-						message.delete
-					rescue Exception => e
-						__log_exception e
-					end
-				rescue Exception => e
-					__log_exception e
-					message.delete
-				end
+	def self.__sqs_request
+		job_hash = nil
+		message = __sqs_queue.receive_message(:wait_time_seconds => configuration[:queue_wait_seconds])
+		if message then
+			message_body = message.body
+			job_hash = Job.resolved_hash message_body
+			if job_hash[:error] then
+				__log_transcoder(:error) { "SQS #{job_hash[:error]}: #{message_body}" }
+				job_hash = nil
+			else
+				job_hash[:id] = message.id unless job_hash[:id] and not job_hash[:id].to_s.empty?
 			end
+			message.delete
 		end
+		job_hash
 	end
 end
