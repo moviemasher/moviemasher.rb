@@ -15,12 +15,12 @@ Use moviemasher.rb to encode mashups of video, audio, and images from simple *jo
 ### Overview
 The project aims to simplify common audio/video editing operations by turning your job description into a series of shell commands, and then overseeing their execution. As part of job processing, media inputs can be downloaded from remote hosts and rendered outputs can be uploaded as well. Using the same request mechanisms, external systems can be alerted by *callbacks* triggered when a job is started, during its processing and/or when it's completed.
 
-- **Documentation:** generated with RDoc from source [(HTML)](doc/index.html)
+- **Documentation:** generated with RDoc from source [(HTML)](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/index.html)
 - **Docker Image:** `moviemasher/moviemasher.rb` [(Dockerfile)](Dockerfile)
 
 In addition to the raw media assets (video, audio and images), jobs can contain *mash* inputs that describe more complex compositing, titling and other effects. The related [**moviemasher.js**](https://github.com/moviemasher/moviemasher.js) project can be used to generate and display JSON formatted mash descriptions within a web browser, and [**angular-moviemasher**](https://github.com/moviemasher/angular-moviemasher) can be used to package these into job descriptions. 
 
-Jobs are provided to the system for processing in different ways, depending on how it's been configured and deployed. At the lowest level, the [MovieMasher.process](doc/MovieMasher.html#method-c-process) method is sent a job as a hash, a JSON/YAML formatted string or a local path to one. The [MovieMasher.process_queues](doc/MovieMasher.html#method-c-process_queues) method calls it with any jobs it finds while scanning a preconfigured watch folder or queue. This scanning can be done for a certain number of seconds, until no jobs are found, just once or forever. There are rake tasks for each of these methods, to simplify calling from shell scripts, cron jobs and other tasks. 
+Jobs are provided to the system for processing in different ways, depending on how it's been configured and deployed. At the lowest level, the [MovieMasher.process](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/MovieMasher.html#method-c-process) method is sent a job as a hash, a JSON/YAML formatted string or a local path to one. The [MovieMasher.process_queues](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/MovieMasher.html#method-c-process_queues) method calls it with any jobs it finds while scanning a preconfigured watch folder or queue. This scanning can be done for a certain number of seconds, until no jobs are found, just once or forever. There are rake tasks for each of these methods, to simplify calling from shell scripts, cron jobs and other tasks. 
 
 ### AWS Integration
 The system *optionally* supports [Amazon Web Services](http://aws.amazon.com) for media storage and job queueing, through the ruby [aws-sdk](https://github.com/aws/aws-sdk-ruby) gem. The following mechanisms are available through configuration or job options: 
@@ -75,11 +75,11 @@ When processing jobs in a directory or queue, the **process_seconds** configurat
 
 The Dockerfile specifies an **ENTRYPOINT** that provides several convenience commands, but calls exec with any it doesn't recognize so that containers behave as expected. The following commands are supported:
 
-- moviemasher (default): call [MovieMasher.process_queues](doc/MovieMasher.html#method-c-process_queues)
-- process_one:  call [MovieMasher.process_queues](doc/MovieMasher.html#method-c-process_queues) with **process_seconds**=-1
-- process_all:  call [MovieMasher.process_queues](doc/MovieMasher.html#method-c-process_queues) with **process_seconds**=-2
-- process_loop:  call [MovieMasher.process_queues](doc/MovieMasher.html#method-c-process_queues) with **process_seconds**=-3
-- process: call [MovieMasher.process](doc/MovieMasher.html#method-c-process) for each supplied argument
+- moviemasher (default): call [MovieMasher.process_queues](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/MovieMasher.html#method-c-process_queues)
+- process_one:  call [MovieMasher.process_queues](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/MovieMasher.html#method-c-process_queues) with **process_seconds**=-1
+- process_all:  call [MovieMasher.process_queues](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/MovieMasher.html#method-c-process_queues) with **process_seconds**=-2
+- process_loop:  call [MovieMasher.process_queues](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/MovieMasher.html#method-c-process_queues) with **process_seconds**=-3
+- process: call [MovieMasher.process](https://github.com/moviemasher/moviemasher.rb/raw/master/doc/MovieMasher.html#method-c-process) for each supplied argument
 
 ### Requirements
 Tested in Ruby 1.9.3 and 2.1.5 (the `dockerfile/ruby` and `ruby` docker images) and on multiple UNIX flavors including OSX. Suggested audio/video libraries are only needed if you're decoding or encoding in their formats. Likewise, the aws-sdk gem is only needed when utilizing Amazon's services. 
