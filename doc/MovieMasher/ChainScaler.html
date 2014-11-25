@@ -102,6 +102,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -114,9 +116,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -207,6 +213,8 @@
     <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
   
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
@@ -361,7 +369,7 @@
           <span class="ruby-value">:y</span> =<span class="ruby-operator">&gt;</span> ((<span class="ruby-identifier">orig_h_f</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">target_h_scaled</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">Two</span>).<span class="ruby-identifier">ceil</span>.<span class="ruby-identifier">to_i</span>,
         )
       <span class="ruby-keyword">else</span>
-        <span class="ruby-identifier">backcolor</span> = ((<span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:source</span>] <span class="ruby-keyword">and</span> <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:source</span>][<span class="ruby-value">:backcolor</span>]) <span class="ruby-operator">?</span> <span class="ruby-constant">Graph</span>.<span class="ruby-identifier">color_value</span>(<span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:source</span>][<span class="ruby-value">:backcolor</span>]) <span class="ruby-operator">:</span> <span class="ruby-string">&#39;black&#39;</span>)
+        <span class="ruby-identifier">backcolor</span> = ((<span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>] <span class="ruby-keyword">and</span> <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:backcolor</span>]) <span class="ruby-operator">?</span> <span class="ruby-constant">Graph</span>.<span class="ruby-identifier">color_value</span>(<span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:backcolor</span>]) <span class="ruby-operator">:</span> <span class="ruby-string">&#39;black&#39;</span>)
         <span class="ruby-ivar">@filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;pad&#39;</span>, 
           <span class="ruby-value">:color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">backcolor</span>,
           <span class="ruby-value">:w</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">target_w_scaled</span>.<span class="ruby-identifier">to_i</span>, 

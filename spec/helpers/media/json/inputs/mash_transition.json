@@ -1,7 +1,7 @@
 {
+	"id": "mash_transition",
 	"type": "mash",
-	"source": {
-		"id": "mash_transition",
+	"mash": {
 		"quantize": 10,
 		"backcolor": "red",
 		"label": "Transition",
@@ -9,18 +9,18 @@
 			{
 				"id": "medium-1x1",
 				"type": "image",
-				"source": "image/medium-1x1.png"
+				"source": "magick/md-1x1.png"
 			},
 			{
 				"id": "medium-4x3",
 				"type": "image",
-				"source": "image/medium-4x3.png"
+				"source": "magick/md-4x3.png"
 			},
 			{
-				"id": "drummers",
+				"id": "video_id",
 				"type": "video",
 				"duration": 10,
-				"source": "video/drummers.mov"
+				"source": "magick/10-FF0000.mov"
 			}
 		],
 		"video": [
@@ -47,7 +47,7 @@
 			{
 				"type": "video",
 				"clips": [{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"frame": 10,
 					"frames": 20,
@@ -62,7 +62,7 @@
 					}
 				},
 				{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"trim": 30,
 					"frame": 40,

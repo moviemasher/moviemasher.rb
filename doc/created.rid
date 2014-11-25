@@ -1,6 +1,8 @@
-Tue, 18 Nov 2014 08:26:56 -0500
+Tue, 25 Nov 2014 09:32:24 -0500
 ./Documentation.md	Tue, 18 Nov 2014 01:10:29 -0500
-./lib/callback.rb	Thu, 30 Oct 2014 02:37:12 -0400
+./lib/asset.rb	Mon, 24 Nov 2014 17:34:03 -0500
+./lib/callback.rb	Sun, 23 Nov 2014 20:11:55 -0500
+./lib/clip.rb	Mon, 24 Nov 2014 13:51:16 -0500
 ./lib/constant/av.rb	Mon, 27 Oct 2014 11:13:25 -0400
 ./lib/constant/defaults.rb	Fri, 07 Nov 2014 21:42:23 -0500
 ./lib/constant/error.rb	Mon, 27 Oct 2014 19:22:10 -0400
@@ -9,18 +11,20 @@ Tue, 18 Nov 2014 08:26:56 -0500
 ./lib/constant/info.rb	Mon, 27 Oct 2014 15:22:10 -0400
 ./lib/constant/intermediate.rb	Sat, 04 Oct 2014 13:59:43 -0400
 ./lib/constant/method.rb	Sun, 12 Oct 2014 19:11:44 -0400
-./lib/graph.rb	Wed, 29 Oct 2014 14:02:56 -0400
-./lib/input.rb	Fri, 07 Nov 2014 15:25:44 -0500
-./lib/job.rb	Sun, 16 Nov 2014 22:10:53 -0500
-./lib/mash.rb	Fri, 07 Nov 2014 15:25:44 -0500
-./lib/moviemasher.rb	Sun, 16 Nov 2014 22:14:19 -0500
-./lib/output.rb	Fri, 07 Nov 2014 15:25:44 -0500
-./lib/source.rb	Thu, 30 Oct 2014 02:27:05 -0400
-./lib/transfer.rb	Fri, 07 Nov 2014 15:25:44 -0500
-./lib/util/eval.rb	Fri, 07 Nov 2014 15:25:44 -0500
+./lib/constant/parameters.rb	Sat, 22 Nov 2014 10:22:43 -0500
+./lib/destination.rb	Mon, 24 Nov 2014 14:28:56 -0500
+./lib/graph.rb	Mon, 24 Nov 2014 14:40:03 -0500
+./lib/input.rb	Mon, 24 Nov 2014 18:54:29 -0500
+./lib/job.rb	Mon, 24 Nov 2014 18:54:26 -0500
+./lib/mash.rb	Mon, 24 Nov 2014 16:06:38 -0500
+./lib/moviemasher.rb	Sun, 23 Nov 2014 03:39:10 -0500
+./lib/output.rb	Mon, 24 Nov 2014 12:16:11 -0500
+./lib/source.rb	Mon, 24 Nov 2014 14:50:22 -0500
+./lib/transfer.rb	Mon, 24 Nov 2014 17:28:26 -0500
+./lib/util/evaluate.rb	Sun, 23 Nov 2014 02:27:12 -0500
 ./lib/util/filter_helpers.rb	Tue, 28 Oct 2014 10:57:52 -0400
 ./lib/util/float_util.rb	Tue, 28 Oct 2014 10:57:55 -0400
-./lib/util/hashable.rb	Fri, 07 Nov 2014 17:00:55 -0500
+./lib/util/hashable.rb	Mon, 24 Nov 2014 12:18:53 -0500
 ./lib/util/path.rb	Sat, 25 Oct 2014 15:30:48 -0400
 ./lib/util/time_range.rb	Wed, 29 Oct 2014 14:16:42 -0400
 ./lib/version.rb	Sun, 16 Nov 2014 20:30:11 -0500

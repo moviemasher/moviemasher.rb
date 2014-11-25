@@ -50,7 +50,6 @@
   <h3 class="section-header">Defined In</h3>
   <ul>
     <li>lib/callback.rb
-    <li>lib/job.rb
   </ul>
 </nav>
 
@@ -75,6 +74,8 @@
   <ul class="link-list">
     
     <li ><a href="#method-c-create">::create</a>
+    
+    <li ><a href="#method-c-init_hash">::init_hash</a>
     
     <li ><a href="#method-i-data">#data</a>
     
@@ -121,6 +122,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -133,9 +136,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -226,6 +233,8 @@
     <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
   
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
@@ -343,7 +352,7 @@ key path, like {job.inputs.0.type} which might evaluate to &#39;audio&#39;.</p>
         
         <div class="method-heading">
           <span class="method-name">create</span><span
-            class="method-args">(hash)</span>
+            class="method-args">(hash = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -359,8 +368,8 @@ key path, like {job.inputs.0.type} which might evaluate to &#39;audio&#39;.</p>
           
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File lib/callback.rb, line 39</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">hash</span>
-  <span class="ruby-constant">Callback</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">hash</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>
+  (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Callback</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Callback</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
           </div><!-- create-source -->
           
@@ -370,6 +379,41 @@ key path, like {job.inputs.0.type} which might evaluate to &#39;audio&#39;.</p>
 
         
       </div><!-- create-method -->
+
+    
+      <div id="method-c-init_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">init_hash</span><span
+            class="method-args">(hash)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="init_hash-source">
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-identifier">hash</span>
+  <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:trigger</span>, <span class="ruby-constant">TriggerComplete</span>
+  <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:progress_seconds</span>, <span class="ruby-value">10</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">TriggerProgress</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">hash</span>[<span class="ruby-value">:trigger</span>]
+  <span class="ruby-constant">Transfer</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-identifier">hash</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- init_hash-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- init_hash-method -->
 
     
     </section><!-- public-class-method-details -->
@@ -397,8 +441,10 @@ key path, like {job.inputs.0.type} which might evaluate to &#39;audio&#39;.</p>
 
           
           <div class="method-source-code" id="data-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 43</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">data</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">data</span>
+  <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- data-source -->
           
         </div>
@@ -432,8 +478,10 @@ key path, like {job.inputs.0.type} which might evaluate to &#39;audio&#39;.</p>
 
           
           <div class="method-source-code" id="data-3D-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 46</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">data=</span>(<span class="ruby-identifier">value</span>); <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">data=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- data-3D-source -->
           
         </div>
@@ -463,8 +511,10 @@ key path, like {job.inputs.0.type} which might evaluate to &#39;audio&#39;.</p>
 
           
           <div class="method-source-code" id="extension-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 48</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension</span>
+  <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- extension-source -->
           
         </div>
@@ -498,8 +548,10 @@ with period inserted between.</p>
 
           
           <div class="method-source-code" id="extension-3D-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 50</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension=</span>(<span class="ruby-identifier">value</span>); <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- extension-3D-source -->
           
         </div>
@@ -529,8 +581,10 @@ with period inserted between.</p>
 
           
           <div class="method-source-code" id="name-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 52</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- name-source -->
           
         </div>
@@ -565,8 +619,10 @@ removed from value.</p>
 
           
           <div class="method-source-code" id="name-3D-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 55</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">value</span>); <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- name-3D-source -->
           
         </div>
@@ -596,8 +652,10 @@ removed from value.</p>
 
           
           <div class="method-source-code" id="progress_seconds-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 57</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">progress_seconds</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">progress_seconds</span>
+  <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- progress_seconds-source -->
           
         </div>
@@ -636,8 +694,10 @@ removed from value.</p>
 
           
           <div class="method-source-code" id="progress_seconds-3D-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 61</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">progress_seconds=</span>(<span class="ruby-identifier">value</span>); <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">progress_seconds=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- progress_seconds-3D-source -->
           
         </div>
@@ -667,8 +727,10 @@ removed from value.</p>
 
           
           <div class="method-source-code" id="trigger-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 63</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">trigger</span>; <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">trigger</span>
+  <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- trigger-source -->
           
         </div>
@@ -710,8 +772,10 @@ href="Callback.html#TriggerComplete">TriggerComplete</a></p>
 
           
           <div class="method-source-code" id="trigger-3D-source">
-            <pre><span class="ruby-comment"># File lib/callback.rb, line 67</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">trigger=</span>(<span class="ruby-identifier">value</span>); <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>; <span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File lib/callback.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">trigger=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- trigger-3D-source -->
           
         </div>

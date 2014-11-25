@@ -110,6 +110,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -122,9 +124,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -216,6 +222,8 @@
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
   
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
     <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
@@ -274,7 +282,7 @@
 
           
           <div class="method-source-code" id="color_value-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 443</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 448</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">color_value</span> <span class="ruby-identifier">color</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-string">&#39;)&#39;</span>) 
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;rgb(&#39;</span>) <span class="ruby-keyword">or</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;rgba(&#39;</span>)
@@ -315,7 +323,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 461</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 466</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">job_input</span>, <span class="ruby-identifier">render_range</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">label_name</span> = <span class="ruby-string">&#39;layer&#39;</span>)
   <span class="ruby-ivar">@label_name</span> = <span class="ruby-identifier">label_name</span>
   <span class="ruby-ivar">@job_input</span> = <span class="ruby-identifier">job_input</span>
@@ -356,7 +364,7 @@
 
           
           <div class="method-source-code" id="create_layer-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 475</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 480</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_layer</span> <span class="ruby-identifier">input</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;input hash has no type #{input}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>]
   
@@ -403,7 +411,7 @@
 
           
           <div class="method-source-code" id="duration-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 458</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 463</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">duration</span>
   <span class="ruby-ivar">@render_range</span>.<span class="ruby-identifier">length_seconds</span>
 <span class="ruby-keyword">end</span></pre>
@@ -436,7 +444,7 @@
 
           
           <div class="method-source-code" id="graph_command-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 454</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 459</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">graph_command</span> <span class="ruby-identifier">output</span>, <span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-identifier">job</span>
   <span class="ruby-ivar">@job_output</span> = <span class="ruby-identifier">output</span>
@@ -470,7 +478,7 @@
 
           
           <div class="method-source-code" id="graph_scope-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 466</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 471</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">graph_scope</span>
   <span class="ruby-identifier">scope</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_job</span>] = <span class="ruby-ivar">@job</span>

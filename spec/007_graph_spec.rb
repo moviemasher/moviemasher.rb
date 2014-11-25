@@ -4,14 +4,14 @@ require_relative 'helpers/spec_helper'
 describe File.basename(__FILE__) do
 	context "Graph#graph_command" do
 		it "returns correct filter string for simple background" do
-			graph = MovieMasher::GraphMash.new({:source => {:backcolor => 'blue'}}, MovieMasher::TimeRange.new(3, 1, 2))
+			graph = MovieMasher::GraphMash.new({:mash => {:backcolor => 'blue'}}, MovieMasher::TimeRange.new(3, 1, 2))
 			output = Hash.new
 			output[:video_rate] = 30
 			output[:dimensions] = '320x240'
 			expect(graph.graph_command output).to eq 'color=color=blue:duration=2.0:size=320x240:rate=30'
 		end
 		it "returns correct filter string for simple video" do
-			graph = MovieMasher::GraphMash.new({:source => {:backcolor => 'blue'}}, MovieMasher::TimeRange.new(3, 1, 2))
+			graph = MovieMasher::GraphMash.new({:mash => {:backcolor => 'blue'}}, MovieMasher::TimeRange.new(3, 1, 2))
 			output = Hash.new
 			output[:video_rate] = 30
 			output[:dimensions] = '320x240'
@@ -23,8 +23,8 @@ describe File.basename(__FILE__) do
 			input[:length] = 2.0
 			input[:offset] = 2.0
 			input[:range] = MovieMasher::TimeRange.new(0, 1, input[:length])
-			input = MovieMasher::Job.send :__init_input, input
-			output = MovieMasher::Job.send :__init_output,  output
+			input = MovieMasher::Input.new input
+			output = MovieMasher::Output.new output
 			graph.add_new_layer input
 			expect(graph.graph_command output).to eq 'color=color=blue:duration=2.0:size=320x240:rate=30[layer0];movie=filename=video.mov,trim=duration=2.0:start=2.0,fps=fps=30,setpts=expr=PTS-STARTPTS,scale=width=320.0:height=240.0,setsar=sar=1.0:max=1.0,trim=duration=2.0:start=3.0,setpts=expr=PTS-STARTPTS[layer1];[layer0][layer1]overlay=x=0.0:y=0.0'
 		end
@@ -58,8 +58,8 @@ describe File.basename(__FILE__) do
 			output = Hash.new
 			output[:video_rate] = 30
 			output[:dimensions] = '320x240'
-			input = MovieMasher::Job.send :__init_input,  input
-			output = MovieMasher::Job.send :__init_output,  output
+			input = MovieMasher::Input.create input
+			output = MovieMasher::Output.create output
 			
 			options = Hash.new 
 			options[:mm_duration] = input[:length]

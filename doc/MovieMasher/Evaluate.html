@@ -49,7 +49,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/util/eval.rb
+    <li>lib/util/evaluate.rb
   </ul>
 </nav>
 
@@ -98,6 +98,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -110,9 +112,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -204,6 +210,8 @@
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
   
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
     <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
@@ -262,7 +270,7 @@
 
           
           <div class="method-source-code" id="equation-source">
-            <pre><span class="ruby-comment"># File lib/util/eval.rb, line 4</span>
+            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">equation</span> <span class="ruby-identifier">s</span>, <span class="ruby-identifier">raise_on_fail</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-comment"># change all numbers to floats</span>
   <span class="ruby-identifier">fs</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/([0-9]+[.]?[0-9]*)/</span>) { <span class="ruby-node">$1</span>.<span class="ruby-identifier">to_f</span> }
@@ -304,7 +312,7 @@
 
           
           <div class="method-source-code" id="object-source">
-            <pre><span class="ruby-comment"># File lib/util/eval.rb, line 16</span>
+            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">object</span> <span class="ruby-identifier">data</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">scope</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">scope</span>
   <span class="ruby-identifier">keys</span> = (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> (<span class="ruby-value">0</span><span class="ruby-operator">..</span>(<span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)) <span class="ruby-operator">:</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">keys</span>)
@@ -347,25 +355,33 @@
 
           
           <div class="method-source-code" id="value-source">
-            <pre><span class="ruby-comment"># File lib/util/eval.rb, line 29</span>
+            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">v</span>, <span class="ruby-identifier">scope</span>
+  <span class="ruby-comment">#puts &quot;V: #{v}&quot;</span>
+        
   <span class="ruby-identifier">split_value</span> = <span class="ruby-identifier">__split</span> <span class="ruby-identifier">v</span>
   <span class="ruby-keyword">if</span> <span class="ruby-value">1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">split_value</span>.<span class="ruby-identifier">length</span> <span class="ruby-keyword">then</span> <span class="ruby-comment"># otherwise there are no curly braces</span>
     <span class="ruby-identifier">v</span> = <span class="ruby-string">&#39;&#39;</span>
     <span class="ruby-identifier">is_static</span> = <span class="ruby-keyword">true</span>
     <span class="ruby-identifier">split_value</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bit</span><span class="ruby-operator">|</span>
+      <span class="ruby-comment">#puts &quot;BIT: #{bit} IS_STATIC: #{is_static}&quot;</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_static</span> <span class="ruby-keyword">then</span>
+        <span class="ruby-comment">#puts &quot;STATIC V: #{v}&quot;</span>
         <span class="ruby-identifier">v</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bit</span>
       <span class="ruby-keyword">else</span>
         <span class="ruby-identifier">split_bit</span> = <span class="ruby-identifier">bit</span>.<span class="ruby-identifier">split</span> <span class="ruby-string">&#39;.&#39;</span>
         <span class="ruby-identifier">scope_child</span> = <span class="ruby-identifier">__scope_target</span> <span class="ruby-identifier">split_bit</span>, <span class="ruby-identifier">scope</span> <span class="ruby-comment"># shifts off of split_bit</span>
+        
         <span class="ruby-identifier">evaled</span> = <span class="ruby-keyword">nil</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope_child</span> 
           <span class="ruby-keyword">if</span> <span class="ruby-identifier">__is_eval_object?</span> <span class="ruby-identifier">scope_child</span>
+            <span class="ruby-comment">#puts &quot;__is_eval_object #{split_bit}&quot;</span>
             <span class="ruby-identifier">evaled</span> = <span class="ruby-identifier">__value</span>(<span class="ruby-identifier">scope_child</span>, <span class="ruby-identifier">split_bit</span>)
+            <span class="ruby-comment">#puts &quot;evaled #{split_bit} = #{evaled}&quot;</span>
           <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">scope_child</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Proc</span>
             <span class="ruby-identifier">evaled</span> = <span class="ruby-identifier">scope_child</span>.<span class="ruby-identifier">call</span>
           <span class="ruby-keyword">else</span> 
+            <span class="ruby-comment">#puts &quot;NOT __is_eval_object #{scope_child}&quot;</span>
             <span class="ruby-identifier">evaled</span> = <span class="ruby-identifier">scope_child</span>
           <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>

@@ -1,6 +1,6 @@
 {
 	"type": "sequence",
-	"path": "{output.dimensions}x{output.fps}",
+	"path": "{output.dimensions}x{output.video_rate}",
 	"extension": "jpg",
 	"dimensions": "256x144",
 	"video_rate": "10",

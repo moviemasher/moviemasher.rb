@@ -1,7 +1,7 @@
 
 module MovieMasher
 # Mix-in functionality for mocking a Hash.
-	module Hashable
+	class Hashable
 # Convenience getter for underlying data Hash.
 #
 # symbol - Symbol key into hash.
@@ -23,13 +23,24 @@ module MovieMasher
 		def class_symbol
 			self.class.name.downcase.split('::').last.to_sym
 		end
+		def hash
+			@hash
+		end
 # String - Unique identifier for object.
-		def identifier; @identifier; end
+		def identifier
+			@identifier
+		end
 # Set the actual Hash when creating.
-		def initialize hash
-			hash = Hash.new unless hash and hash.is_a? Hash
+		def initialize hash = nil
+			unless hash.is_a? Hash
+				#puts "Hashable#initialize NOT HASH #{hash}"
+				hash = Hash.new
+			end
 			@hash = hash
 			@identifier = UUID.new.generate if defined? UUID
+		end
+		def keys
+			@hash.keys
 		end
 # Return deep copy of underlying Hash.
 		def to_hash
@@ -39,18 +50,31 @@ module MovieMasher
 		def to_json state = nil
 			@hash.to_json state
 		end
-		def keys
-			@hash.keys
-		end
 		def values
 			@hash.values
 		end
 		protected
 		def _set symbol, value
-			self[symbol] = value
+			symbol = symbol.to_s[0..-2].to_sym
+			@hash[symbol] = value
 		end
 		def _get symbol
-			self[symbol]
+			@hash[symbol]
+		end
+		def self._init_key hash, key, default
+			if hash
+				value = hash[key]
+				overwrite = value.nil?
+				unless overwrite
+					if default.is_a? Array or default.is_a? Hash then
+						overwrite = ! (value.is_a? Array or value.is_a? Hash)
+						overwrite = value.empty? unless overwrite
+					else
+						overwrite = value.to_s.empty?
+					end
+				end
+				hash[key] = default if overwrite
+			end
 		end
 		
 	end

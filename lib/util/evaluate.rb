@@ -27,23 +27,31 @@ module MovieMasher
 			end
 		end
 		def self.value v, scope
+			#puts "V: #{v}"
+						
 			split_value = __split v
 			if 1 < split_value.length then # otherwise there are no curly braces
 				v = ''
 				is_static = true
 				split_value.each do |bit|
+					#puts "BIT: #{bit} IS_STATIC: #{is_static}"
 					if is_static then
+						#puts "STATIC V: #{v}"
 						v += bit
 					else
 						split_bit = bit.split '.'
 						scope_child = __scope_target split_bit, scope # shifts off of split_bit
+						
 						evaled = nil
 						if scope_child 
 							if __is_eval_object? scope_child
+								#puts "__is_eval_object #{split_bit}"
 								evaled = __value(scope_child, split_bit)
+								#puts "evaled #{split_bit} = #{evaled}"
 							elsif scope_child.is_a? Proc
 								evaled = scope_child.call
 							else 
+								#puts "NOT __is_eval_object #{scope_child}"
 								evaled = scope_child
 							end
 						end
@@ -75,6 +83,8 @@ module MovieMasher
 			s.to_s.split(/{([^}]*)}/)
 		end
 		def self.__value ob, path_array
+			#puts "__value #{path_array.join '.'}"
+					
 			v = ob
 			key = path_array.shift
 			if key then
@@ -85,6 +95,7 @@ module MovieMasher
 				end
 				v = v[key]
 				if __is_eval_object? v
+					#puts "recursing #{key} = #{path_array.join '.'}"
 					v = __value(v, path_array) unless path_array.empty?
 				else
 					v = v.to_s		

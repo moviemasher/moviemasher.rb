@@ -1,8 +1,0 @@
-{
-	"type": "image",
-	"directory": "{output.dimensions}x1",
-	"name": "0",
-	"dimensions": "256x144",
-	"extension": "jpg",
-	"quality": "1"
-}

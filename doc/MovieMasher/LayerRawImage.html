@@ -102,6 +102,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -114,9 +116,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -208,6 +214,8 @@
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
   
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
     <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
@@ -271,7 +279,7 @@
 
           
           <div class="method-source-code" id="initialize_chains-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 658</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 663</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_chains</span>
   <span class="ruby-identifier">chain</span> = <span class="ruby-constant">Chain</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">nil</span>, <span class="ruby-ivar">@job_input</span>
   <span class="ruby-comment"># we will need to change movie_filter path, since we&#39;ll be building video file from image for each output</span>
@@ -316,7 +324,7 @@
 
           
           <div class="method-source-code" id="layer_command-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 668</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 673</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">layer_command</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;input has no cached_file #{@input.inspect}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:cached_file</span>]
   <span class="ruby-identifier">output_type_is_not_video</span> = (<span class="ruby-constant">Output</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeVideo</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">job_output</span>[<span class="ruby-value">:type</span>])

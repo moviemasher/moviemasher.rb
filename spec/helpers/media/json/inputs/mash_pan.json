@@ -1,7 +1,7 @@
 {
+	"id": "mash_pan",
 	"type": "mash",
-	"source": {
-		"id": "mash_pan",
+	"mash": {
 		"quantize": 10,
 		"backcolor": "gray",
 		"label": "Pan",
@@ -9,28 +9,23 @@
 			{
 				"id": "medium-4x3",
 				"type": "image",
-				"source": "image/medium-4x3.png"
+				"source": "magick/md-4x3.png"
 			},
 			{
 				"id": "medium-16x9",
 				"type": "image",
-				"source": "image/medium-16x9.png"
+				"source": "magick/md-16x9.png"
 			},
 			{
 				"id": "medium-9x16",
 				"type": "image",
-				"source": "image/medium-9x16.png"
+				"source": "magick/md-9x16.png"
 			},
 			{
-				"id": "medium-1x1",
-				"type": "image",
-				"source": "image/medium-1x1.png"
-			},
-			{
-				"id": "drummers",
+				"id": "video_id",
 				"type": "video",
 				"duration": 10,
-				"source": "video/drummers.mov"
+				"source": "magick/10-FF0000.mov"
 			}
 		],
 		"video": [
@@ -113,7 +108,7 @@
 			{
 				"type": "video",
 				"clips": [{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"frame": 10,
 					"frames": 20,
@@ -128,7 +123,7 @@
 					}
 				},
 				{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"trim": 30,
 					"frame": 40,

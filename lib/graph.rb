@@ -128,7 +128,7 @@ module MovieMasher
 							:y => ((orig_h_f - target_h_scaled) / FloatUtil::Two).ceil.to_i,
 						)
 					else
-						backcolor = ((@job_input[:source] and @job_input[:source][:backcolor]) ? Graph.color_value(@job_input[:source][:backcolor]) : 'black')
+						backcolor = ((@job_input[:mash] and @job_input[:mash][:backcolor]) ? Graph.color_value(@job_input[:mash][:backcolor]) : 'black')
 						@filters << FilterHash.new('pad', 
 							:color => backcolor,
 							:w => target_w_scaled.to_i, 
@@ -224,7 +224,12 @@ module MovieMasher
 			@mash_input = mash_input
 			@applied_input = applied_input
 			@config = filter_config
-			@parameters = @config[:parameters] || Array.new
+			@parameters = @config[:parameters]
+			unless @parameters
+				sym = filter_config[:id].capitalize.to_sym
+				@parameters = Parameters.const_get(sym) if Parameters.const_defined? sym
+				@parameters = Array.new unless @parameters
+			end
 			raise Error::Parameter.new "no config" unless @config
 			#raise Error::Parameter.new "no applied_input" unless @applied_input
 			#raise Error::Parameter.new "no mash_input" unless @mash_input
@@ -304,7 +309,7 @@ module MovieMasher
 						end
 						func_sym = method.to_sym
 						if FilterHelpers.respond_to? func_sym then
-							result = FilterHelpers.send func_sym, params, @mash_input[:source], scope, job_output
+							result = FilterHelpers.send func_sym, params, @mash_input[:mash], scope, job_output
 							raise Error::JobInput.new "got false from #{method}(#{params.join ','})" unless result
 							result = result.to_s unless result.is_a? String
 							raise Error::JobInput.new "got empty from #{method}(#{params.join ','})" if result.empty?
@@ -530,7 +535,7 @@ module MovieMasher
 		def initialize(mash_input, render_range, label_name = 'layer') # a mash input, and a range within it to render
 			super
 			@layers = Array.new
-			@layers << LayerColor.new(duration, mash_input[:source][:backcolor])
+			@layers << LayerColor.new(duration, mash_input[:mash][:backcolor])
 		end
 		def graph_scope
 			scope = super
@@ -788,9 +793,7 @@ module MovieMasher
 			@layer_chains[1][:merger] = ChainModule.new(@input[:to][:merger], @job_input, @input)
 			@layer_chains[0][:scaler] = ChainModule.new(@input[:from][:scaler], @job_input, @input) 
 			@layer_chains[1][:scaler] = ChainModule.new(@input[:to][:scaler], @job_input, @input)
-			#puts "initialize_chains #{@job_input}" unless @job_input[:source]
-			mash_source = @job_input[:source]
-			#puts mash_source unless mash_source[:backcolor]
+			mash_source = @job_input[:mash]
 			mash_color = mash_source[:backcolor]
 			@color_layer = LayerColor.new(@input[:range].length_seconds, mash_color)
 		end

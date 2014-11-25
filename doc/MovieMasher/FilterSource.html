@@ -102,6 +102,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -114,9 +116,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -208,6 +214,8 @@
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
   
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
     <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
@@ -271,7 +279,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 402</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 407</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">id</span>, <span class="ruby-identifier">hash</span>, <span class="ruby-identifier">dimensions</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">super</span> <span class="ruby-identifier">id</span>, <span class="ruby-identifier">hash</span>
   <span class="ruby-ivar">@dimensions</span> = <span class="ruby-identifier">dimensions</span>
@@ -316,7 +324,7 @@
 
           
           <div class="method-source-code" id="filter_command-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 406</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 411</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_command</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
   <span class="ruby-identifier">cmd</span> = <span class="ruby-keyword">super</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">empty?</span>

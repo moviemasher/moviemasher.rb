@@ -106,6 +106,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -118,9 +120,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -212,6 +218,8 @@
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
   
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
     <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
@@ -275,11 +283,11 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 530</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 535</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">mash_input</span>, <span class="ruby-identifier">render_range</span>, <span class="ruby-identifier">label_name</span> = <span class="ruby-string">&#39;layer&#39;</span>) <span class="ruby-comment"># a mash input, and a range within it to render</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-ivar">@layers</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-ivar">@layers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">LayerColor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-identifier">mash_input</span>[<span class="ruby-value">:source</span>][<span class="ruby-value">:backcolor</span>])
+  <span class="ruby-ivar">@layers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">LayerColor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-identifier">mash_input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:backcolor</span>])
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
@@ -316,7 +324,7 @@
 
           
           <div class="method-source-code" id="add_new_layer-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 494</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 499</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_new_layer</span> <span class="ruby-identifier">input</span>
   <span class="ruby-identifier">layer</span> = <span class="ruby-identifier">create_layer</span> <span class="ruby-identifier">input</span>
   <span class="ruby-ivar">@layers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">layer</span>
@@ -356,7 +364,7 @@
 
           
           <div class="method-source-code" id="graph_command-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 499</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 504</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">graph_command</span> <span class="ruby-identifier">output</span>, <span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-identifier">graph_cmds</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>     
@@ -422,7 +430,7 @@
 
           
           <div class="method-source-code" id="graph_scope-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 535</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 540</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">graph_scope</span>
   <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">super</span>
   <span class="ruby-identifier">backcolor</span> = <span class="ruby-ivar">@backcolor</span>

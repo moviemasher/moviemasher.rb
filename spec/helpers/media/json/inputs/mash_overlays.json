@@ -1,17 +1,17 @@
 {
+	"id": "mash_overlays",
 	"type": "mash",
-	"source": {
-		"id": "mash_overlays",
+	"mash": {
 		"quantize": 10,
 		"label": "Overlays",
 		"backcolor": "red",
 		"media": [
 			{
-				"id": "drummers",
+				"id": "video_id",
 				"type": "video",
 				"audio": 0,
 				"duration": 10,
-				"source": "video/drummers.mov"
+				"source": "magick/10-FF0000.mov"
 			}
 		],
 		"video": [
@@ -39,7 +39,7 @@
 			},{
 				"type": "video",
 				"clips": [{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"frame": 20,
 					"frames": 70,
@@ -51,7 +51,7 @@
 					}
 				},
 				{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"trim": 30,
 					"frame": 100,

@@ -1,17 +1,17 @@
 {
+	"id": "mash_color_video",
 	"type": "mash",
-	"source": {
-		"id": "mash_color_video",
+	"mash": {
 		"quantize": 10,
 		"label": "A Second Each of Blue and Video",
 		"backcolor": "red",
 		"media": [
 			{
-				"id": "drummers",
+				"id": "video_id",
 				"type": "video",
 				"audio": 0,
 				"duration": 10,
-				"source": "video/drummers.mov"
+				"source": "magick/10-FF0000.mov"
 			}
 		],
 		"video": [
@@ -24,7 +24,7 @@
 					"frames": 10,
 					"color": "blue"
 				},{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"frame": 10,
 					"frames": 10

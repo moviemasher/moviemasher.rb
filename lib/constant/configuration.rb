@@ -20,8 +20,7 @@ module MovieMasher
 # render_directory - Path to directory where jobs are built.
 # render_save - Boolean indicating whether or not jobs should be removed after processing.
 # verbose - How much detail to include in logs. One of debug, info, warn or error.
-	class Configuration
-		include Hashable
+	class Configuration < Hashable
 		
 		Descriptions = {
 			:aws_access_key_id => 'Key identifier for transfers to and from S3.',

@@ -1,10 +1,6 @@
 {
+	"id": "video_square",
 	"type": "video",
 	"fill": "none",
-	"source": {
-		"type": "file",
-		"id": "video_square",
-		"path": "media/video/video_square.mpg",
-		"method": "copy"
-	}
+	"source": "magick/10-md-00FF00-1x1.mov"
 }

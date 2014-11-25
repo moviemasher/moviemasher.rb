@@ -48,6 +48,9 @@
     <a href="MovieMasher/AV.html">MovieMasher::AV</a>
   </li>
     <li class="class">
+    <a href="MovieMasher/Asset.html">MovieMasher::Asset</a>
+  </li>
+    <li class="class">
     <a href="MovieMasher/Callback.html">MovieMasher::Callback</a>
   </li>
     <li class="class">
@@ -65,11 +68,17 @@
     <li class="class">
     <a href="MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   </li>
+    <li class="class">
+    <a href="MovieMasher/Clip.html">MovieMasher::Clip</a>
+  </li>
     <li class="module">
     <a href="MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   </li>
     <li class="module">
     <a href="MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  </li>
+    <li class="class">
+    <a href="MovieMasher/Destination.html">MovieMasher::Destination</a>
   </li>
     <li class="module">
     <a href="MovieMasher/Error.html">MovieMasher::Error</a>
@@ -158,7 +167,7 @@
     <li class="class">
     <a href="MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
   </li>
-    <li class="module">
+    <li class="class">
     <a href="MovieMasher/Hashable.html">MovieMasher::Hashable</a>
   </li>
     <li class="module">
@@ -207,6 +216,9 @@
     <a href="MovieMasher/Output.html">MovieMasher::Output</a>
   </li>
     <li class="module">
+    <a href="MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  </li>
+    <li class="module">
     <a href="MovieMasher/Path.html">MovieMasher::Path</a>
   </li>
     <li class="class">
@@ -224,11 +236,17 @@
 <h2 id="methods">Methods</h2>
 <ul>
   
+    <li class="method"><a href="MovieMasher/Output.html#method-c-__av_type_for_output">::__av_type_for_output &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-c-__init_time">::__init_time &mdash; MovieMasher::Input</a>
+  
     <li class="method"><a href="MovieMasher/Path.html#method-c-add_slash_end">::add_slash_end &mdash; MovieMasher::Path</a>
   
     <li class="method"><a href="MovieMasher/Path.html#method-c-add_slash_start">::add_slash_start &mdash; MovieMasher::Path</a>
   
     <li class="method"><a href="MovieMasher/Path.html#method-c-add_slashes">::add_slashes &mdash; MovieMasher::Path</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-c-av_type">::av_type &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/Mash.html#method-c-clip_has_audio">::clip_has_audio &mdash; MovieMasher::Mash</a>
   
@@ -246,21 +264,37 @@
   
     <li class="method"><a href="MovieMasher.html#method-c-configure">::configure &mdash; MovieMasher</a>
   
-    <li class="method"><a href="MovieMasher/Transfer.html#method-c-create">::create &mdash; MovieMasher::Transfer</a>
-  
-    <li class="method"><a href="MovieMasher/Source.html#method-c-create">::create &mdash; MovieMasher::Source</a>
-  
     <li class="method"><a href="MovieMasher/Output.html#method-c-create">::create &mdash; MovieMasher::Output</a>
   
     <li class="method"><a href="MovieMasher/Callback.html#method-c-create">::create &mdash; MovieMasher::Callback</a>
   
+    <li class="method"><a href="MovieMasher/Destination.html#method-c-create">::create &mdash; MovieMasher::Destination</a>
+  
+    <li class="method"><a href="MovieMasher/Source.html#method-c-create">::create &mdash; MovieMasher::Source</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-c-create">::create &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Clip.html#method-c-create">::create &mdash; MovieMasher::Clip</a>
+  
     <li class="method"><a href="MovieMasher/Input.html#method-c-create">::create &mdash; MovieMasher::Input</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-c-create">::create &mdash; MovieMasher::Job</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-c-create">::create &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-c-create_if">::create_if &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Source.html#method-c-create_if">::create_if &mdash; MovieMasher::Source</a>
+  
+    <li class="method"><a href="MovieMasher/Destination.html#method-c-create_if">::create_if &mdash; MovieMasher::Destination</a>
   
     <li class="method"><a href="MovieMasher/Mash.html#method-c-duration">::duration &mdash; MovieMasher::Mash</a>
   
     <li class="method"><a href="MovieMasher/Evaluate.html#method-c-equation">::equation &mdash; MovieMasher::Evaluate</a>
   
     <li class="method"><a href="MovieMasher/Mash.html#method-c-gain_changes">::gain_changes &mdash; MovieMasher::Mash</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-c-get_info">::get_info &mdash; MovieMasher::Job</a>
   
     <li class="method"><a href="MovieMasher.html#method-c-goodbye">::goodbye &mdash; MovieMasher</a>
   
@@ -277,6 +311,28 @@
     <li class="method"><a href="MovieMasher.html#method-c-hello">::hello &mdash; MovieMasher</a>
   
     <li class="method"><a href="MovieMasher/AV.html#method-c-includes-3F">::includes? &mdash; MovieMasher::AV</a>
+  
+    <li class="method"><a href="MovieMasher/Mash.html#method-c-init_av_input">::init_av_input &mdash; MovieMasher::Mash</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-c-init_hash">::init_hash &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Mash.html#method-c-init_hash">::init_hash &mdash; MovieMasher::Mash</a>
+  
+    <li class="method"><a href="MovieMasher/Callback.html#method-c-init_hash">::init_hash &mdash; MovieMasher::Callback</a>
+  
+    <li class="method"><a href="MovieMasher/Source.html#method-c-init_hash">::init_hash &mdash; MovieMasher::Source</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-c-init_hash">::init_hash &mdash; MovieMasher::Input</a>
+  
+    <li class="method"><a href="MovieMasher/Destination.html#method-c-init_hash">::init_hash &mdash; MovieMasher::Destination</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-c-init_hash">::init_hash &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Mash.html#method-c-init_input">::init_input &mdash; MovieMasher::Mash</a>
+  
+    <li class="method"><a href="MovieMasher/Mash.html#method-c-init_mash_input">::init_mash_input &mdash; MovieMasher::Mash</a>
+  
+    <li class="method"><a href="MovieMasher/Source.html#method-c-init_string">::init_string &mdash; MovieMasher::Source</a>
   
     <li class="method"><a href="MovieMasher/FloatUtil.html#method-c-less">::less &mdash; MovieMasher::FloatUtil</a>
   
@@ -316,49 +372,59 @@
   
     <li class="method"><a href="MovieMasher/Defaults.html#method-c-module_for_type">::module_for_type &mdash; MovieMasher::Defaults</a>
   
-    <li class="method"><a href="MovieMasher/FilterEvaluated.html#method-c-new">::new &mdash; MovieMasher::FilterEvaluated</a>
-  
-    <li class="method"><a href="MovieMasher/FilterSourceColor.html#method-c-new">::new &mdash; MovieMasher::FilterSourceColor</a>
-  
-    <li class="method"><a href="MovieMasher/LayerTransition.html#method-c-new">::new &mdash; MovieMasher::LayerTransition</a>
-  
-    <li class="method"><a href="MovieMasher/Job.html#method-c-new">::new &mdash; MovieMasher::Job</a>
-  
-    <li class="method"><a href="MovieMasher/Error/JobRender.html#method-c-new">::new &mdash; MovieMasher::Error::JobRender</a>
-  
-    <li class="method"><a href="MovieMasher/FilterSourceMovie.html#method-c-new">::new &mdash; MovieMasher::FilterSourceMovie</a>
-  
-    <li class="method"><a href="MovieMasher/FilterSource.html#method-c-new">::new &mdash; MovieMasher::FilterSource</a>
-  
-    <li class="method"><a href="MovieMasher/Graph.html#method-c-new">::new &mdash; MovieMasher::Graph</a>
-  
-    <li class="method"><a href="MovieMasher/FilterSetpts.html#method-c-new">::new &mdash; MovieMasher::FilterSetpts</a>
-  
-    <li class="method"><a href="MovieMasher/Error/Runtime.html#method-c-new">::new &mdash; MovieMasher::Error::Runtime</a>
-  
-    <li class="method"><a href="MovieMasher/TimeRange.html#method-c-new">::new &mdash; MovieMasher::TimeRange</a>
-  
-    <li class="method"><a href="MovieMasher/FilterHash.html#method-c-new">::new &mdash; MovieMasher::FilterHash</a>
-  
-    <li class="method"><a href="MovieMasher/GraphMash.html#method-c-new">::new &mdash; MovieMasher::GraphMash</a>
+    <li class="method"><a href="MovieMasher/Filter.html#method-c-new">::new &mdash; MovieMasher::Filter</a>
   
     <li class="method"><a href="MovieMasher/Hashable.html#method-c-new">::new &mdash; MovieMasher::Hashable</a>
   
-    <li class="method"><a href="MovieMasher/ChainModule.html#method-c-new">::new &mdash; MovieMasher::ChainModule</a>
+    <li class="method"><a href="MovieMasher/ChainScaler.html#method-c-new">::new &mdash; MovieMasher::ChainScaler</a>
   
-    <li class="method"><a href="MovieMasher/GraphRaw.html#method-c-new">::new &mdash; MovieMasher::GraphRaw</a>
+    <li class="method"><a href="MovieMasher/TimeRange.html#method-c-new">::new &mdash; MovieMasher::TimeRange</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-c-new">::new &mdash; MovieMasher::Transfer</a>
   
     <li class="method"><a href="MovieMasher/ChainOverlay.html#method-c-new">::new &mdash; MovieMasher::ChainOverlay</a>
   
-    <li class="method"><a href="MovieMasher/Layer.html#method-c-new">::new &mdash; MovieMasher::Layer</a>
+    <li class="method"><a href="MovieMasher/Source.html#method-c-new">::new &mdash; MovieMasher::Source</a>
   
-    <li class="method"><a href="MovieMasher/Filter.html#method-c-new">::new &mdash; MovieMasher::Filter</a>
+    <li class="method"><a href="MovieMasher/ChainModule.html#method-c-new">::new &mdash; MovieMasher::ChainModule</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-c-new">::new &mdash; MovieMasher::Job</a>
+  
+    <li class="method"><a href="MovieMasher/Chain.html#method-c-new">::new &mdash; MovieMasher::Chain</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-c-new">::new &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-c-new">::new &mdash; MovieMasher::Input</a>
+  
+    <li class="method"><a href="MovieMasher/Error/JobRender.html#method-c-new">::new &mdash; MovieMasher::Error::JobRender</a>
+  
+    <li class="method"><a href="MovieMasher/Error/Runtime.html#method-c-new">::new &mdash; MovieMasher::Error::Runtime</a>
+  
+    <li class="method"><a href="MovieMasher/FilterHash.html#method-c-new">::new &mdash; MovieMasher::FilterHash</a>
+  
+    <li class="method"><a href="MovieMasher/Mash.html#method-c-new">::new &mdash; MovieMasher::Mash</a>
+  
+    <li class="method"><a href="MovieMasher/LayerTransition.html#method-c-new">::new &mdash; MovieMasher::LayerTransition</a>
+  
+    <li class="method"><a href="MovieMasher/FilterSetpts.html#method-c-new">::new &mdash; MovieMasher::FilterSetpts</a>
+  
+    <li class="method"><a href="MovieMasher/Graph.html#method-c-new">::new &mdash; MovieMasher::Graph</a>
   
     <li class="method"><a href="MovieMasher/LayerColor.html#method-c-new">::new &mdash; MovieMasher::LayerColor</a>
   
-    <li class="method"><a href="MovieMasher/ChainScaler.html#method-c-new">::new &mdash; MovieMasher::ChainScaler</a>
+    <li class="method"><a href="MovieMasher/FilterSourceMovie.html#method-c-new">::new &mdash; MovieMasher::FilterSourceMovie</a>
   
-    <li class="method"><a href="MovieMasher/Chain.html#method-c-new">::new &mdash; MovieMasher::Chain</a>
+    <li class="method"><a href="MovieMasher/Layer.html#method-c-new">::new &mdash; MovieMasher::Layer</a>
+  
+    <li class="method"><a href="MovieMasher/FilterSourceColor.html#method-c-new">::new &mdash; MovieMasher::FilterSourceColor</a>
+  
+    <li class="method"><a href="MovieMasher/GraphRaw.html#method-c-new">::new &mdash; MovieMasher::GraphRaw</a>
+  
+    <li class="method"><a href="MovieMasher/GraphMash.html#method-c-new">::new &mdash; MovieMasher::GraphMash</a>
+  
+    <li class="method"><a href="MovieMasher/FilterEvaluated.html#method-c-new">::new &mdash; MovieMasher::FilterEvaluated</a>
+  
+    <li class="method"><a href="MovieMasher/FilterSource.html#method-c-new">::new &mdash; MovieMasher::FilterSource</a>
   
     <li class="method"><a href="MovieMasher/Evaluate.html#method-c-object">::object &mdash; MovieMasher::Evaluate</a>
   
@@ -390,6 +456,8 @@
   
     <li class="method"><a href="MovieMasher/Path.html#method-c-strip_slashes">::strip_slashes &mdash; MovieMasher::Path</a>
   
+    <li class="method"><a href="MovieMasher/Job.html#method-c-symbolize_hash-21">::symbolize_hash! &mdash; MovieMasher::Job</a>
+  
     <li class="method"><a href="MovieMasher/Evaluate.html#method-c-value">::value &mdash; MovieMasher::Evaluate</a>
   
     <li class="method"><a href="MovieMasher/Mash.html#method-c-video_ranges">::video_ranges &mdash; MovieMasher::Mash</a>
@@ -414,9 +482,9 @@
   
     <li class="method"><a href="MovieMasher/LayerRawVideo.html#method-i-__filter_trim_input">#__filter_trim_input &mdash; MovieMasher::LayerRawVideo</a>
   
-    <li class="method"><a href="MovieMasher/GraphMash.html#method-i-add_new_layer">#add_new_layer &mdash; MovieMasher::GraphMash</a>
-  
     <li class="method"><a href="MovieMasher/LayerTransition.html#method-i-add_new_layer">#add_new_layer &mdash; MovieMasher::LayerTransition</a>
+  
+    <li class="method"><a href="MovieMasher/GraphMash.html#method-i-add_new_layer">#add_new_layer &mdash; MovieMasher::GraphMash</a>
   
     <li class="method"><a href="MovieMasher/Mash.html#method-i-audio">#audio &mdash; MovieMasher::Mash</a>
   
@@ -432,9 +500,9 @@
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-audio_rate-3D">#audio_rate= &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-av">#av &mdash; MovieMasher::Input</a>
-  
     <li class="method"><a href="MovieMasher/Output.html#method-i-av">#av &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-av">#av &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-backcolor">#backcolor &mdash; MovieMasher::Output</a>
   
@@ -444,15 +512,19 @@
   
     <li class="method"><a href="MovieMasher/Input.html#method-i-base_source">#base_source &mdash; MovieMasher::Input</a>
   
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-base_source">#base_source &mdash; MovieMasher::Clip</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-i-base_source-3D">#base_source= &mdash; MovieMasher::Job</a>
+  
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-bucket">#bucket &mdash; MovieMasher::Transfer</a>
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-bucket-3D">#bucket= &mdash; MovieMasher::Transfer</a>
   
     <li class="method"><a href="MovieMasher/Job.html#method-i-callbacks">#callbacks &mdash; MovieMasher::Job</a>
   
-    <li class="method"><a href="MovieMasher/ChainModule.html#method-i-chain_command">#chain_command &mdash; MovieMasher::ChainModule</a>
-  
     <li class="method"><a href="MovieMasher/Chain.html#method-i-chain_command">#chain_command &mdash; MovieMasher::Chain</a>
+  
+    <li class="method"><a href="MovieMasher/ChainModule.html#method-i-chain_command">#chain_command &mdash; MovieMasher::ChainModule</a>
   
     <li class="method"><a href="MovieMasher/ChainScaler.html#method-i-chain_command">#chain_command &mdash; MovieMasher::ChainScaler</a>
   
@@ -470,27 +542,35 @@
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-destination">#destination &mdash; MovieMasher::Output</a>
   
+    <li class="method"><a href="MovieMasher/Job.html#method-i-destination-3D">#destination= &mdash; MovieMasher::Job</a>
+  
     <li class="method"><a href="MovieMasher/Output.html#method-i-destination-3D">#destination= &mdash; MovieMasher::Output</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-dimensions">#dimensions &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-dimensions">#dimensions &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-dimensions">#dimensions &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-dimensions-3D">#dimensions= &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-dimensions-3D">#dimensions= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-dimensions-3D">#dimensions= &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-directory">#directory &mdash; MovieMasher::Transfer</a>
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-directory-3D">#directory= &mdash; MovieMasher::Transfer</a>
   
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-directory_path">#directory_path &mdash; MovieMasher::Transfer</a>
+  
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-dup">#dup &mdash; MovieMasher::TimeRange</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-duration">#duration &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-duration">#duration &mdash; MovieMasher::Clip</a>
   
     <li class="method"><a href="MovieMasher/Graph.html#method-i-duration">#duration &mdash; MovieMasher::Graph</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-duration">#duration &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-duration-3D">#duration= &mdash; MovieMasher::Clip</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-duration-3D">#duration= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-duration-3D">#duration= &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-end_seconds">#end_seconds &mdash; MovieMasher::TimeRange</a>
   
@@ -498,7 +578,23 @@
   
     <li class="method"><a href="MovieMasher/Job.html#method-i-error">#error &mdash; MovieMasher::Job</a>
   
+    <li class="method"><a href="MovieMasher/Job.html#method-i-error-3D">#error= &mdash; MovieMasher::Job</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-i-error-3F">#error? &mdash; MovieMasher::Job</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-error-3F">#error? &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-error-3F">#error? &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-error-3F">#error? &mdash; MovieMasher::Clip</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-i-error-3F">#error? &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Destination.html#method-i-error-3F">#error? &mdash; MovieMasher::Destination</a>
+  
     <li class="method"><a href="MovieMasher/Callback.html#method-i-extension">#extension &mdash; MovieMasher::Callback</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-extension">#extension &mdash; MovieMasher::Transfer</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-extension">#extension &mdash; MovieMasher::Output</a>
   
@@ -508,7 +604,13 @@
   
     <li class="method"><a href="MovieMasher/Source.html#method-i-extension-3D">#extension= &mdash; MovieMasher::Source</a>
   
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-extension-3D">#extension= &mdash; MovieMasher::Transfer</a>
+  
     <li class="method"><a href="MovieMasher/Callback.html#method-i-extension-3D">#extension= &mdash; MovieMasher::Callback</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-file_name">#file_name &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-i-file_name">#file_name &mdash; MovieMasher::Output</a>
   
     <li class="method"><a href="MovieMasher/Input.html#method-i-fill">#fill &mdash; MovieMasher::Input</a>
   
@@ -516,39 +618,43 @@
   
     <li class="method"><a href="MovieMasher/FilterEvaluated.html#method-i-filter_command">#filter_command &mdash; MovieMasher::FilterEvaluated</a>
   
-    <li class="method"><a href="MovieMasher/FilterHash.html#method-i-filter_command">#filter_command &mdash; MovieMasher::FilterHash</a>
+    <li class="method"><a href="MovieMasher/FilterSourceColor.html#method-i-filter_command">#filter_command &mdash; MovieMasher::FilterSourceColor</a>
   
     <li class="method"><a href="MovieMasher/Filter.html#method-i-filter_command">#filter_command &mdash; MovieMasher::Filter</a>
   
     <li class="method"><a href="MovieMasher/FilterSource.html#method-i-filter_command">#filter_command &mdash; MovieMasher::FilterSource</a>
   
-    <li class="method"><a href="MovieMasher/FilterSourceColor.html#method-i-filter_command">#filter_command &mdash; MovieMasher::FilterSourceColor</a>
+    <li class="method"><a href="MovieMasher/FilterHash.html#method-i-filter_command">#filter_command &mdash; MovieMasher::FilterHash</a>
+  
+    <li class="method"><a href="MovieMasher/FilterSourceColor.html#method-i-filter_name">#filter_name &mdash; MovieMasher::FilterSourceColor</a>
   
     <li class="method"><a href="MovieMasher/Filter.html#method-i-filter_name">#filter_name &mdash; MovieMasher::Filter</a>
   
     <li class="method"><a href="MovieMasher/FilterSourceMovie.html#method-i-filter_name">#filter_name &mdash; MovieMasher::FilterSourceMovie</a>
   
-    <li class="method"><a href="MovieMasher/FilterSourceColor.html#method-i-filter_name">#filter_name &mdash; MovieMasher::FilterSourceColor</a>
-  
     <li class="method"><a href="MovieMasher/Output.html#method-i-forecolor">#forecolor &mdash; MovieMasher::Output</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-forecolor-3D">#forecolor= &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-gain">#gain &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-full_path">#full_path &mdash; MovieMasher::Transfer</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-gain-3D">#gain= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-gain">#gain &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-gain-3D">#gain= &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/GraphMash.html#method-i-graph_command">#graph_command &mdash; MovieMasher::GraphMash</a>
   
     <li class="method"><a href="MovieMasher/Graph.html#method-i-graph_command">#graph_command &mdash; MovieMasher::Graph</a>
   
     <li class="method"><a href="MovieMasher/GraphRaw.html#method-i-graph_command">#graph_command &mdash; MovieMasher::GraphRaw</a>
   
-    <li class="method"><a href="MovieMasher/GraphMash.html#method-i-graph_command">#graph_command &mdash; MovieMasher::GraphMash</a>
+    <li class="method"><a href="MovieMasher/Graph.html#method-i-graph_scope">#graph_scope &mdash; MovieMasher::Graph</a>
   
     <li class="method"><a href="MovieMasher/GraphMash.html#method-i-graph_scope">#graph_scope &mdash; MovieMasher::GraphMash</a>
   
-    <li class="method"><a href="MovieMasher/Graph.html#method-i-graph_scope">#graph_scope &mdash; MovieMasher::Graph</a>
-  
     <li class="method"><a href="MovieMasher/FilterHash.html#method-i-hash">#hash &mdash; MovieMasher::FilterHash</a>
+  
+    <li class="method"><a href="MovieMasher/Hashable.html#method-i-hash">#hash &mdash; MovieMasher::Hashable</a>
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-host">#host &mdash; MovieMasher::Transfer</a>
   
@@ -558,23 +664,23 @@
   
     <li class="method"><a href="MovieMasher/Hashable.html#method-i-identifier">#identifier &mdash; MovieMasher::Hashable</a>
   
-    <li class="method"><a href="MovieMasher/LayerRawImage.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::LayerRawImage</a>
-  
     <li class="method"><a href="MovieMasher/LayerTheme.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::LayerTheme</a>
   
-    <li class="method"><a href="MovieMasher/LayerTransition.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::LayerTransition</a>
-  
-    <li class="method"><a href="MovieMasher/LayerRawVideo.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::LayerRawVideo</a>
+    <li class="method"><a href="MovieMasher/LayerRawImage.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::LayerRawImage</a>
   
     <li class="method"><a href="MovieMasher/Layer.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::Layer</a>
   
-    <li class="method"><a href="MovieMasher/ChainOverlay.html#method-i-initialize_filters">#initialize_filters &mdash; MovieMasher::ChainOverlay</a>
+    <li class="method"><a href="MovieMasher/LayerRawVideo.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::LayerRawVideo</a>
+  
+    <li class="method"><a href="MovieMasher/LayerTransition.html#method-i-initialize_chains">#initialize_chains &mdash; MovieMasher::LayerTransition</a>
+  
+    <li class="method"><a href="MovieMasher/ChainModule.html#method-i-initialize_filters">#initialize_filters &mdash; MovieMasher::ChainModule</a>
   
     <li class="method"><a href="MovieMasher/Chain.html#method-i-initialize_filters">#initialize_filters &mdash; MovieMasher::Chain</a>
   
     <li class="method"><a href="MovieMasher/ChainEffects.html#method-i-initialize_filters">#initialize_filters &mdash; MovieMasher::ChainEffects</a>
   
-    <li class="method"><a href="MovieMasher/ChainModule.html#method-i-initialize_filters">#initialize_filters &mdash; MovieMasher::ChainModule</a>
+    <li class="method"><a href="MovieMasher/ChainOverlay.html#method-i-initialize_filters">#initialize_filters &mdash; MovieMasher::ChainOverlay</a>
   
     <li class="method"><a href="MovieMasher/ChainModule.html#method-i-input_scope">#input_scope &mdash; MovieMasher::ChainModule</a>
   
@@ -584,17 +690,17 @@
   
     <li class="method"><a href="MovieMasher/Hashable.html#method-i-keys">#keys &mdash; MovieMasher::Hashable</a>
   
+    <li class="method"><a href="MovieMasher/LayerTransition.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerTransition</a>
+  
+    <li class="method"><a href="MovieMasher/LayerRaw.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerRaw</a>
+  
     <li class="method"><a href="MovieMasher/Layer.html#method-i-layer_command">#layer_command &mdash; MovieMasher::Layer</a>
   
     <li class="method"><a href="MovieMasher/LayerColor.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerColor</a>
   
-    <li class="method"><a href="MovieMasher/LayerRaw.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerRaw</a>
-  
-    <li class="method"><a href="MovieMasher/LayerRawImage.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerRawImage</a>
-  
     <li class="method"><a href="MovieMasher/LayerRawVideo.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerRawVideo</a>
   
-    <li class="method"><a href="MovieMasher/LayerTransition.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerTransition</a>
+    <li class="method"><a href="MovieMasher/LayerRawImage.html#method-i-layer_command">#layer_command &mdash; MovieMasher::LayerRawImage</a>
   
     <li class="method"><a href="MovieMasher/Layer.html#method-i-layer_scope">#layer_scope &mdash; MovieMasher::Layer</a>
   
@@ -602,11 +708,19 @@
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-length">#length &mdash; MovieMasher::TimeRange</a>
   
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-length">#length &mdash; MovieMasher::Clip</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-length">#length &mdash; MovieMasher::Asset</a>
+  
     <li class="method"><a href="MovieMasher/Input.html#method-i-length">#length &mdash; MovieMasher::Input</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-length-3D">#length= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-length-3D">#length= &mdash; MovieMasher::Clip</a>
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-length-3D">#length= &mdash; MovieMasher::TimeRange</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-length-3D">#length= &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-i-length-3D">#length= &mdash; MovieMasher::Input</a>
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-length_seconds">#length_seconds &mdash; MovieMasher::TimeRange</a>
   
@@ -614,9 +728,17 @@
   
     <li class="method"><a href="MovieMasher/Job.html#method-i-log_entry">#log_entry &mdash; MovieMasher::Job</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-loop">#loop &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-loop">#loop &mdash; MovieMasher::Clip</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-loop-3D">#loop= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-loop">#loop &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-loop-3D">#loop= &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-loop-3D">#loop= &mdash; MovieMasher::Clip</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-i-mash">#mash &mdash; MovieMasher::Input</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-i-mash-3D">#mash= &mdash; MovieMasher::Input</a>
   
     <li class="method"><a href="MovieMasher/Mash.html#method-i-media">#media &mdash; MovieMasher::Mash</a>
   
@@ -626,39 +748,53 @@
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-method-3D">#method= &mdash; MovieMasher::Transfer</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-module_source">#module_source &mdash; MovieMasher::Input</a>
-  
     <li class="method"><a href="MovieMasher/Job.html#method-i-module_source">#module_source &mdash; MovieMasher::Job</a>
   
-    <li class="method"><a href="MovieMasher/Source.html#method-i-name">#name &mdash; MovieMasher::Source</a>
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-module_source">#module_source &mdash; MovieMasher::Clip</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-i-module_source">#module_source &mdash; MovieMasher::Input</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-i-module_source-3D">#module_source= &mdash; MovieMasher::Job</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-name">#name &mdash; MovieMasher::Transfer</a>
   
     <li class="method"><a href="MovieMasher/Callback.html#method-i-name">#name &mdash; MovieMasher::Callback</a>
   
+    <li class="method"><a href="MovieMasher/Source.html#method-i-name">#name &mdash; MovieMasher::Source</a>
+  
     <li class="method"><a href="MovieMasher/Output.html#method-i-name">#name &mdash; MovieMasher::Output</a>
-  
-    <li class="method"><a href="MovieMasher/Output.html#method-i-name-3D">#name= &mdash; MovieMasher::Output</a>
-  
-    <li class="method"><a href="MovieMasher/Source.html#method-i-name-3D">#name= &mdash; MovieMasher::Source</a>
   
     <li class="method"><a href="MovieMasher/Callback.html#method-i-name-3D">#name= &mdash; MovieMasher::Callback</a>
   
+    <li class="method"><a href="MovieMasher/Source.html#method-i-name-3D">#name= &mdash; MovieMasher::Source</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-i-name-3D">#name= &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-name-3D">#name= &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-no_audio">#no_audio &mdash; MovieMasher::Asset</a>
+  
     <li class="method"><a href="MovieMasher/Output.html#method-i-no_audio">#no_audio &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-no_audio">#no_audio &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-no_audio-3D">#no_audio= &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-no_audio-3D">#no_audio= &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-no_audio-3D">#no_audio= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-no_video">#no_video &mdash; MovieMasher::Asset</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-no_video">#no_video &mdash; MovieMasher::Input</a>
-  
-    <li class="method"><a href="MovieMasher/Input.html#method-i-no_video-3D">#no_video= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-no_video-3D">#no_video= &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/Input.html#method-i-offset">#offset &mdash; MovieMasher::Input</a>
   
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-offset">#offset &mdash; MovieMasher::Asset</a>
+  
     <li class="method"><a href="MovieMasher/Input.html#method-i-offset-3D">#offset= &mdash; MovieMasher::Input</a>
   
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-offset-3D">#offset= &mdash; MovieMasher::Asset</a>
+  
     <li class="method"><a href="MovieMasher/Job.html#method-i-outputs">#outputs &mdash; MovieMasher::Job</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-i-outputs_desire">#outputs_desire &mdash; MovieMasher::Job</a>
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-parameters">#parameters &mdash; MovieMasher::Transfer</a>
   
@@ -668,9 +804,9 @@
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-pass-3D">#pass= &mdash; MovieMasher::Transfer</a>
   
-    <li class="method"><a href="MovieMasher/Output.html#method-i-path">#path &mdash; MovieMasher::Output</a>
-  
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-path">#path &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-i-path">#path &mdash; MovieMasher::Output</a>
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-path-3D">#path= &mdash; MovieMasher::Transfer</a>
   
@@ -684,6 +820,16 @@
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-precision-3D">#precision= &mdash; MovieMasher::Output</a>
   
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-preflight">#preflight &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-i-preflight">#preflight &mdash; MovieMasher::Input</a>
+  
+    <li class="method"><a href="MovieMasher/Job.html#method-i-preflight">#preflight &mdash; MovieMasher::Job</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-i-preflight">#preflight &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Mash.html#method-i-preflight">#preflight &mdash; MovieMasher::Mash</a>
+  
     <li class="method"><a href="MovieMasher/Job.html#method-i-process">#process &mdash; MovieMasher::Job</a>
   
     <li class="method"><a href="MovieMasher/Job.html#method-i-progress">#progress &mdash; MovieMasher::Job</a>
@@ -696,9 +842,9 @@
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-quality-3D">#quality= &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/LayerColor.html#method-i-range">#range &mdash; MovieMasher::LayerColor</a>
-  
     <li class="method"><a href="MovieMasher/Layer.html#method-i-range">#range &mdash; MovieMasher::Layer</a>
+  
+    <li class="method"><a href="MovieMasher/LayerColor.html#method-i-range">#range &mdash; MovieMasher::LayerColor</a>
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-rate">#rate &mdash; MovieMasher::TimeRange</a>
   
@@ -708,21 +854,27 @@
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-region-3D">#region= &mdash; MovieMasher::Transfer</a>
   
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-relative-3F">#relative? &mdash; MovieMasher::Transfer</a>
+  
     <li class="method"><a href="MovieMasher/Output.html#method-i-required">#required &mdash; MovieMasher::Output</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-required-3D">#required= &mdash; MovieMasher::Output</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-source">#source &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-source">#source &mdash; MovieMasher::Asset</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-source-3D">#source= &mdash; MovieMasher::Input</a>
-  
-    <li class="method"><a href="MovieMasher/Input.html#method-i-start">#start &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-source-3D">#source= &mdash; MovieMasher::Asset</a>
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-start">#start &mdash; MovieMasher::TimeRange</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-start-3D">#start= &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/Input.html#method-i-start">#start &mdash; MovieMasher::Input</a>
+  
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-start">#start &mdash; MovieMasher::Clip</a>
+  
+    <li class="method"><a href="MovieMasher/Clip.html#method-i-start-3D">#start= &mdash; MovieMasher::Clip</a>
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-start-3D">#start= &mdash; MovieMasher::TimeRange</a>
+  
+    <li class="method"><a href="MovieMasher/Input.html#method-i-start-3D">#start= &mdash; MovieMasher::Input</a>
   
     <li class="method"><a href="MovieMasher/TimeRange.html#method-i-start_seconds">#start_seconds &mdash; MovieMasher::TimeRange</a>
   
@@ -740,21 +892,27 @@
   
     <li class="method"><a href="MovieMasher/Callback.html#method-i-trigger-3D">#trigger= &mdash; MovieMasher::Callback</a>
   
-    <li class="method"><a href="MovieMasher/LayerColor.html#method-i-trim_command">#trim_command &mdash; MovieMasher::LayerColor</a>
-  
     <li class="method"><a href="MovieMasher/Layer.html#method-i-trim_command">#trim_command &mdash; MovieMasher::Layer</a>
   
-    <li class="method"><a href="MovieMasher/Transfer.html#method-i-type">#type &mdash; MovieMasher::Transfer</a>
-  
-    <li class="method"><a href="MovieMasher/Input.html#method-i-type">#type &mdash; MovieMasher::Input</a>
+    <li class="method"><a href="MovieMasher/LayerColor.html#method-i-trim_command">#trim_command &mdash; MovieMasher::LayerColor</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-type">#type &mdash; MovieMasher::Output</a>
   
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-type">#type &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-type">#type &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-type-3D">#type= &mdash; MovieMasher::Asset</a>
+  
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-type-3D">#type= &mdash; MovieMasher::Transfer</a>
   
-    <li class="method"><a href="MovieMasher/Input.html#method-i-type-3D">#type= &mdash; MovieMasher::Input</a>
-  
     <li class="method"><a href="MovieMasher/Output.html#method-i-type-3D">#type= &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Asset.html#method-i-url">#url &mdash; MovieMasher::Asset</a>
+  
+    <li class="method"><a href="MovieMasher/Transfer.html#method-i-url">#url &mdash; MovieMasher::Transfer</a>
+  
+    <li class="method"><a href="MovieMasher/Mash.html#method-i-url_count">#url_count &mdash; MovieMasher::Mash</a>
   
     <li class="method"><a href="MovieMasher/Transfer.html#method-i-user">#user &mdash; MovieMasher::Transfer</a>
   
@@ -775,6 +933,10 @@
     <li class="method"><a href="MovieMasher/Output.html#method-i-video_format">#video_format &mdash; MovieMasher::Output</a>
   
     <li class="method"><a href="MovieMasher/Output.html#method-i-video_format-3D">#video_format= &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-i-video_rate">#video_rate &mdash; MovieMasher::Output</a>
+  
+    <li class="method"><a href="MovieMasher/Output.html#method-i-video_rate-3D">#video_rate= &mdash; MovieMasher::Output</a>
   
 </ul>
 

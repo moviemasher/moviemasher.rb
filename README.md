@@ -151,7 +151,7 @@ Or if docker is being used, a helpful development version of the image can be bu
 - archiving of outputs not yet supported
 - freeze frame not yet supported
 - audio still being done in Ecasound
-- due to size considerations, video files not included in spec tests (eventually tests will generate their own to work with)
+- audio spec tests not yet generating files from scratch
 
 ##### Migrating from Version 4.0.07
 - The `length` key in clips has been renamed `frames`.
@@ -160,4 +160,5 @@ Or if docker is being used, a helpful development version of the image can be bu
 - The `fps` key in outputs has been renamed `video_rate`.
 - The `audio_frequency` key in outputs has been renamed `audio_rate`.
 - The `trim` key in inputs has been renamed `offset`.
-
+- The new `mash` key in mash inputs should be used for embedded mashes
+- The `source` key in mash inputs should only contain a source object

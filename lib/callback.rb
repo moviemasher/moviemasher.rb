@@ -36,34 +36,59 @@ module MovieMasher
 		TriggerInitiate = 'initiate'
 		TriggerProgress = 'progress'
 # Returns a new instance.
-		def self.create hash
-			Callback.new hash
+		def self.create hash = nil
+			(hash.is_a?(Callback) ? hash : Callback.new(hash))
 		end
 		
-		def data; _get __method__; end
+		def self.init_hash hash
+			Hashable._init_key hash, :trigger, TriggerComplete
+			Hashable._init_key hash, :progress_seconds, 10 if TriggerProgress == hash[:trigger]
+			Transfer.init_hash hash
+		end
+		def data
+			_get __method__
+		end
 # Hash/Array - Values to recursively evaluate and parse into request body.
 # Default - nil
-		def data=(value); _set __method__, value; end
+		def data=(value)
+			_set __method__, value
+		end
 
-		def extension; _get __method__; end
+		def extension
+			_get __method__
+		end
 # String - Added to file path after #name, with period inserted between.
-		def extension=(value); _set __method__, value; end
-
-		def name; _get __method__; end
+		def extension=(value)
+			_set __method__, value
+		end
+		
+		def name
+			_get __method__
+		end
 # String - The full or basename of file added to URL after #path. If full, 
 # #extension will be set and removed from value.
-		def name=(value); _set __method__, value; end
+		def name=(value)
+			_set __method__, value
+		end
 
-		def progress_seconds; _get __method__; end
+		def progress_seconds
+			_get __method__
+		end
 # Integer - Seconds to wait before making requests.
 # Default - 44100
 # Triggers - Only TriggerProgress.
-		def progress_seconds=(value); _set __method__, value; end
+		def progress_seconds=(value)
+			_set __method__, value
+		end
 		
-		def trigger; _get __method__; end
+		def trigger
+			_get __method__
+		end
 # String - The event that fires the request.
 # Constant - TriggerInitiate, TriggerProgress, TriggerError or TriggerComplete
 # Default - TriggerComplete
-		def trigger=(value); _set __method__, value; end
+		def trigger=(value)
+			_set __method__, value
+		end
 	end
 end

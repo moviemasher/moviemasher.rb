@@ -1,33 +1,33 @@
 {
+	"id": "mash_pan_overlay",
 	"type": "mash",
-	"source": {
-		"id": "mash_pan_overlay",
+	"mash": {
 		"quantize": 10,
 		"backcolor": "rgb( 255, 0, 0 )",
 		"label": "Pan Overlay",
 		"media": [
 			{
-				"id": "drummers",
+				"id": "video_id",
 				"type": "video",
 				"audio": 0,
 				"duration": 10,
-				"source": "video/drummers.mov"
+				"source": "magick/10-FF0000.mov"
 			},
 			{
 				"id": "medium-1x1",
 				"type": "image",
-				"source": "image/medium-1x1.png"
+				"source": "magick/sm-gridblue-1x1.png"
 			},
 			{
 				"id": "medium-4x3",
 				"type": "image",
-				"source": "image/medium-4x3.png"
+				"source": "magick/sm-gridyellow-4x3.png"
 			},
 			{
 				"id": "medium-16x9",
 				"type": "image",
-				"source": "image/medium-16x9.png"
-			},
+				"source": "magick/sm-gridpurple-16x9.png"
+			}
 		],
 		"video": [
 			{
@@ -108,7 +108,7 @@
 			},{
 				"type": "video",
 				"clips": [{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"frame": 20,
 					"frames": 70,
@@ -123,7 +123,7 @@
 					}
 				},
 				{
-					"id": "drummers",
+					"id": "video_id",
 					"effects": [],
 					"trim": 30,
 					"frame": 100,

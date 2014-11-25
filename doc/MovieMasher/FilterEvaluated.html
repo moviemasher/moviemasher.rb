@@ -116,6 +116,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -128,9 +130,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -222,6 +228,8 @@
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
   
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
     <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
@@ -311,7 +319,12 @@
   <span class="ruby-ivar">@mash_input</span> = <span class="ruby-identifier">mash_input</span>
   <span class="ruby-ivar">@applied_input</span> = <span class="ruby-identifier">applied_input</span>
   <span class="ruby-ivar">@config</span> = <span class="ruby-identifier">filter_config</span>
-  <span class="ruby-ivar">@parameters</span> = <span class="ruby-ivar">@config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@parameters</span> = <span class="ruby-ivar">@config</span>[<span class="ruby-value">:parameters</span>]
+  <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@parameters</span>
+    <span class="ruby-identifier">sym</span> = <span class="ruby-identifier">filter_config</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">capitalize</span>.<span class="ruby-identifier">to_sym</span>
+    <span class="ruby-ivar">@parameters</span> = <span class="ruby-constant">Parameters</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">sym</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">Parameters</span>.<span class="ruby-identifier">const_defined?</span> <span class="ruby-identifier">sym</span>
+    <span class="ruby-ivar">@parameters</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@parameters</span>
+  <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Parameter</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;no config&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@config</span>
   <span class="ruby-comment">#raise Error::Parameter.new &quot;no applied_input&quot; unless @applied_input</span>
   <span class="ruby-comment">#raise Error::Parameter.new &quot;no mash_input&quot; unless @mash_input</span>
@@ -351,7 +364,7 @@
 
           
           <div class="method-source-code" id="__coerce-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 352</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 357</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__coerce</span> <span class="ruby-identifier">s</span>
   <span class="ruby-identifier">sf</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_f</span>
   <span class="ruby-identifier">sfs</span> = <span class="ruby-identifier">sf</span>.<span class="ruby-identifier">to_s</span>
@@ -392,7 +405,7 @@
 
           
           <div class="method-source-code" id="__command_name_value-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 232</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 237</span>
  <span class="ruby-keyword">def</span> <span class="ruby-identifier">__command_name_value</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;__command_name_value got nil value&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>
   <span class="ruby-comment">#puts &quot;__command_name_value #{value}&quot;</span>
@@ -452,7 +465,7 @@
 
           
           <div class="method-source-code" id="__filter_dimension_keys-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 334</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 339</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_dimension_keys</span> <span class="ruby-identifier">filter_id</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">filter_id</span>
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;crop&#39;</span>
@@ -492,7 +505,7 @@
 
           
           <div class="method-source-code" id="__filter_is_source-3F-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 344</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 349</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_is_source?</span> <span class="ruby-identifier">filter_id</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">filter_id</span>
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;color&#39;</span>, <span class="ruby-string">&#39;movie&#39;</span>
@@ -530,7 +543,7 @@
 
           
           <div class="method-source-code" id="__filter_parse_scope_value-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 262</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 267</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_parse_scope_value</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">value_str</span>, <span class="ruby-identifier">job_output</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
     <span class="ruby-comment">#puts &quot;value_str = #{value_str}&quot;</span>
@@ -576,7 +589,7 @@
         <span class="ruby-keyword">end</span>
         <span class="ruby-identifier">func_sym</span> = <span class="ruby-identifier">method</span>.<span class="ruby-identifier">to_sym</span>
         <span class="ruby-keyword">if</span> <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-identifier">func_sym</span> <span class="ruby-keyword">then</span>
-          <span class="ruby-identifier">result</span> = <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">func_sym</span>, <span class="ruby-identifier">params</span>, <span class="ruby-ivar">@mash_input</span>[<span class="ruby-value">:source</span>], <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
+          <span class="ruby-identifier">result</span> = <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">func_sym</span>, <span class="ruby-identifier">params</span>, <span class="ruby-ivar">@mash_input</span>[<span class="ruby-value">:mash</span>], <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
           <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;got false from #{method}(#{params.join &#39;,&#39;})&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>
           <span class="ruby-identifier">result</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
           <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;got empty from #{method}(#{params.join &#39;,&#39;})&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">empty?</span>
@@ -632,7 +645,7 @@
 
           
           <div class="method-source-code" id="__filter_scope_binding-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 363</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 368</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_scope_binding</span> <span class="ruby-identifier">scope</span>
   <span class="ruby-identifier">bind</span> = <span class="ruby-identifier">binding</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>

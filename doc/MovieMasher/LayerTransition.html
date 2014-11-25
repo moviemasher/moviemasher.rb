@@ -106,6 +106,8 @@
   
     <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
   
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
@@ -118,9 +120,13 @@
   
     <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
   
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
     <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
   
     <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
   
     <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
   
@@ -212,6 +218,8 @@
   
     <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
   
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
     <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
   
     <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
@@ -275,7 +283,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 737</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 742</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">input</span>, <span class="ruby-identifier">job_input</span>, <span class="ruby-identifier">job</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-identifier">job</span>
   <span class="ruby-keyword">super</span> <span class="ruby-identifier">input</span>, <span class="ruby-identifier">job_input</span>
@@ -316,7 +324,7 @@
 
           
           <div class="method-source-code" id="add_new_layer-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 729</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 734</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_new_layer</span> <span class="ruby-identifier">clip</span>
   <span class="ruby-identifier">layer_letter</span> = <span class="ruby-string">&#39;a&#39;</span>
   <span class="ruby-ivar">@graphs</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">times</span> { <span class="ruby-identifier">layer_letter</span>.<span class="ruby-identifier">next!</span> }
@@ -359,7 +367,7 @@
 
           
           <div class="method-source-code" id="initialize_chains-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 780</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 785</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_chains</span>
   <span class="ruby-comment">#puts &quot;LayerTransition.initialize_chains #{@input}&quot;</span>
   <span class="ruby-keyword">super</span>
@@ -371,9 +379,7 @@
   <span class="ruby-ivar">@layer_chains</span>[<span class="ruby-value">1</span>][<span class="ruby-value">:merger</span>] = <span class="ruby-constant">ChainModule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:to</span>][<span class="ruby-value">:merger</span>], <span class="ruby-ivar">@job_input</span>, <span class="ruby-ivar">@input</span>)
   <span class="ruby-ivar">@layer_chains</span>[<span class="ruby-value">0</span>][<span class="ruby-value">:scaler</span>] = <span class="ruby-constant">ChainModule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:from</span>][<span class="ruby-value">:scaler</span>], <span class="ruby-ivar">@job_input</span>, <span class="ruby-ivar">@input</span>) 
   <span class="ruby-ivar">@layer_chains</span>[<span class="ruby-value">1</span>][<span class="ruby-value">:scaler</span>] = <span class="ruby-constant">ChainModule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:to</span>][<span class="ruby-value">:scaler</span>], <span class="ruby-ivar">@job_input</span>, <span class="ruby-ivar">@input</span>)
-  <span class="ruby-comment">#puts &quot;initialize_chains #{@job_input}&quot; unless @job_input[:source]</span>
-  <span class="ruby-identifier">mash_source</span> = <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:source</span>]
-  <span class="ruby-comment">#puts mash_source unless mash_source[:backcolor]</span>
+  <span class="ruby-identifier">mash_source</span> = <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>]
   <span class="ruby-identifier">mash_color</span> = <span class="ruby-identifier">mash_source</span>[<span class="ruby-value">:backcolor</span>]
   <span class="ruby-ivar">@color_layer</span> = <span class="ruby-constant">LayerColor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:range</span>].<span class="ruby-identifier">length_seconds</span>, <span class="ruby-identifier">mash_color</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -406,7 +412,7 @@
 
           
           <div class="method-source-code" id="layer_command-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 742</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 747</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">layer_command</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span>
   <span class="ruby-identifier">layer_scope</span> <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">job_output</span> <span class="ruby-comment"># sets @job_output and mm_duration, mm_t in scope</span>
   <span class="ruby-identifier">layer_letter</span> = <span class="ruby-string">&#39;a&#39;</span>

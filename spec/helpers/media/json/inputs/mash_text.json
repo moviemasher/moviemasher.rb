@@ -1,7 +1,7 @@
 {
+	"id": "mash_text",
 	"type": "mash",
-	"source": {
-		"id": "mash_text",
+	"mash": {
 		"quantize": 10,
 		"label": "Text",
 		"backcolor": "red",

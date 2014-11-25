@@ -109,7 +109,7 @@ module MovieMasher
 # Returns Job object with *error* key set if problem arose.
 # Raises Error::Configuration if *render_directory* is empty.
 	def self.process object_or_path
-		result = @@job = (object_or_path.is_a?(Job) ? object_or_path : Job.new(object_or_path, configuration))
+		result = @@job = (object_or_path.is_a?(Job) ? object_or_path : Job.new(object_or_path))
 		begin # try to process job
 			@@job.process unless @@job[:error]
 		rescue Exception => e 

@@ -1,18 +1,18 @@
 {
+	"id": "mash_fill",
 	"type": "mash",
-	"source": {
-		"id": "mash_fill",
+	"mash": {
 		"quantize": 10,
 		"backcolor": "blue",
 		"label": "Fills",
 		"media": [{
 			"id": "large-4x3",
 			"type": "image",
-			"source": "image/large-4x3.png"
+			"source": "magick/lg-4x3.png"
 		},{
 			"id": "large-3x4",
 			"type": "image",
-			"source": "image/large-3x4.png"
+			"source": "magick/lg-3x4.png"
 		}],
 		"video": [
 			{
