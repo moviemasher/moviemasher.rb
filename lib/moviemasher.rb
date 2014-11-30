@@ -152,12 +152,12 @@ module MovieMasher
 # well as the basename of the file saved to the *queue_directory*. The message is 
 # immediately deleted from the queue. 
 #
-# When a file is found it's renamed 'working.json' and its path is passed to the 
-# ::process method before it's deleted. This method should not raise an 
-# Exception, but if it does it is not trapped here so queue processing will stop 
-# and the file will not be deleted. When #process_queues is subsequently called 
-# the contents of the file are logged as an error before it is deleted without 
-# retrying. 
+# When a file is found its base name is changed to 'working' and its path is
+# passed to the ::process method before it's deleted. This method should not
+# raise an Exception, but if it does it is not trapped here so queue processing
+# will stop and the file will not be deleted. When #process_queues is
+# subsequently called the contents of the file are logged as an error before it
+# is deleted without retrying. 
 #
 # Returns nothing.
 #
@@ -165,6 +165,19 @@ module MovieMasher
 	def self.process_queues process_seconds = nil
 		process_seconds = configuration[:process_seconds] unless process_seconds
 		process_seconds = process_seconds.to_i
+		how_long = case process_seconds
+		when 0
+			'disabled'
+		when -1
+			'once'
+		when -2
+			'until drained'
+		when -3
+			'forever'
+		else 
+			"for #{process_seconds} seconds"
+		end
+		__log_transcoder(:info) { "process_queues #{how_long}" }
 		raise Error::Configuration.new "queue_directory not found in configuration" unless configuration[:queue_directory] and not configuration[:queue_directory].empty?
 		start = Time.now
 		Dir[Path.concat configuration[:queue_directory], 'working.*'].each do |working_file|
@@ -173,21 +186,24 @@ module MovieMasher
 			File.delete working_file				
 		end
 		while (0 > process_seconds) or (process_seconds > (Time.now - start))
-			job = Dir[Path.concat configuration[:queue_directory], '*'].sort_by{ |f| File.mtime(f) }.first
-			if job then
-				__log_transcoder(:info) { "starting #{job}" }
-				working_file = "#{File.dirname job}/working#{File.extname job}"
-				File.rename job, working_file
+			found = false
+			job_file = Dir[Path.concat configuration[:queue_directory], '*'].sort_by{ |f| File.mtime(f) }.first
+			if job_file then
+				found = true
+				__log_transcoder(:info) { "starting #{job_file}" }
+				working_file = "#{File.dirname job_file}/working#{File.extname job_file}"
+				File.rename job_file, working_file
 				process working_file
-				__log_transcoder(:info) { "finishing #{job}" }
+				__log_transcoder(:info) { "finishing #{job_file}" }
 				File.delete working_file
 			else # see if one can be copied from the queue
 				if (0 > process_seconds) or (process_seconds > (Time.now + configuration[:queue_wait_seconds] - start))
-					job = __sqs_request unless configuration[:queue_url].nil? or configuration[:queue_url].empty?
-					if job
-						__log_transcoder(:info) { "starting #{job[:id]}" }
-						process job 
-						__log_transcoder(:info) { "finishing #{job[:id]}" }
+					job_data = __sqs_request unless configuration[:queue_url].nil? or configuration[:queue_url].empty?
+					if job_data
+						found = true
+						__log_transcoder(:info) { "starting #{job_data[:id]}" }
+						process job_data 
+						__log_transcoder(:info) { "finishing #{job_data[:id]}" }
 					end
 				end
 			end
@@ -336,6 +352,7 @@ module MovieMasher
 		message = __sqs_queue.receive_message(:wait_time_seconds => configuration[:queue_wait_seconds])
 		if message then
 			message_body = message.body
+			puts "message_body #{message_body}"
 			job_hash = Job.resolved_hash message_body
 			if job_hash[:error] then
 				__log_transcoder(:error) { "SQS #{job_hash[:error]}: #{message_body}" }

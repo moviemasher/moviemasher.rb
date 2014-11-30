@@ -1,7 +1,5 @@
 ---
-:download_directory: /mnt/download
+:download_directory: /tmp/moviemasher/download
 :download_bytes: 100M
-:log_directory: /mnt/log
-:queue_directory: /mnt/queue
-:render_directory: /mnt/render
+:error_directory: /tmp/moviemasher/error
 :process_seconds: -2

@@ -1,3 +1,3 @@
 module MovieMasher
-  VERSION = "4.0.8"
+  VERSION = "4.0.10"
 end

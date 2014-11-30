@@ -49,12 +49,12 @@ module MovieMasher
 			:download_bytes => '0M', 
 			:error_directory => '',
 			:queue_url => '',
-			:log_directory => '/var/log/moviemasher',
+			:log_directory => '/tmp/moviemasher/log',
 			:verbose => 'info',
 			:process_seconds => 55,
 			:queue_directory => '/tmp/moviemasher/queue',
 			:queue_wait_seconds => 2,
-			:render_directory => '/tmp/moviemasher/temporary',
+			:render_directory => '/tmp/moviemasher/render',
 			:render_save => false,
 		}
 		Switches = {

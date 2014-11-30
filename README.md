@@ -33,7 +33,7 @@ The system *optionally* supports [Amazon Web Services](http://aws.amazon.com) fo
 Additionally, the Movie Masher AMI is launchable with OneClick in Marketplace as a deployment of all related projects and supporting applications. It includes an upstart task that executes `rake moviemasher:init` to merge any User Data supplied in JSON format into the configuration plus a cron job that continually executes `rake moviemasher:process_queues`, so it's possible to run in a headless mode polling an SQS queue for jobs. Without User Data, the instance will start up Apache and serve the angular-moviemasher project for demonstration - the instance id acts as a shared password.
 
 ### Docker Usage
-The [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher/moviemasher.rb/) image on [docker.com](https://docker.com)  is based off the official [`ruby`](https://registry.hub.docker.com/_/ruby/) image, adding builds of [FFmpeg](http://www.ffmpeg.org), [Ecasound](http://eca.cx/ecasound/) and supporting audio/visual libraries. It can be used to process jobs supplied directly on the command line, or to grab them from a directory/queue - either approach supports running in interractive or daemon mode. The Dockerfile contains a **VOLUME** instruction for each directory it works with, including **queue_directory** so that job files residing on the host can be easily processed. 
+The [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher/moviemasher.rb/) image on [docker.com](https://docker.com) is based off the official [`ruby`](https://registry.hub.docker.com/_/ruby/) image, adding builds of [FFmpeg](http://www.ffmpeg.org), [Ecasound](http://eca.cx/ecasound/) and supporting audio/visual libraries. It can be used to process jobs supplied directly on the command line, or to grab them from a directory/queue - either approach supports running in interractive or daemon mode. The Dockerfile contains a **VOLUME** instruction for each directory it works with, including **queue_directory** so that job files residing on the host can be easily processed. 
 
 - To display documentation of configuration options:
     
@@ -47,13 +47,13 @@ The [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher
 
 - To process all jobs in directory 'my_jobs' residing on the host:
 
-	`docker run -it -rm -v my_jobs:/mnt/queue moviemasher/moviemasher.rb`
+	`docker run -it -rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`
   
   Files can be in JSON or YAML format.
   
-- To continually process jobs in directory 'my_jobs' residing on the host in background:
+- To continually process jobs from container's queue volume:
 
-  	`docker run -d --name moviemasher -v my_jobs:/mnt/queue moviemasher/moviemasher.rb process_loop`
+  	`docker run -d --name=moviemasher moviemasher/moviemasher.rb process_loop`
   
   You'll need to subsequently execute `docker stop moviemasher` and `docker rm moviemasher` to stop processing and remove the container created.
 
@@ -100,10 +100,13 @@ Transcoding audio and video is extremely processor intensive, so while installat
 5. To install required gems `cd` to project directory and execute:
 
    `bundle install --without test`
+   
 6. Edit config/config.yml configuration file to match paths on system and configure logging/debugging options
+ 
 7. To scan watch folder and/or queue for jobs `cd` to project directory and execute:
 
    `rake moviemasher:process_queues`
+
 8. *optionally* add crontab entry from config/moviemasher.cron, after checking its binary paths
 
 
@@ -146,14 +149,14 @@ Or if docker is being used, a helpful development version of the image can be bu
   `-v $(pwd)/../angular-moviemasher:/mnt/angular-moviemasher`
   
 
-##### Known issues in Version 4.0.08
+##### Known issues in this version
 - local/sqs import/export has not been thoroughly tested
 - archiving of outputs not yet supported
 - freeze frame not yet supported
 - audio still being done in Ecasound
 - audio spec tests not yet generating files from scratch
 
-##### Migrating from Version 4.0.07
+##### Migrating from Version 4.0.7
 - The `length` key in clips has been renamed `frames`.
 - The `audio` and `video` keys in mash tracks have been moved to mash.
 - The `tracks` key in mashes has been removed. 

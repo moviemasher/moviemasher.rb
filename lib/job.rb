@@ -68,6 +68,7 @@ module MovieMasher
 		def self.resolved_hash hash_or_path
 			data = Hash.new
 			if hash_or_path.is_a? String
+				puts hash_or_path
 				hash_or_path = resolved_string hash_or_path
 				if hash_or_path
 					begin
@@ -96,7 +97,7 @@ module MovieMasher
 			when 'json', 'yaml'
 				hash_or_path 
 			else
-				(File.exists? hash_or_path ? File.read(hash_or_path) : nil)
+				(File.exists?(hash_or_path) ? File.read(hash_or_path) : nil)
 			end
 		end
 		def self.string_type hash_or_path
@@ -917,12 +918,14 @@ module MovieMasher
 			@logger
 		end
 		def __log_exception(rescued_exception, is_warning = false)
-			unless rescued_exception.is_a? Error::Job
-				str =  "#{rescued_exception.backtrace.join "\n"}\n#{rescued_exception.message}" 
-				puts str # so it gets in cron log as well
+			if rescued_exception
+				unless rescued_exception.is_a? Error::Job
+					str =  "#{rescued_exception.backtrace.join "\n"}\n#{rescued_exception.message}" 
+					puts str # so it gets in cron log as well
+				end
+				log_entry(:debug) { rescued_exception.backtrace.join "\n" }
+				log_entry(is_warning ? :warn : :error) { rescued_exception.message }
 			end
-			log_entry(:debug) { rescued_exception.backtrace.join "\n" }
-			log_entry(is_warning ? :warn : :error) { rescued_exception.message }
 			nil
 		end
 		def __output_commands output

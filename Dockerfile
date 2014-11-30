@@ -126,11 +126,11 @@ CMD ["moviemasher"]
 ENTRYPOINT ["config/docker/entrypoint.rb"]
 
 # expose all our configurable directories as potential mount points
-VOLUME /mnt/queue
-VOLUME /mnt/log
-VOLUME /mnt/render
-VOLUME /mnt/download
-VOLUME /mnt/error
+VOLUME /tmp/moviemasher/queue
+VOLUME /tmp/moviemasher/log
+VOLUME /tmp/moviemasher/render
+VOLUME /tmp/moviemasher/download
+VOLUME /tmp/moviemasher/error
 
 # EVERYTHING BELOW CAN BE UNCOMMENTED TO PRODUCE DEV IMAGE
 ## 

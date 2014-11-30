@@ -3,6 +3,5 @@ log/*
 tmp/*
 doc/*
 spec/*
-spec_aws/*
 .git/*
 .bundle*

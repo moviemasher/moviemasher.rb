@@ -16,7 +16,10 @@
 - MovieMasher::Input
 - MovieMasher::Output
 - MovieMasher::Transfer
-- MovieMasher::Callback
+  - MovieMasher::Source
+  - MovieMasher::Destination
+  - MovieMasher::Callback
+
 
 
 ##### Core Usage
@@ -31,7 +34,7 @@
 	job[:outputs] << { :type => 'video', :name => 'output.mp4' }
 	MovieMasher.process job
 
-When inputs use relative URLs like the example above then either the input or the job needs a `base_source` object to resolve them to absolute ones. Likewise, a `destination` object resolves the location of outputs and can be placed either in them or in the job in order to be available to all outputs. We've set them both to our home directory in this case so all files live there. 
+When inputs use relative URLs like the example above then either the input or the job needs a `base_source` key containing a MovieMasher::Transfer object to resolve them to absolute ones. Likewise, a `destination` key containing a MovieMasher::Destination object can be placed either in an output or the job for all outputs to use to resolve relative locations. We've set them both to our home directory in this case so all files live there. 
 
 Inputs are arranged consecutively one after the other - at least the visual ones. Audio inputs will by default start where the last audio or video with audio ends, so if the video input in our example has audio the audio input will start after it, otherwise they will begin at the same time. You can also explicitly play an audio track at any time by specify its `start` value. 
 
@@ -42,4 +45,4 @@ The visual composition of inputs is controlled by *effect, scaler* and *merger* 
 
 **To regenerate this documentation `cd` to project directory and execute:**
     
-    rdoc --visibility=public -o doc --main='Documentation.md' --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude='/spec' --exclude='/log' --exclude='/Gemfile' --exclude='/tmp' --exclude='/config' --exclude='/index.rb' --exclude='/doc' --exclude='/bin' --exclude='/Rakefile' --exclude='/Docker' --exclude='/README' --exclude='/LICENSE' 
+    rdoc --visibility=public -o doc --main='Documentation.md' --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude='/spec' --exclude='/log' --exclude='/Gemfile' --exclude='/tmp' --exclude='/config' --exclude='/index.rb' --exclude='/doc' --exclude='/bin' --exclude='/Rakefile' --exclude='/Docker' --exclude='/README-short' --exclude='/LICENSE' 

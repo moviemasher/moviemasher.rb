@@ -51,6 +51,8 @@
   
     <li class="file"><a href="./Documentation_md.html">Documentation</a>
   
+    <li class="file"><a href="./README_md.html">README</a>
+  
   </ul>
 </nav>
 
@@ -222,6 +224,10 @@ and Ecasound</em></p>
 </li><li>
 <p><a href="MovieMasher/Transfer.html">MovieMasher::Transfer</a></p>
 </li><li>
+<p><a href="MovieMasher/Source.html">MovieMasher::Source</a></p>
+</li><li>
+<p><a href="MovieMasher/Destination.html">MovieMasher::Destination</a></p>
+</li><li>
 <p><a href="MovieMasher/Callback.html">MovieMasher::Callback</a></p>
 </li></ul>
 
@@ -238,11 +244,14 @@ and Ecasound</em></p>
 </pre>
 
 <p>When inputs use relative URLs like the example above then either the input
-or the job needs a <code>base_source</code> object to resolve them to
-absolute ones. Likewise, a <code>destination</code> object resolves the
-location of outputs and can be placed either in them or in the job in order
-to be available to all outputs. We&#39;ve set them both to our home
-directory in this case so all files live there.</p>
+or the job needs a <code>base_source</code> key containing a <a
+href="MovieMasher/Transfer.html">MovieMasher::Transfer</a> object to
+resolve them to absolute ones. Likewise, a <code>destination</code> key
+containing a <a
+href="MovieMasher/Destination.html">MovieMasher::Destination</a> object can
+be placed either in an output or the job for all outputs to use to resolve
+relative locations. We&#39;ve set them both to our home directory in this
+case so all files live there.</p>
 
 <p>Inputs are arranged consecutively one after the other - at least the visual
 ones. Audio inputs will by default start where the last audio or video with
@@ -268,7 +277,7 @@ modular types.</p>
 <p><strong>To regenerate this documentation <code>cd</code> to project
 directory and execute:</strong></p>
 
-<pre>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39; --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude=&#39;/spec&#39; --exclude=&#39;/log&#39; --exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39; --exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39; --exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39; --exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39; --exclude=&#39;/README&#39; --exclude=&#39;/LICENSE&#39;</pre>
+<pre>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39; --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude=&#39;/spec&#39; --exclude=&#39;/log&#39; --exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39; --exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39; --exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39; --exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39; --exclude=&#39;/README-short&#39; --exclude=&#39;/LICENSE&#39;</pre>
 </div>
 
 
