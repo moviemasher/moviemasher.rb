@@ -178,10 +178,10 @@ module MovieMasher
 		end
 		def self.init_mash_input input
 			if hash? input[:mash] then
-				input[:mash] = new input[:mash]
+				input[:mash] = Mash.new input[:mash]
 				input[:mash][:media].map! do |media|
 					case media[:type]
-					when Video, Audio, Image, Frame
+					when Video, Audio, Image, Frame, Font
 						media = Clip.create media
 					end
 					media
