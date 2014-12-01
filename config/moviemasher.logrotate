@@ -1,28 +1,28 @@
-/var/log/moviemasher/angular-moviemasher.log {
+/tmp/moviemasher/log/angular-moviemasher.log {
     missingok
     size 1M
     create 664 apache apache
     rotate 1
 }
-/var/log/moviemasher/moviemasher.rb.log {
+/tmp/moviemasher/log/moviemasher.rb.log {
     missingok
     size 1M
     create 644 ec2-user ec2-user
     rotate 1
 }
-/var/log/moviemasher/moviemasher.rb.aws.log {
+/tmp/moviemasher/log/moviemasher.rb.aws.log {
     missingok
     size 1M
     create 644 ec2-user ec2-user
     rotate 1
 }
-/var/log/moviemasher/moviemasher.rb.cron.log {
+/tmp/moviemasher/log/moviemasher.rb.cron.log {
     missingok
     size 1M
     create 644 ec2-user ec2-user
     rotate 1
 }
-/var/log/moviemasher/moviemasher.rb.init.log {
+/tmp/moviemasher/log/moviemasher.rb.init.log {
     missingok
     size 1M
     create 644 ec2-user ec2-user
