@@ -39,7 +39,7 @@ namespace :moviemasher do
 		MovieMasher.configure PathUser
 		puts "#{Time.now} moviemasher:process_queues called"
 		STDOUT.flush
-		stop_file = Path.concat(MovieMasher.configuration[:render_directory], 'disable_process_queues.txt')
+		stop_file = MovieMasher::Path.concat(MovieMasher.configuration[:render_directory], 'disable_process_queues.txt')
 		if not File.exists? stop_file then
 			begin
 				File.open(stop_file, "w") {}
