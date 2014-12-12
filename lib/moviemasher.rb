@@ -61,6 +61,7 @@ module MovieMasher
 			if hash_or_path.is_a? Hash and not hash_or_path.empty?
 				# grab all keys in configuration starting with aws_, to pass to AWS if needed
 				hash_or_path.each do |key_str,v|
+					next if v.to_s.empty?
 					key_str = key_str.id2name if key_str.is_a? Symbol
 					key_str = key_str.dup
 					key_sym = key_str.to_sym
