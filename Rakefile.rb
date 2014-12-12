@@ -33,10 +33,10 @@ namespace :moviemasher do
 		end
 	end
 	desc "Checks SQS and directory queues"
-	task :process_queues do
+	task :process_queues, :config_path, :user_config_path do | t, args |
 		require_relative 'lib/moviemasher'
-		MovieMasher.configure PathConfig
-		MovieMasher.configure PathUser
+		MovieMasher.configure args[:config_path] || PathConfig
+		MovieMasher.configure args[:user_config_path] || PathUser
 		puts "#{Time.now} moviemasher:process_queues called"
 		STDOUT.flush
 		stop_file = MovieMasher::Path.concat(MovieMasher.configuration[:render_directory], 'disable_process_queues.txt')
