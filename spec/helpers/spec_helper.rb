@@ -184,13 +184,11 @@ def spec_process_job job
 				end
 			end
 		else
-			
 			# generate it
 			src = input[:source]
 			if src.is_a?(String) and src.start_with? magick_path
 				input[:source] = MagickGenerator.generate src[magick_path.length..-1]							
 			end
-		
 		end
 	end
 	

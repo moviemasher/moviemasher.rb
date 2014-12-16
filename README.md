@@ -53,9 +53,9 @@ The [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher
   
 - To continually process jobs from container's queue volume:
 
-  	`docker run -d --name=moviemasher moviemasher/moviemasher.rb process_loop`
+  	`docker run -d -t --name=moviemasher moviemasher/moviemasher.rb process_loop`
   
-  You'll need to subsequently execute `docker stop moviemasher` and `docker rm moviemasher` to stop processing and remove the container created.
+  Note the `t` switch - it's required for Ecasound to function properly. You'll need to subsequently execute `docker stop moviemasher` and `docker rm moviemasher` to stop processing and remove the container created.
 
 - To process a single job from an SQS queue:
 

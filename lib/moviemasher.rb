@@ -199,7 +199,7 @@ module MovieMasher
 				File.delete working_file
 			else # see if one can be copied from the queue
 				if (0 > process_seconds) or (process_seconds > (Time.now + configuration[:queue_wait_seconds] - start))
-					job_data = __sqs_request unless configuration[:queue_url].nil? or configuration[:queue_url].empty?
+					job_data = __sqs_request unless (configuration[:queue_url].nil? or configuration[:queue_url].empty?)
 					if job_data
 						found = true
 						__log_transcoder(:info) { "starting #{job_data[:id]}" }

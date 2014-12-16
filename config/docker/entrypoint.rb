@@ -1,4 +1,5 @@
 #!/usr/local/bin/ruby
+# encoding: utf-8
 command = ARGV.first
 commands = {
 	:process => 0,

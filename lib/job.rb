@@ -68,7 +68,6 @@ module MovieMasher
 		def self.resolved_hash hash_or_path
 			data = Hash.new
 			if hash_or_path.is_a? String
-				puts hash_or_path
 				hash_or_path = resolved_string hash_or_path
 				if hash_or_path
 					begin
@@ -133,7 +132,7 @@ module MovieMasher
 		private
 		def self.__audio_from_file path
 			raise Error::Parameter.new "__audio_from_file with invalid path" unless path and (not path.empty?) and File.exists? path
-			out_file = "#{File.dirname path}/#{File.basename path}-intermediate.#{Intermediate::AudioExtension}"
+			out_file = "#{File.dirname path}/#{File.basename path, File.extname(path)}-intermediate.#{Intermediate::AudioExtension}"
 			switches = Array.new
 			switches << __switch(path, 'i')
 			switches << __switch(2, 'ac')
@@ -170,9 +169,16 @@ module MovieMasher
 			
 			logs << {:debug => (Proc.new { whole_cmd })}
 			result = Open3.capture3(whole_cmd).join "\n"
-			#Process.waitall
+			# make sure result is utf-8 encoded
+			enc_options = Hash.new
+			enc_options[:invalid] = :replace
+			enc_options[:undef] = :replace
+			enc_options[:replace] = '?'
+			enc_options[:universal_newline] = true
+			result.encode!(Encoding::UTF_8, enc_options)
+			
 			if outputs_file and not out_file.include?('%') then	
-				unless File.exists?(out_file) and File.size?(out_file)
+				unless File.exists?(out_file) and (0 < File.size?(out_file))
 					logs << {:debug => (Proc.new { result }) }
 					raise Error::JobRender.new result
 				end
@@ -263,7 +269,6 @@ module MovieMasher
 		
 		
 		def self.__init_hash job
-			job[:log] = Proc.new { File.read(Path.concat __path_job, 'log.txt') }
 			job[:progress] = Hash.new() { 0 }
 			#Hashable._init_key job, :id, UUID.new.generate
 			Hashable._init_key job, :inputs, Array.new
@@ -446,6 +451,9 @@ module MovieMasher
 			self.class.__init_hash @hash
 			path_job = __path_job
 			self.class.__file_safe path_job
+			path_log = "#{path_job}/log.txt"			
+			@hash[:log] = Proc.new { File.read path_log }
+
 			# write massaged job json to job directory
 			path_job = Path.concat(path_job, 'job.json')
 			File.open(path_job, 'w') { |f| f << @hash.to_json }	
@@ -855,7 +863,6 @@ module MovieMasher
 		end
 		def __execute_output_command output, cmd_hash
 			result = nil
-			#puts "__execute_output_command #{cmds}"
 			out_path = cmd_hash[:file]
 			content = cmd_hash[:content]
 			if content
