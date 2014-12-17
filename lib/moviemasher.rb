@@ -192,7 +192,7 @@ module MovieMasher
 			if job_file then
 				found = true
 				__log_transcoder(:info) { "starting #{job_file}" }
-				working_file = "#{File.dirname job_file}/working#{File.extname job_file}"
+				working_file = Path.concat File.dirname(job_file), "working#{File.extname job_file}"
 				File.rename job_file, working_file
 				process working_file
 				__log_transcoder(:info) { "finishing #{job_file}" }
@@ -353,7 +353,6 @@ module MovieMasher
 		message = __sqs_queue.receive_message(:wait_time_seconds => configuration[:queue_wait_seconds])
 		if message then
 			message_body = message.body
-			puts "message_body #{message_body}"
 			job_hash = Job.resolved_hash message_body
 			if job_hash[:error] then
 				__log_transcoder(:error) { "SQS #{job_hash[:error]}: #{message_body}" }

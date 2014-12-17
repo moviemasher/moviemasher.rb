@@ -22,6 +22,7 @@ module MovieMasher
 		def self.get_info path, type
 			raise Error::Parameter.new "false or empty path or type #{path}, #{type}" unless type and path and (not (type.empty? or path.empty?))
 			result = nil
+			data = nil
 			if File.exists?(path) then
 				info_file = __meta_path type, path
 				if File.exists? info_file then
@@ -29,7 +30,9 @@ module MovieMasher
 				else
 					check = Hash.new
 					case type
-					when Info::Type, 'http', 'ffmpeg', 'sox' 
+					when 'ffmpeg', 'sox' 
+						check[type.to_sym] = true
+					when Info::Type, 'http' 
 						# do nothing if file doesn't already exist
 					when Info::Dimensions
 						check[:ffmpeg] = true
@@ -45,17 +48,27 @@ module MovieMasher
 						check[:ffmpeg] = true
 					end
 					if check[:ffmpeg] then
-						data = get_info(path, 'ffmpeg')
-						if not data then
+						data = get_info(path, 'ffmpeg') if 'ffmpeg' != type
+						unless data
 							data = __execute :command => path, :app => 'ffprobe'
-							__set_info path, 'ffmpeg', data
+							if 'ffmpeg' == type
+								result = data
+								data = nil
+							else
+								__set_info path, 'ffmpeg', data
+							end
 						end
 						result = __file_info(type, data) if data
 					elsif check[:sox] then
-						data = get_info(path, 'sox')
-						if not data then
+						data = get_info(path, 'sox') if 'sox' != type
+						unless data
 							data = __execute :command => "--i #{path}", :app => 'sox'
-							__set_info(path, 'sox', data)
+							if 'sox' == type
+								result = data
+								data = nil					
+							else
+								__set_info(path, 'sox', data)
+							end
 						end
 						result = __file_info(type, data) if data
 					end
@@ -132,7 +145,7 @@ module MovieMasher
 		private
 		def self.__audio_from_file path
 			raise Error::Parameter.new "__audio_from_file with invalid path" unless path and (not path.empty?) and File.exists? path
-			out_file = "#{File.dirname path}/#{File.basename path, File.extname(path)}-intermediate.#{Intermediate::AudioExtension}"
+			out_file = Path.concat File.dirname(path), "#{File.basename path, File.extname(path)}-intermediate.#{Intermediate::AudioExtension}"
 			switches = Array.new
 			switches << __switch(path, 'i')
 			switches << __switch(2, 'ac')
@@ -174,7 +187,7 @@ module MovieMasher
 			enc_options[:invalid] = :replace
 			enc_options[:undef] = :replace
 			enc_options[:replace] = '?'
-			enc_options[:universal_newline] = true
+			#enc_options[:universal_newline] = true
 			result.encode!(Encoding::UTF_8, enc_options)
 			
 			if outputs_file and not out_file.include?('%') then	
@@ -270,7 +283,7 @@ module MovieMasher
 		
 		def self.__init_hash job
 			job[:progress] = Hash.new() { 0 }
-			#Hashable._init_key job, :id, UUID.new.generate
+			Hashable._init_key job, :id, UUID.new.generate
 			Hashable._init_key job, :inputs, Array.new
 			Hashable._init_key job, :outputs, Array.new
 			Hashable._init_key job, :callbacks, Array.new
@@ -406,7 +419,6 @@ module MovieMasher
 			_set __method__, value
 		end
 
-
 		def error?	
 			preflight
 			err = error
@@ -430,8 +442,7 @@ module MovieMasher
 			end unless err
 			err = 'no destinations specified' if (not err) and not found_destination
 			err = destination.error? if (not err) and destination
-			
-			error = err
+			self.error = err
 		end
 		
 # String - user supplied identifier.
@@ -540,7 +551,7 @@ module MovieMasher
 				rescued_exception = e
 			end
 			begin
-				if rescued_exception then 
+				if error or rescued_exception then 
 					# encountered a showstopper (not one raised from optional output)
 					rescued_exception = __log_exception rescued_exception
 					__callback :error
@@ -554,7 +565,7 @@ module MovieMasher
 			rescue Exception => e
 				rescued_exception = e
 			end
-			! @hash[:error]
+			! error
 		end
 # Current status of processing. The following keys are available: 
 #
@@ -645,7 +656,6 @@ module MovieMasher
 			@audio_graphs
 		end
 		def __cache_input input, input_url, base_src = nil, module_src = nil
-			#puts "__cache_input #{input_url}"
 			cache_url_path = nil
 			if input_url then
 				cache_url_path = __cache_url_path input_url
@@ -657,7 +667,6 @@ module MovieMasher
 				end
 				self.class.__set_info cache_url_path, Info::At, Time.now.to_i
 				input[:cached_file] = cache_url_path
-				
 				case input[:type]
 				when Input::TypeVideo
 					input[:duration] = self.class.get_info(cache_url_path, Info::Duration).to_f unless input[:duration] and FloatUtil.gtr(input[:duration], FloatUtil::Zero)
@@ -699,7 +708,6 @@ module MovieMasher
 		def __cache_input_source input, source, input_url, out_file
 			begin
 				self.class.__file_safe(File.dirname(out_file))
-				#puts "__cache_input_source TYPE #{source[:type]} #{input_url}"
 				case source[:type]
 				when Transfer::TypeFile
 					source_path = input_url.dup
@@ -708,11 +716,9 @@ module MovieMasher
 					if File.exists? source_path
 						__transfer_file(source[:method], source_path, out_file) 
 					else
-						#puts "NOT EXIST: #{source_path}"
 						log_entry(:error) { "file does not exist #{source_path}" }
 					end
 				when Transfer::TypeHttp, Transfer::TypeHttps
-					#puts "retrieving #{input_url}"
 					uri = URI input_url
 					uri.port = source[:port] if source[:port]
 					__transfer_uri_parameters input, uri, source
@@ -800,7 +806,7 @@ module MovieMasher
 				case callback[:type]
 				when Transfer::TypeFile
 					self.class.__file_safe(File.dirname(destination_path))
-					callback[:file] = destination_path
+					callback[:callback_file] = destination_path
 					if data then
 						file = Path.concat __path_job, "callback-#{UUID.new.generate}.json"
 						File.open(file, 'w') { |f| f.write(data.to_json) }
@@ -1155,12 +1161,11 @@ module MovieMasher
 			end
 		end
 		def __process_download
-			unless @hash[:error] then 
+			unless error
 				__callback :initiate
 				desired = outputs_desire
 				inputs.each do |input|
 					input_url = input[:input_url]
-					#puts "INPUT: #{input_url}"
 					if input_url then
 						# if it's a mash we won't know if it has desired content types until cached and parsed
 						if (Input::TypeMash == input[:type]) or AV.includes?(Asset.av_type(input), desired) then
@@ -1182,10 +1187,9 @@ module MovieMasher
 				__update_sizing
 				__construct_commands
 			end
-			! @hash[:error]
 		end
 		def __process_render
-			unless @hash[:error] then 
+			unless error then 
 				outputs.each do |output|
 					begin
 						cmds = __output_commands output
@@ -1206,10 +1210,9 @@ module MovieMasher
 					end
 				end
 			end
-			! @hash[:error]
 		end
 		def __process_upload
-			unless @hash[:error] then 
+			unless error then 
 				outputs.each do |output|
 					next unless output[:rendered_file]
 					begin
@@ -1219,8 +1222,7 @@ module MovieMasher
 						raise if output[:required]
 					end
 				end
-			end	
-			! @hash[:error]
+			end
 		end
 		def __render_path output
 			out_file = (Output::TypeSequence == output[:type] ? "/#{output[:name]}#{output[:sequence]}" : '')

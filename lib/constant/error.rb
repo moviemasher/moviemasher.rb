@@ -13,8 +13,9 @@ module MovieMasher
 		# job related errors		
 		class Job < Runtime; end
 		class JobOutput < Job; end
+		class JobSyntax < Job; end
 		class JobRender < JobOutput
-			def initialize ffmpeg_result, msg = "failed to render"
+			def initialize(ffmpeg_result, msg = "failed to render")
 				error_lines = Array.new
 				error_lines << msg if msg
 				if ffmpeg_result

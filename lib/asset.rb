@@ -85,6 +85,10 @@ module MovieMasher
 			_set __method__, value
 		end
 		
+		def metadata
+			(self[:cached_file] ? MetaReader.new(self[:cached_file]) : Hash.new)
+		end
+
 		def no_audio
 			_get __method__
 		end

@@ -204,6 +204,11 @@ module MovieMasher
 			self.class.init_hash hash
 			super
 		end
+		
+		def metadata
+			(self[:rendered_file] ? MetaReader.new(self[:rendered_file]) : Hash.new)
+		end
+
 		def name
 			_get __method__
 		end

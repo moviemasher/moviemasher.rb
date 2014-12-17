@@ -24,7 +24,7 @@ module MovieMasher
 				elsif v.is_a? Proc
 					data[k] = v.call
 				else
-					data[k] = value v.to_s, scope
+					data[k] = value "#{v}", scope
 				end
 			end
 		end
@@ -39,7 +39,6 @@ module MovieMasher
 					else
 						split_bit = bit.split '.'
 						scope_child = __scope_target split_bit, scope # shifts off of split_bit
-						
 						evaled = nil
 						if scope_child 
 							if __is_eval_object? scope_child
@@ -88,7 +87,7 @@ module MovieMasher
 				else
 					key = key.to_sym 
 				end
-				v = v[key]
+				v = ((key.is_a?(Symbol) and v.respond_to?(key)) ? v.send(key) : v[key])
 				if __is_eval_object? v
 					v = __value(v, path_array) unless path_array.empty?
 				elsif v.is_a? Proc

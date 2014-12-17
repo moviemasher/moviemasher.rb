@@ -1,6 +1,6 @@
 
 module MovieMasher
-# Mix-in functionality for mocking a Hash.
+# Base class for mocking a Hash.
 	class Hashable
 # Convenience getter for underlying data Hash.
 #

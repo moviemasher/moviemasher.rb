@@ -44,6 +44,7 @@ def spec_job_from_files(input_id = nil, output_id = nil, destination_id = nil)
 	job = Hash.new
 	job[:log_level] = 'debug'
 	job[:inputs] = Array.new
+	job[:callbacks] = Array.new
 	job[:outputs] = Array.new
 	job[:destination] = spec_file('destinations', destination_id)
 	job[:inputs] << spec_file('inputs', input_id) if input_id
@@ -70,27 +71,45 @@ def spec_modular_media
 	end
 	ModularMedia
 end
+def spec_callback_file job
+	callback = job.callbacks.first
+	(callback ? callback[:callback_file] : nil)
+end
+
 def spec_output job
-	#puts job.keys
-	destination = job[:destination]	
-	dest_path = destination[:file]
+	dest_path = job[:destination][:file]
+	if not (dest_path and File.exists?(dest_path))
+		callback_file =  spec_callback_file job
+		dest_path = callback_file if callback_file
+	end
 	if dest_path and File.directory?(dest_path) then
 		dest_path = Dir["#{dest_path}/*"].first
 		#puts "DIR: #{dest_path}"
 	end
 	dest_path
 end
+def spec_job_data job_data
+	unless job_data[:base_source]
+		job_data[:base_source] = spec_file('sources', 'base_source_file')
+		job_data[:base_source][:directory] = File.dirname(File.dirname(__FILE__))
+	end
+	input = job_data[:inputs].first
+	if input and input[:source] and not input[:source].is_a?(String)
+		input[:source][:directory] = File.dirname(__FILE__) 
+	end
+	if job_data[:destination] and not job_data[:destination][:directory]
+		job_data[:destination][:directory] = File.dirname(File.dirname(File.dirname(__FILE__)))
+	end
+end
+
 def spec_job(input_id = nil, output = 'video_h264', destination = 'file_log')
 	job_data = spec_job_from_files input_id, output, destination
 	if job_data
-		output = job_data[:outputs][0]
-		job_data[:base_source] = spec_file('sources', 'base_source_file')
-		job_data[:base_source][:directory] = File.dirname(File.dirname(__FILE__))
-		input = job_data[:inputs].first
-		if input and input[:source] and not input[:source].is_a?(String)
-			input[:source][:directory] = File.dirname(__FILE__) 
+		spec_job_data job_data
+		unless job_data[:id] 
+			input = job_data[:inputs].first
+			job_data[:id] = input[:id] if input 
 		end
-		job_data[:destination][:directory] = File.dirname(File.dirname(File.dirname(__FILE__)))
 		job_data = MovieMasher::Job.new job_data
 	else
 		puts "SKIPPED #{input_id} - put angular-moviemasher repo alongside moviemasher.rb repo to test modules"
@@ -122,7 +141,6 @@ def spec_generate_rgb_video options = nil
 	red_file = MagickGenerator.image_file :back => RED, :width => SM16x9W, :height => SM16x9H
 	green_file = MagickGenerator.image_file :back => GREEN, :width => SM16x9W, :height => SM16x9H
 	blue_file = MagickGenerator.image_file :back => BLUE, :width => SM16x9W, :height => SM16x9H
-	
 	job = spec_job
 	job[:inputs] << {:length => options[:red], :id => "red", :source => red_file, :type => 'image'}
 	job[:inputs] << {:length => options[:green], :id => "green", :source => green_file, :type => 'image'}
@@ -154,11 +172,10 @@ def spec_process_job_files(input_id, output = 'video_h264', destination = 'file_
 	job = spec_job(input_id, output, destination)
 	(job ? spec_process_job(job) : nil)
 end
-def spec_process_job job
+def spec_magick job
 	mod_media = nil
 	magick_path = "magick/"
 	job[:inputs].each do |input|
-		job[:id] = input[:id] if input[:id] and not job[:id] 
 		if MovieMasher::Input::TypeMash == input[:type]
 			mash = input[:mash] 
 			if MovieMasher::Mash.hash? mash
@@ -191,26 +208,32 @@ def spec_process_job job
 			end
 		end
 	end
-	
-	output = job.outputs.first
-	input = job.inputs.first
-	MovieMasher.process job
-	if job[:error] then
+end
+
+def spec_process_job job, expect_error = nil
+	spec_magick job
+	job = MovieMasher.process job
+	if job[:error] and not expect_error
 		puts job[:error] 
 		puts job[:commands]
 	end
-	expect(job[:error]).to be_nil
+	expect(! job[:error]).to eq ! expect_error
 	destination_file = spec_output job
 	expect(destination_file).to_not be_nil
 	expect(File.exists?(destination_file)).to be_true
-	case output[:type]
-	when MovieMasher::Output::TypeAudio, MovieMasher::Output::TypeVideo
-		expect_duration destination_file, job[:duration]
+	output = job.outputs.first
+	if output
+		case output[:type]
+		when MovieMasher::Output::TypeAudio, MovieMasher::Output::TypeVideo
+			expect_duration destination_file, job[:duration]
+		end
+		input = job.inputs.first
+		if input and MovieMasher::Input::TypeMash == input[:type]
+			expect_dimensions(destination_file, output[:dimensions]) 
+		end
+		expect_fps(destination_file, output[:video_rate]) if MovieMasher::Output::TypeVideo == output[:type] 
 	end
-	expect_dimensions(destination_file, output[:dimensions]) if MovieMasher::Input::TypeMash == input[:type]
-	expect_fps(destination_file, output[:video_rate]) if MovieMasher::Output::TypeVideo == output[:type] 
 	destination_file
-
 end
 def expect_color_image color, path
 	ext =  File.extname(path)
