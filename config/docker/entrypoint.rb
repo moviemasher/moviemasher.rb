@@ -11,7 +11,9 @@ commands = {
 exec(ARGV.join ' ') unless commands.include? command.to_sym
 ARGV.shift # remove command
 require '/mnt/moviemasher.rb/lib/moviemasher'
-config = YAML::load(File.open(ENV['MOVIEMASHER_CONFIG'] || '/mnt/moviemasher.rb/config/docker/config.yml'))
+config_file = ENV['MOVIEMASHER_CONFIG'] || '/mnt/moviemasher.rb/config/docker/config.yml'
+puts "loading configuration file #{config_file}"
+config = YAML::load(File.open(config_file))
 configuration = MovieMasher::Configuration.parse(ARGV, config, command)
 if configuration.is_a? String
 	puts configuration

@@ -28,7 +28,7 @@ module MovieMasher
 	@@configuration = Configuration::Defaults.dup
 	@@job = nil
 	@@logger = nil
-	@@queue = nil
+	@@queues = Array.new
 	public
 # Returns the configuration Hash with Symbol keys. 
 	def self.configuration
@@ -44,7 +44,9 @@ module MovieMasher
 # Raises Error::Configuration if String supplied doesn't have json/yml extension or 
 # if *render_directory* is empty.
 	def self.configure hash_or_path
-		aws_config = Hash.new
+		service_config = Hash.new
+		queue_config = Hash.new
+		service_names = __service_names
 		if hash_or_path and not hash_or_path.empty? 
 			if hash_or_path.is_a? String
 				if File.exists? hash_or_path
@@ -65,31 +67,52 @@ module MovieMasher
 					key_str = key_str.id2name if key_str.is_a? Symbol
 					key_str = key_str.dup
 					key_sym = key_str.to_sym
-					if key_str.start_with? 'aws_' then
-						key_str['aws_'] = ''
-						aws_config[key_str.to_sym] = v
-					else
-						@@configuration[key_sym] = v
+					found = false
+					service_names.each do |name|
+						name_underscore = "#{name}_"
+						name_sym = name.to_sym
+						if key_str.start_with? name_underscore
+							service_config[name_sym] = Hash.new unless service_config[name_sym]
+							key_str[name_underscore] = ''
+							service_config[name_sym][key_str.to_sym] = v
+							found = true
+							break
+						end
+					end
+					unless found
+						queue_config[key_sym] = v if key_str.start_with? 'queue_'
+						@@configuration[key_sym] = v 
 					end
 				end
 			end
-		end
-		
+		end	
 		[:render_directory, :download_directory, :queue_directory, :error_directory, :log_directory].each do |sym|
 			if @@configuration[sym] and not @@configuration[sym].empty? then
 				# expand directory and create if needed
 				@@configuration[sym] = File.expand_path(@@configuration[sym])
 				__file_safe @@configuration[sym]
-				if :log_directory == sym and not aws_config.empty?
-					aws_config[:logger] = Logger.new Path.concat(@@configuration[sym], 'moviemasher.rb.aws.log')
+				if :log_directory == sym and service_config[:aws]
+					service_config[:aws][:logger] = Logger.new Path.concat(@@configuration[sym], 'moviemasher.rb.aws.log')
 				end
 			else
 				raise Error::Configuration.new "#{sym.id2name} must be defined" if :render_directory == sym
 			end
 		end
-		unless aws_config.empty?
-			require 'aws-sdk' unless defined? AWS
-			AWS.config(aws_config) unless aws_config.empty?
+		service_names.each do |name|
+			name_sym = name.to_sym
+			if service_config[name_sym]
+				class_sym = "#{name.capitalize}Service".to_sym
+				unless MovieMasher.const_defined? class_sym
+					puts "loading service #{name}"
+					require_relative "../service/#{name}"
+					raise Error::Configuration.new "MovieMasher::#{class_sym.id2name} not defined" unless MovieMasher.const_defined? class_sym
+					queue_class = MovieMasher.const_get class_sym
+					queue_instance = queue_class.new
+					queue_instance.configure_service service_config[name_sym]
+					queue_instance.configure_queue queue_config
+					@@queues << queue_instance
+				end
+			end
 		end
 	end
 # Returns valediction for command line apps.
@@ -197,14 +220,17 @@ module MovieMasher
 				process working_file
 				__log_transcoder(:info) { "finishing #{job_file}" }
 				File.delete working_file
-			else # see if one can be copied from the queue
+			else # see if one can be copied from a queue
 				if (0 > process_seconds) or (process_seconds > (Time.now + configuration[:queue_wait_seconds] - start))
-					job_data = __sqs_request unless (configuration[:queue_url].nil? or configuration[:queue_url].empty?)
-					if job_data
-						found = true
-						__log_transcoder(:info) { "starting #{job_data[:id]}" }
-						process job_data 
-						__log_transcoder(:info) { "finishing #{job_data[:id]}" }
+					@@queues.each do |queue|
+						job_data = queue.receive_job
+						if job_data
+							found = true
+							__log_transcoder(:info) { "starting #{job_data[:id]}" }
+							process job_data 
+							__log_transcoder(:info) { "finishing #{job_data[:id]}" }
+							break
+						end
 					end
 				end
 			end
@@ -340,28 +366,7 @@ module MovieMasher
 			logger.send(type, proc.call)
 		end
 	end
-	def self.__sqs_queue
-		unless @@queue
-			require 'aws-sdk' unless defined? AWS
-			sqs = ((configuration[:queue_region] and not configuration[:queue_region].empty?) ? AWS::SQS.new(:region => configuration[:queue_region]) : AWS::SQS.new)
-			@@queue = sqs.queues[configuration[:queue_url]]
-		end
-		@@queue
-	end
-	def self.__sqs_request
-		job_hash = nil
-		message = __sqs_queue.receive_message(:wait_time_seconds => configuration[:queue_wait_seconds])
-		if message then
-			message_body = message.body
-			job_hash = Job.resolved_hash message_body
-			if job_hash[:error] then
-				__log_transcoder(:error) { "SQS #{job_hash[:error]}: #{message_body}" }
-				job_hash = nil
-			else
-				job_hash[:id] = message.id unless job_hash[:id] and not job_hash[:id].to_s.empty?
-			end
-			message.delete
-		end
-		job_hash
+	def self.__service_names
+		Dir["#{__dir__}/../service/*.rb"].map { | path | File.basename path, '.rb' }
 	end
 end
