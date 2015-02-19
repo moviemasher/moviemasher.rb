@@ -179,13 +179,7 @@ module MovieMasher
 		def self.init_mash_input input
 			if hash? input[:mash] then
 				input[:mash] = Mash.new input[:mash]
-				input[:mash][:media].map! do |media|
-					case media[:type]
-					when Video, Audio, Image, Frame, Font
-						media = Clip.create media
-					end
-					media
-				end if input[:mash]
+				input[:mash].preflight if input[:mash]
 				input[:duration] = duration(input[:mash]) if FloatUtil.cmp(input[:duration], FloatUtil::Zero)
 				input[:no_audio] = ! has_audio?(input[:mash])
 				input[:no_video] = ! has_video?(input[:mash])
@@ -402,12 +396,15 @@ module MovieMasher
 			_get __method__
 		end
 		def preflight job = nil
-			media.each do |m|
-				m = Clip.create m
-				m.preflight job
+			media.map! do |media|
+				case media[:type]
+				when Video, Audio, Image, Frame, Font
+					media = Clip.create media
+					media.preflight job
+				end
+				media
 			end
 		end
-		
 		def url_count desired
 			count = 0
 			media.each do |media|

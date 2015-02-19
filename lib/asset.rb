@@ -41,7 +41,17 @@ module MovieMasher
 		def dimensions=(value)
 			_set __method__, value
 		end
-		
+
+		def download options
+			d_source = download_source
+			transfer_service = Service.downloader d_source.type
+			raise Error::Configuration.new "could not find download service #{source.type}" unless transfer_service
+			puts "RELATIVE SOURCE: #{d_source.relative?}"
+			options[:source] = d_source
+			options[:asset] = self
+			transfer_service.download options
+		end
+
 		def duration
 			_get __method__
 		end
@@ -123,10 +133,9 @@ module MovieMasher
 			if source then
 				self.source = Source.create_if source
 				if job
-					base_src = base_source || job.base_source
-					module_src = module_source || job.module_source
-					
-					self[:input_url] = url(base_src, module_src) unless TypeMash == type and @hash[:mash]
+					self[:base_source] = job.base_source unless base_source
+					self[:module_source] = job.module_source unless module_source
+					self[:input_url] = url(base_source, module_source) unless TypeMash == type and @hash[:mash]
 				end
 			end
 			#puts "preflight #{self.class.name} URL: #{self[:input_url]}"
@@ -160,7 +169,21 @@ module MovieMasher
 		def type=(value)
 			_set __method__, value
 		end
-		
+		def download_source
+			d_source = source
+			if source and source.is_a?(Source) 
+				if source.relative?
+					# relative url
+					case type
+					when Mash::Theme, Mash::Font, Mash::Effect
+						d_source = module_source || base_source || source
+					else
+						d_source = base_source || source
+					end
+				end
+			end
+			d_source
+		end
 		def url base_src = nil, module_src = nil
 			u = nil
 			if source and source.is_a?(Source) 

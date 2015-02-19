@@ -28,7 +28,6 @@ module MovieMasher
 	@@configuration = Configuration::Defaults.dup
 	@@job = nil
 	@@logger = nil
-	@@queues = Array.new
 	public
 # Returns the configuration Hash with Symbol keys. 
 	def self.configuration
@@ -44,9 +43,6 @@ module MovieMasher
 # Raises Error::Configuration if String supplied doesn't have json/yml extension or 
 # if *render_directory* is empty.
 	def self.configure hash_or_path
-		service_config = Hash.new
-		queue_config = Hash.new
-		service_names = __service_names
 		if hash_or_path and not hash_or_path.empty? 
 			if hash_or_path.is_a? String
 				if File.exists? hash_or_path
@@ -67,22 +63,7 @@ module MovieMasher
 					key_str = key_str.id2name if key_str.is_a? Symbol
 					key_str = key_str.dup
 					key_sym = key_str.to_sym
-					found = false
-					service_names.each do |name|
-						name_underscore = "#{name}_"
-						name_sym = name.to_sym
-						if key_str.start_with? name_underscore
-							service_config[name_sym] = Hash.new unless service_config[name_sym]
-							key_str[name_underscore] = ''
-							service_config[name_sym][key_str.to_sym] = v
-							found = true
-							break
-						end
-					end
-					unless found
-						queue_config[key_sym] = v if key_str.start_with? 'queue_'
-						@@configuration[key_sym] = v 
-					end
+					@@configuration[key_sym] = v
 				end
 			end
 		end	
@@ -90,30 +71,15 @@ module MovieMasher
 			if @@configuration[sym] and not @@configuration[sym].empty? then
 				# expand directory and create if needed
 				@@configuration[sym] = File.expand_path(@@configuration[sym])
-				__file_safe @@configuration[sym]
-				if :log_directory == sym and service_config[:aws]
-					service_config[:aws][:logger] = Logger.new Path.concat(@@configuration[sym], 'moviemasher.rb.aws.log')
-				end
+				FileHelper.safe_path @@configuration[sym], @@configuration[:chmod_directory_new]
 			else
-				raise Error::Configuration.new "#{sym.id2name} must be defined" if :render_directory == sym
-			end
-		end
-		service_names.each do |name|
-			name_sym = name.to_sym
-			if service_config[name_sym]
-				class_sym = "#{name.capitalize}Service".to_sym
-				unless MovieMasher.const_defined? class_sym
-					puts "loading service #{name}"
-					require_relative "../service/#{name}"
-					raise Error::Configuration.new "MovieMasher::#{class_sym.id2name} not defined" unless MovieMasher.const_defined? class_sym
-					queue_class = MovieMasher.const_get class_sym
-					queue_instance = queue_class.new
-					queue_instance.configure_service service_config[name_sym]
-					queue_instance.configure_queue queue_config
-					@@queues << queue_instance
+				case sym
+				when :render_directory, :queue_directory
+					raise Error::Configuration.new "#{sym.id2name} must be defined"
 				end
 			end
 		end
+		Service.configure_services @@configuration
 	end
 # Returns valediction for command line apps.
 	def self.goodbye
@@ -169,19 +135,16 @@ module MovieMasher
 		end
 		(array.empty? ? nil : array.length)
 	end
-# Loops for *process_seconds* searching for the oldest JSON or YML 
-# formatted job file in *queue_directory*, as well as polling *queue_url* for an 
-# SQS message. If the later is found its body is expected to be a JSON formatted 
-# job and its identifier is used to populate the *id* key (if that's empty), as 
-# well as the basename of the file saved to the *queue_directory*. The message is 
-# immediately deleted from the queue. 
-#
-# When a file is found its base name is changed to 'working' and its path is
-# passed to the ::process method before it's deleted. This method should not
-# raise an Exception, but if it does it is not trapped here so queue processing
-# will stop and the file will not be deleted. When #process_queues is
-# subsequently called the contents of the file are logged as an error before it
-# is deleted without retrying. 
+# Searches configured queue(s) for job(s) and processes.
+# 
+# process_seconds - overrides this same configuration option. A positive value 
+# will cause the method to loop that many seconds, while a value of zero will cause it
+# to immediately return without searching for a job. A value of -1 indicates that each
+# queue should be searched just once for a job, and -2 will loop until no queue returns 
+# a job. And finally, -3 will cause the method to loop forever. 
+# 
+# This method should not raise an Exception, but if it does it is not trapped here so
+# queue processing will stop. 
 #
 # Returns nothing.
 #
@@ -202,35 +165,18 @@ module MovieMasher
 			"for #{process_seconds} seconds"
 		end
 		__log_transcoder(:info) { "process_queues #{how_long}" }
-		raise Error::Configuration.new "queue_directory not found in configuration" unless configuration[:queue_directory] and not configuration[:queue_directory].empty?
 		start = Time.now
-		Dir[Path.concat configuration[:queue_directory], 'working.*'].each do |working_file|
-			# if this process didn't create it, we must have crashed on it in a previous run
-			__log_transcoder(:error) { "deleting previously active job:\n#{File.read working_file}" }
-			File.delete working_file				
-		end
 		while (0 > process_seconds) or (process_seconds > (Time.now - start))
 			found = false
-			job_file = Dir[Path.concat configuration[:queue_directory], '*'].sort_by{ |f| File.mtime(f) }.first
-			if job_file then
-				found = true
-				__log_transcoder(:info) { "starting #{job_file}" }
-				working_file = Path.concat File.dirname(job_file), "working#{File.extname job_file}"
-				File.rename job_file, working_file
-				process working_file
-				__log_transcoder(:info) { "finishing #{job_file}" }
-				File.delete working_file
-			else # see if one can be copied from a queue
-				if (0 > process_seconds) or (process_seconds > (Time.now + configuration[:queue_wait_seconds] - start))
-					@@queues.each do |queue|
-						job_data = queue.receive_job
-						if job_data
-							found = true
-							__log_transcoder(:info) { "starting #{job_data[:id]}" }
-							process job_data 
-							__log_transcoder(:info) { "finishing #{job_data[:id]}" }
-							break
-						end
+			if (0 > process_seconds) or (process_seconds > (Time.now - start))
+				Service.queues.each do |queue|
+					job_data = queue.receive_job
+					if job_data
+						found = true
+						__log_transcoder(:info) { "starting #{job_data[:id]}" }
+						process job_data 
+						__log_transcoder(:info) { "finishing #{job_data[:id]}" }
+						break
 					end
 				end
 			end
@@ -240,25 +186,14 @@ module MovieMasher
 		end
 	end
 	private
-	def self.__execute options
-		cmd = options[:command]
-		app = options[:app] || 'ffmpeg'
-		whole_cmd = @@configuration["#{app}_path".to_sym]
-		whole_cmd = app unless whole_cmd and not whole_cmd.empty?
-		whole_cmd += ' ' + cmd
-		Open3.capture3(whole_cmd).join "\n"
-	end
-	def self.__file_safe path
-		unless File.directory? path
-			options = Hash.new
-			mod = @@configuration[:chmod_directory_new]
-			if mod
-				mod = mod.to_i(8) if mod.is_a? String
-				options[:mode] = mod 
-			end
-			FileUtils.makedirs path, options
-		end
-	end
+#	def self.__execute options
+#		cmd = options[:command]
+#		app = options[:app] || 'ffmpeg'
+#		whole_cmd = @@configuration["#{app}_path".to_sym]
+#		whole_cmd = app unless whole_cmd and not whole_cmd.empty?
+#		whole_cmd += ' ' + cmd
+#		Open3.capture3(whole_cmd).join "\n"
+#	end
 	def self.__flush_downloads(dir, size)
 		result = false
 		if File.exists?(dir) then
@@ -289,7 +224,7 @@ module MovieMasher
 	def self.__flush_bytes_from_directory download_directory, bytes_in_dir, target_bytes
 		bytes_to_flush = bytes_in_dir - target_bytes
 		cmd = "-d 1 -k #{download_directory}"
-		result = __execute :command => cmd, :app => 'du'
+		result = ShellHelper.execute :command => cmd, :app => 'du'
 		if result then
 			directories = Array.new
 			lines = result.split "\n"
@@ -321,7 +256,7 @@ module MovieMasher
 	def self.__flush_directory_bytes(dir)
 		size = 0
 		cmd = "-d 0 -k #{dir}"
-		result = __execute :command => cmd, :app => 'du'
+		result = ShellHelper.execute :command => cmd, :app => 'du'
 		if result then
 			result = result.split "\t"
 			result = result.first
@@ -337,7 +272,7 @@ module MovieMasher
 		unless @@logger
 			log_dir = @@configuration[:log_directory]
 			if log_dir and not log_dir.empty?
-				__file_safe log_dir
+				FileHelper.safe_path log_dir
 				@@logger = Logger.new(Path.concat(log_dir, 'moviemasher.rb.log'), 7, 1048576 * 100)
 				log_level = (@@configuration[:verbose] || 'info').upcase
 				@@logger.level = (Logger.const_defined?(log_level) ? Logger.const_get(log_level) : Logger::INFO)
@@ -365,8 +300,5 @@ module MovieMasher
 		if logger and logger.send((type.id2name + '?').to_sym)
 			logger.send(type, proc.call)
 		end
-	end
-	def self.__service_names
-		Dir["#{__dir__}/../service/*.rb"].map { | path | File.basename path, '.rb' }
 	end
 end

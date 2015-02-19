@@ -10,7 +10,7 @@ describe File.basename(__FILE__) do
 	after(:all) do
 		spec_stop_redis
 	end
-	context "__cache_input" do
+	context "__cache_asset" do
 		it "correctly saves cached file when source is s3 object" do
 			image_path = MagickGenerator.image_file
 			image_input = {
@@ -40,9 +40,9 @@ describe File.basename(__FILE__) do
 			expect(File.exists? image_path).to be_true
 			bucket.objects[source_frag].write(Pathname.new(image_path), :content_type => 'image/png')
 			input = job_object[:inputs].first
-			input_url = input.url
-			path = job_object.send(:__cache_input, input, input_url)
-			expect(path).to eq job_object.send(:__cache_url_path, input_url)
+			path = job_object.send(:__cache_url_path, input.url)
+			job_object.send(:__cache_asset, input)
+			expect(path).to eq job_object.send(:__cache_url_path, input[:input_url])
 			expect(File.exists? path).to be_true
 			expect(FileUtils.identical? path, image_path).to be_true
 		end

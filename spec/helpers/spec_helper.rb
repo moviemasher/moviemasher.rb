@@ -149,9 +149,9 @@ def spec_generate_rgb_video options = nil
 	rendered_video_path = spec_process_job job
 	fps = job[:outputs].first.video_rate.to_i
 	colors = Array.new
-	frame = -1
+	frame = 0
 	frames = options[:red] * fps
-	colors << { :color => RED, :frames => [0, frames - 1] }
+	colors << { :color => RED, :frames => [0, frames] }
 	frame += frames
 	frames = options[:green] * fps
 	colors << { :color => GREEN, :frames => [frame, frames] }
@@ -164,8 +164,8 @@ end
 
 
 def expect_color_video color, video_file
-	video_duration = MovieMasher::Job.get_info(video_file, 'duration').to_f
-	video_rate = MovieMasher::Job.get_info(video_file, 'fps').to_f
+	video_duration = MovieMasher::Info.get(video_file, 'duration').to_f
+	video_rate = MovieMasher::Info.get(video_file, 'fps').to_f
 	expect_colors_video [{:color => color, :frames => [0, (video_rate * video_duration).to_i]}], video_file
 end
 def spec_process_job_files(input_id, output = 'video_h264', destination = 'file_log')
@@ -242,13 +242,13 @@ def expect_color_image color, path
 end
 
 def expect_duration destination_file, duration
-	expect(MovieMasher::Job.get_info(destination_file, 'duration').to_f).to be_within(0.1).of duration
+	expect(MovieMasher::Info.get(destination_file, 'duration').to_f).to be_within(0.1).of duration
 end
 def expect_fps destination_file, fps
-	expect(MovieMasher::Job.get_info(destination_file, 'fps').to_i).to eq fps.to_i
+	expect(MovieMasher::Info.get(destination_file, 'fps').to_i).to eq fps.to_i
 end
 def expect_dimensions destination_file, dimensions
-	expect(MovieMasher::Job.get_info(destination_file, 'dimensions')).to eq dimensions
+	expect(MovieMasher::Info.get(destination_file, 'dimensions')).to eq dimensions
 end
 
 RSpec.configure do |config|

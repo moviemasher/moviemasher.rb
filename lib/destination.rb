@@ -28,6 +28,16 @@ module MovieMasher
 			end
 			error
 		end
-	
+		def upload options
+			transfer_service = Service.uploader type
+			raise Error::Configuration.new "could not find upload service #{type}" unless transfer_service
+			options[:destination] = self
+			transfer_service.upload options
+		end
+		def directory_files file
+			transfer_service = Service.uploader type
+			raise Error::Configuration.new "could not find upload service #{type}" unless transfer_service
+			transfer_service.directory_files file
+		end
 	end
 end

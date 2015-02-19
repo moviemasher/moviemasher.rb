@@ -1,4 +1,4 @@
-FROM ruby
+FROM ruby:2.1
 MAINTAINER Movie Masher <support@moviemasher.com>
 
 ENV HOME /root
@@ -133,10 +133,10 @@ VOLUME /tmp/moviemasher/download
 VOLUME /tmp/moviemasher/error
 
 # EVERYTHING BELOW CAN BE UNCOMMENTED TO PRODUCE DEV IMAGE
-## 
+
 ## # install redis for aws-sdk
-## WORKDIR /data
 ## RUN \
+##   cd /data; \
 ##   wget "http://download.redis.io/releases/redis-2.8.17.tar.gz"; \
 ##   gunzip redis-2.8.17.tar.gz; \
 ##   tar -xvf redis-2.8.17.tar; \
@@ -151,12 +151,7 @@ VOLUME /tmp/moviemasher/error
 ## COPY Gemfile /data/
 ## COPY Gemfile.lock /data/
 ## RUN \
+##   cd /data; \
 ##   bundle config --global frozen 1; \
 ##   bundle install --without production
-## WORKDIR /mnt/moviemasher.rb
-## 
-## # add a mount point for angular-moviemasher for modular spec tests
-## VOLUME /mnt/angular-moviemasher
-## 
-## # add a mount point for the project itself (masking repo copied above)
-## VOLUME /mnt/moviemasher.rb
+

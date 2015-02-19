@@ -56,21 +56,3 @@ namespace :moviemasher do
 		end
 	end
 end
-namespace :test do
-	desc "Tests S3 put action"
-	task :s3, :bucket, :key, :file, :acl, :content_type, :region do | t, args |
-
-		if args[:bucket] and args[:key] and args[:file] and File.exists?(args[:file])
-			args[:region] = 'us-east-1' unless args[:region]
-			options = Hash.new
-			options[:acl] = args[:acl].to_sym if args[:acl]
-			options[:content_type] = args[:content_type] if args[:content_type]
-			s3 = AWS::S3.new(:region => args[:region])
-			bucket = s3.buckets[args[:bucket]]
-			s3_object = bucket.objects[args[:key]]
-			s3_object.write(Pathname.new(args[:file]), options)
-		else
-			puts "invalid parameters"
-		end
-	end
-end

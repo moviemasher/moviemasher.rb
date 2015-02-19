@@ -19,10 +19,6 @@ module MovieMasher
 # render_save - Boolean indicating whether or not jobs should be removed after processing.
 # verbose - How much detail to include in logs. One of debug, info, warn or error.
 #
-# Additionally, configuration can be provided for services like AWS:
-#
-# aws_access_key_id - Key identifier for transfers to and from S3.
-# aws_secret_access_key - Key secret for transfers to and from S3.
 	class Configuration < Hashable
 		
 		Descriptions = {

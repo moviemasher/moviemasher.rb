@@ -38,7 +38,7 @@ describe File.basename(__FILE__) do
 			input.preflight
 			url = input.url
 			source = input.source
-			expect(url).to eq MovieMasher::Path.concat "#{source[:path]}", "#{source[:name]}.#{source[:extension]}"
+			expect(url).to eq MovieMasher::Path.concat source[:path], "#{source[:name]}.#{source[:extension]}"
 		end
 	end
 end

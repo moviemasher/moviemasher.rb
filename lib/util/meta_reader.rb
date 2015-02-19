@@ -64,9 +64,7 @@ module MovieMasher
 			''
 		end
 		def _info symbol
-			result = Job.get_info @path, symbol.id2name
-			#puts "_info: #{symbol} #{result}"
-			result
+			Info.get @path, symbol.id2name
 		end
 	end
 end

@@ -20,7 +20,7 @@ module MovieMasher
 			keys.each do |k|
 				v = data[k]
 				if __is_eval_object? v
-					object v, scope
+					object v, scope # recurse
 				elsif v.is_a? Proc
 					data[k] = v.call
 				else
@@ -63,8 +63,8 @@ module MovieMasher
 			v
 		end
 		private
-		def self.__is_eval_object? object
-			(object.is_a?(Hash) or object.is_a?(Array) or object.is_a?(Hashable))
+		def self.__is_eval_object? ob
+			(ob.is_a?(Hash) or ob.is_a?(Array) or ob.is_a?(Hashable))
 		end
 		def self.__scope_target split_bit, scope
 			scope_child = nil

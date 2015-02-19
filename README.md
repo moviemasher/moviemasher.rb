@@ -37,17 +37,17 @@ The [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher
 
 - To display documentation of configuration options:
     
-    `docker run -it -rm moviemasher/moviemasher.rb moviemasher --help`
+    `docker run -it --rm moviemasher/moviemasher.rb moviemasher --help`
     
 - To process jobs directly from the command line:
 
-	`docker run -it -rm moviemasher/moviemasher.rb process "JOB" "JOB"`
+	`docker run -it --rm moviemasher/moviemasher.rb process "JOB" "JOB"`
   
   JOB can be a JSON or YAML formatted string, or a path to one in the container.
 
 - To process all jobs in directory 'my_jobs' residing on the host:
 
-	`docker run -it -rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`
+	`docker run -it --rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`
   
   Files can be in JSON or YAML format.
   
@@ -59,7 +59,7 @@ The [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher
 
 - To process a single job from an SQS queue:
 
-	`docker run -it -rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`
+	`docker run -it --rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`
   
   URL points to an existing SQS Queue that provides read/write access to the owner of the access key with ID and SECRET. Messages can be in JSON or YAML format. 
 

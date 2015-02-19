@@ -19,65 +19,6 @@ module MovieMasher
 		def self.create hash = nil
 			(hash.is_a?(Job) ? hash : Job.new(hash))
 		end
-		def self.get_info path, type
-			raise Error::Parameter.new "false or empty path or type #{path}, #{type}" unless type and path and (not (type.empty? or path.empty?))
-			result = nil
-			data = nil
-			if File.exists?(path) then
-				info_file = __meta_path type, path
-				if File.exists? info_file then
-					result = File.read info_file
-				else
-					check = Hash.new
-					case type
-					when 'ffmpeg', 'sox' 
-						check[type.to_sym] = true
-					when Info::Type, 'http' 
-						# do nothing if file doesn't already exist
-					when Info::Dimensions
-						check[:ffmpeg] = true
-					when Info::VideoDuration
-						check[:ffmpeg] = true
-						type = Info::Duration
-					when Info::AudioDuration
-						check[:sox] = true
-						type = Info::Duration
-					when Info::Duration
-						check[Info::Audio == __file_type(path) ? :sox : :ffmpeg] = true
-					when Info::FPS, Info::Audio # only from FFMPEG
-						check[:ffmpeg] = true
-					end
-					if check[:ffmpeg] then
-						data = get_info(path, 'ffmpeg') if 'ffmpeg' != type
-						unless data
-							data = __execute :command => path, :app => 'ffprobe'
-							if 'ffmpeg' == type
-								result = data
-								data = nil
-							else
-								__set_info path, 'ffmpeg', data
-							end
-						end
-						result = __file_info(type, data) if data
-					elsif check[:sox] then
-						data = get_info(path, 'sox') if 'sox' != type
-						unless data
-							data = __execute :command => "--i #{path}", :app => 'sox'
-							if 'sox' == type
-								result = data
-								data = nil					
-							else
-								__set_info(path, 'sox', data)
-							end
-						end
-						result = __file_info(type, data) if data
-					end
-					# try to cache the data for next time
-					__set_info(path, type, result) if result
-				end
-			end
-			result
-		end
 		def self.resolved_hash hash_or_path
 			data = Hash.new
 			if hash_or_path.is_a? String
@@ -155,132 +96,6 @@ module MovieMasher
 			exec_opts[:file] = out_file
 			exec_opts
 		end
-		def self.__evaluated_path_for_transfer transfer, scope, output
-			file_name = transfer.file_name
-			if file_name.empty? 
-				# transfer didn't supply one
-				file_name = output[:path]
-				file_name = Path.concat file_name, output.file_name unless Output::TypeSequence == output[:type]
-			end
-			key = __transfer_directory(transfer)
-			key = Path.concat key, file_name
-			Evaluate.value key, scope
-		end
-		def self.__execute options
-			logs = Array.new
-			cmd = options[:command]
-			out_file = options[:file] || ''
-			duration = options[:duration]
-			precision = options[:precision] || 1
-			app = options[:app] || 'ffmpeg'
-			outputs_file = ((not out_file.empty?) and ('/dev/null' != out_file))
-			whole_cmd = MovieMasher.configuration["#{app}_path".to_sym]
-			whole_cmd = app unless whole_cmd and not whole_cmd.empty?
-			whole_cmd += ' ' + cmd
-			__file_safe(File.dirname(out_file)) if outputs_file
-			whole_cmd += " #{out_file}" if out_file and not out_file.empty?
-			
-			logs << {:debug => (Proc.new { whole_cmd })}
-			result = Open3.capture3(whole_cmd).join "\n"
-			# make sure result is utf-8 encoded
-			enc_options = Hash.new
-			enc_options[:invalid] = :replace
-			enc_options[:undef] = :replace
-			enc_options[:replace] = '?'
-			#enc_options[:universal_newline] = true
-			result.encode!(Encoding::UTF_8, enc_options)
-			
-			if outputs_file and not out_file.include?('%') then	
-				unless File.exists?(out_file) and (0 < File.size?(out_file))
-					logs << {:debug => (Proc.new { result }) }
-					raise Error::JobRender.new result
-				end
-				if duration then
-					audio_duration, video_duration = __file_durations out_file
-					logs << {:debug => (Proc.new { "rendered file with audio_duration: #{audio_duration} video_duration: #{video_duration}" }) }
-					unless audio_duration or video_duration
-						raise Error::JobRender.new result, "could not determine if #{duration} == duration of #{out_file}" 
-					end
-					unless FloatUtil.cmp(duration, video_duration.to_f, precision) or FloatUtil.cmp(duration, audio_duration.to_f, precision)
-						logs << {:warn => (Proc.new { result }) }
-						raise Error::JobRender.new result, "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration} #{out_file}" 
-					end
-				end
-			end 
-			logs << {:debug => (Proc.new { result }) }
-			#puts `ps aux | awk '{ print $8 " " $2 }' | grep -w Z`
-			return result unless options[:log]
-			return [result, whole_cmd, logs]
-		end
-		
-		def self.__file_durations path
-			video_data = __execute :command => path, :app => 'ffprobe'
-			audio_data = __execute :command => "--i #{path}", :app => 'sox'
-			[__file_info('duration', audio_data), __file_info('duration', video_data)]
-		end
-		def self.__file_info type, ffmpeg_output
-			result = nil
-			if ffmpeg_output and not ffmpeg_output.empty?
-				case type
-				when Info::Audio
-					/Audio: ([^,]+),/.match(ffmpeg_output) do |match|
-						if 'none' != match[1] then
-							result = 1
-						end
-					end
-				when Info::Dimensions
-					/, ([\d]+)x([\d]+)/.match(ffmpeg_output) do |match|
-						result = match[1] + 'x' + match[2]
-					end
-				when Info::Duration
-					/Duration\s*:\s*([\d]+):([\d]+):([\d\.]+)/.match(ffmpeg_output) do |match|
-						result = 60 * 60 * match[1].to_i + 60 * match[2].to_i + match[3].to_f
-					end
-				when Info::FPS
-					match = / ([\d\.]+) fps/.match(ffmpeg_output)
-					match = / ([\d\.]+) tb/.match(ffmpeg_output) unless match 
-					result = match[1].to_f.round	
-				end
-			end
-			result
-		end
-		def self.__file_mime path
-			mime = get_info path, 'Content-Type'
-			if not mime then
-				type = MIME::Types.of(path).first
-				if type 
-					mime = type.simplified
-				#else
-				#	mime = Rack::Mime.mime_type(File.extname(path))
-				end
-				#puts "LOOKING UP MIME: #{ext} #{mime}"
-				__set_info(path, 'Content-Type', mime) if mime
-			end
-			mime
-		end
-		def self.__file_safe path
-			options = Hash.new
-			mod = MovieMasher.configuration[:chmod_directory_new]
-			if mod
-				mod = mod.to_i(8) if mod.is_a? String
-				options[:mode] = mod 
-			end
-			FileUtils.makedirs path, options
-		end
-		def self.__file_type path
-			result = nil
-			if path then
-				result = get_info path, 'type'
-				if not result then
-					mime = __file_mime path
-					result = mime.split('/').shift if mime
-					__set_info(path, 'type', result) if result
-				end
-			end
-			result
-		end
-		
-		
 		def self.__init_hash job
 			job[:progress] = Hash.new() { 0 }
 			Hashable._init_key job, :id, UUID.new.generate
@@ -293,9 +108,6 @@ module MovieMasher
 	
 		def self.__input_length input
 			__input_time input, :length
-		end
-		def self.__input_sources input, job
-			[(input[:base_source] || job[:base_source]), (input[:module_source] || job[:module_source])]
 		end
 		def self.__input_time input, key
 			length = FloatUtil::Zero
@@ -328,10 +140,6 @@ module MovieMasher
 			range.length = __input_length input
 			range
 		end
-		
-		def self.__meta_path type, path
-			Path.concat File.dirname(path), "#{File.basename path, '.*'}.#{type}.#{Info::Extension}"
-		end
 		def self.__output_command output, av_type, duration = nil
 			switches = Array.new
 			switches << __switch(FloatUtil.string(duration), 't') if duration
@@ -358,14 +166,6 @@ module MovieMasher
 			switches << __switch(output[:metadata], 'metadata') if output[:metadata]
 			switches.join
 		end
-		def self.__set_info(path, type, data)
-			result = nil
-			if type and path then
-				info_file_path = __meta_path(type, path)
-				File.open(info_file_path, 'w') {|f| f.write(data) }
-			end
-		end
-		
 		def self.__switch(value, prefix = '', suffix = '')
 			switch = ''
 			value = value.to_s.strip
@@ -381,11 +181,7 @@ module MovieMasher
 				end
 			end
 			switch
-		end
-		def self.__transfer_directory transfer
-			Path.concat transfer[:directory], transfer[:path]
-		end
-		
+		end		
 		public
 		def base_source
 			_get __method__
@@ -461,7 +257,7 @@ module MovieMasher
 			super self.class.resolved_hash hash_or_path
 			self.class.__init_hash @hash
 			path_job = __path_job
-			self.class.__file_safe path_job
+			FileHelper.safe_path path_job
 			path_log = "#{path_job}/log.txt"			
 			@hash[:log] = Proc.new { File.read path_log }
 
@@ -513,7 +309,6 @@ module MovieMasher
 			desired
 		end
 		def preflight 
-			
 			self.destination = Destination.create_if destination # must say self. here 
 			self.base_source = Transfer.create_if base_source
 			self.module_source = Transfer.create_if module_source
@@ -536,9 +331,6 @@ module MovieMasher
 #
 # Returns true if processing succeeded, otherwise false - check #error for
 # details.
-#
-# Raises Error::Job or subclass depending on processing stage - Error::JobInput, 
-# Error::JobRender, Error::JobUpload.
 		def process 
 			rescued_exception = nil
 			begin
@@ -655,109 +447,89 @@ module MovieMasher
 			end
 			@audio_graphs
 		end
-		def __cache_input input, input_url, base_src = nil, module_src = nil
-			cache_url_path = nil
+		def __cache_asset asset # input or media
+			input_url = asset[:input_url]
 			if input_url then
 				cache_url_path = __cache_url_path input_url
 				unless File.exists? cache_url_path then
-					source = input[:source]
-					raise Error::JobInput.new "no source for #{input_url}" unless source
-					__cache_input_source input, source, input_url, cache_url_path
-					raise Error::JobInput.new "could not cache #{input_url}" unless File.exists? cache_url_path
+					#source = asset.module_source || asset.base_source || asset.source
+					#raise Error::JobInput.new "no source for #{input_url}" unless source
+					begin
+						FileHelper.safe_path(File.dirname(cache_url_path))
+						
+						asset.download :job => self, :path => cache_url_path
+						
+#						case source[:type]
+#						when Transfer::TypeFile
+#							source_path = input_url.dup
+#							source_path['file://'] = '' if source_path.start_with?('file://');
+#							source_path = File.expand_path(source_path) unless source_path.start_with?('/')
+#							if File.exists? source_path
+#								__transfer_file(source[:method], source_path, cache_url_path) 
+#							else
+#								log_entry(:error) { "file does not exist #{source_path}" }
+#							end
+#						when Transfer::TypeHttp, Transfer::TypeHttps
+#							uri = URI input_url
+#							uri.port = source[:port] if source[:port]
+#							__transfer_uri_parameters asset, uri, source
+#							req.basic_auth(source[:user], source[:pass]) if source[:user] and source[:pass]
+#							Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
+#								request = Net::HTTP::Get.new uri
+#								http.request request do |response|
+#									if '200' == response.code then
+#										File.open(cache_url_path, 'wb') do |io|
+#											response.read_body do |chunk|
+#												io.write chunk
+#											end
+#										end
+#										mime_type = response['content-type']
+#										Info.set(cache_url_path, 'Content-Type', mime_type) if mime_type
+#									else
+#										log_entry(:warn) {"got #{response.code} response code from #{input_url}"}
+#									end
+#								end
+#							end
+#						when Transfer::TypeS3
+#							bucket = __s3_bucket source
+#							bucket_key = source.full_path
+#							object = bucket.objects[bucket_key]
+#							if MovieMasher.configuration[:s3_read_at_once] then
+#								object_read_data = object.read
+#								File.open(cache_url_path, 'wb') { |f| f << object_read_data } if object_read_data
+#							else
+#								File.open(cache_url_path, 'wb') do |file|
+#									object.read do |chunk|
+#										file << chunk
+#									end
+#								end
+#							end
+#						end
+					rescue Exception => e
+						puts "CAUGHT #{e.message} #{e.backtrace.join "\n"}"
+						raise Error::JobInput.new e.message unless e.is_a? Error::Job
+					end
+					raise Error::JobInput.new "could not cache #{input_url}" unless File.size?(cache_url_path)
 				end
-				self.class.__set_info cache_url_path, Info::At, Time.now.to_i
-				input[:cached_file] = cache_url_path
-				case input[:type]
+				Info.set cache_url_path, Info::At, Time.now.to_i
+				asset[:cached_file] = cache_url_path
+				case asset[:type]
 				when Input::TypeVideo
-					input[:duration] = self.class.get_info(cache_url_path, Info::Duration).to_f unless input[:duration] and FloatUtil.gtr(input[:duration], FloatUtil::Zero)
-					input[:no_audio] = ! self.class.get_info(cache_url_path, Info::Audio)
-					input[:dimensions] = self.class.get_info(cache_url_path, Info::Dimensions)
-					input[:no_video] = ! input[:dimensions]
-					Mash.init_av_input input
+					asset[:duration] = Info.get(cache_url_path, Info::Duration).to_f unless asset[:duration] and FloatUtil.gtr(asset[:duration], FloatUtil::Zero)
+					asset[:no_audio] = ! Info.get(cache_url_path, Info::Audio)
+					asset[:dimensions] = Info.get(cache_url_path, Info::Dimensions)
+					asset[:no_video] = ! asset[:dimensions]
+					Mash.init_av_input asset
 				when Input::TypeAudio
-					input[:duration] = self.class.get_info(cache_url_path, Info::AudioDuration).to_f unless input[:duration] and FloatUtil.gtr(input[:duration], FloatUtil::Zero)
-					input[:duration] = self.class.get_info(cache_url_path, Info::VideoDuration).to_f unless FloatUtil.gtr(input[:duration], FloatUtil::Zero)
+					asset[:duration] = Info.get(cache_url_path, Info::AudioDuration).to_f unless asset[:duration] and FloatUtil.gtr(asset[:duration], FloatUtil::Zero)
+					asset[:duration] = Info.get(cache_url_path, Info::VideoDuration).to_f unless FloatUtil.gtr(asset[:duration], FloatUtil::Zero)
 				when Input::TypeImage 
-					input[:dimensions] = self.class.get_info(cache_url_path, Info::Dimensions)
-					raise Error::JobInput.new "could not determine image dimensions" unless input[:dimensions]
+					asset[:dimensions] = Info.get(cache_url_path, Info::Dimensions)
+					raise Error::JobInput.new "could not determine image dimensions" unless asset[:dimensions]
 				end
-			else
-				raise Error::JobInput.new "could not produce an input_url #{input}"
+				progress[:downloaded] += 1
+				__callback :progress
 			end
-			progress[:downloaded] += 1
-			__callback :progress
-			cache_url_path
-		end
-		def __cache_job_mash input
-			mash = input[:mash]
-			base_src, module_src = self.class.__input_sources input, self
-			desired = outputs_desire
-			mash[:media].each do |media|
-				#puts "MEDIA: #{media}"
-				case media[:type]
-				when Mash::Video, Mash::Audio, Mash::Image, Mash::Font
-					if AV.includes?(Asset.av_type(media), desired) then
-						input_url = media.url base_src, module_src
-						if input_url then
-							__cache_input media, input_url, base_src, module_src
-						end
-					end
-				end
-			end
-		end
-		def __cache_input_source input, source, input_url, out_file
-			begin
-				self.class.__file_safe(File.dirname(out_file))
-				case source[:type]
-				when Transfer::TypeFile
-					source_path = input_url.dup
-					source_path['file://'] = '' if source_path.start_with?('file://');
-					source_path = File.expand_path(source_path) unless source_path.start_with?('/')
-					if File.exists? source_path
-						__transfer_file(source[:method], source_path, out_file) 
-					else
-						log_entry(:error) { "file does not exist #{source_path}" }
-					end
-				when Transfer::TypeHttp, Transfer::TypeHttps
-					uri = URI input_url
-					uri.port = source[:port] if source[:port]
-					__transfer_uri_parameters input, uri, source
-					req.basic_auth(source[:user], source[:pass]) if source[:user] and source[:pass]
-					Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
-						request = Net::HTTP::Get.new uri
-						http.request request do |response|
-							if '200' == response.code then
-								File.open(out_file, 'wb') do |io|
-									response.read_body do |chunk|
-										io.write chunk
-									end
-								end
-								mime_type = response['content-type']
-								self.class.__set_info(out_file, 'Content-Type', mime_type) if mime_type
-							else
-								log_entry(:warn) {"got #{response.code} response code from #{input_url}"}
-							end
-						end
-					end
-				when Transfer::TypeS3
-					bucket = __s3_bucket source
-					bucket_key = source.full_path
-					object = bucket.objects[bucket_key]
-					if MovieMasher.configuration[:s3_read_at_once] then
-						object_read_data = object.read
-						File.open(out_file, 'wb') { |f| f << object_read_data } if object_read_data
-					else
-						File.open(out_file, 'wb') do |file|
-							object.read do |chunk|
-								file << chunk
-							end
-						end
-					end
-				end
-			rescue Exception => e
-				raise Error::JobInput.new e.message unless e.is_a? Error::Job
-			end
-			out_file
 		end
 		def __cache_url_path url
 			directory = MovieMasher.configuration[:download_directory]
@@ -785,7 +557,6 @@ module MovieMasher
 					if data then
 						if data.is_a?(Hash) or data.is_a?(Array) then
 							data = Marshal.load(Marshal.dump(data)) 
-							#puts "Evaluate.object data #{data}"
 							Evaluate.object data, __scope(callback)
 						else # only arrays and hashes supported
 							data = nil  
@@ -805,7 +576,7 @@ module MovieMasher
 				destination_path = Evaluate.value destination_path, __scope(callback)
 				case callback[:type]
 				when Transfer::TypeFile
-					self.class.__file_safe(File.dirname(destination_path))
+					FileHelper.safe_path(File.dirname(destination_path))
 					callback[:callback_file] = destination_path
 					if data then
 						file = Path.concat __path_job, "callback-#{UUID.new.generate}.json"
@@ -856,9 +627,20 @@ module MovieMasher
 				end
 			end		
 		end
+		def __evaluated_path_for_transfer output_destination, output
+			file_name = output_destination.file_name
+			if file_name.empty? 
+				# transfer didn't supply one
+				file_name = output[:path]
+				file_name = Path.concat file_name, output.file_name unless Output::TypeSequence == output[:type]
+			end
+			key = Path.concat output_destination[:directory], output_destination[:path]
+			key = Path.concat key, file_name
+			Evaluate.value key, __scope(output)
+		end
 		def __execute_and_log options
 			options[:log] = true
-			result, whole_cmd, logs = self.class.__execute options
+			result, whole_cmd, logs = ShellHelper.execute options
 			@hash[:commands] << whole_cmd
 			logs.each do |hash|
 				hash.each do |sym, proc|
@@ -872,7 +654,7 @@ module MovieMasher
 			out_path = cmd_hash[:file]
 			content = cmd_hash[:content]
 			if content
-				self.class.__file_safe File.dirname(out_path)
+				FileHelper.safe_path File.dirname(out_path)
 				File.open(out_path, 'w') { |f| f << content}	
 			else			
 				unless File.exists? out_path then
@@ -919,7 +701,7 @@ module MovieMasher
 		def __logger
 			unless @logger
 				log_dir = __path_job
-				self.class.__file_safe log_dir
+				FileHelper.safe_path log_dir
 				@logger = Logger.new(Path.concat log_dir, 'log.txt')
 				log_level = @hash[:log_level]
 				log_level = MovieMasher.configuration[:verbose] unless log_level and not log_level.empty?
@@ -1149,10 +931,10 @@ module MovieMasher
 				desired = outputs_desire
 			
 				inputs.each do |input|
-					if input[:input_url] then
+					if input[:input_url]
 						progress[:downloading] += 1
-					elsif Input::TypeMash == input[:type] then
-						progress[:downloading] += (input.mash ? input.mash.url_count(outputs_desire) : 1)
+					else
+						progress[:downloading] += (input.mash ? input.mash.url_count(outputs_desire) : 1) if Input::TypeMash == input[:type]
 					end
 				end
 				callbacks.each do |callback|
@@ -1168,9 +950,8 @@ module MovieMasher
 					input_url = input[:input_url]
 					if input_url then
 						# if it's a mash we won't know if it has desired content types until cached and parsed
-						if (Input::TypeMash == input[:type]) or AV.includes?(Asset.av_type(input), desired) then
-							base_src, module_src = self.class.__input_sources input, self
-							__cache_input input, input_url, base_src, module_src
+						if (Input::TypeMash == input[:type]) or AV.includes?(Asset.av_type(input), desired)
+							__cache_asset input
 							if (Input::TypeMash == input[:type]) then # read and parse mash json file
 								input[:mash] = JSON.parse(File.read(input[:cached_file])) 
 								Mash.init_mash_input input
@@ -1178,8 +959,13 @@ module MovieMasher
 							end
 						end
 					end
-					if (Input::TypeMash == input[:type]) and AV.includes?(Asset.av_type(input), desired) then
-						__cache_job_mash input
+					if (Input::TypeMash == input[:type]) and AV.includes?(Asset.av_type(input), desired)
+						input[:mash][:media].each do |media|
+							case media[:type]
+							when Mash::Frame, Mash::Video, Mash::Audio, Mash::Image, Mash::Font
+								__cache_asset media if AV.includes?(Asset.av_type(media), desired)
+							end
+						end
 					end
 					break if @hash[:error]
 				end
@@ -1242,14 +1028,12 @@ module MovieMasher
 			source[:s3_bucket] ||= __s3(source).buckets[source[:bucket]]
 		end
 		def __scope object = nil
-			scope = Hash.new
-			scope[:job] = self
-			scope[object.class_symbol] = object  if object and object.is_a? Hashable
-			scope
+			hash = Hash.new
+			hash[:job] = self
+			hash[object.class_symbol] = object if object and object.is_a? Hashable
+			hash
 		end
 		def __transfer_file mode, source_path, out_file
-			#puts "__transfer_file #{source_path} #{out_file}"
-			#source_path = Path.add_slash_start source_path
 			source_path = File.expand_path(source_path) unless source_path.start_with? '/'
 			if File.exists? source_path
 				#out_file = Path.add_slash_start out_file
@@ -1267,87 +1051,110 @@ module MovieMasher
 		end
 		def __transfer_job_output output, file
 			output_destination = output[:destination] || destination
-			output_content_type = output[:mime_type]
 			raise Error::JobInput.new "output has no destination" unless output_destination 
 		
 			if File.exists?(file) then
 				if output_destination[:archive] || output[:archive] then
 					raise Error::Todo.new "support for archive option coming..."
 				end
-				destination_path = self.class.__evaluated_path_for_transfer output_destination, __scope(output), output
-				raise Error::Parameter.new "got invalid destination path with percent sign #{destination_path}" if destination_path.include? '%'
-				case output_destination[:type]
-				when Transfer::TypeFile
-					self.class.__file_safe(File.dirname(destination_path))
-					__transfer_file output_destination[:method], file, destination_path
-					output_destination[:file] = destination_path # for spec tests to find file...
-					progress[:uploaded] += (File.directory?(file) ? Dir.entries(file).length : 1)
+				options = Hash.new
+				options[:upload] = file
+				options[:output] = output
+				options[:destination] = output_destination
+				
+				files = output_destination.directory_files file
+				options[:path] = __evaluated_path_for_transfer output_destination, output
+				files.each do |file|
+					options[:file] = file
+					output_destination.upload options
+					progress[:uploaded] += 1
 					__callback :progress
-				when Transfer::TypeS3
-					files = Array.new
-					uploading_directory = File.directory?(file)
-					if uploading_directory then
-						file = Path.add_slash_end file
-						Dir.entries(file).each do |f|
-							f = file + f
-							files << f unless File.directory?(f)
-						end
-					else 
-						files << file
-					end
-					files.each do |file|
-						bucket_key = Path.strip_slash_start destination_path
-						bucket_key = Path.concat(bucket_key, File.basename(file)) if uploading_directory
-						#puts "bucket_key = #{bucket_key}"
-						bucket = __s3_bucket output_destination
-						bucket_object = bucket.objects[bucket_key]
-						options = Hash.new
-						options[:acl] = output_destination[:acl].to_sym if output_destination[:acl]
-						options[:content_type] = output_content_type if output_content_type
-						log_entry(:debug) { "s3 write to #{bucket_key}" }
-						bucket_object.write(Pathname.new(file), options)
-						progress[:uploaded] += 1
-						__callback :progress
-					end
-		
-				when Transfer::TypeHttp, Transfer::TypeHttps
-					url = "#{output_destination[:type]}://#{output_destination[:host]}"
-					url += Path.add_slash_start destination_path
-					uri = URI(url)
-					uri.port = output_destination[:port].to_i if output_destination[:port]
-					__transfer_uri_parameters output, uri, output_destination
-					uploading_directory = File.directory?(file)
-					files = Array.new
-					if uploading_directory then
-						file += '/' unless file.end_with? '/'
-						Dir.entries(file).each do |f|
-							f = file + f
-							files << f unless File.directory?(f)
-						end
-					else 
-						files << file
-					end
-					files.each do |file|
-						file_name = File.basename file
-						io = File.open(file)
-						raise Error::Object.new "could not open file #{file}" unless io
-						upload_io = UploadIO.new(io, output_content_type, file_name)
-						req = Net::HTTP::Post::Multipart.new(uri, "key" => destination_path, "file" => upload_io)
-						raise Error::JobUpload.new "could not construct multipart POST request" unless req
-						req.basic_auth(output_destination[:user], output_destination[:pass]) if output_destination[:user] and output_destination[:pass]
-						res = Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
-							result = http.request(req)
-							if '200' == result.code then
-								log_entry(:debug) {"uploaded #{file} #{uri}\n#{result.body}"}
-							else
-								log_entry(:error) { "#{result.code} upload response #{result.body}" }
-							end
-						end
-						io.close 
-						progress[:uploaded] += 1
-						__callback :progress
-					end
 				end
+				
+				
+				
+#				case output_destination[:type]
+#				when Transfer::TypeFile
+#					#TODO: we should be using output, no??
+#					output = options[:output] 
+#					output_destination = options[:destination]
+#					destination_path = options[:path]
+#					FileHelper.safe_path(File.dirname(destination_path))
+#					__transfer_file output_destination[:method], file, destination_path
+#					output_destination[:file] = destination_path # for spec tests to find file...
+#				when Transfer::TypeS3
+#					#TODO: we should be using output, no??
+#					output = options[:output] 
+#					destination_path = options[:path]
+#					output_content_type = output[:mime_type]
+#					output_destination = options[:destination]
+#					files = Array.new
+#					uploading_directory = File.directory?(file)
+#					if uploading_directory then
+#						file = Path.add_slash_end file
+#						Dir.entries(file).each do |f|
+#							f = file + f
+#							files << f unless File.directory?(f)
+#						end
+#					else 
+#						files << file
+#					end
+#					files.each do |file|
+#						bucket_key = Path.strip_slash_start destination_path
+#						bucket_key = Path.concat(bucket_key, File.basename(file)) if uploading_directory
+#						#puts "bucket_key = #{bucket_key}"
+#						bucket = __s3_bucket output_destination
+#						bucket_object = bucket.objects[bucket_key]
+#						options = Hash.new
+#						options[:acl] = output_destination[:acl].to_sym if output_destination[:acl]
+#						options[:content_type] = output_content_type if output_content_type
+#						log_entry(:debug) { "s3 write to #{bucket_key}" }
+#						bucket_object.write(Pathname.new(file), options)
+#						progress[:uploaded] += 1
+#					end
+#		
+#				when Transfer::TypeHttp, Transfer::TypeHttps
+#					output = options[:output] 
+#					output_destination = options[:destination]
+#					output_content_type = output[:mime_type]
+#					destination_path = options[:path]
+#					url = "#{output_destination[:type]}://#{output_destination[:host]}"
+#					url += Path.add_slash_start destination_path
+#					uri = URI(url)
+#					uri.port = output_destination[:port].to_i if output_destination[:port]
+#					__transfer_uri_parameters output, uri, output_destination
+#					uploading_directory = File.directory?(file)
+#					files = Array.new
+#					if uploading_directory then
+#						file = Path.add_slash_end file
+#						Dir.entries(file).each do |f|
+#							f = file + f
+#							files << f unless File.directory?(f)
+#						end
+#					else 
+#						files << file
+#					end
+#					files.each do |file|
+#						file_name = File.basename file
+#						io = File.open(file)
+#						raise Error::Object.new "could not open file #{file}" unless io
+#						upload_io = UploadIO.new(io, output_content_type, file_name)
+#						req = Net::HTTP::Post::Multipart.new(uri, "key" => destination_path, "file" => upload_io)
+#						raise Error::JobUpload.new "could not construct multipart POST request" unless req
+#						req.basic_auth(output_destination[:user], output_destination[:pass]) if output_destination[:user] and output_destination[:pass]
+#						res = Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
+#							result = http.request(req)
+#							if '200' == result.code then
+#								log_entry(:debug) {"uploaded #{file} #{uri}\n#{result.body}"}
+#							else
+#								log_entry(:error) { "#{result.code} upload response #{result.body}" }
+#							end
+#						end
+#						io.close 
+#						progress[:uploaded] += 1
+#						__callback :progress
+#					end
+#				end
 			else
 				log_entry(:warn) { "file was not rendered #{file}" }
 				log_entry(:error) { "required output not rendered" } if output[:required]
@@ -1358,21 +1165,12 @@ module MovieMasher
 				parameters = transfer[:parameters]
 				if parameters and not parameters.empty?
 					if parameters.is_a?(Hash) then
-						#puts "copying parameters #{parameters}"
 						parameters = Marshal.load(Marshal.dump(parameters)) 
-						#puts "Evaluate.object parameters #{parameters}"
 						Evaluate.object parameters, __scope(scope_object)
-						#puts "encoding parameters #{parameters}"
 						parameters = URI.encode_www_form(parameters)
-						#puts "setting query parameters #{parameters}"
 						uri.query = parameters
-					
 					end
-				else 
-					#puts "EMPTY #{parameters} #{transfer}"
 				end
-			else
-				#puts "EMPTY uri #{uri} or transfer #{transfer}"
 			end
 		end
 		def __update_sizing
