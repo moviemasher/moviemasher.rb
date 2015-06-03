@@ -59,7 +59,9 @@ module MovieMasher
 		end
 
 		def directory_path
-			Path.concat directory, path
+			dp = Path.concat directory, path
+		  puts "#{self.class.name}#directory_path #{dp}\ndirectory: #{directory}\npath: #{path}"
+			dp
 		end
 		def error?
 			nil
@@ -78,7 +80,7 @@ module MovieMasher
 		end
 		def full_path 
 			fp = Path.concat directory_path, file_name
-			#puts "#{self.class.name}#full_path #{fp}"
+			puts "#{self.class.name}#full_path #{fp}"
 			fp
 		end
 
@@ -172,7 +174,7 @@ module MovieMasher
 		def relative? 
 			return false if Transfer::TypeS3 == type
 			return false if host and not host.empty?
-			return false if Transfer::TypeFile == type and full_path.start_with? '/'
+			return false if Transfer::TypeFile == type and full_path.start_with?('/') and File.exists?(full_path)
 			true
 		end
 		def type
@@ -206,7 +208,7 @@ module MovieMasher
 					u = full_path
 				end
 			end
-			#puts "#{self.class.name}#url #{u}"
+			puts "#{self.class.name}#url #{u}"
 			u
 		end
 		

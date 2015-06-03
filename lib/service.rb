@@ -3,6 +3,7 @@ module MovieMasher
 	class Service
 		ServicesDirectory = File.expand_path "#{__dir__}/../service"
 		@@queues = Hash.new
+		@@inits = Hash.new
 		@@downloads = Hash.new
 		@@uploads = Hash.new
 		@@configuration = Hash.new
@@ -16,6 +17,10 @@ module MovieMasher
 				array << @@queues[name] if @@queues[name] and @@queues[name].configure(@@configuration)
 			end
 			array
+		end
+		def self.initer type
+			@@inits[type] = __create_service type, :init unless @@inits[type]
+			(@@inits[type] and @@inits[type].configure(@@configuration) ? @@inits[type] : nil)
 		end
 		def self.downloader type
 			@@downloads[type] = __create_service type, :download unless @@downloads[type]
@@ -48,6 +53,11 @@ module MovieMasher
 		end
 		def configure config
 			true
+		end
+	end
+	class InitService < Service
+		def init
+			
 		end
 	end
 	class QueueService < Service

@@ -134,7 +134,7 @@ Addtionally, some tests utilize module descriptions from the [angular-moviemashe
 
 Or if docker is being used, a helpful development version of the image can be built by uncommenting the last section in Dockerfile. These commands add the applications and gems to the image, as well as specifying the repo directory as a `VOLUME` - it's replaced by the current host version at runtime. 
 
-- To build development image `cd` to to project directory and execute:
+- To build development image `cd` to project directory and execute:
 
   `sed -i '' 's/^## //' Dockerfile`
 

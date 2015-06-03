@@ -1,5 +1,4 @@
 
-require 'aws-sdk' unless defined? AWS
 				
 module MovieMasher
 	class SqsQueueService < QueueService
@@ -12,6 +11,7 @@ module MovieMasher
 					config[key_str.to_sym] = value
 				end
 			end
+			require 'aws-sdk' unless defined? AWS
 			AWS.config config unless config.empty?
 		end
 		def __queue

@@ -135,10 +135,12 @@ module MovieMasher
 				if job
 					self[:base_source] = job.base_source unless base_source
 					self[:module_source] = job.module_source unless module_source
+					puts "base_source: #{base_source}"
+					
 					self[:input_url] = url(base_source, module_source) unless TypeMash == type and @hash[:mash]
 				end
 			end
-			#puts "preflight #{self.class.name} URL: #{self[:input_url]}"
+			puts "preflight #{self.class.name} URL: #{self[:input_url]}"
 		end
 		
 		def source

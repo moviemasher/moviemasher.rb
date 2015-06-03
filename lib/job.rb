@@ -448,6 +448,7 @@ module MovieMasher
 			@audio_graphs
 		end
 		def __cache_asset asset # input or media
+		  #puts "__cache_asset #{asset}"
 			input_url = asset[:input_url]
 			if input_url then
 				cache_url_path = __cache_url_path input_url
@@ -456,7 +457,8 @@ module MovieMasher
 					#raise Error::JobInput.new "no source for #{input_url}" unless source
 					begin
 						FileHelper.safe_path(File.dirname(cache_url_path))
-						
+						#puts "input_url #{input_url}"
+						#puts "cache_url_path #{cache_url_path}"
 						asset.download :job => self, :path => cache_url_path
 						
 #						case source[:type]

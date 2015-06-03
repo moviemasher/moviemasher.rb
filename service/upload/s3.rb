@@ -1,5 +1,4 @@
 
-require 'aws-sdk' unless defined? AWS
 				
 module MovieMasher
 	class S3UploadService < UploadService
@@ -24,6 +23,7 @@ module MovieMasher
 		end
 		def __s3 source
 			unless source[:s3] 
+				require 'aws-sdk' unless defined? AWS
 				region = ((source[:region] and not source[:region].empty?) ? source[:region] : configuration[:s3_region])
 				source[:s3] = (region ? AWS::S3.new(:region => region) : AWS::S3.new)
 			end
