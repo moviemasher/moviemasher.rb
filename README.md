@@ -140,14 +140,9 @@ Or if docker is being used, a helpful development version of the image can be bu
 
   `docker build --tag="moviemasher/moviemasher.rb:dev" .`
   
-- And then to run rspec tests in a container:
+- Place the [angular-moviemasher](https://github.com/moviemasher/angular-moviemasher "sits between moviemasher.js and moviemasher.rb, providing an editing GUI and simple CMS middleware layer") project alongside this one in the same directory, then to run rspec tests in a container:
 
-  `docker run -it --rm  -v $(pwd):/mnt/moviemasher.rb moviemasher/moviemasher.rb:dev rspec spec`
- 
-- If you have the [angular-moviemasher](https://github.com/moviemasher/angular-moviemasher "sits between moviemasher.js and moviemasher.rb, providing an editing GUI and simple CMS middleware layer") project installed alongside this one then the following switch can be added to the command above in order to mount it for the mash rendering tests:
-
-  `-v $(pwd)/../angular-moviemasher:/mnt/angular-moviemasher`
-  
+  `docker run -it --rm  -v $(pwd)/../angular-moviemasher:/mnt/angular-moviemasher -v $(pwd):/mnt/moviemasher.rb moviemasher/moviemasher.rb:dev rspec spec`
 
 ##### Known issues in this version
 - local/sqs import/export has not been thoroughly tested

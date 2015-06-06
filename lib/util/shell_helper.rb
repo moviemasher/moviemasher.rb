@@ -29,7 +29,8 @@ module MovieMasher
 					logs << {:debug => (Proc.new { result }) }
 					raise Error::JobRender.new result
 				end
-				if duration then
+				if duration
+				  
 					audio_data = execute :command => "--i #{out_file}", :app => 'sox'
 					video_data = execute :command => out_file, :app => 'ffprobe'
 					audio_duration = Info.parse('duration', audio_data)
@@ -40,7 +41,12 @@ module MovieMasher
 					end
 					unless FloatUtil.cmp(duration, video_duration.to_f, precision) or FloatUtil.cmp(duration, audio_duration.to_f, precision)
 						logs << {:warn => (Proc.new { result }) }
-						raise Error::JobRender.new result, "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration} #{out_file}" 
+						msg = "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration} #{out_file}" 
+						if -1 < precision
+						  raise Error::JobRender.new result, msg
+						else
+						  logs << {:warn => (Proc.new { msg }) }
+						end
 					end
 				end
 			end 

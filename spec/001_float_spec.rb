@@ -9,6 +9,18 @@ describe File.basename(__FILE__) do
 		it "(1.001, 1.0001, 4) == false" do
 			expect(MovieMasher::FloatUtil.cmp(1.001, 1.0001, 4)).to be_false
 		end
+		it "(60.49, 60.24, 0) == true" do
+			expect(MovieMasher::FloatUtil.cmp(60.49, 60.24, 0)).to be_true
+		end
+		it "(60.51, 60.24, 0) == false" do
+			expect(MovieMasher::FloatUtil.cmp(60.51, 60.24, 0)).to be_false
+		end
+		it "(60.49, 60.51, 1) == true" do
+			expect(MovieMasher::FloatUtil.cmp(60.49, 60.51, 1)).to be_true
+		end
+		it "(60.44, 60.51, 1) == false" do
+			expect(MovieMasher::FloatUtil.cmp(60.44, 60.51, 1)).to be_false
+		end
 	end
 	context "MovieMasher::FloatUtil.gtr" do
 		it "(1.000001, 1.00001, 3) == false" do

@@ -241,7 +241,7 @@ module MovieMasher
 		def precision
 			_get __method__
 		end
-# Integer - Number of decimal places that Job#duration and #duration must match by for successful rendering. 
+# Integer - Number of decimal places that Job#duration and #duration must match by for successful rendering - use negative number to skip duration check. 
 # Default - 1 for TypeVideo, 0 for others.
 # Types - TypeVideo, TypeAudio, TypeWaveform (TypeSequence copies last frame repeatedly to match). 
 		def precision=(value)

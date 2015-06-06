@@ -7,9 +7,14 @@ module MovieMasher
 		Zero = 0.to_f
 
 		def self.cmp(f1, f2, digits = 3) # are 2 floats equal
-			e = (10 ** digits).to_f
-			i1 = (f1.to_f * e).round.to_i
-			i2 = (f2.to_f * e).round.to_i
+		  if digits.zero?
+        i1 = f1.to_f.round.to_i
+        i2 = f2.to_f.round.to_i
+		  else
+        e = (10 ** digits).to_f
+        i1 = (f1.to_f * e).round.to_i
+        i2 = (f2.to_f * e).round.to_i
+			end
 			(i1 == i2)
 		end
 		def self.less(small, big, digits = 3) # is one float smaller than another
@@ -38,10 +43,6 @@ module MovieMasher
 		end
 		def self.string f, digits = 3
 			return precision f, digits
-			divisor = (10 ** digits.to_i).to_f
-			fs = ((f.to_f * divisor).round).to_i.to_s.ljust(digits + 2, '0')
-			fs.insert(-1 - digits, '.')
-			fs
 		end
 		def self.precision f, digits = 3
 			divisor = (10 ** digits.to_i).to_f
