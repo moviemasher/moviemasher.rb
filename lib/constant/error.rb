@@ -19,7 +19,7 @@ module MovieMasher
 				error_lines = Array.new
 				error_lines << msg if msg
 				if ffmpeg_result
-					puts ffmpeg_result
+					#puts ffmpeg_result
 					lines = ffmpeg_result.split "\n"
 					failure_words = ['Error', 'Invalid', 'Failed']
 					lines.reverse.each do |line|

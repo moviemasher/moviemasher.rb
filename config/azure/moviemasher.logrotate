@@ -1,0 +1,25 @@
+/var/log/moviemasher/moviemasher.rb.init.log {
+    missingok
+    size 1M
+    create 664 www-data www-data
+    rotate 1
+}
+
+/var/log/moviemasher/angular-moviemasher.log {
+    missingok
+    size 1M
+    create 664 www-data www-data
+    rotate 1
+}
+/var/log/moviemasher/moviemasher.rb.cron.log {
+    missingok
+    size 1M
+    create 664 www-data www-data
+    rotate 1
+}
+/var/log/moviemasher/moviemasher.rb.log {
+    missingok
+    size 1M
+    create 664 www-data www-data
+    rotate 1
+}

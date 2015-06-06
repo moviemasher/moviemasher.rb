@@ -186,14 +186,6 @@ module MovieMasher
 		end
 	end
 	private
-#	def self.__execute options
-#		cmd = options[:command]
-#		app = options[:app] || 'ffmpeg'
-#		whole_cmd = @@configuration["#{app}_path".to_sym]
-#		whole_cmd = app unless whole_cmd and not whole_cmd.empty?
-#		whole_cmd += ' ' + cmd
-#		Open3.capture3(whole_cmd).join "\n"
-#	end
 	def self.__flush_downloads(dir, size)
 		result = false
 		if File.exists?(dir) then

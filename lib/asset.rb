@@ -46,7 +46,7 @@ module MovieMasher
 			d_source = download_source
 			transfer_service = Service.downloader d_source.type
 			raise Error::Configuration.new "could not find download service #{source.type}" unless transfer_service
-			puts "RELATIVE SOURCE: #{d_source.relative?}"
+			#puts "RELATIVE SOURCE: #{d_source.relative?}"
 			options[:source] = d_source
 			options[:asset] = self
 			transfer_service.download options
@@ -135,12 +135,12 @@ module MovieMasher
 				if job
 					self[:base_source] = job.base_source unless base_source
 					self[:module_source] = job.module_source unless module_source
-					puts "base_source: #{base_source}"
+					#puts "base_source: #{base_source}"
 					
 					self[:input_url] = url(base_source, module_source) unless TypeMash == type and @hash[:mash]
 				end
 			end
-			puts "preflight #{self.class.name} URL: #{self[:input_url]}"
+			#puts "preflight #{self.class.name} URL: #{self[:input_url]}"
 		end
 		
 		def source

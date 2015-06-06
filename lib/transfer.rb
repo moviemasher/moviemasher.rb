@@ -60,7 +60,7 @@ module MovieMasher
 
 		def directory_path
 			dp = Path.concat directory, path
-		  puts "#{self.class.name}#directory_path #{dp}\ndirectory: #{directory}\npath: #{path}"
+		  #puts "#{self.class.name}#directory_path #{dp}\ndirectory: #{directory}\npath: #{path}"
 			dp
 		end
 		def error?
@@ -80,7 +80,7 @@ module MovieMasher
 		end
 		def full_path 
 			fp = Path.concat directory_path, file_name
-			puts "#{self.class.name}#full_path #{fp}"
+			#puts "#{self.class.name}#full_path #{fp}"
 			fp
 		end
 
@@ -208,7 +208,7 @@ module MovieMasher
 					u = full_path
 				end
 			end
-			puts "#{self.class.name}#url #{u}"
+			#puts "#{self.class.name}#url #{u}"
 			u
 		end
 		

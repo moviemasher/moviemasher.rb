@@ -41,8 +41,8 @@ describe File.basename(__FILE__) do
 			spec_job_data @job_data
 			job = MovieMasher.process @job_data
 			callback_file = spec_callback_file job
-			puts callback_file
-			puts File.read(callback_file)
+			#puts callback_file
+			#puts File.read(callback_file)
 			data = JSON.parse(File.read(callback_file))
 			expect(data['result']).to eq 'D Celtic 8 Bar 160'
 		end

@@ -747,7 +747,7 @@ module MovieMasher
 							video_duration = graph.duration
 							cmd = graph.graph_command output, self
 							raise Error::JobInput.new "could not build complex filter" if cmd.empty?
-							switches << self.class.__switch("'#{cmd}'", 'filter_complex')
+							switches << self.class.__switch("\"#{cmd}\"", 'filter_complex')
 						else
 							two_pass = false
 							concat_switches = Array.new
@@ -826,7 +826,7 @@ module MovieMasher
 								audio_cmd += 'audioloop,' if 1 < loops
 								audio_cmd += "playat,#{data[:start]},"
 								audio_cmd += "select,#{data[:offset]},#{data[:length]}"
-								audio_cmd += ",typeselect,.raw,#{data[:waved_file]}"
+								audio_cmd += ",#{data[:waved_file]}" # typeselect,.raw,
 								audio_cmd += " -t:{FloatUtil.string data[:length]}" if 1 < loops
 								if Mash.gain_changes(volume) then
 									volume = volume.to_s unless volume.is_a?(String)
@@ -844,6 +844,7 @@ module MovieMasher
 								end
 								audio_duration = FloatUtil.max(audio_duration, data[:start] + data[:length])
 							end
+							audio_cmd += " -a:#{counter} -i playat,0,tone,sine,0,#{FloatUtil.max(audio_duration, video_duration)}"
 							audio_cmd += ' -a:all -z:mixmode,sum'
 							audio_cmd += ' -o'
 							audio_path = "#{__output_path output}audio-#{Digest::SHA2.new(256).hexdigest audio_cmd}.#{Intermediate::AudioExtension}"
@@ -1068,95 +1069,11 @@ module MovieMasher
 				options[:path] = __evaluated_path_for_transfer output_destination, output
 				files.each do |file|
 					options[:file] = file
+					#puts "FILE: #{file}"
 					output_destination.upload options
 					progress[:uploaded] += 1
 					__callback :progress
 				end
-				
-				
-				
-#				case output_destination[:type]
-#				when Transfer::TypeFile
-#					#TODO: we should be using output, no??
-#					output = options[:output] 
-#					output_destination = options[:destination]
-#					destination_path = options[:path]
-#					FileHelper.safe_path(File.dirname(destination_path))
-#					__transfer_file output_destination[:method], file, destination_path
-#					output_destination[:file] = destination_path # for spec tests to find file...
-#				when Transfer::TypeS3
-#					#TODO: we should be using output, no??
-#					output = options[:output] 
-#					destination_path = options[:path]
-#					output_content_type = output[:mime_type]
-#					output_destination = options[:destination]
-#					files = Array.new
-#					uploading_directory = File.directory?(file)
-#					if uploading_directory then
-#						file = Path.add_slash_end file
-#						Dir.entries(file).each do |f|
-#							f = file + f
-#							files << f unless File.directory?(f)
-#						end
-#					else 
-#						files << file
-#					end
-#					files.each do |file|
-#						bucket_key = Path.strip_slash_start destination_path
-#						bucket_key = Path.concat(bucket_key, File.basename(file)) if uploading_directory
-#						#puts "bucket_key = #{bucket_key}"
-#						bucket = __s3_bucket output_destination
-#						bucket_object = bucket.objects[bucket_key]
-#						options = Hash.new
-#						options[:acl] = output_destination[:acl].to_sym if output_destination[:acl]
-#						options[:content_type] = output_content_type if output_content_type
-#						log_entry(:debug) { "s3 write to #{bucket_key}" }
-#						bucket_object.write(Pathname.new(file), options)
-#						progress[:uploaded] += 1
-#					end
-#		
-#				when Transfer::TypeHttp, Transfer::TypeHttps
-#					output = options[:output] 
-#					output_destination = options[:destination]
-#					output_content_type = output[:mime_type]
-#					destination_path = options[:path]
-#					url = "#{output_destination[:type]}://#{output_destination[:host]}"
-#					url += Path.add_slash_start destination_path
-#					uri = URI(url)
-#					uri.port = output_destination[:port].to_i if output_destination[:port]
-#					__transfer_uri_parameters output, uri, output_destination
-#					uploading_directory = File.directory?(file)
-#					files = Array.new
-#					if uploading_directory then
-#						file = Path.add_slash_end file
-#						Dir.entries(file).each do |f|
-#							f = file + f
-#							files << f unless File.directory?(f)
-#						end
-#					else 
-#						files << file
-#					end
-#					files.each do |file|
-#						file_name = File.basename file
-#						io = File.open(file)
-#						raise Error::Object.new "could not open file #{file}" unless io
-#						upload_io = UploadIO.new(io, output_content_type, file_name)
-#						req = Net::HTTP::Post::Multipart.new(uri, "key" => destination_path, "file" => upload_io)
-#						raise Error::JobUpload.new "could not construct multipart POST request" unless req
-#						req.basic_auth(output_destination[:user], output_destination[:pass]) if output_destination[:user] and output_destination[:pass]
-#						res = Net::HTTP.start(uri.host, uri.port, :use_ssl => (uri.scheme == 'https')) do |http|
-#							result = http.request(req)
-#							if '200' == result.code then
-#								log_entry(:debug) {"uploaded #{file} #{uri}\n#{result.body}"}
-#							else
-#								log_entry(:error) { "#{result.code} upload response #{result.body}" }
-#							end
-#						end
-#						io.close 
-#						progress[:uploaded] += 1
-#						__callback :progress
-#					end
-#				end
 			else
 				log_entry(:warn) { "file was not rendered #{file}" }
 				log_entry(:error) { "required output not rendered" } if output[:required]
