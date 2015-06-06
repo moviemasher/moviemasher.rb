@@ -39,7 +39,7 @@ module MovieMasher
 					unless audio_duration or video_duration
 						raise Error::JobRender.new result, "could not determine if #{duration} == duration of #{out_file}" 
 					end
-					unless FloatUtil.cmp(duration, video_duration.to_f, precision) or FloatUtil.cmp(duration, audio_duration.to_f, precision)
+					unless FloatUtil.cmp(duration, video_duration.to_f, precision.abs) or FloatUtil.cmp(duration, audio_duration.to_f, precision.abs)
 						logs << {:warn => (Proc.new { result }) }
 						msg = "generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration} #{out_file}" 
 						if -1 < precision
