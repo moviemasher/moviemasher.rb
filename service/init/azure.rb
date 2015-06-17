@@ -10,6 +10,19 @@ module MovieMasher
       hostname = stdin.strip
       puts "#{cmd}\n#{stdin}"
       
+      puts "#{Time.now} AzureInitService#init determining if #{user} user is in #{group} group"
+      cmd = 'groups'
+      stdin, stdout, stderr = Open3.capture3 cmd
+      groups = stdin.strip
+      puts "#{cmd}\n#{stdin}"
+
+      unless groups.include?(group)
+        puts "#{Time.now} AzureInitService#init adding #{user} user to #{group} group"
+        cmd = "sudo usermod -a -G #{group} #{user}"
+        stdin, stdout, stderr = Open3.capture3 cmd
+        puts "#{cmd}\n#{stdin}"
+      end
+
       unless hostname.empty?
         lines = IO.readlines('/var/www/config/moviemasher.ini')
         auth_key = 'authentication='
@@ -42,20 +55,6 @@ module MovieMasher
         end
       end
       
-      
-      puts "#{Time.now} AzureInitService#init determining if #{user} user is in #{group} group"
-      cmd = 'groups'
-      stdin, stdout, stderr = Open3.capture3 cmd
-      groups = stdin.strip
-      puts "#{cmd}\n#{stdin}"
-
-      unless groups.include?(group)
-        puts "#{Time.now} AzureInitService#init adding #{user} user to #{group} group"
-        cmd = "sudo usermod -a -G #{group} #{user}"
-        stdin, stdout, stderr = Open3.capture3 cmd
-        puts "#{cmd}\n#{stdin}"
-      end
-
 #      puts "#{Time.now} AzureInitService#init starting apache2..."
 #      cmd = 'sudo service apache2 restart'
 #      stdin, stdout, stderr = Open3.capture3 cmd

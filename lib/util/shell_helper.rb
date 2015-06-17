@@ -30,7 +30,6 @@ module MovieMasher
 					raise Error::JobRender.new result
 				end
 				if duration
-				  
 					audio_data = execute :command => "--i #{out_file}", :app => 'sox'
 					video_data = execute :command => out_file, :app => 'ffprobe'
 					audio_duration = Info.parse('duration', audio_data)

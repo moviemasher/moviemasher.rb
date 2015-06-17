@@ -8,5 +8,6 @@
 	"audio_codec": "aac -strict experimental",
 	"video_bitrate": "2000",
 	"audio_bitrate": "224",
-	"metadata": "title=test"
+	"metadata": "title=test",
+	"precision": -1
 }

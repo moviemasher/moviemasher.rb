@@ -6,6 +6,8 @@ script
  mkdir -p /tmp/moviemasher/log
  mkdir -p /tmp/moviemasher/download
  mkdir -p /tmp/moviemasher/render
- cd /home/ec2-user/moviemasher.rb
+ chown -R ec2-user:apache /tmp/moviemasher
+ chmod -R g+w /tmp/moviemasher/
+ cd /var/www/moviemasher.rb
  rake moviemasher:init['aws'] >> /tmp/moviemasher/log/moviemasher.rb.init.log 2>&1 &
 end script

@@ -217,6 +217,7 @@ def spec_process_job job, expect_error = nil
 		puts job[:error] 
 		puts job[:commands]
 	end
+	puts job[:error] if job[:error] and (! job[:error]) != (! expect_error)
 	expect(! job[:error]).to eq ! expect_error
 	destination_file = spec_output job
 	expect(destination_file).to_not be_nil

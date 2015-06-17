@@ -12,8 +12,8 @@ describe File.basename(__FILE__) do
 		it "(60.49, 60.24, 0) == true" do
 			expect(MovieMasher::FloatUtil.cmp(60.49, 60.24, 0)).to be_true
 		end
-		it "(60.51, 60.24, 0) == false" do
-			expect(MovieMasher::FloatUtil.cmp(60.51, 60.24, 0)).to be_false
+		it "(9.49, 9.56, 0) == false" do
+			expect(MovieMasher::FloatUtil.cmp(9.49, 9.56, 0)).to be_false
 		end
 		it "(60.49, 60.51, 1) == true" do
 			expect(MovieMasher::FloatUtil.cmp(60.49, 60.51, 1)).to be_true

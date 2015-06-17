@@ -6,6 +6,8 @@ require_relative '../util/hashable'
 module MovieMasher
 # Supported configuration keys: 
 #
+# aws_access_key_id - Key identifier for transfers to and from S3.		
+# aws_secret_access_key - Key secret for transfers to and from S3.
 # chmod_directory_new - Octal value indicating the permissions applied to any created directories.
 # download_bytes - How large of a download cache to maintain. If a number, bytes is assumed. K, M or G at end signifies kilobytes, megabytes, or gigabytes.
 # download_directory - Path to the directory used to cache media inputs. If empty, render_directory is used. 
@@ -22,7 +24,9 @@ module MovieMasher
 	class Configuration < Hashable
 		
 		Descriptions = {
-			:chmod_directory_new => 'Octal value indicating the permissions applied to any created directories.',
+			:aws_access_key_id => 'Key identifier for transfers to and from S3.',		
+			:aws_secret_access_key => 'Key secret for transfers to and from S3.',		
+ 			:chmod_directory_new => 'Octal value indicating the permissions applied to any created directories.',
 			:download_bytes => 'How large of a download cache to maintain. If a number, bytes is assumed. K, M or G at end signifies kilobytes, megabytes, or gigabytes.',
 			:download_directory => 'Path to the directory used to cache media inputs. If empty, render_directory is used.', 
 			:error_directory => 'Path to the directory that problematic jobs are placed for debugging. If empty, such jobs are deleted or not based on render_save.',
@@ -55,7 +59,9 @@ module MovieMasher
 			:render_save => false,
 		}
 		Switches = {
-			:verbose => 'v',
+			:aws_secret_access_key => 'k',		
+			:aws_access_key_id => 'i',		
+ 			:verbose => 'v',
 			:download_directory => 'd',
 			:chmod_directory_new => 'm',
 		}
