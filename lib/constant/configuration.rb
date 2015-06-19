@@ -45,6 +45,8 @@ module MovieMasher
 			:chmod_directory_new => 'mode',
 		}
 		Defaults = {
+			:aws_secret_access_key => '',		
+			:aws_access_key_id => '',		
 			:chmod_directory_new => '0775',
 			:download_directory => '', 
 			:download_bytes => '0M', 
