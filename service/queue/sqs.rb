@@ -7,6 +7,7 @@ module MovieMasher
 			configuration.each do |key, value|
 				key_str = key.id2name
 				if key_str.start_with? 'aws_'
+					next if value.nil? || value.empty?
 					key_str['aws_'] = ''
 					config[key_str.to_sym] = value
 				end
