@@ -2,77 +2,76 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>class MovieMasher::Mash - RDoc Documentation</title>
 
-<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+<link href="../fonts.css" rel="stylesheet">
+<link href="../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/search_index.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/searcher.js"></script>
+<script src="../js/darkfish.js"></script>
 
 
-<body id="top" class="class">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="../index.html">Home</a>
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
     <a href="../table_of_contents.html#classes">Classes</a>
     <a href="../table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
-
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>lib/mash.rb
-    <li>lib/util/filter_helpers.rb
-  </ul>
-</nav>
-
-    
-  </div>
 
   <div id="class-metadata">
     
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
   
   <p class="link">Hashable
   
-</nav>
+</div>
 
     
     
     <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
 
-  <ul class="link-list">
+  <ul class="link-list" role="directory">
     
     <li ><a href="#method-c-clip_has_audio">::clip_has_audio</a>
     
@@ -119,164 +118,17 @@
     <li ><a href="#method-i-video">#video</a>
     
   </ul>
-</nav>
-
-  </div>
-
-  <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="../Documentation_md.html">Documentation</a>
-  
-    <li class="file"><a href="../README_md.html">README</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
-
-  <ul class="link-list">
-  
-    <li><a href="../MovieMasher.html">MovieMasher</a>
-  
-    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
-  
-    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
-  
-    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
-  
-    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
-  
-    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
-  
-    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
-  
-    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
-  
-    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
-  
-    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
-  
-    <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
-  
-    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
-  
-    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
-  
-    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
-  
-    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
-  
-    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
-  
-    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
-  
-    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
-  
-    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
-  
-    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
-  
-    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
-  
-    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
-  
-    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
-  
-    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
-  
-    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
-  
-    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
-  
-    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
-  
-    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
-  
-    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
-  
-    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
-  
-    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
-  
-    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
-  
-    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
-  
-    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
-  
-    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
-  
-    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
-  
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
-  
-    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
-  
-    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
-  
-    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
-  
-    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
-  
-    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
-  
-    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
-  
-    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
-  
-    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
-  
-    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
-  
-    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
-  
-    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
-  
-    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
-  
-    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
-  
-    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
-  
-    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
-  
-    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
-  
-    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
-  
-    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
-  
-    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
-  
-    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
-  
-    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
-  
-    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
-  
-    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
-  
-    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
-  
-    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
-  
-  </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation">
-  <h1 class="class">class MovieMasher::Mash</h1>
+<main role="main" aria-labelledby="class-MovieMasher::Mash">
+  <h1 id="class-MovieMasher::Mash" class="class">
+    class MovieMasher::Mash
+  </h1>
 
-  <div id="description" class="description">
+  <section class="description">
     
 <p><a href="Asset.html#method-i-source">MovieMasher::Asset#source</a> of mash
 inputs, representing a collection <a
@@ -284,7 +136,7 @@ href="Mash.html#method-i-media">media</a> arranged on <a
 href="Mash.html#method-i-audio">audio</a> and <a
 href="Mash.html#method-i-video">video</a> tracks.</p>
 
-  </div><!-- description -->
+  </section>
 
   
   
@@ -295,64 +147,65 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
     
 
     
-    <!-- Constants -->
-    <section id="constants-list" class="section">
-      <h3 class="section-header">Constants</h3>
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
       <dl>
       
         <dt id="Audio">Audio
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Effect">Effect
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Font">Font
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Frame">Frame
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Image">Image
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Merger">Merger
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Scaler">Scaler
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Theme">Theme
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Tracks">Tracks
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Transition">Transition
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="Video">Video
         
-        <dd class="description">
+        <dd>
         
       
       </dl>
@@ -361,10 +214,11 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
     
 
-    <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Class Methods</h3>
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
 
     
       <div id="method-c-clip_has_audio" class="method-detail ">
@@ -405,14 +259,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-comment">#puts &quot;clip_has_audio #{has} for #{clip[:label]} no_audio: #{clip[:no_audio]} no_video: #{clip[:no_video]}&quot;</span>
   <span class="ruby-identifier">has</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- clip_has_audio-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- clip_has_audio-method -->
+      </div>
 
     
       <div id="method-c-clips_having_audio" class="method-detail ">
@@ -446,14 +300,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">clips</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- clips_having_audio-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- clips_having_audio-method -->
+      </div>
 
     
       <div id="method-c-clips_in_range" class="method-detail ">
@@ -486,14 +340,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-identifier">clips_in_range</span>.<span class="ruby-identifier">sort!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>,<span class="ruby-identifier">b</span><span class="ruby-operator">|</span> ((<span class="ruby-identifier">a</span>[<span class="ruby-value">:track</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">b</span>[<span class="ruby-value">:track</span>]) <span class="ruby-operator">?</span> (<span class="ruby-identifier">a</span>[<span class="ruby-value">:frame</span>] <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">b</span>[<span class="ruby-value">:frame</span>]) <span class="ruby-operator">:</span> (<span class="ruby-identifier">a</span>[<span class="ruby-value">:track</span>] <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">b</span>[<span class="ruby-value">:track</span>]))}
   <span class="ruby-identifier">clips_in_range</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- clips_in_range-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- clips_in_range-method -->
+      </div>
 
     
       <div id="method-c-duration" class="method-detail ">
@@ -519,14 +373,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">duration</span> <span class="ruby-identifier">mash</span>
   <span class="ruby-identifier">mash</span>[<span class="ruby-value">:length</span>] <span class="ruby-operator">/</span> <span class="ruby-identifier">mash</span>[<span class="ruby-value">:quantize</span>]
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- duration-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- duration-method -->
+      </div>
 
     
       <div id="method-c-gain_changes" class="method-detail ">
@@ -562,14 +416,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">does</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- gain_changes-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- gain_changes-method -->
+      </div>
 
     
       <div id="method-c-has_audio-3F" class="method-detail ">
@@ -602,14 +456,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- has_audio-3F-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- has_audio-3F-method -->
+      </div>
 
     
       <div id="method-c-has_video-3F" class="method-detail ">
@@ -643,14 +497,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- has_video-3F-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- has_video-3F-method -->
+      </div>
 
     
       <div id="method-c-hash-3F" class="method-detail ">
@@ -685,14 +539,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">isa</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- hash-3F-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- hash-3F-method -->
+      </div>
 
     
       <div id="method-c-init_av_input" class="method-detail ">
@@ -718,14 +572,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_av_input</span> <span class="ruby-identifier">input</span>
   <span class="ruby-identifier">input</span>[<span class="ruby-value">:av</span>] = (<span class="ruby-identifier">input</span>[<span class="ruby-value">:no_video</span>] <span class="ruby-operator">?</span> (<span class="ruby-identifier">input</span>[<span class="ruby-value">:no_audio</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Neither</span> <span class="ruby-operator">:</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Audio</span>) <span class="ruby-operator">:</span> (<span class="ruby-identifier">input</span>[<span class="ruby-value">:no_audio</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Video</span> <span class="ruby-operator">:</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Both</span>))
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- init_av_input-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- init_av_input-method -->
+      </div>
 
     
       <div id="method-c-init_hash" class="method-detail ">
@@ -778,14 +632,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-identifier">mash</span>[<span class="ruby-value">:length</span>] = <span class="ruby-identifier">longest</span>
   <span class="ruby-identifier">mash</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- init_hash-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- init_hash-method -->
+      </div>
 
     
       <div id="method-c-init_input" class="method-detail ">
@@ -848,14 +702,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-identifier">init_av_input</span> <span class="ruby-identifier">input</span>
 
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- init_input-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- init_input-method -->
+      </div>
 
     
       <div id="method-c-init_mash_input" class="method-detail ">
@@ -880,27 +734,21 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
             <pre><span class="ruby-comment"># File lib/mash.rb, line 179</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_mash_input</span> <span class="ruby-identifier">input</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash?</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>] <span class="ruby-keyword">then</span>
-    <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>] = <span class="ruby-identifier">new</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>]
-    <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:media</span>].<span class="ruby-identifier">map!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">media</span><span class="ruby-operator">|</span>
-      <span class="ruby-keyword">case</span> <span class="ruby-identifier">media</span>[<span class="ruby-value">:type</span>]
-      <span class="ruby-keyword">when</span> <span class="ruby-constant">Video</span>, <span class="ruby-constant">Audio</span>, <span class="ruby-constant">Image</span>, <span class="ruby-constant">Frame</span>
-        <span class="ruby-identifier">media</span> = <span class="ruby-constant">Clip</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">media</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-identifier">media</span>
-    <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>]
+    <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>] = <span class="ruby-constant">Mash</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>]
+    <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>].<span class="ruby-identifier">preflight</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>]
     <span class="ruby-identifier">input</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-identifier">duration</span>(<span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>]) <span class="ruby-keyword">if</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">input</span>[<span class="ruby-value">:duration</span>], <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">Zero</span>)
     <span class="ruby-identifier">input</span>[<span class="ruby-value">:no_audio</span>] = <span class="ruby-operator">!</span> <span class="ruby-identifier">has_audio?</span>(<span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>])
     <span class="ruby-identifier">input</span>[<span class="ruby-value">:no_video</span>] = <span class="ruby-operator">!</span> <span class="ruby-identifier">has_video?</span>(<span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>])
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- init_mash_input-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- init_mash_input-method -->
+      </div>
 
     
       <div id="method-c-media" class="method-detail ">
@@ -922,7 +770,7 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="media-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 194</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 188</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">media</span> <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">ob_or_id</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">mash</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">ob_or_id</span>
     <span class="ruby-identifier">ob_or_id</span> = <span class="ruby-identifier">__prop_for_ob</span>(<span class="ruby-value">:id</span>, <span class="ruby-identifier">ob_or_id</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">ob_or_id</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Hash</span>
@@ -938,14 +786,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- media-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- media-method -->
+      </div>
 
     
       <div id="method-c-media_count_for_clips" class="method-detail ">
@@ -967,7 +815,7 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="media_count_for_clips-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 209</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 203</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">media_count_for_clips</span> <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">clips</span>, <span class="ruby-identifier">referenced</span>
   <span class="ruby-identifier">referenced</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">referenced</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">clips</span>
@@ -1003,14 +851,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- media_count_for_clips-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- media_count_for_clips-method -->
+      </div>
 
     
       <div id="method-c-media_search" class="method-detail ">
@@ -1032,7 +880,7 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="media_search-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 244</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 238</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">media_search</span> <span class="ruby-identifier">type</span>, <span class="ruby-identifier">ob_or_id</span>, <span class="ruby-identifier">mash</span>
   <span class="ruby-identifier">media_ob</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">ob_or_id</span>
@@ -1044,14 +892,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">media_ob</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- media_search-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- media_search-method -->
+      </div>
 
     
       <div id="method-c-new" class="method-detail ">
@@ -1078,19 +926,19 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 396</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 390</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">hash</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-ivar">@hash</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- new-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- new-method -->
+      </div>
 
     
       <div id="method-c-video_ranges" class="method-detail ">
@@ -1112,7 +960,7 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="video_ranges-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 255</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 249</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">video_ranges</span> <span class="ruby-identifier">mash</span>
   <span class="ruby-identifier">quantize</span> = <span class="ruby-identifier">mash</span>[<span class="ruby-value">:quantize</span>]
   <span class="ruby-identifier">frames</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
@@ -1134,20 +982,22 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">all_ranges</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_ranges-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_ranges-method -->
+      </div>
 
     
-    </section><!-- public-class-method-details -->
+    </section>
   
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
 
     
       <div id="method-i-audio" class="method-detail ">
@@ -1172,18 +1022,18 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="audio-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 393</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 387</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">audio</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- audio-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- audio-method -->
+      </div>
 
     
       <div id="method-i-media" class="method-detail ">
@@ -1208,18 +1058,18 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="media-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 401</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 395</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">media</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- media-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- media-method -->
+      </div>
 
     
       <div id="method-i-preflight" class="method-detail ">
@@ -1241,21 +1091,25 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="preflight-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 404</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 398</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight</span> <span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">media</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">m</span> = <span class="ruby-constant">Clip</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">m</span>
-    <span class="ruby-identifier">m</span>.<span class="ruby-identifier">preflight</span> <span class="ruby-identifier">job</span>
+  <span class="ruby-identifier">media</span>.<span class="ruby-identifier">map!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">media</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">media</span>[<span class="ruby-value">:type</span>]
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Video</span>, <span class="ruby-constant">Audio</span>, <span class="ruby-constant">Image</span>, <span class="ruby-constant">Frame</span>, <span class="ruby-constant">Font</span>
+      <span class="ruby-identifier">media</span> = <span class="ruby-constant">Clip</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">media</span>
+      <span class="ruby-identifier">media</span>.<span class="ruby-identifier">preflight</span> <span class="ruby-identifier">job</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">media</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- preflight-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- preflight-method -->
+      </div>
 
     
       <div id="method-i-url_count" class="method-detail ">
@@ -1277,7 +1131,7 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="url_count-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 411</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 408</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">url_count</span> <span class="ruby-identifier">desired</span>
   <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>
   <span class="ruby-identifier">media</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">media</span><span class="ruby-operator">|</span>
@@ -1290,14 +1144,14 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">count</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- url_count-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- url_count-method -->
+      </div>
 
     
       <div id="method-i-video" class="method-detail ">
@@ -1322,30 +1176,29 @@ href="Mash.html#method-i-video">video</a> tracks.</p>
 
           
           <div class="method-source-code" id="video-source">
-            <pre><span class="ruby-comment"># File lib/mash.rb, line 425</span>
+            <pre><span class="ruby-comment"># File lib/mash.rb, line 422</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video-method -->
+      </div>
 
     
-    </section><!-- public-instance-method-details -->
+    </section>
   
-  </section><!-- 5Buntitled-5D -->
+  </section>
+</main>
 
-</div><!-- documentation -->
 
-
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

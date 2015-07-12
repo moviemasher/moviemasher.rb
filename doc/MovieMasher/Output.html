@@ -2,76 +2,76 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>class MovieMasher::Output - RDoc Documentation</title>
 
-<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+<link href="../fonts.css" rel="stylesheet">
+<link href="../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/search_index.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/searcher.js"></script>
+<script src="../js/darkfish.js"></script>
 
 
-<body id="top" class="class">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="../index.html">Home</a>
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
     <a href="../table_of_contents.html#classes">Classes</a>
     <a href="../table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
-
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>lib/output.rb
-  </ul>
-</nav>
-
-    
-  </div>
 
   <div id="class-metadata">
     
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
   
   <p class="link">Hashable
   
-</nav>
+</div>
 
     
     
     <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
 
-  <ul class="link-list">
+  <ul class="link-list" role="directory">
     
     <li ><a href="#method-c-__av_type_for_output">::__av_type_for_output</a>
     
@@ -118,6 +118,8 @@
     <li ><a href="#method-i-forecolor">#forecolor</a>
     
     <li ><a href="#method-i-forecolor-3D">#forecolor=</a>
+    
+    <li ><a href="#method-i-metadata">#metadata</a>
     
     <li ><a href="#method-i-name">#name</a>
     
@@ -166,192 +168,45 @@
     <li ><a href="#method-i-video_rate-3D">#video_rate=</a>
     
   </ul>
-</nav>
-
-  </div>
-
-  <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="../Documentation_md.html">Documentation</a>
-  
-    <li class="file"><a href="../README_md.html">README</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
-
-  <ul class="link-list">
-  
-    <li><a href="../MovieMasher.html">MovieMasher</a>
-  
-    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
-  
-    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
-  
-    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
-  
-    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
-  
-    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
-  
-    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
-  
-    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
-  
-    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
-  
-    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
-  
-    <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
-  
-    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
-  
-    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
-  
-    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
-  
-    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
-  
-    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
-  
-    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
-  
-    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
-  
-    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
-  
-    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
-  
-    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
-  
-    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
-  
-    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
-  
-    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
-  
-    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
-  
-    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
-  
-    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
-  
-    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
-  
-    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
-  
-    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
-  
-    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
-  
-    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
-  
-    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
-  
-    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
-  
-    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
-  
-    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
-  
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
-  
-    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
-  
-    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
-  
-    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
-  
-    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
-  
-    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
-  
-    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
-  
-    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
-  
-    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
-  
-    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
-  
-    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
-  
-    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
-  
-    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
-  
-    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
-  
-    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
-  
-    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
-  
-    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
-  
-    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
-  
-    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
-  
-    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
-  
-    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
-  
-    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
-  
-    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
-  
-    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
-  
-    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
-  
-    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
-  
-  </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation">
-  <h1 class="class">class MovieMasher::Output</h1>
+<main role="main" aria-labelledby="class-MovieMasher::Output">
+  <h1 id="class-MovieMasher::Output" class="class">
+    class MovieMasher::Output
+  </h1>
 
-  <div id="description" class="description">
+  <section class="description">
     
 <p>Represents a single rendered version of the mashup, including all
-formatting parameters and quality settings.</p>
+formatting  parameters and quality settings.</p>
 
 <p>There are five types of outputs: <a
 href="Output.html#TypeAudio">TypeAudio</a>, <a
 href="Output.html#TypeImage">TypeImage</a> and <a
-href="Output.html#TypeVideo">TypeVideo</a> (the three raw types) as well as
-<a href="Output.html#TypeSequence">TypeSequence</a> which outputs a folder
-full of image files from the video in the mashup, and <a
+href="Output.html#TypeVideo">TypeVideo</a> (the three  raw types) as well
+as <a href="Output.html#TypeSequence">TypeSequence</a> which outputs a
+folder full of image files  from the video in the mashup, and <a
 href="Output.html#TypeWaveform">TypeWaveform</a> which outputs an image
-file from the audio in the mashup.</p>
+file  from the audio in the mashup.</p>
 
 <p>If outputs need to be uploaded to different locations then each should have
 its own <a href="Output.html#method-i-destination">destination</a>,
 otherwise they will all share <a
 href="Job.html#method-i-destination">MovieMasher::Job#destination</a>.
-Typically <a href="Output.html#method-i-name">name</a> is set to define the
-filename that&#39;s ultimately uploaded, but this can be overridden by <a
-href="Output.html#method-i-destination">destination</a>. It&#39;s important
-to set <a href="Output.html#method-i-extension">extension</a> regardless
-though since this generally determines the container format used during
-rendering.</p>
+Typically  <a href="Output.html#method-i-name">name</a> is set to define
+the filename that&#39;s ultimately uploaded, but this can  be overridden by
+<a href="Output.html#method-i-destination">destination</a>. It&#39;s
+important to set <a href="Output.html#method-i-extension">extension</a>
+regardless  though since this generally determines the container format
+used during  rendering.</p>
 
 <p>By default outputs are optional, unless <a
 href="Output.html#method-i-required">required</a> is true. Optional outputs
-will not halt job processing if there&#39;s a problem rendering them.
-Instead of setting <a
+will  not halt job processing if there&#39;s a problem rendering them.
+Instead of setting  <a
 href="Job.html#method-i-error">MovieMasher::Job#error</a> the problem is
 added to <a href="Job.html#method-i-log">MovieMasher::Job#log</a> as a
 warning.</p>
@@ -366,7 +221,7 @@ warning.</p>
 }
 </pre>
 
-  </div><!-- description -->
+  </section>
 
   
   
@@ -377,34 +232,35 @@ warning.</p>
     
 
     
-    <!-- Constants -->
-    <section id="constants-list" class="section">
-      <h3 class="section-header">Constants</h3>
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
       <dl>
       
         <dt id="TypeAudio">TypeAudio
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="TypeImage">TypeImage
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="TypeSequence">TypeSequence
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="TypeVideo">TypeVideo
         
-        <dd class="description">
+        <dd>
         
       
         <dt id="TypeWaveform">TypeWaveform
         
-        <dd class="description">
+        <dd>
         
       
       </dl>
@@ -413,10 +269,11 @@ warning.</p>
 
     
 
-    <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Class Methods</h3>
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
 
     
       <div id="method-c-__av_type_for_output" class="method-detail ">
@@ -449,14 +306,14 @@ warning.</p>
     <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Both</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- __av_type_for_output-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- __av_type_for_output-method -->
+      </div>
 
     
       <div id="method-c-create" class="method-detail ">
@@ -472,7 +329,9 @@ warning.</p>
 
         <div class="method-description">
           
-          <p>Returns a new instance.</p>
+          <h3 id="method-c-create-label-Returns">Returns<span><a href="#method-c-create-label-Returns">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>Returns a new instance.</p>
           
           
 
@@ -482,14 +341,14 @@ warning.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Output</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Output</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- create-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- create-method -->
+      </div>
 
     
       <div id="method-c-init_hash" class="method-detail ">
@@ -562,14 +421,14 @@ warning.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- init_hash-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- init_hash-method -->
+      </div>
 
     
       <div id="method-c-new" class="method-detail ">
@@ -601,20 +460,22 @@ warning.</p>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-identifier">hash</span>
   <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- new-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- new-method -->
+      </div>
 
     
-    </section><!-- public-class-method-details -->
+    </section>
   
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
 
     
       <div id="method-i-audio_bitrate" class="method-detail ">
@@ -640,14 +501,14 @@ warning.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_bitrate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- audio_bitrate-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- audio_bitrate-method -->
+      </div>
 
     
       <div id="method-i-audio_bitrate-3D" class="method-detail ">
@@ -688,14 +549,14 @@ href="Output.html#TypeVideo">TypeVideo</a> containing audio.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_bitrate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- audio_bitrate-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- audio_bitrate-3D-method -->
+      </div>
 
     
       <div id="method-i-audio_codec" class="method-detail ">
@@ -721,14 +582,14 @@ href="Output.html#TypeVideo">TypeVideo</a> containing audio.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_codec</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- audio_codec-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- audio_codec-method -->
+      </div>
 
     
       <div id="method-i-audio_codec-3D" class="method-detail ">
@@ -766,14 +627,14 @@ href="Output.html#TypeVideo">TypeVideo</a> containing audio.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_codec=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- audio_codec-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- audio_codec-3D-method -->
+      </div>
 
     
       <div id="method-i-audio_rate" class="method-detail ">
@@ -799,14 +660,14 @@ href="Output.html#TypeVideo">TypeVideo</a> containing audio.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_rate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- audio_rate-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- audio_rate-method -->
+      </div>
 
     
       <div id="method-i-audio_rate-3D" class="method-detail ">
@@ -845,14 +706,14 @@ href="Output.html#TypeVideo">TypeVideo</a> containing audio.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_rate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- audio_rate-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- audio_rate-3D-method -->
+      </div>
 
     
       <div id="method-i-av" class="method-detail ">
@@ -870,7 +731,7 @@ href="Output.html#TypeVideo">TypeVideo</a> containing audio.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>The <a href="AV.html">AV</a> type.</p>
+<p>The AV type.</p>
 </dd><dt>Constant
 <dd>
 <p>AV::Audio, AV::Video or AV::Both.</p>
@@ -888,14 +749,14 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">av</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- av-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- av-method -->
+      </div>
 
     
       <div id="method-i-backcolor" class="method-detail ">
@@ -921,14 +782,14 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">backcolor</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- backcolor-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- backcolor-method -->
+      </div>
 
     
       <div id="method-i-backcolor-3D" class="method-detail ">
@@ -965,14 +826,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> only accepts hex colors.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">backcolor=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- backcolor-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- backcolor-3D-method -->
+      </div>
 
     
       <div id="method-i-destination" class="method-detail ">
@@ -998,14 +859,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> only accepts hex colors.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destination</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- destination-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- destination-method -->
+      </div>
 
     
       <div id="method-i-destination-3D" class="method-detail ">
@@ -1037,14 +898,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> only accepts hex colors.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destination=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- destination-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- destination-3D-method -->
+      </div>
 
     
       <div id="method-i-dimensions" class="method-detail ">
@@ -1070,14 +931,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> only accepts hex colors.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- dimensions-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- dimensions-method -->
+      </div>
 
     
       <div id="method-i-dimensions-3D" class="method-detail ">
@@ -1113,14 +974,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and 256x144 for others.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- dimensions-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- dimensions-3D-method -->
+      </div>
 
     
       <div id="method-i-error-3F" class="method-detail ">
@@ -1151,14 +1012,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and 256x144 for others.</p>
   <span class="ruby-keyword">end</span>    
   <span class="ruby-identifier">err</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- error-3F-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- error-3F-method -->
+      </div>
 
     
       <div id="method-i-extension" class="method-detail ">
@@ -1184,14 +1045,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and 256x144 for others.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extension</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- extension-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- extension-method -->
+      </div>
 
     
       <div id="method-i-extension-3D" class="method-detail ">
@@ -1226,14 +1087,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and jpg for others.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extension=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- extension-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- extension-3D-method -->
+      </div>
 
     
       <div id="method-i-file_name" class="method-detail ">
@@ -1261,14 +1122,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and jpg for others.</p>
   <span class="ruby-identifier">fn</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;.&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">extension</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">extension</span>
   <span class="ruby-identifier">fn</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- file_name-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- file_name-method -->
+      </div>
 
     
       <div id="method-i-forecolor" class="method-detail ">
@@ -1294,14 +1155,14 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and jpg for others.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">forecolor</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- forecolor-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- forecolor-method -->
+      </div>
 
     
       <div id="method-i-forecolor-3D" class="method-detail ">
@@ -1336,14 +1197,47 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and jpg for others.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">forecolor=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- forecolor-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- forecolor-3D-method -->
+      </div>
+
+    
+      <div id="method-i-metadata" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">metadata</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="metadata-source">
+            <pre><span class="ruby-comment"># File lib/output.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">metadata</span>
+  (<span class="ruby-keyword">self</span>[<span class="ruby-value">:rendered_file</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">MetaReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:rendered_file</span>]) <span class="ruby-operator">:</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
 
     
       <div id="method-i-name" class="method-detail ">
@@ -1365,18 +1259,18 @@ href="Output.html#TypeWaveform">TypeWaveform</a> and jpg for others.</p>
 
           
           <div class="method-source-code" id="name-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 207</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 212</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- name-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- name-method -->
+      </div>
 
     
       <div id="method-i-name-3D" class="method-detail ">
@@ -1409,18 +1303,18 @@ the frame number to each image file.</p>
 
           
           <div class="method-source-code" id="name-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 213</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 218</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- name-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- name-3D-method -->
+      </div>
 
     
       <div id="method-i-no_audio" class="method-detail ">
@@ -1442,18 +1336,18 @@ the frame number to each image file.</p>
 
           
           <div class="method-source-code" id="no_audio-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 217</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 222</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- no_audio-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- no_audio-method -->
+      </div>
 
     
       <div id="method-i-no_audio-3D" class="method-detail ">
@@ -1485,18 +1379,18 @@ others.</p>
 
           
           <div class="method-source-code" id="no_audio-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 223</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 228</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- no_audio-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- no_audio-3D-method -->
+      </div>
 
     
       <div id="method-i-path" class="method-detail ">
@@ -1518,18 +1412,18 @@ others.</p>
 
           
           <div class="method-source-code" id="path-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 227</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 232</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">path</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- path-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- path-method -->
+      </div>
 
     
       <div id="method-i-path-3D" class="method-detail ">
@@ -1557,18 +1451,18 @@ others.</p>
 
           
           <div class="method-source-code" id="path-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 232</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 237</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">path=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- path-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- path-3D-method -->
+      </div>
 
     
       <div id="method-i-precision" class="method-detail ">
@@ -1590,18 +1484,18 @@ others.</p>
 
           
           <div class="method-source-code" id="precision-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 236</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 241</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">precision</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- precision-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- precision-method -->
+      </div>
 
     
       <div id="method-i-precision-3D" class="method-detail ">
@@ -1620,7 +1514,7 @@ others.</p>
           <dl class="rdoc-list note-list"><dt>Integer
 <dd>
 <p>Number of decimal places that Job#duration and duration must match by for
-successful rendering.</p>
+successful rendering - use negative number to skip duration check.</p>
 </dd><dt>Default
 <dd>
 <p>1 for <a href="Output.html#TypeVideo">TypeVideo</a>, 0 for others.</p>
@@ -1636,18 +1530,18 @@ frame repeatedly to match).</p>
 
           
           <div class="method-source-code" id="precision-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 242</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 247</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">precision=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- precision-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- precision-3D-method -->
+      </div>
 
     
       <div id="method-i-preflight" class="method-detail ">
@@ -1669,7 +1563,7 @@ frame repeatedly to match).</p>
 
           
           <div class="method-source-code" id="preflight-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 246</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 251</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight</span> <span class="ruby-identifier">job</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">destination</span> = <span class="ruby-constant">Destination</span>.<span class="ruby-identifier">create_if</span> <span class="ruby-identifier">destination</span> <span class="ruby-comment"># must say self. = here</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">extension</span> <span class="ruby-comment"># try to determine from name if it has one</span>
@@ -1680,14 +1574,14 @@ frame repeatedly to match).</p>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- preflight-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- preflight-method -->
+      </div>
 
     
       <div id="method-i-quality" class="method-detail ">
@@ -1709,18 +1603,18 @@ frame repeatedly to match).</p>
 
           
           <div class="method-source-code" id="quality-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 257</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 262</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">quality</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- quality-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- quality-method -->
+      </div>
 
     
       <div id="method-i-quality-3D" class="method-detail ">
@@ -1752,18 +1646,18 @@ href="Output.html#TypeSequence">TypeSequence</a>.</p>
 
           
           <div class="method-source-code" id="quality-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 263</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 268</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">quality=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- quality-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- quality-3D-method -->
+      </div>
 
     
       <div id="method-i-required" class="method-detail ">
@@ -1785,18 +1679,18 @@ href="Output.html#TypeSequence">TypeSequence</a>.</p>
 
           
           <div class="method-source-code" id="required-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 267</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 272</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">required</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- required-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- required-method -->
+      </div>
 
     
       <div id="method-i-required-3D" class="method-detail ">
@@ -1825,18 +1719,18 @@ rendered or uploaded.</p>
 
           
           <div class="method-source-code" id="required-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 272</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 277</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">required=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- required-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- required-3D-method -->
+      </div>
 
     
       <div id="method-i-type" class="method-detail ">
@@ -1858,18 +1752,18 @@ rendered or uploaded.</p>
 
           
           <div class="method-source-code" id="type-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 276</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 281</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- type-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- type-method -->
+      </div>
 
     
       <div id="method-i-type-3D" class="method-detail ">
@@ -1904,18 +1798,18 @@ href="Output.html#TypeWaveform">TypeWaveform</a>.</p>
 
           
           <div class="method-source-code" id="type-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 282</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 287</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- type-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- type-3D-method -->
+      </div>
 
     
       <div id="method-i-video_bitrate" class="method-detail ">
@@ -1937,18 +1831,18 @@ href="Output.html#TypeWaveform">TypeWaveform</a>.</p>
 
           
           <div class="method-source-code" id="video_bitrate-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 286</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 291</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_bitrate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_bitrate-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_bitrate-method -->
+      </div>
 
     
       <div id="method-i-video_bitrate-3D" class="method-detail ">
@@ -1984,18 +1878,18 @@ href="Output.html#method-i-video_rate">video_rate</a>.</p>
 
           
           <div class="method-source-code" id="video_bitrate-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 293</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 298</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_bitrate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_bitrate-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_bitrate-3D-method -->
+      </div>
 
     
       <div id="method-i-video_codec" class="method-detail ">
@@ -2017,18 +1911,18 @@ href="Output.html#method-i-video_rate">video_rate</a>.</p>
 
           
           <div class="method-source-code" id="video_codec-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 297</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 302</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_codec</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_codec-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_codec-method -->
+      </div>
 
     
       <div id="method-i-video_codec-3D" class="method-detail ">
@@ -2061,18 +1955,18 @@ href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
 
           
           <div class="method-source-code" id="video_codec-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 303</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 308</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_codec=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_codec-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_codec-3D-method -->
+      </div>
 
     
       <div id="method-i-video_format" class="method-detail ">
@@ -2094,18 +1988,18 @@ href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
 
           
           <div class="method-source-code" id="video_format-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 307</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 312</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_format</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_format-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_format-method -->
+      </div>
 
     
       <div id="method-i-video_format-3D" class="method-detail ">
@@ -2138,18 +2032,18 @@ href="Output.html#method-i-video_codec">video_codec</a>.</p>
 
           
           <div class="method-source-code" id="video_format-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 313</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 318</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_format=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_format-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_format-3D-method -->
+      </div>
 
     
       <div id="method-i-video_rate" class="method-detail ">
@@ -2171,18 +2065,18 @@ href="Output.html#method-i-video_codec">video_codec</a>.</p>
 
           
           <div class="method-source-code" id="video_rate-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 317</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 322</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_rate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_rate-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_rate-method -->
+      </div>
 
     
       <div id="method-i-video_rate-3D" class="method-detail ">
@@ -2215,30 +2109,29 @@ href="Output.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="video_rate-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 323</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 328</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">video_rate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- video_rate-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- video_rate-3D-method -->
+      </div>
 
     
-    </section><!-- public-instance-method-details -->
+    </section>
   
-  </section><!-- 5Buntitled-5D -->
+  </section>
+</main>
 
-</div><!-- documentation -->
 
-
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -105,7 +105,6 @@ COPY Gemfile /data/
 COPY Gemfile.lock /data/
 WORKDIR /data
 RUN \
-  bundle config --global frozen 1; \
   bundle install --without test development
 
 # copy, make and install wav2png
@@ -133,7 +132,6 @@ VOLUME /tmp/moviemasher/download
 VOLUME /tmp/moviemasher/error
 
 # EVERYTHING BELOW CAN BE UNCOMMENTED TO PRODUCE DEV IMAGE
-
 ## # install redis for aws-sdk
 ## RUN \
 ##   cd /data; \
@@ -146,12 +144,11 @@ VOLUME /tmp/moviemasher/error
 ##   make install; \
 ##   cd /data; \
 ##   rm -R /data/redis-2.8.17
-## 
+##
 ## # install our test gems
 ## COPY Gemfile /data/
-## COPY Gemfile.lock /data/
+## # COPY Gemfile.lock /data/
 ## RUN \
 ##   cd /data; \
-##   bundle config --global frozen 1; \
 ##   bundle install --without production
 

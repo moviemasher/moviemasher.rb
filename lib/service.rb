@@ -7,7 +7,7 @@ module MovieMasher
 		@@downloads = Hash.new
 		@@uploads = Hash.new
 		@@configuration = Hash.new
-		def self.configure_services config
+		def self.configure_services(config)
 			@@configuration = config
 		end
 		def self.queues
@@ -18,22 +18,22 @@ module MovieMasher
 			end
 			array
 		end
-		def self.initer type
+		def self.initer(type)
 			@@inits[type] = __create_service type, :init unless @@inits[type]
 			(@@inits[type] and @@inits[type].configure(@@configuration) ? @@inits[type] : nil)
 		end
-		def self.downloader type
+		def self.downloader(type)
 			@@downloads[type] = __create_service type, :download unless @@downloads[type]
 			(@@downloads[type] and @@downloads[type].configure(@@configuration) ? @@downloads[type] : nil)
 		end
-		def self.uploader type
+		def self.uploader(type)
 			@@uploads[type] = __create_service type, :upload unless @@uploads[type]
 			(@@uploads[type] and @@uploads[type].configure(@@configuration) ? @@uploads[type] : nil)
 		end
 		def self.query_parameters
-			
+
 		end
-		def self.__create_service name, kind = :queue
+		def self.__create_service(name, kind = :queue)
 			service = nil
 			class_sym = "#{name.capitalize}#{kind.id2name.capitalize}Service".to_sym
 			unless MovieMasher.const_defined? class_sym
@@ -45,19 +45,19 @@ module MovieMasher
 			end
 			service
 		end
-		def self.__service_names kind = :queue
+		def self.__service_names(kind = :queue)
 			Dir["#{ServicesDirectory}/#{kind.id2name}/*.rb"].map { | path | File.basename path, '.rb' }
 		end
 		def configuration
 			@@configuration
 		end
-		def configure config
+		def configure(config)
 			true
 		end
 	end
 	class InitService < Service
 		def init
-			
+
 		end
 	end
 	class QueueService < Service
@@ -66,7 +66,7 @@ module MovieMasher
 		end
 	end
 	class DownloadService < Service
-		def download options
+		def download(options)
 			raise Error::Configuration.new "transfer service failed to override download method"
 		end
 	end
@@ -80,13 +80,13 @@ module MovieMasher
 					f = file + f
 					files << f unless File.directory?(f)
 				end
-			else 
+			else
 				files << file
 			end
 			files
 		end
-		def upload options
-			
+		def upload(options)
+
 		end
 	end
 end

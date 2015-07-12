@@ -2,59 +2,58 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>module MovieMasher::FilterHelpers - RDoc Documentation</title>
 
-<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+<link href="../fonts.css" rel="stylesheet">
+<link href="../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/search_index.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/searcher.js"></script>
+<script src="../js/darkfish.js"></script>
 
 
-<body id="top" class="module">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="../index.html">Home</a>
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
     <a href="../table_of_contents.html#classes">Classes</a>
     <a href="../table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
-
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>lib/util/filter_helpers.rb
-  </ul>
-</nav>
-
-    
-  </div>
 
   <div id="class-metadata">
     
@@ -62,10 +61,10 @@
     
     
     <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
 
-  <ul class="link-list">
+  <ul class="link-list" role="directory">
     
     <li ><a href="#method-c-mm_cmp">::mm_cmp</a>
     
@@ -94,166 +93,19 @@
     <li ><a href="#method-c-rgba">::rgba</a>
     
   </ul>
-</nav>
-
-  </div>
-
-  <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="../Documentation_md.html">Documentation</a>
-  
-    <li class="file"><a href="../README_md.html">README</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
-
-  <ul class="link-list">
-  
-    <li><a href="../MovieMasher.html">MovieMasher</a>
-  
-    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
-  
-    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
-  
-    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
-  
-    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
-  
-    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
-  
-    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
-  
-    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
-  
-    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
-  
-    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
-  
-    <li><a href="../MovieMasher/Configuration.html">MovieMasher::Configuration</a>
-  
-    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
-  
-    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
-  
-    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
-  
-    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
-  
-    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
-  
-    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
-  
-    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
-  
-    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
-  
-    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
-  
-    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
-  
-    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
-  
-    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
-  
-    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
-  
-    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
-  
-    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
-  
-    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
-  
-    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
-  
-    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
-  
-    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
-  
-    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
-  
-    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
-  
-    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
-  
-    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
-  
-    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
-  
-    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
-  
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
-  
-    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
-  
-    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
-  
-    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
-  
-    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
-  
-    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
-  
-    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
-  
-    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
-  
-    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
-  
-    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
-  
-    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
-  
-    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
-  
-    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
-  
-    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
-  
-    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
-  
-    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
-  
-    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
-  
-    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
-  
-    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
-  
-    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
-  
-    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
-  
-    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
-  
-    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
-  
-    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
-  
-    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
-  
-    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
-  
-  </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation">
-  <h1 class="module">module MovieMasher::FilterHelpers</h1>
+<main role="main" aria-labelledby="module-MovieMasher::FilterHelpers">
+  <h1 id="module-MovieMasher::FilterHelpers" class="module">
+    module MovieMasher::FilterHelpers
+  </h1>
 
-  <div id="description" class="description">
+  <section class="description">
     
-  </div><!-- description -->
+  </section>
 
   
   
@@ -267,10 +119,11 @@
 
     
 
-    <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Class Methods</h3>
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
 
     
       <div id="method-c-mm_cmp" class="method-detail ">
@@ -300,14 +153,14 @@
   <span class="ruby-identifier">param_1</span> = <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">equation</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">0</span>], <span class="ruby-keyword">true</span>
   (<span class="ruby-identifier">param_0</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">param_1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">2</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">3</span>])
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_cmp-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_cmp-method -->
+      </div>
 
     
       <div id="method-c-mm_dir_horz" class="method-detail ">
@@ -345,14 +198,14 @@
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;unknown direction #{params[0]}&quot;</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_dir_horz-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_dir_horz-method -->
+      </div>
 
     
       <div id="method-c-mm_dir_vert" class="method-detail ">
@@ -391,14 +244,14 @@
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">result</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_dir_vert-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_dir_vert-method -->
+      </div>
 
     
       <div id="method-c-mm_fontfamily" class="method-detail ">
@@ -428,14 +281,14 @@
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;font has no family&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">font</span>[<span class="ruby-value">:family</span>]
   <span class="ruby-identifier">font</span>[<span class="ruby-value">:family</span>]
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_fontfamily-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_fontfamily-method -->
+      </div>
 
     
       <div id="method-c-mm_fontfile" class="method-detail ">
@@ -465,14 +318,14 @@
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;font has not been cached #{font}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">font</span>[<span class="ruby-value">:cached_file</span>]
   <span class="ruby-identifier">font</span>[<span class="ruby-value">:cached_file</span>] 
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_fontfile-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_fontfile-method -->
+      </div>
 
     
       <div id="method-c-mm_horz" class="method-detail ">
@@ -498,14 +351,14 @@
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_horz</span> <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">output</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">__horz_vert</span> <span class="ruby-value">:mm_width</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_horz-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_horz-method -->
+      </div>
 
     
       <div id="method-c-mm_max" class="method-detail ">
@@ -531,14 +384,14 @@
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_max</span> <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">output</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">__max_min</span> <span class="ruby-value">:max</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_max-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_max-method -->
+      </div>
 
     
       <div id="method-c-mm_min" class="method-detail ">
@@ -564,14 +417,14 @@
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_min</span> <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">output</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">__max_min</span> <span class="ruby-value">:min</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_min-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_min-method -->
+      </div>
 
     
       <div id="method-c-mm_paren" class="method-detail ">
@@ -598,14 +451,14 @@
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span> <span class="ruby-identifier">param_string</span>
   <span class="ruby-node">&quot;(#{params.join &#39;,&#39;})&quot;</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_paren-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_paren-method -->
+      </div>
 
     
       <div id="method-c-mm_textfile" class="method-detail ">
@@ -640,14 +493,14 @@
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">job_path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_textfile-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_textfile-method -->
+      </div>
 
     
       <div id="method-c-mm_vert" class="method-detail ">
@@ -673,14 +526,14 @@
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_vert</span> <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">output</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">__horz_vert</span> <span class="ruby-value">:mm_height</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- mm_vert-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- mm_vert-method -->
+      </div>
 
     
       <div id="method-c-rgb" class="method-detail ">
@@ -707,14 +560,14 @@
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span> <span class="ruby-identifier">param_string</span>
   <span class="ruby-string">&quot;0x%02x%02x%02x&quot;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">params</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- rgb-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- rgb-method -->
+      </div>
 
     
       <div id="method-c-rgba" class="method-detail ">
@@ -744,26 +597,25 @@
   <span class="ruby-identifier">result</span> = <span class="ruby-node">&quot;#{result}@#{alpha}&quot;</span>
   <span class="ruby-identifier">result</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- rgba-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- rgba-method -->
+      </div>
 
     
-    </section><!-- public-class-method-details -->
+    </section>
   
-  </section><!-- 5Buntitled-5D -->
+  </section>
+</main>
 
-</div><!-- documentation -->
 
-
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

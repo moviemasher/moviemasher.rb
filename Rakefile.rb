@@ -2,6 +2,7 @@ task :environment
 
 PathUser = "#{File.dirname(__FILE__)}/../config/userdata.json"
 PathConfig = "#{File.dirname(__FILE__)}/../config/config.yml"
+PathIni = "#{File.dirname(__FILE__)}/../config/moviemasher.ini"
 
 namespace :moviemasher do
 	desc "Instances service and calls its init method, saving result to #{PathUser}"

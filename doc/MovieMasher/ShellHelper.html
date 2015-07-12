@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module MovieMasher::ShellHelper - RDoc Documentation</title>
+
+<link href="../fonts.css" rel="stylesheet">
+<link href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/search_index.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/searcher.js"></script>
+<script src="../js/darkfish.js"></script>
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-execute">::execute</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-MovieMasher::ShellHelper">
+  <h1 id="module-MovieMasher::ShellHelper" class="module">
+    module MovieMasher::ShellHelper
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-execute" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">execute</span><span
+            class="method-args">(options)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="execute-source">
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">execute</span> <span class="ruby-identifier">options</span>
+  <span class="ruby-identifier">logs</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:command</span>]
+  <span class="ruby-identifier">out_file</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:file</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">duration</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:duration</span>]
+  <span class="ruby-identifier">precision</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:precision</span>] <span class="ruby-operator">||</span> <span class="ruby-value">1</span>
+  <span class="ruby-identifier">app</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:app</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&#39;ffmpeg&#39;</span>
+  <span class="ruby-identifier">outputs_file</span> = ((<span class="ruby-keyword">not</span> <span class="ruby-identifier">out_file</span>.<span class="ruby-identifier">empty?</span>) <span class="ruby-keyword">and</span> (<span class="ruby-string">&#39;/dev/null&#39;</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">out_file</span>))
+  <span class="ruby-identifier">whole_cmd</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">configuration</span>[<span class="ruby-node">&quot;#{app}_path&quot;</span>.<span class="ruby-identifier">to_sym</span>]
+  <span class="ruby-identifier">whole_cmd</span> = <span class="ruby-identifier">app</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">whole_cmd</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">whole_cmd</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">whole_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39; &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">cmd</span>
+  <span class="ruby-constant">FileHelper</span>.<span class="ruby-identifier">safe_path</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">out_file</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">outputs_file</span>
+  <span class="ruby-identifier">whole_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; #{out_file}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">out_file</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">out_file</span>.<span class="ruby-identifier">empty?</span>
+  
+  <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:debug</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-identifier">whole_cmd</span> })}
+  <span class="ruby-identifier">result</span> = <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-identifier">whole_cmd</span>).<span class="ruby-identifier">join</span> <span class="ruby-string">&quot;\n&quot;</span>
+  <span class="ruby-comment"># make sure result is utf-8 encoded</span>
+  <span class="ruby-identifier">enc_options</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">enc_options</span>[<span class="ruby-value">:invalid</span>] = <span class="ruby-value">:replace</span>
+  <span class="ruby-identifier">enc_options</span>[<span class="ruby-value">:undef</span>] = <span class="ruby-value">:replace</span>
+  <span class="ruby-identifier">enc_options</span>[<span class="ruby-value">:replace</span>] = <span class="ruby-string">&#39;?&#39;</span>
+  <span class="ruby-comment">#enc_options[:universal_newline] = true</span>
+  <span class="ruby-identifier">result</span>.<span class="ruby-identifier">encode!</span>(<span class="ruby-constant">Encoding</span><span class="ruby-operator">::</span><span class="ruby-constant">UTF_8</span>, <span class="ruby-identifier">enc_options</span>)
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">outputs_file</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">out_file</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;%&#39;</span>) <span class="ruby-keyword">then</span>  
+    <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">out_file</span>) <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>(<span class="ruby-identifier">out_file</span>)
+      <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:debug</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-identifier">result</span> }) }
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">result</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">duration</span>
+      <span class="ruby-identifier">audio_data</span> = <span class="ruby-identifier">execute</span> <span class="ruby-value">:command</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;--i #{out_file}&quot;</span>, <span class="ruby-value">:app</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;sox&#39;</span>
+      <span class="ruby-identifier">video_data</span> = <span class="ruby-identifier">execute</span> <span class="ruby-value">:command</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">out_file</span>, <span class="ruby-value">:app</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;ffprobe&#39;</span>
+      <span class="ruby-identifier">audio_duration</span> = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-string">&#39;duration&#39;</span>, <span class="ruby-identifier">audio_data</span>)
+      <span class="ruby-identifier">video_duration</span> = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-string">&#39;duration&#39;</span>, <span class="ruby-identifier">video_data</span>)
+      <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:debug</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-node">&quot;rendered file with audio_duration: #{audio_duration} video_duration: #{video_duration}&quot;</span> }) }
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">audio_duration</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">video_duration</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">result</span>, <span class="ruby-node">&quot;could not determine if #{duration} == duration of #{out_file}&quot;</span> 
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-identifier">video_duration</span>.<span class="ruby-identifier">to_f</span>, <span class="ruby-identifier">precision</span>.<span class="ruby-identifier">abs</span>) <span class="ruby-keyword">or</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-identifier">audio_duration</span>.<span class="ruby-identifier">to_f</span>, <span class="ruby-identifier">precision</span>.<span class="ruby-identifier">abs</span>)
+        <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:warn</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-identifier">result</span> }) }
+        <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;generated file with incorrect duration #{duration} != #{audio_duration} or #{video_duration} #{out_file}&quot;</span> 
+        <span class="ruby-keyword">if</span> <span class="ruby-value">-1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">precision</span>
+          <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">result</span>, <span class="ruby-identifier">msg</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:warn</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-identifier">msg</span> }) }
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span> 
+  <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-value">:debug</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-identifier">result</span> }) }
+  <span class="ruby-comment">#puts `ps aux | awk &#39;{ print $8 &quot; &quot; $2 }&#39; | grep -w Z`</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">result</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:log</span>]
+  <span class="ruby-keyword">return</span> [<span class="ruby-identifier">result</span>, <span class="ruby-identifier">whole_cmd</span>, <span class="ruby-identifier">logs</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

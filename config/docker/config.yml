@@ -4,3 +4,4 @@
 :error_directory: /tmp/moviemasher/error
 :process_seconds: -2
 :verbose: debug
+:chmod_directory_new: '0777'

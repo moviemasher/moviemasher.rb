@@ -2,223 +2,98 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>README - RDoc Documentation</title>
 
-<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+<link href="./fonts.css" rel="stylesheet">
+<link href="./rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+<script src="./js/jquery.js"></script>
+<script src="./js/navigation.js"></script>
+<script src="./js/search_index.js"></script>
+<script src="./js/search.js"></script>
+<script src="./js/searcher.js"></script>
+<script src="./js/darkfish.js"></script>
 
 
-<body class="file">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="./index.html">Home</a>
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
     <a href="./table_of_contents.html#classes">Classes</a>
     <a href="./table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
-<div id="table-of-contents">
-  <nav class="section">
-    <h3 class="section-header">Table of Contents</h3>
-    <ul>
-      <li><a href="#label-moviemasher.rb">moviemasher.rb</a>
-      <li><a href="#label-Overview">Overview</a>
-      <li><a href="#label-AWS+Integration">AWS Integration</a>
-      <li><a href="#label-Docker+Usage">Docker Usage</a>
-      <li><a href="#label-Requirements">Requirements</a>
-      <li><a href="#label-How+to+Install">How to Install</a>
-      <li><a href="#label-User+Feedback">User Feedback</a>
-      <li><a href="#label-Contributing">Contributing</a>
-      <li><a href="#label-Developer+Setup">Developer Setup</a>
-      <li><a href="#label-Known+issues+in+this+version">Known issues in this version</a>
-      <li><a href="#label-Migrating+from+Version+4.0.7">Migrating from Version 4.0.7</a>
-    </ul>
-  </nav>
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#label-moviemasher.rb">moviemasher.rb</a>
+    <li><a href="#label-Overview">Overview</a>
+    <li><a href="#label-AWS+Integration">AWS Integration</a>
+    <li><a href="#label-Docker+Usage">Docker Usage</a>
+    <li><a href="#label-Requirements">Requirements</a>
+    <li><a href="#label-How+to+Install">How to Install</a>
+    <li><a href="#label-User+Feedback">User Feedback</a>
+    <li><a href="#label-Contributing">Contributing</a>
+    <li><a href="#label-Developer+Setup">Developer Setup</a>
+    <li><a href="#label-Known+issues+in+this+version">Known issues in this version</a>
+    <li><a href="#label-Migrating+from+Version+4.0.7">Migrating from Version 4.0.7</a>
+  </ul>
 </div>
 
 
   <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="./Documentation_md.html">Documentation</a>
-  
-    <li class="file"><a href="./README_md.html">README</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
 
   <ul class="link-list">
   
-    <li><a href="./MovieMasher.html">MovieMasher</a>
+    <li><a href="./Documentation_md.html">Documentation</a>
   
-    <li><a href="./MovieMasher/AV.html">MovieMasher::AV</a>
-  
-    <li><a href="./MovieMasher/Asset.html">MovieMasher::Asset</a>
-  
-    <li><a href="./MovieMasher/Callback.html">MovieMasher::Callback</a>
-  
-    <li><a href="./MovieMasher/Chain.html">MovieMasher::Chain</a>
-  
-    <li><a href="./MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
-  
-    <li><a href="./MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
-  
-    <li><a href="./MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
-  
-    <li><a href="./MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
-  
-    <li><a href="./MovieMasher/Clip.html">MovieMasher::Clip</a>
-  
-    <li><a href="./MovieMasher/Configuration.html">MovieMasher::Configuration</a>
-  
-    <li><a href="./MovieMasher/Defaults.html">MovieMasher::Defaults</a>
-  
-    <li><a href="./MovieMasher/Destination.html">MovieMasher::Destination</a>
-  
-    <li><a href="./MovieMasher/Error.html">MovieMasher::Error</a>
-  
-    <li><a href="./MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
-  
-    <li><a href="./MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
-  
-    <li><a href="./MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
-  
-    <li><a href="./MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
-  
-    <li><a href="./MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
-  
-    <li><a href="./MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
-  
-    <li><a href="./MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
-  
-    <li><a href="./MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
-  
-    <li><a href="./MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
-  
-    <li><a href="./MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
-  
-    <li><a href="./MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
-  
-    <li><a href="./MovieMasher/Error/State.html">MovieMasher::Error::State</a>
-  
-    <li><a href="./MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
-  
-    <li><a href="./MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
-  
-    <li><a href="./MovieMasher/Fill.html">MovieMasher::Fill</a>
-  
-    <li><a href="./MovieMasher/Filter.html">MovieMasher::Filter</a>
-  
-    <li><a href="./MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
-  
-    <li><a href="./MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
-  
-    <li><a href="./MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
-  
-    <li><a href="./MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
-  
-    <li><a href="./MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
-  
-    <li><a href="./MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
-  
-    <li><a href="./MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
-  
-    <li><a href="./MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
-  
-    <li><a href="./MovieMasher/Gain.html">MovieMasher::Gain</a>
-  
-    <li><a href="./MovieMasher/Graph.html">MovieMasher::Graph</a>
-  
-    <li><a href="./MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
-  
-    <li><a href="./MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
-  
-    <li><a href="./MovieMasher/Hashable.html">MovieMasher::Hashable</a>
-  
-    <li><a href="./MovieMasher/Info.html">MovieMasher::Info</a>
-  
-    <li><a href="./MovieMasher/Input.html">MovieMasher::Input</a>
-  
-    <li><a href="./MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
-  
-    <li><a href="./MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="./MovieMasher/Layer.html">MovieMasher::Layer</a>
-  
-    <li><a href="./MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
-  
-    <li><a href="./MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
-  
-    <li><a href="./MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
-  
-    <li><a href="./MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
-  
-    <li><a href="./MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
-  
-    <li><a href="./MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
-  
-    <li><a href="./MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
-  
-    <li><a href="./MovieMasher/Mash.html">MovieMasher::Mash</a>
-  
-    <li><a href="./MovieMasher/Method.html">MovieMasher::Method</a>
-  
-    <li><a href="./MovieMasher/Output.html">MovieMasher::Output</a>
-  
-    <li><a href="./MovieMasher/Parameters.html">MovieMasher::Parameters</a>
-  
-    <li><a href="./MovieMasher/Path.html">MovieMasher::Path</a>
-  
-    <li><a href="./MovieMasher/Source.html">MovieMasher::Source</a>
-  
-    <li><a href="./MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
-  
-    <li><a href="./MovieMasher/Transfer.html">MovieMasher::Transfer</a>
+    <li><a href="./README_md.html">README</a>
   
   </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation" class="description">
-  
-<p><img
-src="https://rawgit.com/moviemasher/moviemasher.rb/master/README/logo-120x60.png"
-/>] <strong><a
+<main role="main" aria-label="Page README.md">
+
+<p><a href="https://www.moviemasher.com"><img
+src="https://rawgit.com/moviemasher/moviemasher.rb/master/README/logo-120x60.png"></a>
+<strong><a
 href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> |
 <a
 href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
@@ -262,7 +137,7 @@ and/or when it&#39;s completed.</p>
 href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/index.html">(HTML)</a></p>
 </li><li>
 <p><strong>Docker Image:</strong> <code>moviemasher/moviemasher.rb</code> <a
-href="http://Dockerfile">(Dockerfile)</a></p>
+href="Dockerfile">(Dockerfile)</a></p>
 </li></ul>
 
 <p>In addition to the raw media assets (video, audio and images), jobs can
@@ -333,12 +208,12 @@ the host can be easily processed.</p>
 <ul><li>
 <p>To display documentation of configuration options:</p>
 
-<p><code>docker run -it -rm moviemasher/moviemasher.rb moviemasher
+<p><code>docker run -it --rm moviemasher/moviemasher.rb moviemasher
 --help</code></p>
 </li><li>
 <p>To process jobs directly from the command line:</p>
 
-<pre>`docker run -it -rm moviemasher/moviemasher.rb process &quot;JOB&quot; &quot;JOB&quot;`</pre>
+<pre>`docker run -it --rm moviemasher/moviemasher.rb process &quot;JOB&quot; &quot;JOB&quot;`</pre>
 </li></ul>
 
 <p>JOB can be a JSON or YAML formatted string, or a path to one in the
@@ -346,23 +221,24 @@ container.</p>
 <ul><li>
 <p>To process all jobs in directory &#39;my_jobs&#39; residing on the host:</p>
 
-<pre>`docker run -it -rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`</pre>
+<pre>`docker run -it --rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`</pre>
 </li></ul>
 
 <p>Files can be in JSON or YAML format.</p>
 <ul><li>
 <p>To continually process jobs from container&#39;s queue volume:</p>
 
-<pre>`docker run -d --name=moviemasher moviemasher/moviemasher.rb process_loop`</pre>
+<pre>`docker run -d -t --name=moviemasher moviemasher/moviemasher.rb process_loop`</pre>
 </li></ul>
 
-<p>You&#39;ll need to subsequently execute <code>docker stop
+<p>Note the <code>t</code> switch - it&#39;s required for Ecasound to function
+properly. You&#39;ll need to subsequently execute <code>docker stop
 moviemasher</code> and <code>docker rm moviemasher</code> to stop
 processing and remove the container created.</p>
 <ul><li>
 <p>To process a single job from an SQS queue:</p>
 
-<pre>`docker run -it -rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`</pre>
+<pre>`docker run -it --rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`</pre>
 </li></ul>
 
 <p>URL points to an existing SQS Queue that provides read/write access to the
@@ -446,8 +322,7 @@ practical for demonstration purposes. Typically in production a pool of
 machines is deployed with each instance running a single process solely
 engaged in transcoding.</p>
 <ol><li>
-<p>Review <a href="http://Dockerfile">Dockerfile</a> for commands that work on
-jessie</p>
+<p>Review <a href="Dockerfile">Dockerfile</a> for commands that work on jessie</p>
 </li><li>
 <p>Install av libraries for supported formats and codecs</p>
 </li><li>
@@ -523,7 +398,7 @@ the applications and gems to the image, as well as specifying the repo
 directory as a <code>VOLUME</code> - it&#39;s replaced by the current host
 version at runtime.</p>
 <ul><li>
-<p>To build development image <code>cd</code> to to project directory and
+<p>To build development image <code>cd</code> to project directory and
 execute:</p>
 </li></ul>
 
@@ -532,19 +407,15 @@ execute:</p>
 <p><code>docker build --tag=&quot;moviemasher/moviemasher.rb:dev&quot;
 .</code></p>
 <ul><li>
-<p>And then to run rspec tests in a container:</p>
-</li></ul>
-
-<p><code>docker run -it --rm  -v $(pwd):/mnt/moviemasher.rb
-moviemasher/moviemasher.rb:dev rspec spec</code></p>
-<ul><li>
-<p>If you have the <a
+<p>Place the <a
 href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
-project installed alongside this one then the following switch can be added
-to the command above in order to mount it for the mash rendering tests:</p>
+project alongside this one in the same directory, then to run rspec tests
+in a container:</p>
 </li></ul>
 
-<p><code>-v $(pwd)/../angular-moviemasher:/mnt/angular-moviemasher</code></p>
+<p><code>docker run -it --rm  -v
+$(pwd)/../angular-moviemasher:/mnt/angular-moviemasher -v
+$(pwd):/mnt/moviemasher.rb moviemasher/moviemasher.rb:dev rspec spec</code></p>
 
 <h5 id="label-Known+issues+in+this+version">Known issues in this version<span><a href="#label-Known+issues+in+this+version">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
 <ul><li>
@@ -582,14 +453,13 @@ mashes</p>
 <p>The <code>source</code> key in mash inputs should only contain a source
 object</p>
 </li></ul>
-
-</div>
-
+</main>
 
 
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

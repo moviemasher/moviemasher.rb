@@ -3,7 +3,7 @@ require 'cgi'
 require 'digest/sha2'
 require 'fileutils'
 require 'json'
-require 'logger'  
+require 'logger'
 require 'mime/types'
 require 'net/http'
 require 'net/http/post/multipart'
@@ -15,11 +15,11 @@ require 'yaml'
 
 require_rel '.'
 
-# Handles global configuration and high level processing of Job objects. The 
-# ::process_queues method will look for jobs in a directory and optionally an 
-# SQS queue for a period of time, calling ::process for each one found. No 
-# configuration is required, though be aware that no download cache is 
-# maintained by default. 
+# Handles global configuration and high level processing of Job objects. The
+# ::process_queues method will look for jobs in a directory and optionally an
+# SQS queue for a period of time, calling ::process for each one found. No
+# configuration is required, though be aware that no download cache is
+# maintained by default.
 #
 #   MovieMasher.configure :render_directory => './temp'
 #   MovieMasher.process './job.json'
@@ -29,21 +29,21 @@ module MovieMasher
 	@@job = nil
 	@@logger = nil
 	public
-# Returns the configuration Hash with Symbol keys. 
+# Returns the configuration Hash with Symbol keys.
 	def self.configuration
-		configure nil 
+		configure nil
 		@@configuration
 	end
-# hash_or_path - Set one or more configuration options. If supplied a String, 
-# it's assumed to be a path to a JSON or YML file and converted to a Hash. The 
-# Hash can use a String or Symbol for each key. See Config for supported keys. 
+# hash_or_path - Set one or more configuration options. If supplied a String,
+# it's assumed to be a path to a JSON or YML file and converted to a Hash. The
+# Hash can use a String or Symbol for each key. See Config for supported keys.
 #
-# Returns nothing. 
+# Returns nothing.
 #
-# Raises Error::Configuration if String supplied doesn't have json/yml extension or 
+# Raises Error::Configuration if String supplied doesn't have json/yml extension or
 # if *render_directory* is empty.
 	def self.configure hash_or_path
-		if hash_or_path and not hash_or_path.empty? 
+		if hash_or_path and not hash_or_path.empty?
 			if hash_or_path.is_a? String
 				if File.exists? hash_or_path
 					case File.extname hash_or_path
@@ -66,7 +66,7 @@ module MovieMasher
 					@@configuration[key_sym] = v
 				end
 			end
-		end	
+		end
 		[:render_directory, :download_directory, :queue_directory, :error_directory, :log_directory].each do |sym|
 			if @@configuration[sym] and not @@configuration[sym].empty? then
 				# expand directory and create if needed
@@ -86,15 +86,15 @@ module MovieMasher
 		"#{Time.now} #{self.name} done"
 	end
 # Returns salutation for command line apps.
-	def self.hello 
+	def self.hello
 		"#{Time.now} #{self.name} version #{VERSION}"
 	end
-# object_or_path - Job object or String/Hash to be passed to Job.new along 
-# with ::configuration. After the MovieMasher::Job#process method is called, its render 
-# directory is either moved to *error_directory* (if that option is not empty 
-# and a problem arose during processing) or deleted (unless 
-# *render_save* is true). The *download_directory* will also be pruned 
-# to assure its size is not greater than *download_bytes*. 
+# object_or_path - Job object or String/Hash to be passed to Job.new along
+# with ::configuration. After the MovieMasher::Job#process method is called, its render
+# directory is either moved to *error_directory* (if that option is not empty
+# and a problem arose during processing) or deleted (unless
+# *render_save* is true). The *download_directory* will also be pruned
+# to assure its size is not greater than *download_bytes*.
 #
 # Returns Job object with *error* key set if problem arose.
 # Raises Error::Configuration if *render_directory* is empty.
@@ -102,7 +102,7 @@ module MovieMasher
 		result = @@job = (object_or_path.is_a?(Job) ? object_or_path : Job.new(object_or_path))
 		begin # try to process job
 			@@job.process unless @@job[:error]
-		rescue Exception => e 
+		rescue Exception => e
 			__log_exception e
 		end
 		begin # try to move or remove job's render directory
@@ -136,15 +136,15 @@ module MovieMasher
 		(array.empty? ? nil : array.length)
 	end
 # Searches configured queue(s) for job(s) and processes.
-# 
-# process_seconds - overrides this same configuration option. A positive value 
+#
+# process_seconds - overrides this same configuration option. A positive value
 # will cause the method to loop that many seconds, while a value of zero will cause it
 # to immediately return without searching for a job. A value of -1 indicates that each
-# queue should be searched just once for a job, and -2 will loop until no queue returns 
-# a job. And finally, -3 will cause the method to loop forever. 
-# 
+# queue should be searched just once for a job, and -2 will loop until no queue returns
+# a job. And finally, -3 will cause the method to loop forever.
+#
 # This method should not raise an Exception, but if it does it is not trapped here so
-# queue processing will stop. 
+# queue processing will stop.
 #
 # Returns nothing.
 #
@@ -161,7 +161,7 @@ module MovieMasher
 			'until drained'
 		when -3
 			'forever'
-		else 
+		else
 			"for #{process_seconds} seconds"
 		end
 		__log_transcoder(:info) { "process_queues #{how_long}" }
@@ -174,7 +174,7 @@ module MovieMasher
 					if job_data
 						found = true
 						__log_transcoder(:info) { "starting #{job_data[:id]}" }
-						process job_data 
+						process job_data
 						__log_transcoder(:info) { "finishing #{job_data[:id]}" }
 						break
 					end
@@ -208,7 +208,7 @@ module MovieMasher
 			target_bytes = number.to_i * multiplier
 			bytes_in_dir = __flush_directory_bytes(dir)
 			bytes_to_flush = bytes_in_dir - target_bytes
-			
+
 			result = __flush_bytes_from_directory(dir, bytes_in_dir, target_bytes) if (bytes_in_dir > target_bytes)
 		end
 		result
@@ -234,12 +234,12 @@ module MovieMasher
 				end
 			end
 			unless directories.empty?
-				directories.sort! { |a,b| a[:at] <=> b[:at] }				
+				directories.sort! { |a,b| a[:at] <=> b[:at] }
 				directories.each do |dir|
 					bytes_in_dir -= dir[:bytes]
 					bytes_to_flush -= dir[:bytes]
 					FileUtils.rm_r dir[:dir]
-					break if (bytes_to_flush <= 0) 
+					break if (bytes_to_flush <= 0)
 				end
 			end
 		end
@@ -275,7 +275,7 @@ module MovieMasher
 	def self.__log_exception(rescued_exception, is_warning = false)
 		if rescued_exception then
 			unless rescued_exception.is_a? Error::Job
-				str =  "#{rescued_exception.backtrace.join "\n"}\n#{rescued_exception.message}" 
+				str =  "#{rescued_exception.backtrace.join "\n"}\n#{rescued_exception.message}"
 				puts str # so it gets in cron log as well
 				__log_transcoder(:error) { str }
 			end
@@ -287,7 +287,7 @@ module MovieMasher
 	def self.__log_transcoder type, &proc
 		puts proc.call
 		#STDOUT.flush
-	
+
 		logger = __logger
 		if logger and logger.send((type.id2name + '?').to_sym)
 			logger.send(type, proc.call)
