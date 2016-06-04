@@ -3,6 +3,6 @@ download_bytes: 2M
 error_directory: tmp/spec/error
 render_directory: tmp/spec/temporary
 render_save: true
-log_directory: tmp/spec/moviemasher
-log_level: debug
+log_directory: tmp/spec/log
+verbose: info
 s3_read_at_once: true

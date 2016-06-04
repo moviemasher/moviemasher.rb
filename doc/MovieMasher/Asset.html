@@ -2,80 +2,90 @@
 
 <html>
 <head>
-<meta charset="UTF-8">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
 <title>class MovieMasher::Asset - RDoc Documentation</title>
 
-<link href="../fonts.css" rel="stylesheet">
-<link href="../rdoc.css" rel="stylesheet">
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
 </script>
 
-<script src="../js/jquery.js"></script>
-<script src="../js/navigation.js"></script>
-<script src="../js/search_index.js"></script>
-<script src="../js/search.js"></script>
-<script src="../js/searcher.js"></script>
-<script src="../js/darkfish.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
 
 
-<body id="top" role="document" class="class">
-<nav role="navigation">
-  <div id="project-navigation">
-    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
-  <h2>
-    <a href="../index.html" rel="home">Home</a>
-  </h2>
-
-  <div id="table-of-contents-navigation">
-    <a href="../table_of_contents.html#pages">Pages</a>
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
     <a href="../table_of_contents.html#classes">Classes</a>
     <a href="../table_of_contents.html#methods">Methods</a>
-  </div>
-</div>
+  </h3>
+</nav>
 
-    <div id="search-section" role="search" class="project-section initially-hidden">
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <div id="search-field-wrapper">
-      <input id="search-field" role="combobox" aria-label="Search"
-             aria-autocomplete="list" aria-controls="search-results"
-             type="text" name="search" placeholder="Search" spellcheck="false"
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </div>
-
-    <ul id="search-results" aria-label="Search Results"
-        aria-busy="false" aria-expanded="false"
-        aria-atomic="false" class="initially-hidden"></ul>
+    </h3>
   </form>
-</div>
 
-  </div>
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
 
   
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/asset.rb
+  </ul>
+</nav>
+
+    
+  </div>
 
   <div id="class-metadata">
     
-    <div id="parent-class-section" class="nav-section">
-  <h3>Parent</h3>
-
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
   
   <p class="link">Hashable
   
-</div>
+</nav>
 
     
     
     <!-- Method Quickref -->
-<div id="method-list-section" class="nav-section">
-  <h3>Methods</h3>
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
 
-  <ul class="link-list" role="directory">
+  <ul class="link-list">
+    
+    <li ><a href="#method-c-__download_asset">::__download_asset</a>
+    
+    <li ><a href="#method-c-__populate_asset_info">::__populate_asset_info</a>
     
     <li ><a href="#method-c-av_type">::av_type</a>
     
     <li ><a href="#method-c-create">::create</a>
+    
+    <li ><a href="#method-c-download_asset">::download_asset</a>
+    
+    <li ><a href="#method-c-url_path">::url_path</a>
+    
+    <li ><a href="#method-i-__url">#__url</a>
     
     <li ><a href="#method-i-av">#av</a>
     
@@ -132,19 +142,214 @@
     <li ><a href="#method-i-url">#url</a>
     
   </ul>
-</div>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../Documentation_md.html">Documentation</a>
+  
+    <li class="file"><a href="../README_md.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../MovieMasher.html">MovieMasher</a>
+  
+    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
+  
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
+    <li><a href="../MovieMasher/AwsInitService.html">MovieMasher::AwsInitService</a>
+  
+    <li><a href="../MovieMasher/AzureInitService.html">MovieMasher::AzureInitService</a>
+  
+    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
+  
+    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
+  
+    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
+  
+    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
+  
+    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
+    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
+  
+    <li><a href="../MovieMasher/DownloadService.html">MovieMasher::DownloadService</a>
+  
+    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
+  
+    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
+  
+    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
+  
+    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
+  
+    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
+  
+    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
+  
+    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
+  
+    <li><a href="../MovieMasher/Error/JobSyntax.html">MovieMasher::Error::JobSyntax</a>
+  
+    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
+  
+    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
+  
+    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
+  
+    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
+  
+    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
+  
+    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
+  
+    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
+  
+    <li><a href="../MovieMasher/FileDownloadService.html">MovieMasher::FileDownloadService</a>
+  
+    <li><a href="../MovieMasher/FileHelper.html">MovieMasher::FileHelper</a>
+  
+    <li><a href="../MovieMasher/FileQueueService.html">MovieMasher::FileQueueService</a>
+  
+    <li><a href="../MovieMasher/FileUploadService.html">MovieMasher::FileUploadService</a>
+  
+    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
+  
+    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
+  
+    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
+  
+    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
+  
+    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
+  
+    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
+  
+    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
+  
+    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
+  
+    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+  
+    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
+  
+    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
+  
+    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
+  
+    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
+  
+    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
+  
+    <li><a href="../MovieMasher/GraphUtility.html">MovieMasher::GraphUtility</a>
+  
+    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
+  
+    <li><a href="../MovieMasher/HttpDownloadService.html">MovieMasher::HttpDownloadService</a>
+  
+    <li><a href="../MovieMasher/HttpUploadService.html">MovieMasher::HttpUploadService</a>
+  
+    <li><a href="../MovieMasher/HttpsDownloadService.html">MovieMasher::HttpsDownloadService</a>
+  
+    <li><a href="../MovieMasher/HttpsUploadService.html">MovieMasher::HttpsUploadService</a>
+  
+    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
+  
+    <li><a href="../MovieMasher/InitService.html">MovieMasher::InitService</a>
+  
+    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
+  
+    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
+  
+    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
+  
+    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
+  
+    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
+  
+    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
+  
+    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
+  
+    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
+  
+    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
+  
+    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
+  
+    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
+  
+    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
+  
+    <li><a href="../MovieMasher/MetaReader.html">MovieMasher::MetaReader</a>
+  
+    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
+  
+    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
+    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
+  
+    <li><a href="../MovieMasher/QueueService.html">MovieMasher::QueueService</a>
+  
+    <li><a href="../MovieMasher/S3DownloadService.html">MovieMasher::S3DownloadService</a>
+  
+    <li><a href="../MovieMasher/S3UploadService.html">MovieMasher::S3UploadService</a>
+  
+    <li><a href="../MovieMasher/Service.html">MovieMasher::Service</a>
+  
+    <li><a href="../MovieMasher/ShellHelper.html">MovieMasher::ShellHelper</a>
+  
+    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
+  
+    <li><a href="../MovieMasher/SqsQueueService.html">MovieMasher::SqsQueueService</a>
+  
+    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
+  
+    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
+  
+    <li><a href="../MovieMasher/Trigger.html">MovieMasher::Trigger</a>
+  
+    <li><a href="../MovieMasher/Type.html">MovieMasher::Type</a>
+  
+    <li><a href="../MovieMasher/UploadService.html">MovieMasher::UploadService</a>
+  
+  </ul>
+</nav>
 
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-MovieMasher::Asset">
-  <h1 id="class-MovieMasher::Asset" class="class">
-    class MovieMasher::Asset
-  </h1>
+<div id="documentation">
+  <h1 class="class">class MovieMasher::Asset</h1>
 
-  <section class="description">
+  <div id="description" class="description">
     
-  </section>
+<p>represents a downloadable media asset</p>
+
+  </div><!-- description -->
 
   
   
@@ -155,43 +360,113 @@
     
 
     
-    <section class="constants-list">
-      <header>
-        <h3>Constants</h3>
-      </header>
-      <dl>
-      
-        <dt id="TypeAudio">TypeAudio
-        
-        <dd>
-        
-      
-        <dt id="TypeImage">TypeImage
-        
-        <dd>
-        
-      
-        <dt id="TypeMash">TypeMash
-        
-        <dd>
-        
-      
-        <dt id="TypeVideo">TypeVideo
-        
-        <dd>
-        
-      
-      </dl>
-    </section>
-    
 
     
 
+    <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Class Methods</h3>
-       </header>
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-__download_asset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__download_asset</span><span
+            class="method-args">(asset, url, path, job)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__download_asset-source">
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__download_asset</span>(<span class="ruby-identifier">asset</span>, <span class="ruby-identifier">url</span>, <span class="ruby-identifier">path</span>, <span class="ruby-identifier">job</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-identifier">asset</span>[<span class="ruby-value">:input_url</span>].<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">path</span> = <span class="ruby-identifier">url_path</span>(<span class="ruby-identifier">url</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">path</span>)
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">FileHelper</span>.<span class="ruby-identifier">safe_path</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">path</span>))
+      <span class="ruby-identifier">asset</span>.<span class="ruby-identifier">download</span>(<span class="ruby-identifier">job</span><span class="ruby-operator">:</span> <span class="ruby-identifier">job</span>, <span class="ruby-identifier">path</span><span class="ruby-operator">:</span> <span class="ruby-identifier">path</span>)
+      <span class="ruby-identifier">raise</span>(<span class="ruby-node">&quot;zero length #{url}&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>(<span class="ruby-identifier">path</span>)
+    <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;CAUGHT #{e.is_a?(Error::Job)} #{e.message} #{e.backtrace}&quot;</span>
+      <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __download_asset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __download_asset-method -->
+
+    
+      <div id="method-c-__populate_asset_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__populate_asset_info</span><span
+            class="method-args">(asset)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__populate_asset_info-source">
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__populate_asset_info</span>(<span class="ruby-identifier">asset</span>)
+  <span class="ruby-identifier">path</span> = <span class="ruby-identifier">asset</span>[<span class="ruby-value">:cached_file</span>]
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">asset</span>[<span class="ruby-value">:type</span>]
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">nonzero</span>(<span class="ruby-identifier">asset</span>[<span class="ruby-value">:duration</span>])
+      <span class="ruby-identifier">asset</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">DURATION</span>).<span class="ruby-identifier">to_f</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">asset</span>[<span class="ruby-value">:no_audio</span>] = <span class="ruby-operator">!</span><span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO</span>)
+    <span class="ruby-identifier">asset</span>[<span class="ruby-value">:dimensions</span>] = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">DIMENSIONS</span>)
+    <span class="ruby-identifier">asset</span>[<span class="ruby-value">:no_video</span>] = <span class="ruby-operator">!</span><span class="ruby-identifier">asset</span>[<span class="ruby-value">:dimensions</span>]
+    <span class="ruby-identifier">asset</span>[<span class="ruby-value">:av</span>] = <span class="ruby-constant">Mash</span>.<span class="ruby-identifier">init_av_input</span>(<span class="ruby-identifier">asset</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">nonzero</span>(<span class="ruby-identifier">asset</span>[<span class="ruby-value">:duration</span>])
+      <span class="ruby-identifier">asset</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_DURATION</span>).<span class="ruby-identifier">to_f</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">asset</span>[<span class="ruby-value">:duration</span>], <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
+      <span class="ruby-identifier">asset</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_DURATION</span>).<span class="ruby-identifier">to_f</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">IMAGE</span>
+    <span class="ruby-identifier">asset</span>[<span class="ruby-value">:dimensions</span>] = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">DIMENSIONS</span>)
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">asset</span>[<span class="ruby-value">:dimensions</span>]
+      <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-string">&#39;could not determine image dimensions&#39;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __populate_asset_info-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __populate_asset_info-method -->
 
     
       <div id="method-c-av_type" class="method-detail ">
@@ -213,25 +488,29 @@
 
           
           <div class="method-source-code" id="av_type-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 14</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">av_type</span> <span class="ruby-identifier">input</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">av_type</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>]
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Input</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeAudio</span>
-    <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Audio</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Image</span>, <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Font</span>, <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Frame</span>
-    <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Video</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Input</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeVideo</span>, <span class="ruby-constant">Input</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeMash</span>
-    (<span class="ruby-identifier">input</span>[<span class="ruby-value">:no_audio</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Video</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:no_video</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Audio</span> <span class="ruby-operator">:</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">Both</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO</span>
+    <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_ONLY</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">IMAGE</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FONT</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FRAME</span>
+    <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">MASH</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:no_audio</span>]
+      <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span>
+    <span class="ruby-keyword">else</span>
+      (<span class="ruby-identifier">input</span>[<span class="ruby-value">:no_video</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_ONLY</span> <span class="ruby-operator">:</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">BOTH</span>)
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- av_type-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- av_type-method -->
 
     
       <div id="method-c-create" class="method-detail ">
@@ -247,34 +526,144 @@
 
         <div class="method-description">
           
-          <h3 id="method-c-create-label-Returns">Returns<span><a href="#method-c-create-label-Returns">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
-
-<p>Returns a new instance.</p>
+          <p>Returns a new instance.</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 10</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Asset</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Asset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- create-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- create-method -->
 
     
-    </section>
+      <div id="method-c-download_asset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">download_asset</span><span
+            class="method-args">(asset, job)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="download_asset-source">
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">download_asset</span>(<span class="ruby-identifier">asset</span>, <span class="ruby-identifier">job</span>)
+  <span class="ruby-identifier">path</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">url</span> = <span class="ruby-identifier">asset</span>[<span class="ruby-value">:input_url</span>].<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">url</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">path</span> = <span class="ruby-identifier">__download_asset</span>(<span class="ruby-identifier">asset</span>, <span class="ruby-identifier">url</span>, <span class="ruby-identifier">path</span>, <span class="ruby-identifier">job</span>)
+    <span class="ruby-constant">Info</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">AT</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>)
+    <span class="ruby-identifier">asset</span>[<span class="ruby-value">:cached_file</span>] = <span class="ruby-identifier">path</span>
+    <span class="ruby-identifier">__populate_asset_info</span>(<span class="ruby-identifier">asset</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- download_asset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- download_asset-method -->
+
+    
+      <div id="method-c-url_path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_path</span><span
+            class="method-args">(url)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="url_path-source">
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">url_path</span>(<span class="ruby-identifier">url</span>)
+  <span class="ruby-identifier">dir</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">configuration</span>[<span class="ruby-value">:download_directory</span>]
+  <span class="ruby-identifier">dir</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">configuration</span>[<span class="ruby-value">:render_directory</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">hex</span> = <span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">SHA2</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">256</span>).<span class="ruby-identifier">hexdigest</span>(<span class="ruby-identifier">url</span>)
+  <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-node">&quot;#{hex}/#{Info::DOWNLOADED}#{File.extname(url)}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- url_path-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- url_path-method -->
+
+    
+    </section><!-- public-class-method-details -->
   
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Instance Methods</h3>
-       </header>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-__url" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__url</span><span
+            class="method-args">(type, base_url, u)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__url-source">
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 254</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__url</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">base_url</span>, <span class="ruby-identifier">u</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">base_url</span>, <span class="ruby-identifier">u</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">URI</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">base_url</span>, <span class="ruby-identifier">u</span>).<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __url-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __url-method -->
 
     
       <div id="method-i-av" class="method-detail ">
@@ -292,19 +681,18 @@
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>The AV type.</p>
+<p>The <a href="AV.html">AV</a> type.</p>
 </dd><dt>Constant
 <dd>
-<p>AV::Audio, AV::Video, AV::Both, or AV::Neither if an error was encountered
-while probing.</p>
+<p>AV::AUDIO_ONLY, AV::VIDEO_ONLY, AV::BOTH, orAV::NEITHER if an error was
+encountered while probing.</p>
 </dd><dt>Types
 <dd>
-<p>All, but <a href="Asset.html#TypeMash">TypeMash</a> reflects its nested
-elements.</p>
+<p>All, but Type::MASH reflects its nested elements.</p>
 </dd><dt>Default
 <dd>
 <p>Initially based on <a href="Asset.html#method-i-type">type</a> and <a
-href="Asset.html#method-i-no_audio">no_audio</a>, but might change after
+href="Asset.html#method-i-no_audio">no_audio</a>, but might changeafter
 probing.</p>
 </dd></dl>
           
@@ -312,18 +700,18 @@ probing.</p>
 
           
           <div class="method-source-code" id="av-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 31</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">av</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- av-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- av-method -->
 
     
       <div id="method-i-dimensions" class="method-detail ">
@@ -345,18 +733,18 @@ probing.</p>
 
           
           <div class="method-source-code" id="dimensions-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 35</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 89</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- dimensions-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- dimensions-method -->
 
     
       <div id="method-i-dimensions-3D" class="method-detail ">
@@ -380,26 +768,25 @@ probing.</p>
 <p>Probed from downloaded.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Asset.html#TypeImage">TypeImage</a> and <a
-href="Asset.html#TypeVideo">TypeVideo</a>.</p>
+<p>Type::IMAGE and Type::VIDEO.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="dimensions-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 41</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- dimensions-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- dimensions-3D-method -->
 
     
       <div id="method-i-download" class="method-detail ">
@@ -421,24 +808,23 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="download-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 45</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">download</span> <span class="ruby-identifier">options</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">download</span>(<span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">d_source</span> = <span class="ruby-identifier">download_source</span>
-  <span class="ruby-identifier">transfer_service</span> = <span class="ruby-constant">Service</span>.<span class="ruby-identifier">downloader</span> <span class="ruby-identifier">d_source</span>.<span class="ruby-identifier">type</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>.<span class="ruby-identifier">new</span> <span class="ruby-node">&quot;could not find download service #{source.type}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">transfer_service</span>
-  <span class="ruby-comment">#puts &quot;RELATIVE SOURCE: #{d_source.relative?}&quot;</span>
+  <span class="ruby-identifier">service</span> = <span class="ruby-constant">Service</span>.<span class="ruby-identifier">downloader</span>(<span class="ruby-identifier">d_source</span>.<span class="ruby-identifier">type</span>)
+  <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>, <span class="ruby-node">&quot;no service #{d_source.type}&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">service</span>
   <span class="ruby-identifier">options</span>[<span class="ruby-value">:source</span>] = <span class="ruby-identifier">d_source</span>
   <span class="ruby-identifier">options</span>[<span class="ruby-value">:asset</span>] = <span class="ruby-keyword">self</span>
-  <span class="ruby-identifier">transfer_service</span>.<span class="ruby-identifier">download</span> <span class="ruby-identifier">options</span>
+  <span class="ruby-identifier">service</span>.<span class="ruby-identifier">download</span>(<span class="ruby-identifier">options</span>)
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- download-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- download-method -->
 
     
       <div id="method-i-download_source" class="method-detail ">
@@ -460,14 +846,14 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="download_source-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 174</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 222</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">download_source</span>
   <span class="ruby-identifier">d_source</span> = <span class="ruby-identifier">source</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Source</span>) 
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Source</span>)
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">relative?</span>
       <span class="ruby-comment"># relative url</span>
       <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
-      <span class="ruby-keyword">when</span> <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Theme</span>, <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Font</span>, <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Effect</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">THEME</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FONT</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">EFFECT</span>
         <span class="ruby-identifier">d_source</span> = <span class="ruby-identifier">module_source</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">base_source</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">source</span>
       <span class="ruby-keyword">else</span>
         <span class="ruby-identifier">d_source</span> = <span class="ruby-identifier">base_source</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">source</span>
@@ -476,14 +862,14 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">d_source</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- download_source-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- download_source-method -->
 
     
       <div id="method-i-duration" class="method-detail ">
@@ -505,18 +891,18 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="duration-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 55</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">duration</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- duration-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- duration-method -->
 
     
       <div id="method-i-duration-3D" class="method-detail ">
@@ -540,25 +926,25 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 <p>Probed from downloaded.</p>
 </dd><dt>Types
 <dd>
-<p>All except <a href="Asset.html#TypeImage">TypeImage</a>.</p>
+<p>All except Type::IMAGE.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="duration-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 61</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 112</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">duration=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- duration-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- duration-3D-method -->
 
     
       <div id="method-i-error-3F" class="method-detail ">
@@ -580,18 +966,18 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="error-3F-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 65</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">error?</span>
   <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- error-3F-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- error-3F-method -->
 
     
       <div id="method-i-gain" class="method-detail ">
@@ -613,18 +999,18 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="gain-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 69</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 118</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gain</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- gain-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- gain-method -->
 
     
       <div id="method-i-gain-3D" class="method-detail ">
@@ -645,35 +1031,34 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 <p>Multiplier to adjust volume of audio when mixed into mashup.</p>
 </dd><dt>Array
 <dd>
-<p>Duple Float values signifying element offset and multiplier for arbitrary
-volume fading over time. For instance, [0.0, 0.0, 0.1, 1.0, 0.9, 1.0, 1.0,
-0.0] would fade volume in over the first 10% of the element&#39;s length
-and out over the last 10%.</p>
+<p>Duple Float values signifying element offset andmultiplier for arbitrary
+volume fading over time. For instance,[0.0, 0.0, 0.1, 1.0, 0.9, 1.0, 1.0,
+0.0] would fade volume inover the first 10% of the element&#39;s length and
+out over the last10%.</p>
 </dd><dt>Default
 <dd>
 <p>Gain::None (1.0) means no change in volume.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Asset.html#TypeAudio">TypeAudio</a> and <a
-href="Asset.html#TypeVideo">TypeVideo</a>.</p>
+<p>Type::AUDIO and Type::VIDEO.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="gain-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 76</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 129</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gain=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- gain-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- gain-3D-method -->
 
     
       <div id="method-i-length" class="method-detail ">
@@ -695,18 +1080,18 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="length-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 80</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 132</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">length</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- length-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- length-method -->
 
     
       <div id="method-i-length-3D" class="method-detail ">
@@ -735,18 +1120,18 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="length-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 85</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 137</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">length=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- length-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- length-3D-method -->
 
     
       <div id="method-i-loop" class="method-detail ">
@@ -768,18 +1153,18 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="loop-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 89</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 140</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">loop</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- loop-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- loop-method -->
 
     
       <div id="method-i-loop-3D" class="method-detail ">
@@ -800,25 +1185,25 @@ href="Asset.html#method-i-offset">offset</a></p>
 <p>Number of times to loop <a href="Asset.html">Asset</a>.</p>
 </dd><dt>Types
 <dd>
-<p>Just <a href="Asset.html#TypeAudio">TypeAudio</a>.</p>
+<p>Just Type::AUDIO.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="loop-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 94</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 145</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">loop=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- loop-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- loop-3D-method -->
 
     
       <div id="method-i-metadata" class="method-detail ">
@@ -840,18 +1225,18 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="metadata-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 98</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">metadata</span>
-  (<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">MetaReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>]) <span class="ruby-operator">:</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>)
+  (<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">MetaReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>]) <span class="ruby-operator">:</span> {})
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- metadata-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- metadata-method -->
 
     
       <div id="method-i-no_audio" class="method-detail ">
@@ -873,18 +1258,18 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="no_audio-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 102</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 151</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- no_audio-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- no_audio-method -->
 
     
       <div id="method-i-no_audio-3D" class="method-detail ">
@@ -909,26 +1294,25 @@ href="Asset.html#method-i-offset">offset</a></p>
 change after probing.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Asset.html#TypeMash">TypeMash</a> and <a
-href="Asset.html#TypeVideo">TypeVideo</a>, but accessible for others.</p>
+<p>Type::MASH and Type::VIDEO, but accessible for others.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="no_audio-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 108</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 157</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- no_audio-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- no_audio-3D-method -->
 
     
       <div id="method-i-no_video" class="method-detail ">
@@ -950,18 +1334,18 @@ href="Asset.html#TypeVideo">TypeVideo</a>, but accessible for others.</p>
 
           
           <div class="method-source-code" id="no_video-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 112</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 160</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_video</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- no_video-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- no_video-method -->
 
     
       <div id="method-i-no_video-3D" class="method-detail ">
@@ -986,26 +1370,25 @@ href="Asset.html#TypeVideo">TypeVideo</a>, but accessible for others.</p>
 change after probing.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Asset.html#TypeMash">TypeMash</a> and <a
-href="Asset.html#TypeVideo">TypeVideo</a>, but accessible for others.</p>
+<p>Type::MASH and Type::VIDEO, but accessible for others.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="no_video-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 118</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 166</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_video=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- no_video-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- no_video-3D-method -->
 
     
       <div id="method-i-offset" class="method-detail ">
@@ -1027,18 +1410,18 @@ href="Asset.html#TypeVideo">TypeVideo</a>, but accessible for others.</p>
 
           
           <div class="method-source-code" id="offset-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 122</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 169</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">offset</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- offset-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- offset-method -->
 
     
       <div id="method-i-offset-3D" class="method-detail ">
@@ -1062,26 +1445,25 @@ href="Asset.html#TypeVideo">TypeVideo</a>, but accessible for others.</p>
 <p>0.0 means nothing removed.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Asset.html#TypeAudio">TypeAudio</a> and <a
-href="Asset.html#TypeVideo">TypeVideo</a>.</p>
+<p>Type::AUDIO and Type::VIDEO.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="offset-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 128</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 175</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">offset=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- offset-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- offset-3D-method -->
 
     
       <div id="method-i-preflight" class="method-detail ">
@@ -1103,28 +1485,29 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="preflight-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 132</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight</span> <span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span> <span class="ruby-keyword">then</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 178</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight</span>(<span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">source</span> = <span class="ruby-constant">Source</span>.<span class="ruby-identifier">create_if</span> <span class="ruby-identifier">source</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">job</span>
       <span class="ruby-keyword">self</span>[<span class="ruby-value">:base_source</span>] = <span class="ruby-identifier">job</span>.<span class="ruby-identifier">base_source</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">base_source</span>
       <span class="ruby-keyword">self</span>[<span class="ruby-value">:module_source</span>] = <span class="ruby-identifier">job</span>.<span class="ruby-identifier">module_source</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">module_source</span>
-      <span class="ruby-comment">#puts &quot;base_source: #{base_source}&quot;</span>
-      
-      <span class="ruby-keyword">self</span>[<span class="ruby-value">:input_url</span>] = <span class="ruby-identifier">url</span>(<span class="ruby-identifier">base_source</span>, <span class="ruby-identifier">module_source</span>) <span class="ruby-keyword">unless</span> <span class="ruby-constant">TypeMash</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:mash</span>]
+      <span class="ruby-comment"># puts &quot;base_source: #{base_source}&quot;</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">MASH</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:mash</span>]
+        <span class="ruby-keyword">self</span>[<span class="ruby-value">:input_url</span>] = <span class="ruby-identifier">url</span>(<span class="ruby-identifier">base_source</span>, <span class="ruby-identifier">module_source</span>)
+      <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#puts &quot;preflight #{self.class.name} URL: #{self[:input_url]}&quot;</span>
+  <span class="ruby-comment"># puts &quot;preflight #{self.class.name} URL: #{self[:input_url]}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- preflight-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- preflight-method -->
 
     
       <div id="method-i-source" class="method-detail ">
@@ -1146,19 +1529,19 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="source-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 146</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 192</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">source</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
   <span class="ruby-identifier">s</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- source-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- source-method -->
 
     
       <div id="method-i-source-3D" class="method-detail ">
@@ -1174,51 +1557,46 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
         <div class="method-description">
           
-          <p>Describes the download request for the element, as either a URL or 
-Hash/Source. If the URL is relative it&#39;s based from <a
-href="Job.html#method-i-base_source">MovieMasher::Job#base_source</a>.
-Assets of  <a href="Asset.html#TypeMash">TypeMash</a> can point to anything
-that responds with a JSON formatted mash. After  download they will pass
-the parsed Hash to <a
+          <p>Describes the download request for the element, as either a URL
+orHash/Source. If the URL is relative it&#39;s based fromJob#base_source.
+Assets of Type::MASH can point to anything thatresponds with a JSON
+formatted mash. After download they will passthe parsed Hash to <a
 href="Mash.html#method-c-new">MovieMasher::Mash.new</a> and reset their <a
-href="Asset.html#method-i-source">source</a> to  the returned instance.
+href="Asset.html#method-i-source">source</a> to thereturned instance.
 Alternatively, <a href="Asset.html#method-i-source">source</a> can be
-initially set to a  Hash/Mash so as to avoid download.</p>
+initially set toa Hash/Mash so as to avoid download.</p>
 <dl class="rdoc-list note-list"><dt>String
 <dd>
 <p>A HTTP or HTTPS URL to element, converted to appropriate <a
 href="Source.html">Source</a>.</p>
 </dd><dt>Hash
 <dd>
-<p>Can describe either a download request or, for <a
-href="Asset.html#TypeMash">TypeMash</a> Assets, a JSON formatted <a
-href="Mash.html">Mash</a>. The former is sent to <a
-href="Source.html#method-c-create">MovieMasher::Source.create</a> while the
-later is sent to <a
+<p>Can describe either a download request or, for Type::MASHAssets, a JSON
+formatted <a href="Mash.html">Mash</a>. The former is sent to
+Source.createwhile the later is sent to <a
 href="Mash.html#method-c-new">MovieMasher::Mash.new</a>.</p>
 </dd><dt>Returns
 <dd>
-<p>A <a href="Source.html">Source</a> object or, for <a
-href="Asset.html#TypeMash">TypeMash</a> Assets after downloading, a <a
-href="Mash.html">Mash</a> object.</p>
+<p>A <a href="Source.html">Source</a> object or, for Type::MASH Assets
+afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="source-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 161</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 210</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">source=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- source-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- source-3D-method -->
 
     
       <div id="method-i-type" class="method-detail ">
@@ -1240,18 +1618,18 @@ href="Mash.html">Mash</a> object.</p>
 
           
           <div class="method-source-code" id="type-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 165</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 213</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- type-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- type-method -->
 
     
       <div id="method-i-type-3D" class="method-detail ">
@@ -1272,10 +1650,7 @@ href="Mash.html">Mash</a> object.</p>
 <p>The kind of <a href="Asset.html">Asset</a>.</p>
 </dd><dt>Constant
 <dd>
-<p><a href="Asset.html#TypeAudio">TypeAudio</a>, <a
-href="Asset.html#TypeImage">TypeImage</a>, <a
-href="Asset.html#TypeMash">TypeMash</a> or <a
-href="Asset.html#TypeVideo">TypeVideo</a>.</p>
+<p>Type::AUDIO, Type::IMAGE, Type::MASH or Type::VIDEO.</p>
 </dd><dt>Default
 <dd>
 <p>Probed from downloaded.</p>
@@ -1285,18 +1660,18 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="type-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 171</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 219</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- type-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- type-3D-method -->
 
     
       <div id="method-i-url" class="method-detail ">
@@ -1318,51 +1693,44 @@ href="Asset.html#TypeVideo">TypeVideo</a>.</p>
 
           
           <div class="method-source-code" id="url-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 189</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">url</span> <span class="ruby-identifier">base_src</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">module_src</span> = <span class="ruby-keyword">nil</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 237</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url</span>(<span class="ruby-identifier">base_src</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">module_src</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">u</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Source</span>) 
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Source</span>)
     <span class="ruby-identifier">u</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">url</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">relative?</span>
-      <span class="ruby-comment"># relative url</span>
-      <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
-      <span class="ruby-keyword">when</span> <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Theme</span>, <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Font</span>, <span class="ruby-constant">Mash</span><span class="ruby-operator">::</span><span class="ruby-constant">Effect</span>
-        <span class="ruby-identifier">base_src</span> = <span class="ruby-identifier">module_src</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">module_src</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">base_src</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">base_src</span> = <span class="ruby-identifier">module_src</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">module_src</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">MODULES</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">type</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">base_src</span>
         <span class="ruby-identifier">base_url</span> = <span class="ruby-identifier">base_src</span>.<span class="ruby-identifier">url</span>
         <span class="ruby-identifier">base_url</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">add_slash_end</span> <span class="ruby-identifier">base_url</span>
-        <span class="ruby-identifier">u</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">strip_slash_start</span> <span class="ruby-identifier">u</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeFile</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">base_src</span>[<span class="ruby-value">:type</span>]
-          <span class="ruby-identifier">u</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">base_url</span>, <span class="ruby-identifier">u</span>
-        <span class="ruby-keyword">else</span>
-          <span class="ruby-identifier">u</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">base_url</span>, <span class="ruby-identifier">u</span>).<span class="ruby-identifier">to_s</span>
-        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">u</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">strip_slash_start</span>(<span class="ruby-identifier">u</span>)
+        <span class="ruby-identifier">u</span> = <span class="ruby-identifier">__url</span>(<span class="ruby-identifier">base_src</span>[<span class="ruby-value">:type</span>], <span class="ruby-identifier">base_url</span>, <span class="ruby-identifier">u</span>)
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#puts &quot;#{self.class.name}#url URL: #{u}&quot;</span>
+  <span class="ruby-comment"># puts &quot;#{self.class.name}#url URL: #{u}&quot;</span>
   <span class="ruby-identifier">u</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- url-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- url-method -->
 
     
-    </section>
+    </section><!-- public-instance-method-details -->
   
-  </section>
-</main>
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
 
 
-<footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
-  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

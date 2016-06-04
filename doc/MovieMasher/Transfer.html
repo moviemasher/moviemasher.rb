@@ -2,84 +2,90 @@
 
 <html>
 <head>
-<meta charset="UTF-8">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
 <title>class MovieMasher::Transfer - RDoc Documentation</title>
 
-<link href="../fonts.css" rel="stylesheet">
-<link href="../rdoc.css" rel="stylesheet">
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
 </script>
 
-<script src="../js/jquery.js"></script>
-<script src="../js/navigation.js"></script>
-<script src="../js/search_index.js"></script>
-<script src="../js/search.js"></script>
-<script src="../js/searcher.js"></script>
-<script src="../js/darkfish.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
 
 
-<body id="top" role="document" class="class">
-<nav role="navigation">
-  <div id="project-navigation">
-    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
-  <h2>
-    <a href="../index.html" rel="home">Home</a>
-  </h2>
-
-  <div id="table-of-contents-navigation">
-    <a href="../table_of_contents.html#pages">Pages</a>
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
     <a href="../table_of_contents.html#classes">Classes</a>
     <a href="../table_of_contents.html#methods">Methods</a>
-  </div>
-</div>
+  </h3>
+</nav>
 
-    <div id="search-section" role="search" class="project-section initially-hidden">
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <div id="search-field-wrapper">
-      <input id="search-field" role="combobox" aria-label="Search"
-             aria-autocomplete="list" aria-controls="search-results"
-             type="text" name="search" placeholder="Search" spellcheck="false"
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </div>
-
-    <ul id="search-results" aria-label="Search Results"
-        aria-busy="false" aria-expanded="false"
-        aria-atomic="false" class="initially-hidden"></ul>
+    </h3>
   </form>
-</div>
 
-  </div>
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
 
   
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/transfer.rb
+  </ul>
+</nav>
+
+    
+  </div>
 
   <div id="class-metadata">
     
-    <div id="parent-class-section" class="nav-section">
-  <h3>Parent</h3>
-
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
   
   <p class="link">Hashable
   
-</div>
+</nav>
 
     
     
     <!-- Method Quickref -->
-<div id="method-list-section" class="nav-section">
-  <h3>Methods</h3>
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
 
-  <ul class="link-list" role="directory">
+  <ul class="link-list">
     
     <li ><a href="#method-c-create">::create</a>
     
     <li ><a href="#method-c-create_if">::create_if</a>
     
+    <li ><a href="#method-c-file">::file</a>
+    
     <li ><a href="#method-c-init_hash">::init_hash</a>
     
     <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-query_string">::query_string</a>
+    
+    <li ><a href="#method-i-__unless_empty">#__unless_empty</a>
     
     <li ><a href="#method-i-bucket">#bucket</a>
     
@@ -146,44 +152,232 @@
     <li ><a href="#method-i-user-3D">#user=</a>
     
   </ul>
-</div>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../Documentation_md.html">Documentation</a>
+  
+    <li class="file"><a href="../README_md.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../MovieMasher.html">MovieMasher</a>
+  
+    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
+  
+    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
+  
+    <li><a href="../MovieMasher/AwsInitService.html">MovieMasher::AwsInitService</a>
+  
+    <li><a href="../MovieMasher/AzureInitService.html">MovieMasher::AzureInitService</a>
+  
+    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
+  
+    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
+  
+    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
+  
+    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
+  
+    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
+  
+    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
+  
+    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
+  
+    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
+  
+    <li><a href="../MovieMasher/DownloadService.html">MovieMasher::DownloadService</a>
+  
+    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
+  
+    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
+  
+    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
+  
+    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
+  
+    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
+  
+    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
+  
+    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
+  
+    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
+  
+    <li><a href="../MovieMasher/Error/JobSyntax.html">MovieMasher::Error::JobSyntax</a>
+  
+    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
+  
+    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
+  
+    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
+  
+    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
+  
+    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
+  
+    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
+  
+    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
+  
+    <li><a href="../MovieMasher/FileDownloadService.html">MovieMasher::FileDownloadService</a>
+  
+    <li><a href="../MovieMasher/FileHelper.html">MovieMasher::FileHelper</a>
+  
+    <li><a href="../MovieMasher/FileQueueService.html">MovieMasher::FileQueueService</a>
+  
+    <li><a href="../MovieMasher/FileUploadService.html">MovieMasher::FileUploadService</a>
+  
+    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
+  
+    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
+  
+    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
+  
+    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
+  
+    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
+  
+    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
+  
+    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
+  
+    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
+  
+    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+  
+    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
+  
+    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
+  
+    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
+  
+    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
+  
+    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
+  
+    <li><a href="../MovieMasher/GraphUtility.html">MovieMasher::GraphUtility</a>
+  
+    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
+  
+    <li><a href="../MovieMasher/HttpDownloadService.html">MovieMasher::HttpDownloadService</a>
+  
+    <li><a href="../MovieMasher/HttpUploadService.html">MovieMasher::HttpUploadService</a>
+  
+    <li><a href="../MovieMasher/HttpsDownloadService.html">MovieMasher::HttpsDownloadService</a>
+  
+    <li><a href="../MovieMasher/HttpsUploadService.html">MovieMasher::HttpsUploadService</a>
+  
+    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
+  
+    <li><a href="../MovieMasher/InitService.html">MovieMasher::InitService</a>
+  
+    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
+  
+    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
+  
+    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
+  
+    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
+  
+    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
+  
+    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
+  
+    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
+  
+    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
+  
+    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
+  
+    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
+  
+    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
+  
+    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
+  
+    <li><a href="../MovieMasher/MetaReader.html">MovieMasher::MetaReader</a>
+  
+    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
+  
+    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
+  
+    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
+  
+    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
+  
+    <li><a href="../MovieMasher/QueueService.html">MovieMasher::QueueService</a>
+  
+    <li><a href="../MovieMasher/S3DownloadService.html">MovieMasher::S3DownloadService</a>
+  
+    <li><a href="../MovieMasher/S3UploadService.html">MovieMasher::S3UploadService</a>
+  
+    <li><a href="../MovieMasher/Service.html">MovieMasher::Service</a>
+  
+    <li><a href="../MovieMasher/ShellHelper.html">MovieMasher::ShellHelper</a>
+  
+    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
+  
+    <li><a href="../MovieMasher/SqsQueueService.html">MovieMasher::SqsQueueService</a>
+  
+    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
+  
+    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
+  
+    <li><a href="../MovieMasher/Trigger.html">MovieMasher::Trigger</a>
+  
+    <li><a href="../MovieMasher/Type.html">MovieMasher::Type</a>
+  
+    <li><a href="../MovieMasher/UploadService.html">MovieMasher::UploadService</a>
+  
+  </ul>
+</nav>
 
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-MovieMasher::Transfer">
-  <h1 id="class-MovieMasher::Transfer" class="class">
-    class MovieMasher::Transfer
-  </h1>
+<div id="documentation">
+  <h1 class="class">class MovieMasher::Transfer</h1>
 
-  <section class="description">
+  <div id="description" class="description">
     
 <p>Base class for <a href="Callback.html">Callback</a> and <a
-href="Source.html">Source</a> as well as used directly to resolve  <a
-href="Input.html">Input</a> and <a href="Output.html">Output</a> relative
-paths to a specific location.</p>
+href="Source.html">Source</a> as well as used directly to resolveInput and
+<a href="Output.html">Output</a> relative paths to a specific location.</p>
 
-<p>There are three basic types of transfers - <a
-href="Transfer.html#TypeFile">TypeFile</a>, <a
-href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeS3">TypeS3</a>  representing locations on the local
-drive, remote web servers and AWS S3  buckets respectively. <a
-href="Transfer.html#TypeFile">TypeFile</a> transfers can either move, copy
-or create  symbolic links for files. <a
-href="Transfer.html#TypeHttp">TypeHttp</a> (and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>) transfers can supply 
-authenticating <a href="Transfer.html#method-i-parameters">parameters</a>
-and <a href="Transfer.html#TypeS3">TypeS3</a> transfers will use access
-keys provided  in the configuration or any mechanism supported by aws-sdk
-(environmental  variables, instance roles, etc.).</p>
+<p>There are three basic types of transfers - Type::FILE, Type::HTTP
+andType::S3 representing locations on the local drive, remote web servers
+andAWS S3 buckets respectively. Type::FILE transfers can either move, copy
+orcreate symbolic links for files. Type::HTTP (and Type::HTTPS) transfers
+cansupply authenticating <a
+href="Transfer.html#method-i-parameters">parameters</a> and Type::S3
+transfers will use accesskeys provided in the configuration or any
+mechanism supported by aws-sdk(environmental variables, instance roles,
+etc.).</p>
 
 <p>When building file paths, <a
 href="Transfer.html#method-i-directory">directory</a> and <a
-href="Transfer.html#method-i-path">path</a> will automatically have slashes
-inserted between them as needed so trailing and leading slashes are
-optional.</p>
+href="Transfer.html#method-i-path">path</a> will automatically haveslashes
+inserted between them as needed so trailing and leading slashes
+areoptional.</p>
 
-  </section>
+  </div><!-- description -->
 
   
   
@@ -194,43 +388,13 @@ optional.</p>
     
 
     
-    <section class="constants-list">
-      <header>
-        <h3>Constants</h3>
-      </header>
-      <dl>
-      
-        <dt id="TypeFile">TypeFile
-        
-        <dd>
-        
-      
-        <dt id="TypeHttp">TypeHttp
-        
-        <dd>
-        
-      
-        <dt id="TypeHttps">TypeHttps
-        
-        <dd>
-        
-      
-        <dt id="TypeS3">TypeS3
-        
-        <dd>
-        
-      
-      </dl>
-    </section>
-    
 
     
 
+    <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Class Methods</h3>
-       </header>
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
 
     
       <div id="method-c-create" class="method-detail ">
@@ -246,27 +410,25 @@ optional.</p>
 
         <div class="method-description">
           
-          <h3 id="method-c-create-label-Returns">Returns<span><a href="#method-c-create-label-Returns">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
-
-<p>Returns a new instance.</p>
+          <p>Returns a new instance.</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-comment">#puts &quot;Transfer.create #{hash}&quot;</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-comment"># puts &quot;Transfer.create #{hash}&quot;</span>
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Transfer</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Transfer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- create-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- create-method -->
 
     
       <div id="method-c-create_if" class="method-detail ">
@@ -288,18 +450,65 @@ optional.</p>
 
           
           <div class="method-source-code" id="create_if-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 26</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_if</span> <span class="ruby-identifier">hash</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_if</span>(<span class="ruby-identifier">hash</span>)
   (<span class="ruby-identifier">hash</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- create_if-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- create_if-method -->
+
+    
+      <div id="method-c-file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">file</span><span
+            class="method-args">(mode, path, out_file)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="file-source">
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">file</span>(<span class="ruby-identifier">mode</span>, <span class="ruby-identifier">path</span>, <span class="ruby-identifier">out_file</span>)
+  <span class="ruby-identifier">path</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">path</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;/&#39;</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">path</span>)
+    <span class="ruby-identifier">out_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">out_file</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">out_file</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;/&#39;</span>)
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">mode</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Method</span><span class="ruby-operator">::</span><span class="ruby-constant">COPY</span>
+      <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">copy</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">out_file</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Method</span><span class="ruby-operator">::</span><span class="ruby-constant">MOVE</span>
+      <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">move</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">out_file</span>)
+    <span class="ruby-keyword">else</span> <span class="ruby-comment"># Method::SYMLINK</span>
+      <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">symlink</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">out_file</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">out_file</span>)
+      <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobUpload</span>, <span class="ruby-node">&quot;could not #{mode} #{path} to #{out_file}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- file-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- file-method -->
 
     
       <div id="method-c-init_hash" class="method-detail ">
@@ -321,27 +530,27 @@ optional.</p>
 
           
           <div class="method-source-code" id="init_hash-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 29</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-identifier">hash</span>
-  <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:type</span>, <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeFile</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">hash</span>)
+  <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:type</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">hash</span>[<span class="ruby-value">:type</span>]
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeS3</span>
-    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:acl</span>, <span class="ruby-string">&#39;public-read&#39;</span> 
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeFile</span>
-    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:method</span>, <span class="ruby-constant">Method</span><span class="ruby-operator">::</span><span class="ruby-constant">Move</span> 
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeHttp</span>
-    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:method</span>, <span class="ruby-constant">Method</span><span class="ruby-operator">::</span><span class="ruby-constant">Post</span> 
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">S3</span>
+    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span>(<span class="ruby-identifier">hash</span>, <span class="ruby-value">:acl</span>, <span class="ruby-string">&#39;public-read&#39;</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span>
+    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span>(<span class="ruby-identifier">hash</span>, <span class="ruby-value">:method</span>, <span class="ruby-constant">Method</span><span class="ruby-operator">::</span><span class="ruby-constant">MOVE</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>
+    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span>(<span class="ruby-identifier">hash</span>, <span class="ruby-value">:method</span>, <span class="ruby-constant">Method</span><span class="ruby-operator">::</span><span class="ruby-constant">POST</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">hash</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- init_hash-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- init_hash-method -->
 
     
       <div id="method-c-new" class="method-detail ">
@@ -368,27 +577,101 @@ optional.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 97</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 103</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-identifier">hash</span>
   <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- new-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- new-method -->
 
     
-    </section>
+      <div id="method-c-query_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query_string</span><span
+            class="method-args">(transfer, job)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="query_string-source">
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 163</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">query_string</span>(<span class="ruby-identifier">transfer</span>, <span class="ruby-identifier">job</span>)
+  <span class="ruby-identifier">parameters</span> = <span class="ruby-identifier">transfer</span>[<span class="ruby-value">:parameters</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">parameters</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">parameters</span> = <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">parameters</span>))
+    <span class="ruby-identifier">scope_object</span> = {
+      <span class="ruby-identifier">job</span><span class="ruby-operator">:</span> <span class="ruby-identifier">job</span>,
+      <span class="ruby-identifier">transfer</span>.<span class="ruby-identifier">class_symbol</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">transfer</span>
+    }
+    <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">object</span>(<span class="ruby-identifier">parameters</span>, <span class="ruby-identifier">scope_object</span>)
+    <span class="ruby-identifier">parameters</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">encode_www_form</span>(<span class="ruby-identifier">parameters</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">parameters</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query_string-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query_string-method -->
+
+    
+    </section><!-- public-class-method-details -->
   
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Instance Methods</h3>
-       </header>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-__unless_empty" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__unless_empty</span><span
+            class="method-args">(could_be_empty, s)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__unless_empty-source">
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 233</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__unless_empty</span>(<span class="ruby-identifier">could_be_empty</span>, <span class="ruby-identifier">s</span>)
+  (<span class="ruby-identifier">could_be_empty</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">s</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __unless_empty-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __unless_empty-method -->
 
     
       <div id="method-i-bucket" class="method-detail ">
@@ -410,18 +693,18 @@ optional.</p>
 
           
           <div class="method-source-code" id="bucket-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 42</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">bucket</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- bucket-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- bucket-method -->
 
     
       <div id="method-i-bucket-3D" class="method-detail ">
@@ -442,25 +725,25 @@ optional.</p>
 <p>Name of AWS S3 bucket where file is stored.</p>
 </dd><dt>Types
 <dd>
-<p>Just <a href="Transfer.html#TypeS3">TypeS3</a>.</p>
+<p>Just Type::S3.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="bucket-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 47</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">bucket=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- bucket-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- bucket-3D-method -->
 
     
       <div id="method-i-directory" class="method-detail ">
@@ -482,18 +765,18 @@ optional.</p>
 
           
           <div class="method-source-code" id="directory-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 51</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">directory</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- directory-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- directory-method -->
 
     
       <div id="method-i-directory-3D" class="method-detail ">
@@ -511,34 +794,33 @@ optional.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>Added to URL after <a href="Transfer.html#method-i-directory">directory</a>
-and before <a href="Transfer.html#method-i-name">name</a>, with slash on
-either side.</p>
+<p>Added to URL after <a
+href="Transfer.html#method-i-directory">directory</a>, before <a
+href="Transfer.html#method-i-name">name</a>, slashed.</p>
 </dd><dt>Default
 <dd>
 <p>Nil means do not add to URL.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
+<p>Type::HTTP and Type::HTTPS.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="directory-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 57</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">directory=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- directory-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- directory-3D-method -->
 
     
       <div id="method-i-directory_path" class="method-detail ">
@@ -560,20 +842,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="directory_path-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 61</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">directory_path</span>
-  <span class="ruby-identifier">dp</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">directory</span>, <span class="ruby-identifier">path</span>
-  <span class="ruby-comment">#puts &quot;#{self.class.name}#directory_path #{dp}\ndirectory: #{directory}\npath: #{path}&quot;</span>
-  <span class="ruby-identifier">dp</span>
+  <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">directory</span>, <span class="ruby-identifier">path</span>)
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- directory_path-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- directory_path-method -->
 
     
       <div id="method-i-error-3F" class="method-detail ">
@@ -595,18 +875,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="error-3F-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">error?</span>
   <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- error-3F-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- error-3F-method -->
 
     
       <div id="method-i-extension" class="method-detail ">
@@ -628,18 +908,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="extension-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 69</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 78</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extension</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- extension-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- extension-method -->
 
     
       <div id="method-i-extension-3D" class="method-detail ">
@@ -665,18 +945,18 @@ with period inserted between.</p>
 
           
           <div class="method-source-code" id="extension-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 73</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extension=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- extension-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- extension-3D-method -->
 
     
       <div id="method-i-file_name" class="method-detail ">
@@ -698,20 +978,20 @@ with period inserted between.</p>
 
           
           <div class="method-source-code" id="file_name-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 76</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">file_name</span>
   <span class="ruby-identifier">fn</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">strip_slashes</span> <span class="ruby-identifier">name</span>
   <span class="ruby-identifier">fn</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;.&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">extension</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">extension</span>
   <span class="ruby-identifier">fn</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- file_name-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- file_name-method -->
 
     
       <div id="method-i-full_path" class="method-detail ">
@@ -733,20 +1013,20 @@ with period inserted between.</p>
 
           
           <div class="method-source-code" id="full_path-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 81</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">full_path</span> 
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">full_path</span>
   <span class="ruby-identifier">fp</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">directory_path</span>, <span class="ruby-identifier">file_name</span>
-  <span class="ruby-comment">#puts &quot;#{self.class.name}#full_path #{fp}&quot;</span>
+  <span class="ruby-comment"># puts &quot;#{self.class.name}#full_path #{fp}&quot;</span>
   <span class="ruby-identifier">fp</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- full_path-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- full_path-method -->
 
     
       <div id="method-i-host" class="method-detail ">
@@ -768,18 +1048,18 @@ with period inserted between.</p>
 
           
           <div class="method-source-code" id="host-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 88</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">host</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- host-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- host-method -->
 
     
       <div id="method-i-host-3D" class="method-detail ">
@@ -800,26 +1080,25 @@ with period inserted between.</p>
 <p>Remote server name or IP address where file is stored.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
+<p>Type::HTTP and Type::HTTPS.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="host-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 93</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 100</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">host=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- host-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- host-3D-method -->
 
     
       <div id="method-i-method" class="method-detail ">
@@ -841,18 +1120,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="method-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 102</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 107</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">method</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- method-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- method-method -->
 
     
       <div id="method-i-method-3D" class="method-detail ">
@@ -873,31 +1152,31 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 <p>How to retrieve the file.</p>
 </dd><dt>Constant
 <dd>
-<p>Method::Copy, Method::Move or Method::Symlink.</p>
+<p>Method::COPY, Method::MOVE or Method::SYMLINK.</p>
 </dd><dt>Default
 <dd>
-<p>Method::Symlink</p>
+<p>Method::SYMLINK</p>
 </dd><dt>Types
 <dd>
-<p>Just <a href="Transfer.html#TypeFile">TypeFile</a>.</p>
+<p>Just Type::FILE.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="method-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 109</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 114</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">method=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- method-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- method-3D-method -->
 
     
       <div id="method-i-name" class="method-detail ">
@@ -919,18 +1198,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="name-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 113</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 117</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- name-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- name-method -->
 
     
       <div id="method-i-name-3D" class="method-detail ">
@@ -948,27 +1227,26 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>The full or basename of file appended to file path. If full,  <a
-href="Transfer.html#method-i-extension">extension</a> will be set and
-removed from value.</p>
+<p>The full or basename of file appended to file path. If full,#extension will
+be set and removed from value.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="name-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 118</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- name-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- name-3D-method -->
 
     
       <div id="method-i-parameters" class="method-detail ">
@@ -990,18 +1268,18 @@ removed from value.</p>
 
           
           <div class="method-source-code" id="parameters-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 122</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 125</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parameters</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- parameters-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- parameters-method -->
 
     
       <div id="method-i-parameters-3D" class="method-detail ">
@@ -1019,7 +1297,7 @@ removed from value.</p>
           
           <dl class="rdoc-list note-list"><dt>Hash
 <dd>
-<p>Query string parameters to send with request for file. The values are
+<p>Query string parameters to send with request for file. The valuesare
 evaluated, with <a href="Job.html">Job</a> and <a
 href="Input.html">Input</a> in scope.</p>
 </dd><dt>Default
@@ -1027,26 +1305,25 @@ href="Input.html">Input</a> in scope.</p>
 <p>Nil means no query string used.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
+<p>Type::HTTP and Type::HTTPS.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="parameters-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 129</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 132</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parameters=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- parameters-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- parameters-3D-method -->
 
     
       <div id="method-i-pass" class="method-detail ">
@@ -1068,18 +1345,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="pass-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 133</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pass</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- pass-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- pass-method -->
 
     
       <div id="method-i-pass-3D" class="method-detail ">
@@ -1103,26 +1380,25 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 <p>Nil means do not provide authenticating details.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
+<p>Type::HTTP and Type::HTTPS.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="pass-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 139</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 141</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pass=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- pass-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- pass-3D-method -->
 
     
       <div id="method-i-path" class="method-detail ">
@@ -1144,18 +1420,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="path-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 143</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 144</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">path</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- path-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- path-method -->
 
     
       <div id="method-i-path-3D" class="method-detail ">
@@ -1173,34 +1449,33 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>Added to URL after <a href="Transfer.html#method-i-directory">directory</a>
-and before <a href="Transfer.html#method-i-name">name</a>, with slash on
-either side.</p>
+<p>Added to URL after <a
+href="Transfer.html#method-i-directory">directory</a>, before <a
+href="Transfer.html#method-i-name">name</a>, slashed.</p>
 </dd><dt>Default
 <dd>
 <p>Nil means do not add to URL.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
+<p>Type::HTTP and Type::HTTPS.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="path-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 149</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 150</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">path=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- path-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- path-3D-method -->
 
     
       <div id="method-i-port" class="method-detail ">
@@ -1224,16 +1499,16 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
           <div class="method-source-code" id="port-source">
             <pre><span class="ruby-comment"># File lib/transfer.rb, line 153</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">port</span>
-    <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
-  <span class="ruby-keyword">end</span></pre>
-          </div>
+  <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- port-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- port-method -->
 
     
       <div id="method-i-port-3D" class="method-detail ">
@@ -1254,14 +1529,13 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 <p>Port number to contact <a href="Transfer.html#method-i-host">host</a> on.</p>
 </dd><dt>Constant
 <dd>
-<p>Method::Copy, Method::Move or Method::Symlink.</p>
+<p>Method::COPY, Method::MOVE or Method::SYMLINK.</p>
 </dd><dt>Default
 <dd>
 <p>Nil means standard port for <a href="Transfer.html#method-i-type">type</a>.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
+<p>Type::HTTP and Type::HTTPS.</p>
 </dd></dl>
           
           
@@ -1272,14 +1546,14 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">port=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- port-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- port-3D-method -->
 
     
       <div id="method-i-region" class="method-detail ">
@@ -1301,18 +1575,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="region-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 164</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 176</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">region</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- region-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- region-method -->
 
     
       <div id="method-i-region-3D" class="method-detail ">
@@ -1336,25 +1610,25 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 <p>Nil means us-east-1 standard region.</p>
 </dd><dt>Types
 <dd>
-<p>Just <a href="Transfer.html#TypeS3">TypeS3</a>.</p>
+<p>Just Type::S3.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="region-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 170</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 182</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">region=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- region-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- region-3D-method -->
 
     
       <div id="method-i-relative-3F" class="method-detail ">
@@ -1376,21 +1650,21 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="relative-3F-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 174</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">relative?</span> 
-  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeS3</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">host</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">host</span>.<span class="ruby-identifier">empty?</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeFile</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">full_path</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;/&#39;</span>) <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">full_path</span>)
-  <span class="ruby-keyword">true</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 185</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">relative?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">S3</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">host</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">host</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">is_file</span> = (<span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>)
+  <span class="ruby-operator">!</span>(<span class="ruby-identifier">is_file</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">full_path</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;/&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">full_path</span>))
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- relative-3F-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- relative-3F-method -->
 
     
       <div id="method-i-type" class="method-detail ">
@@ -1412,18 +1686,18 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 
           
           <div class="method-source-code" id="type-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 180</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 191</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- type-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- type-method -->
 
     
       <div id="method-i-type-3D" class="method-detail ">
@@ -1444,31 +1718,28 @@ href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
 <p>The kind of transfer.</p>
 </dd><dt>Constant
 <dd>
-<p><a href="Transfer.html#TypeFile">TypeFile</a>, <a
-href="Transfer.html#TypeHttp">TypeHttp</a>, <a
-href="Transfer.html#TypeHttps">TypeHttps</a> or <a
-href="Transfer.html#TypeS3">TypeS3</a>.</p>
+<p>Type::FILE, Type::HTTP, Type::HTTPS or Type::S3.</p>
 </dd><dt>Default
 <dd>
-<p><a href="Transfer.html#TypeFile">TypeFile</a></p>
+<p>Type::FILE</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="type-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 186</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 197</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- type-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- type-3D-method -->
 
     
       <div id="method-i-url" class="method-detail ">
@@ -1490,39 +1761,39 @@ href="Transfer.html#TypeS3">TypeS3</a>.</p>
 
           
           <div class="method-source-code" id="url-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 190</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">url</span> 
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url</span>
   <span class="ruby-identifier">u</span> = <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:url</span>]
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">u</span>
     <span class="ruby-identifier">u</span> = <span class="ruby-string">&#39;&#39;</span>
     <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeHttp</span>, <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeHttps</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">host</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">host</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPS</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">host</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
         <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{type}://#{host}&quot;</span>
-        <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;:#{port}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">port</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">port</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__unless_empty</span>(<span class="ruby-identifier">port</span>, <span class="ruby-node">&quot;:#{port}&quot;</span>)
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">u</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">u</span>, <span class="ruby-identifier">full_path</span>)
-    <span class="ruby-keyword">when</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeS3</span>
-      <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{bucket}.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">bucket</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">bucket</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">S3</span>
+      <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__unless_empty</span>(<span class="ruby-identifier">bucket</span>, <span class="ruby-node">&quot;#{bucket}.&quot;</span>)
       <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;s3&#39;</span>
-      <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;-#{region}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">region</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__unless_empty</span>(<span class="ruby-identifier">region</span>, <span class="ruby-node">&quot;-#{region}&quot;</span>)
       <span class="ruby-identifier">u</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;.amazonaws.com&#39;</span>
       <span class="ruby-identifier">u</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">u</span>, <span class="ruby-identifier">full_path</span>)
-    <span class="ruby-keyword">when</span> <span class="ruby-constant">Transfer</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeFile</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span>
       <span class="ruby-identifier">u</span> = <span class="ruby-identifier">full_path</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#puts &quot;#{self.class.name}#url #{u}&quot;</span>
+  <span class="ruby-comment"># puts &quot;#{self.class.name}#url #{u}&quot;</span>
   <span class="ruby-identifier">u</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- url-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- url-method -->
 
     
       <div id="method-i-user" class="method-detail ">
@@ -1544,18 +1815,18 @@ href="Transfer.html#TypeS3">TypeS3</a>.</p>
 
           
           <div class="method-source-code" id="user-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 215</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 224</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">user</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- user-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- user-method -->
 
     
       <div id="method-i-user-3D" class="method-detail ">
@@ -1579,37 +1850,37 @@ href="Transfer.html#TypeS3">TypeS3</a>.</p>
 <p>Nil means do not provide authenticating details.</p>
 </dd><dt>Types
 <dd>
-<p><a href="Transfer.html#TypeHttp">TypeHttp</a> and <a
-href="Transfer.html#TypeHttps">TypeHttps</a>.</p>
+<p>Type::HTTP and Type::HTTPS.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="user-3D-source">
-            <pre><span class="ruby-comment"># File lib/transfer.rb, line 221</span>
+            <pre><span class="ruby-comment"># File lib/transfer.rb, line 230</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">user=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div>
+          </div><!-- user-3D-source -->
           
         </div>
 
         
 
         
-      </div>
+      </div><!-- user-3D-method -->
 
     
-    </section>
+    </section><!-- public-instance-method-details -->
   
-  </section>
-</main>
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
 
 
-<footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
-  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

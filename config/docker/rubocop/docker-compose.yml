@@ -1,0 +1,15 @@
+version: '2'
+services:
+  rubocop:
+    image: moviemasher_rubocop
+    entrypoint: rubocop
+    command: ./
+    build:
+      context: ../../../
+      dockerfile: ./config/docker/rubocop/Dockerfile-rubocop
+    volumes:
+      - ../../../lib/:/mnt/data/lib
+      - ../../../service/:/mnt/data/service
+      - ../../../spec/:/mnt/data/spec
+      - ../../../Rakefile.rb:/mnt/data/Rakefile.rb
+      - ./rubocop.yml:/mnt/data/.rubocop.yml

@@ -1,10 +1,11 @@
 module MovieMasher
-	module Parameters
-		Color = [
-			{ name: "color", value:"color" },
-			{ name: "size", value:"mm_dimensions" },
-			{ name: "duration", value:"mm_duration" },
-			{ name: "rate", value:"mm_fps" },
-		]
-	end
+  # default filter parameters
+  module Parameters
+    COLOR = [
+      { name: 'color', value: 'color' },
+      { name: 'size', value: 'mm_dimensions' },
+      { name: 'duration', value: 'mm_duration' },
+      { name: 'rate', value: 'mm_fps' }
+    ].freeze
+  end
 end

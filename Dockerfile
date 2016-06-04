@@ -39,37 +39,36 @@ RUN apt-get update && apt-get install -y \
   sox \
   ecasound
 
-# clean up apt and temporary directories
-RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+WORKDIR /data
 
 # ffmpeg prefers openjpeg 1.5.x, so we compile it from source - 11/15/2014
-WORKDIR /data
 RUN \
+  cd /data; \
   wget https://downloads.sourceforge.net/project/openjpeg.mirror/1.5.2/openjpeg-1.5.2.tar.gz; \
   tar -xzvf openjpeg-1.5.2.tar.gz; \
   cd /data/openjpeg-1.5.2; \
   cmake .; \
   make; \
   make install; \
-  cd /data; \
   rm -R /data/openjpeg-1.5.2
 
 # pull, configure, make and install x264
-WORKDIR /data
 RUN \
+  cd /data; \
   git clone git://git.videolan.org/x264.git; \
   cd /data/x264; \
   ./configure --prefix=/usr --enable-shared; \
   make; \
   make install; \
-  cd /data; \
   rm -R /data/x264
 
-# pull, configure, make and install ffmpeg
-WORKDIR /data
+# pull, configure, make and install most recent ffmpeg stable release
 RUN \
-  git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg; \
-  cd /data/ffmpeg; \
+  cd /data; \
+  wget https://ffmpeg.org/releases/ffmpeg-3.0.2.tar.gz; \
+  tar -xzvf ffmpeg-3.0.2.tar.gz; \
+  cd /data/ffmpeg-3.0.2; \
   ./configure \
     --enable-frei0r \
     --enable-gpl \
@@ -94,26 +93,23 @@ RUN \
   ; \
   make; \
   make install; \
-  cd /data; \
-  rm -R /data/ffmpeg
+  rm -R /data/ffmpeg-3.0.2;
 
 # needed for binaries to find libraries
 RUN ldconfig
 
 # install our production gems
 COPY Gemfile /data/
-COPY Gemfile.lock /data/
-WORKDIR /data
 RUN \
-  bundle install --without test development
+  cd /data; \
+  bundle install;
 
 # copy, make and install wav2png
 COPY bin/wav2png/* /data/wav2png/
-WORKDIR /data/wav2png
 RUN \
+  cd /data/wav2png; \
   make; \
   mv wav2png /usr/bin/; \
-  cd /data; \
   rm -R /data/wav2png
 
 # copy everything except what's caught by .dockerignore
@@ -124,31 +120,13 @@ WORKDIR /mnt/moviemasher.rb
 CMD ["moviemasher"]
 ENTRYPOINT ["config/docker/entrypoint.rb"]
 
+# clean up apt and temporary directories
+RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # expose all our configurable directories as potential mount points
 VOLUME /tmp/moviemasher/queue
 VOLUME /tmp/moviemasher/log
 VOLUME /tmp/moviemasher/render
 VOLUME /tmp/moviemasher/download
 VOLUME /tmp/moviemasher/error
-
-# EVERYTHING BELOW CAN BE UNCOMMENTED TO PRODUCE DEV IMAGE
-## # install redis for aws-sdk
-## RUN \
-##   cd /data; \
-##   wget "http://download.redis.io/releases/redis-2.8.17.tar.gz"; \
-##   gunzip redis-2.8.17.tar.gz; \
-##   tar -xvf redis-2.8.17.tar; \
-##   cd /data/redis-2.8.17; \
-##   ./configure; \
-##   make; \
-##   make install; \
-##   cd /data; \
-##   rm -R /data/redis-2.8.17
-##
-## # install our test gems
-## COPY Gemfile /data/
-## # COPY Gemfile.lock /data/
-## RUN \
-##   cd /data; \
-##   bundle install --without production
 

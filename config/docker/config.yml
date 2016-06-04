@@ -2,6 +2,7 @@
 :download_directory: /tmp/moviemasher/download
 :download_bytes: 100M
 :error_directory: /tmp/moviemasher/error
+:log_directory: /tmp/moviemasher/log
 :process_seconds: -2
 :verbose: debug
 :chmod_directory_new: '0777'

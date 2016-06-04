@@ -1,0 +1,15 @@
+---
+:chmod_directory_new: '0775'
+:download_directory: /tmp/moviemasher/download
+:download_bytes: 2G
+:error_directory:
+:queue_url:
+:log_directory: /tmp/moviemasher/log
+:verbose: info
+:process_seconds: 55
+:queue_directory: /tmp/moviemasher/queue
+:queue_wait_seconds: 2
+:render_directory: /tmp/moviemasher/render
+:render_save: false
+:aws_access_key_id:
+:aws_secret_access_key:

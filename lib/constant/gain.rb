@@ -1,7 +1,7 @@
 
 module MovieMasher
-	module Gain
-		None = FloatUtil::One
-		Mute = FloatUtil::Zero
-	end
+  module Gain
+    None = FloatUtil::ONE
+    Mute = FloatUtil::ZERO
+  end
 end

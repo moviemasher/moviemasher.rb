@@ -1,0 +1,11 @@
+
+FROM ruby:2.1
+MAINTAINER Movie Masher <support@moviemasher.com>
+
+# # # # # # # # # # # # # # # #
+#  DEFAULT COMMAND
+CMD bundle install
+
+# # # # # # # # # # # # # # # #
+#  WORKING DIRECTORY
+WORKDIR /data

@@ -1,0 +1,21 @@
+FROM moviemasher/moviemasher.rb
+MAINTAINER Movie Masher <support@moviemasher.com>
+
+# install redis for clientside_aws
+RUN \
+  cd /data; \
+  wget "http://download.redis.io/releases/redis-2.8.17.tar.gz"; \
+  gunzip redis-2.8.17.tar.gz; \
+  tar -xvf redis-2.8.17.tar; \
+  cd /data/redis-2.8.17; \
+  ./configure; \
+  make; \
+  make install; \
+  cd /data; \
+  rm -R /data/redis-2.8.17
+
+# install our test gems
+COPY ./Gemfile /mnt/moviemasher.rb/Gemfile
+COPY ./config/docker/rspec/Gemfile-rspec /mnt/moviemasher.rb/Gemfile+
+RUN cat Gemfile+ >> Gemfile; rm Gemfile+; bundle install;
+

@@ -1,0 +1,44 @@
+Style/Tab:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 100
+
+Metrics/LineLength:
+  Max: 80
+
+Metrics/BlockNesting:
+  Max: 3
+
+Metrics/ClassLength:
+  CountComments: false  # count full line comments?
+  Max: 500
+
+Metrics/ModuleLength:
+  CountComments: false  # count full line comments?
+  Max: 500
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+# don't allow safe assignment in conditions.
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: false
+
+# don't allow empty lines between defs.
+Style/EmptyLineBetweenDefs:
+  Enabled: false
+  # If true, this parameter means that single line method definitions don't
+  # need an empty line between them.
+  AllowAdjacentOneLineDefs: true
+
+# it's okay that Rakefile is capitalized
+Style/FileName:
+  Exclude:
+    - 'Rakefile.rb'

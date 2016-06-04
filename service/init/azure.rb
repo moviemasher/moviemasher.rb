@@ -1,28 +1,29 @@
+
 require 'etc'
+
 module MovieMasher
-	class AzureInitService < InitService
-		def init
+  # initializes azure service
+  class AzureInitService < InitService
+    def init
+      me = 'AzureInitService#init'
       group = 'www-data'
-      puts "#{Time.now} AzureInitService#init determining hostname and user..."
-      user = Etc.getlogin	  
+      puts "#{Time.now} #{me} determining hostname and user..."
+      user = Etc.getlogin
       cmd = 'hostname'
-      stdin, stdout, stderr = Open3.capture3 cmd
+      stdin = Open3.capture3(cmd).first
       hostname = stdin.strip
       puts "#{cmd}\n#{stdin}"
-      
-      puts "#{Time.now} AzureInitService#init determining if #{user} user is in #{group} group"
+      puts "#{Time.now} #{me} determining if #{user} user is in #{group} group"
       cmd = 'groups'
-      stdin, stdout, stderr = Open3.capture3 cmd
+      stdin = Open3.capture3(cmd).first
       groups = stdin.strip
       puts "#{cmd}\n#{stdin}"
-
       unless groups.include?(group)
-        puts "#{Time.now} AzureInitService#init adding #{user} user to #{group} group"
+        puts "#{Time.now} #{me} adding #{user} user to #{group} group"
         cmd = "sudo usermod -a -G #{group} #{user}"
-        stdin, stdout, stderr = Open3.capture3 cmd
+        stdin = Open3.capture3(cmd).first
         puts "#{cmd}\n#{stdin}"
       end
-
       unless hostname.empty?
         lines = IO.readlines('/var/www/config/moviemasher.ini')
         auth_key = 'authentication='
@@ -46,21 +47,15 @@ module MovieMasher
           end
         end
         unless found
-         new_lines << auth_value 
+          new_lines << auth_value
           added = true
         end
         if added
-          puts "#{Time.now} AzureInitService#init setting angular-moviemasher password to hostname..." 
+          puts "#{Time.now} #{me} angular-moviemasher password now hostname..."
           IO.write('/var/www/config/moviemasher.ini', new_lines.join("\n"))
         end
       end
-      
-#      puts "#{Time.now} AzureInitService#init starting apache2..."
-#      cmd = 'sudo service apache2 restart'
-#      stdin, stdout, stderr = Open3.capture3 cmd
-#      puts "#{cmd}\n#{stdin}"
-
-			false # so we don't overwrite user data
-		end
-	end
+      false # so we don't overwrite user data
+    end
+  end
 end

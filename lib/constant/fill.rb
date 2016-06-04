@@ -1,9 +1,10 @@
 
 module MovieMasher
-	module Fill
-		None = 'none'
-		Stretch = 'stretch'
-		Crop = 'crop'
-		Scale = 'scale'
-	end
+  # fill modes for bounds scaling
+  module Fill
+    NONE = 'none'.freeze
+    STRETCH = 'stretch'.freeze
+    CROP = 'crop'.freeze
+    SCALE = 'scale'.freeze
+  end
 end

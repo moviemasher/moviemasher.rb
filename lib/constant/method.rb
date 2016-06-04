@@ -1,10 +1,11 @@
 module MovieMasher
-	module Method
-		Symlink = 'symlink'
-		Move = 'move'
-		Copy = 'copy'
-		Get = 'get'
-		Post = 'post'
-		Put = 'put'
-	end
+  # transfer methods
+  module Method
+    SYMLINK = 'symlink'.freeze
+    MOVE = 'move'.freeze
+    COPY = 'copy'.freeze
+    GET = 'get'.freeze
+    POST = 'post'.freeze
+    PUT = 'put'.freeze
+  end
 end

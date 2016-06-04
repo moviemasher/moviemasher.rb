@@ -1,0 +1,11 @@
+
+version: '2'
+services:
+  bundle:
+    image: moviemasher_bundle
+    build:
+      context: ../../../
+      dockerfile: ./config/docker/bundle/Dockerfile-bundle
+    volumes:
+      - ../../../Gemfile:/data/Gemfile
+      - ../../../Gemfile.lock:/data/Gemfile.lock

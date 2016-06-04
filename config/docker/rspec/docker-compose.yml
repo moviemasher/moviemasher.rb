@@ -1,0 +1,19 @@
+version: '2'
+services:
+  rspec:
+    image: moviemasher_rspec
+    build:
+      context: ../../../
+      dockerfile: ./config/docker/rspec/Dockerfile-rspec
+    entrypoint: rspec
+    command: spec
+    volumes:
+      - ../../../lib:/mnt/moviemasher.rb/lib
+      - ../../../.rspec:/mnt/moviemasher.rb/.rspec
+      - ../../../service:/mnt/moviemasher.rb/service
+      - ../../../spec:/mnt/moviemasher.rb/spec
+      - ../../../tmp:/mnt/moviemasher.rb/tmp
+      - ../../../config:/mnt/moviemasher.rb/config
+      - ../../../../angular-moviemasher:/mnt/angular-moviemasher
+      - ../../../../clientside_aws:/mnt/clientside_aws
+      - ../../../../moviemasher.js:/mnt/angular-moviemasher/bower_components/moviemasher.js

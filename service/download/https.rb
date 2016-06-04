@@ -2,9 +2,10 @@
 require_relative 'http'
 
 module MovieMasher
-	class HttpsDownloadService < HttpDownloadService
-		def secure
-			true
-		end	
-	end
+  # downloads assets via http securely
+  class HttpsDownloadService < HttpDownloadService
+    def secure
+      true
+    end
+  end
 end
