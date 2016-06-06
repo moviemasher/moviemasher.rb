@@ -58,7 +58,6 @@ module MovieMasher
       end
       output_duration
     end
-
     def self.__gcd(a, b) # uint
       while b != 0
         t = b

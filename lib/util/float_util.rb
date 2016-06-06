@@ -17,9 +17,6 @@ module MovieMasher
       end
       (i1 == i2)
     end
-    def self.less(small, big, digits = 3) # is one float smaller than another
-      !gtre(big, small, digits)
-    end
     def self.gtr(big, small, digits = 3) # is one float bigger than another
       e = (10**digits).to_f
       ibig = (big.to_f * e).round
@@ -32,6 +29,9 @@ module MovieMasher
       ismall = (small.to_f * e).round
       (ibig >= ismall)
     end
+    def self.less(small, big, digits = 3) # is one float smaller than another
+      !gtre(big, small, digits)
+    end
     def self.max(a, b, digits = 3)
       (gtr(a, b, digits) ? a : b)
     end
@@ -40,6 +40,10 @@ module MovieMasher
     end
     def self.nonzero(a)
       a && gtr(a, ZERO)
+    end
+    def self.precision(f, digits = 3)
+      divisor = (10**digits.to_i).to_f
+      (f.to_f * divisor).round / divisor
     end
     def self.sort(a, b)
       if gtr(a[0], b[0])
@@ -50,10 +54,6 @@ module MovieMasher
     end
     def self.string(f, digits = 3)
       precision f, digits
-    end
-    def self.precision(f, digits = 3)
-      divisor = (10**digits.to_i).to_f
-      (f.to_f * divisor).round / divisor
     end
   end
 end

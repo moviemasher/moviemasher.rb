@@ -1,0 +1,57 @@
+
+version <future>:
+- freeze frame
+
+version 4.0.17:
+- now using labeled inputs instead of movie filter in filtergraphs
+- fixed issues with image output in ffmpeg 3 (don't include video_rate)
+- fixed issues in image inputs with transforms over time (related)
+- upgraded openjpeg library to version 2
+- removed second pass during intermediate builds
+
+version 4.0.16
+- support for FFMpeg 3.0.2
+- standard support for AAC (don't include experimental flag)
+- support for docker-compose and a few helpful compositions
+- support for offset in image outputs including negative and percentage
+- now using dentaku for evaluations
+- now linting ruby code with rubocop
+
+version 4.0.13:
+- support in aws service for overriding angular-moviemasher config
+- fixed support for aws_* options in docker
+- support for values less then one/zero for precision
+- audio transition pop fix
+
+version 4.0.12:
+- init services
+- require http in https services
+- better support for third party services
+- queue service
+
+version 4.0.11:
+- support for input/output metadata evaluations
+- logging and encoding fixes
+- support rake process_queues config path parameters
+- ignore empty config keys
+
+version 4.0.10
+- include Gemfile.lock for Docker build
+- create clips out of font media as well
+- proper scope in rakefile
+- update log directory path
+- use path.concat in makefile
+- default paths to match angular-moviemasher
+
+version 4.0.9
+- documentation, README
+- auto-generated visuals for spec tests
+- docker integration, gem loading
+- fix __init_callback route
+
+Version 4.0.08
+- updated path related option names
+- path transformations, http parameters
+- better aws-sdk optional loading
+- ami permission fixes
+- transition fixes

@@ -2,15 +2,21 @@
 module MovieMasher
   # abstraction layer for initing, upload, download, queue services
   class Service
+    SERVICES_DIRECTORY = File.expand_path("#{__dir__}/../service")
     class << self
       attr_accessor :__configuration
       attr_accessor :__cache
     end
-    SERVICES_DIRECTORY = File.expand_path("#{__dir__}/../service")
     Service.__cache = {}
     Service.__configuration = {}
     def self.configure_services(config)
       Service.__configuration = config
+    end
+    def self.downloader(type)
+      __service(:download, type)
+    end
+    def self.initer(type)
+      __service(:init, type)
     end
     def self.queues
       array = []
@@ -19,12 +25,6 @@ module MovieMasher
         array << service if service
       end
       array
-    end
-    def self.initer(type)
-      __service(:init, type)
-    end
-    def self.downloader(type)
-      __service(:download, type)
     end
     def self.uploader(type)
       __service(:upload, type)

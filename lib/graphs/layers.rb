@@ -5,14 +5,17 @@ module MovieMasher
     def initialize(duration, color)
       @filter = FilterSourceColor.new duration, color
     end
+    def inputs
+      []
+    end
     def layer_command(scope)
       @filter.filter_command(scope)
     end
-    def trim_command(*)
-      ''
-    end
     def range
       nil
+    end
+    def trim_command(*)
+      ''
     end
   end
   # base class for a theme or transition layer
@@ -28,6 +31,9 @@ module MovieMasher
   end
   # base class for a video or image layer
   class LayerRaw < Layer # LayerRawVideo, LayerRawImage
+    def inputs
+      [{ i: @input[:cached_file] }]
+    end
     def layer_command(scope)
       scope[:mm_input_dimensions] = @input[:dimensions]
       raise 'no input dimensions' unless scope[:mm_input_dimensions]
@@ -40,28 +46,21 @@ module MovieMasher
   # a raw image layer
   class LayerRawImage < LayerRaw
     def initialize_chains
-      chain = Chain.new nil, @job_input
-      # we will need to change movie_filter path, since we'll be building
-      # video file from image for each output
-      @movie_filter = FilterSourceMovie.new(@input, @job_input)
-      chain << @movie_filter
-      @filter_timestamps = FilterSetpts.new('N')
+      chain = Chain.new(nil, @job_input)
+      chain << FilterSourceMovie.new(@input, @job_input)
+      @filter_timestamps = FilterSetpts.new
       chain << @filter_timestamps
       @chains << chain
       super
+    end
+    def inputs
+      [{ loop: 1, i: @input[:cached_file] }]
     end
     def layer_command(scope)
       unless @input[:cached_file]
         raise(Error::JobInput, "no cached_file #{@input}")
       end
-      output_type_is_not_video = (Type::VIDEO != scope[:mm_output][:type])
-      @movie_filter.hash[:loop] = 1
-      unless output_type_is_not_video
-        loops = scope[:mm_fps].to_f * FloatUtil.precision(@input[:length])
-        @movie_filter.hash[:loop] = loops.round.to_i
-      end
-      @filter_timestamps.disabled = output_type_is_not_video
-      @movie_filter.hash[:filename] = @input[:cached_file]
+      @filter_timestamps.disabled = (Type::VIDEO != scope[:mm_output][:type])
       super
     end
   end
@@ -69,7 +68,7 @@ module MovieMasher
   class LayerRawVideo < LayerRaw
     def initialize_chains
       # puts "LayerRawVideo#initialize_chains"
-      chain = Chain.new nil, @job_input
+      chain = Chain.new(nil, @job_input)
       chain << FilterSourceMovie.new(@input, @job_input)
       # trim filter, if needed
       @trim_filter = __filter_trim_input
@@ -135,6 +134,32 @@ module MovieMasher
       super(input, job_input)
       @graphs = []
     end
+    def initialize_chains
+      # puts "LayerTransition.initialize_chains #{@input}"
+      super
+      @layers = []
+      c1 = {}
+      c2 = {}
+      @layer_chains = [c1, c2]
+      if __is_and_not_empty(@input[:from][:filters])
+        c1[:filters] = ChainModule.new(@input[:from], @job_input, @input)
+      end
+      if __is_and_not_empty(@input[:to][:filters])
+        c2[:filters] = ChainModule.new(@input[:to], @job_input, @input)
+      end
+      c1[:merger] = ChainModule.new(@input[:from][:merger], @job_input, @input)
+      c2[:merger] = ChainModule.new(@input[:to][:merger], @job_input, @input)
+      c1[:scaler] = ChainModule.new(@input[:from][:scaler], @job_input, @input)
+      c2[:scaler] = ChainModule.new(@input[:to][:scaler], @job_input, @input)
+      mash_source = @job_input[:mash]
+      mash_color = mash_source[:backcolor]
+      @color_layer = LayerColor.new(@input[:range].length_seconds, mash_color)
+    end
+    def inputs
+      graph_inputs = []
+      @graphs.each { |graph| graph_inputs += graph.inputs }
+      graph_inputs
+    end
     def layer_command(scope)
       layer_scope(scope)
       layer_letter = 'a'
@@ -171,27 +196,6 @@ module MovieMasher
       cmds << backcolor_cmd
       cmds += merge_cmds
       cmds.join(';')
-    end
-    def initialize_chains
-      # puts "LayerTransition.initialize_chains #{@input}"
-      super
-      @layers = []
-      c1 = {}
-      c2 = {}
-      @layer_chains = [c1, c2]
-      if __is_and_not_empty(@input[:from][:filters])
-        c1[:filters] = ChainModule.new(@input[:from], @job_input, @input)
-      end
-      if __is_and_not_empty(@input[:to][:filters])
-        c2[:filters] = ChainModule.new(@input[:to], @job_input, @input)
-      end
-      c1[:merger] = ChainModule.new(@input[:from][:merger], @job_input, @input)
-      c2[:merger] = ChainModule.new(@input[:to][:merger], @job_input, @input)
-      c1[:scaler] = ChainModule.new(@input[:from][:scaler], @job_input, @input)
-      c2[:scaler] = ChainModule.new(@input[:to][:scaler], @job_input, @input)
-      mash_source = @job_input[:mash]
-      mash_color = mash_source[:backcolor]
-      @color_layer = LayerColor.new(@input[:range].length_seconds, mash_color)
     end
   end
 end

@@ -3,6 +3,19 @@ module MovieMasher
   # module filter
   class FilterEvaluated < Filter
     attr_reader :parameters
+    def command_parameters(scope)
+      cmds = []
+      if @parameters
+        __raise_unless(@parameters.is_a?(Array), 'parameters is not an array')
+        @parameters.each do |parameter|
+          __raise_unless(parameter.is_a?(Hash), 'parameter is not a hash')
+          name = parameter[:name]
+          evaluated = parameter[:value]
+          cmds << __command_name_value(name, evaluated, scope)
+        end
+      end
+      cmds.join(':')
+    end
     def filter_command(scope = nil)
       cmd = super
       return cmd if cmd.empty?
@@ -40,19 +53,6 @@ module MovieMasher
       end
       @evaluated = {}
       cmd
-    end
-    def command_parameters(scope)
-      cmds = []
-      if @parameters
-        __raise_unless(@parameters.is_a?(Array), 'parameters is not an array')
-        @parameters.each do |parameter|
-          __raise_unless(parameter.is_a?(Hash), 'parameter is not a hash')
-          name = parameter[:name]
-          evaluated = parameter[:value]
-          cmds << __command_name_value(name, evaluated, scope)
-        end
-      end
-      cmds.join(':')
     end
     def initialize(filter_config, mash_input = nil, applied_input = nil)
       # applied_input same as filter_config for themes
@@ -109,6 +109,28 @@ module MovieMasher
       result = ShellHelper.escape(result)
       @evaluated[name] = result
       "#{name}=#{result}"
+    end
+    def __is_filter_helper(func)
+      func_sym = func.to_sym
+      ok = FilterHelpers.respond_to?(func_sym)
+      ok &&= func.start_with?('mm_') || %w(rgb rgba).include?(func)
+      ok
+    end
+    def __filter_dimension_keys(filter_id)
+      case filter_id
+      when 'crop'
+        { w: %w(w out_w), h: %w(h out_h) }
+      when 'scale', 'pad'
+        { w: %w(w width), h: %w(h height) }
+      end
+    end
+    def __filter_is_source?(filter_id)
+      %w(color movie).include?(filter_id)
+    end
+    def __filter_scope_binding(scope)
+      bind = {}
+      scope.each { |k, v| bind[k.to_sym] = __coerce_if_numeric(v) } if scope
+      bind
     end
     def __scope_value(scope, value_str)
       if scope
@@ -183,36 +205,10 @@ module MovieMasher
       end
       Evaluate.equation(value_str)
     end
-    def __is_filter_helper(func)
-      func_sym = func.to_sym
-      ok = FilterHelpers.respond_to?(func_sym)
-      ok &&= func.start_with?('mm_') || %w(rgb rgba).include?(func)
-      ok
-    end
-    def __filter_dimension_keys(filter_id)
-      case filter_id
-      when 'crop'
-        { w: %w(w out_w), h: %w(h out_h) }
-      when 'scale', 'pad'
-        { w: %w(w width), h: %w(h height) }
-      end
-    end
-    def __filter_is_source?(filter_id)
-      %w(color movie).include?(filter_id)
-    end
-    def __filter_scope_binding(scope)
-      bind = {}
-      scope.each { |k, v| bind[k.to_sym] = __coerce_if_numeric(v) } if scope
-      bind
-    end
   end
   # simplest filter
   class FilterHash < Filter
     attr_reader :hash
-    def initialize(id, hash = nil)
-      @hash = hash || {}
-      super id
-    end
     def filter_command(scope = nil)
       cmd = super
       unless cmd.empty? # I'm not disabled
@@ -229,6 +225,10 @@ module MovieMasher
       end
       cmd
     end
+    def initialize(id, hash = nil)
+      @hash = hash || {}
+      super id
+    end
   end
   # simple setpts defaults to PTS-STARTPTS
   class FilterSetpts < FilterHash
@@ -238,10 +238,6 @@ module MovieMasher
   end
   # raw input source
   class FilterSource < FilterHash
-    def initialize(id, hash, dimensions = nil)
-      super id, hash
-      @dimensions = dimensions
-    end
     def filter_command(scope)
       cmd = super
       unless cmd.empty?
@@ -249,36 +245,40 @@ module MovieMasher
       end
       cmd
     end
+    def initialize(id, hash, dimensions = nil)
+      super(id, hash)
+      @dimensions = dimensions
+    end
   end
   # video source
   class FilterSourceMovie < FilterSource
+    def filter_name
+      "#{super} #{File.basename(@hash[:filename])}"
+    end
     def initialize(input, job_input)
       @input = input
       @job_input = job_input
       super('movie', { filename: input[:cached_file] }, input[:dimensions])
     end
-    def filter_name
-      "#{super} #{File.basename(@hash[:filename])}"
-    end
   end
   # simple color source
   class FilterSourceColor < FilterSource
+    def filter_command(scope)
+      output = scope[:mm_output]
+      __raise_unless(output[:dimensions], "#{filter_name} with no dimensions")
+      # __raise_unless(output[:video_rate], "#{filter_name} with no video_rate")
+      @dimensions = @hash[:size] = output[:dimensions]
+      @hash[:rate] = output[:video_rate] || 1
+      super
+    end
+    def filter_name
+      "#{super} #{@hash[:color]} #{@dimensions}"
+    end
     def initialize(duration, color)
       __raise_unless(duration, 'FilterSourceColor with no duration')
       __raise_unless(color, 'FilterSourceColor with no color')
       # we don't know dimensions yet
       super('color', { color: Graph.color_value(color), duration: duration })
-    end
-    def filter_command(scope)
-      output = scope[:mm_output]
-      __raise_unless(output[:dimensions], "#{filter_name} with no dimensions")
-      __raise_unless(output[:video_rate], "#{filter_name} with no video_rate")
-      @dimensions = @hash[:size] = output[:dimensions]
-      @hash[:rate] = output[:video_rate]
-      super
-    end
-    def filter_name
-      "#{super} #{@hash[:color]} #{@dimensions}"
     end
   end
 end

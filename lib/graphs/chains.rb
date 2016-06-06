@@ -4,7 +4,7 @@ module MovieMasher
   class ChainEffects < Chain
     def initialize_filters
       if __is_and_not_empty(@input[:effects]) && @input[:effects].is_a?(Array)
-        @input[:effects].each do |effect|
+        @input[:effects].reverse.each do |effect|
           effect[:dimensions] = @input[:dimensions] unless effect[:dimensions]
           @filters << ChainModule.new(effect, @job_input, @input)
         end
@@ -14,6 +14,10 @@ module MovieMasher
   # a theme or transition filter chain
   class ChainModule < Chain
     attr_writer :input
+    def chain_command(scope)
+      scope = input_scope(scope)
+      super
+    end
     def initialize(mod_input, mash_input, applied_input)
       # applied_input is same as mod_input for themes
       raise(Error::Parameter, 'no mod_input') unless mod_input
@@ -30,10 +34,6 @@ module MovieMasher
       else
         raise(Error::JobInput, "ChainModule with no filters #{@input}")
       end
-    end
-    def chain_command(scope)
-      scope = input_scope(scope)
-      super
     end
     def input_scope(scope)
       scope = scope.dup # shallow copy, so any objects are just pointers
@@ -58,11 +58,6 @@ module MovieMasher
   end
   # a scaler filter chain
   class ChainScaler < Chain
-    def initialize(input = nil, job_input = nil)
-      super
-      @input_dimensions = @input[:dimensions]
-      @fill = @input[:fill] || Fill::STRETCH
-    end
     def chain_command(scope)
       @filters = []
       target_dims = scope[:mm_dimensions]
@@ -112,6 +107,20 @@ module MovieMasher
       end
       super
     end
+    def initialize(input = nil, job_input = nil)
+      super
+      @input_dimensions = @input[:dimensions]
+      @fill = @input[:fill] || Fill::STRETCH
+    end
+    def __crop_filter(w_scaled, h_scaled, orig_w_f, orig_h_f)
+      FilterHash.new(
+        'crop',
+        w: w_scaled.to_i,
+        h: h_scaled.to_i,
+        x: ((orig_w_f - w_scaled) / FloatUtil::TWO).ceil.to_i,
+        y: ((orig_h_f - h_scaled) / FloatUtil::TWO).ceil.to_i
+      )
+    end
     def __crop_or_pad(gtr, w_scaled, h_scaled, orig_w_f, orig_h_f)
       if gtr
         __crop_filter(w_scaled, h_scaled, orig_w_f, orig_h_f)
@@ -125,15 +134,6 @@ module MovieMasher
       else
         FloatUtil.max(ratio_h, ratio_w)
       end
-    end
-    def __crop_filter(w_scaled, h_scaled, orig_w_f, orig_h_f)
-      FilterHash.new(
-        'crop',
-        w: w_scaled.to_i,
-        h: h_scaled.to_i,
-        x: ((orig_w_f - w_scaled) / FloatUtil::TWO).ceil.to_i,
-        y: ((orig_h_f - h_scaled) / FloatUtil::TWO).ceil.to_i
-      )
     end
     def __pad_filter(w_scaled, h_scaled, orig_w_f, orig_h_f)
       backcolor = 'black'

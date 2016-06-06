@@ -103,6 +103,18 @@ module MovieMasher
       end
       graphs
     end
+    def self.__copy_raw_from_media(clip, mash)
+      if Type::RAW_VISUALS.include?(clip[:type])
+        media = Mash.media(mash, clip[:id])
+        raise(Error::JobInput, "couldn't find media #{clip[:id]}") unless media
+        # media props were copied to clip BEFORE file was cached, so do now
+        clip[:cached_file] = media[:cached_file]
+        raise("no cached_file #{media}") unless clip[:cached_file]
+        clip[:no_video] ||= media[:no_video]
+        clip[:dimensions] = media[:dimensions]
+        raise("couldn't find dimensions #{media}") unless clip[:dimensions]
+      end
+    end
     def self.__mash_range_graph(input, mash, range, job)
       graph = GraphMash.new(job, input, range)
       clips = Mash.clips_in_range(mash, range, Type::VIDEO)
@@ -129,18 +141,6 @@ module MovieMasher
         graph.add_new_layer(clip)
       end
       graph
-    end
-    def self.__copy_raw_from_media(clip, mash)
-      if Type::RAW_VISUALS.include?(clip[:type])
-        media = Mash.media(mash, clip[:id])
-        raise(Error::JobInput, "couldn't find media #{clip[:id]}") unless media
-        # media props were copied to clip BEFORE file was cached, so do now
-        clip[:cached_file] = media[:cached_file]
-        raise("no cached_file #{media}") unless clip[:cached_file]
-        clip[:no_video] ||= media[:no_video]
-        clip[:dimensions] = media[:dimensions]
-        raise("couldn't find dimensions #{media}") unless clip[:dimensions]
-      end
     end
     # Transfer - Resolves relative URLs.
     # Default - Job#base_source

@@ -1,0 +1,321 @@
+{
+  "id": "mash_problem",
+  "type": "mash",
+  "mash": {
+    "label": "Problem",
+    "id": "8ef68dce-298c-4c36-800d-72b7d847cac0",
+    "quantize": 10,
+    "backcolor": "rgb(0,0,0)",
+    "media": [
+      {
+        "label": "Title",
+        "type": "theme",
+        "id": "com.moviemasher.theme.text",
+        "properties": {
+          "string": {
+            "type": "string",
+            "value": "Title"
+          },
+          "size": {
+            "type": "fontsize",
+            "value": 0.3
+          },
+          "x": {
+            "type": "number",
+            "value": 0
+          },
+          "y": {
+            "type": "number",
+            "value": 0
+          },
+          "color": {
+            "type": "rgba",
+            "value": "rgba(255,0,0,1)"
+          },
+          "shadowcolor": {
+            "type": "rgba",
+            "value": "rgba(0,0,0,0)"
+          },
+          "shadowx": {
+            "type": "number",
+            "value": 0.015
+          },
+          "shadowy": {
+            "type": "number",
+            "value": 0.015
+          },
+          "background": {
+            "type": "hex",
+            "value": "#ffffff"
+          },
+          "fontface": {
+            "type": "font",
+            "value": "com.moviemasher.font.default"
+          }
+        },
+        "filters": [
+          {
+            "id": "color",
+            "parameters": [
+              {
+                "name": "color",
+                "value": "background"
+              },
+              {
+                "name": "size",
+                "value": "mm_dimensions"
+              },
+              {
+                "name": "duration",
+                "value": "mm_duration"
+              },
+              {
+                "name": "rate",
+                "value": "mm_fps"
+              }
+            ]
+          },
+          {
+            "id": "drawtext",
+            "parameters": [
+              {
+                "name": "fontcolor",
+                "value": "color"
+              },
+              {
+                "name": "shadowcolor",
+                "value": "shadowcolor"
+              },
+              {
+                "name": "fontsize",
+                "value": "mm_vert(size)"
+              },
+              {
+                "name": "x",
+                "value": "mm_horz(x)"
+              },
+              {
+                "name": "y",
+                "value": "mm_vert(y)"
+              },
+              {
+                "name": "shadowx",
+                "value": "mm_horz(shadowx)"
+              },
+              {
+                "name": "shadowy",
+                "value": "mm_vert(shadowy)"
+              },
+              {
+                "name": "fontfile",
+                "value": "mm_fontfile(fontface)"
+              },
+              {
+                "name": "textfile",
+                "value": "mm_textfile(string)"
+              }
+            ]
+          }
+        ],
+        "html": "\/angular-moviemasher\/app\/module\/text\/theme.html"
+      },
+      {
+        "label": "Blackout Two AM",
+        "id": "com.moviemasher.font.default",
+        "type": "font",
+        "source": "module\/font\/blackout\/theleagueof-blackout\/webfonts\/blackout_two_am-webfont.ttf"
+      },
+      {
+        "label": "Scale",
+        "type": "scaler",
+        "id": "com.moviemasher.scaler.scale",
+        "properties": {
+          "scale": {
+            "type": "size1",
+            "value": 1
+          }
+        },
+        "filters": [
+          {
+            "id": "scale",
+            "parameters": [
+              {
+                "name": "width",
+                "value": "scale * mm_input_width * mm_max(mm_width \/ mm_input_width, mm_height \/ mm_input_height)"
+              },
+              {
+                "name": "height",
+                "value": "scale * mm_input_height * mm_max(mm_width \/ mm_input_width, mm_height \/ mm_input_height)"
+              }
+            ]
+          },
+          {
+            "id": "setsar",
+            "parameters": [
+              {
+                "name": "sar",
+                "value": "1"
+              },
+              {
+                "name": "max",
+                "value": "1"
+              }
+            ]
+          }
+        ],
+        "html": "\/angular-moviemasher\/app\/module\/scale\/scaler.html"
+      },
+      {
+        "id": "medium-4x3",
+        "type": "image",
+        "source": "magick/sm-gridyellow-4x3.png"
+      },
+      {
+        "label": "Top Left",
+        "id": "com.moviemasher.merger.default",
+        "filters": [
+          {
+            "id": "overlay",
+            "parameters": [
+              {
+                "name": "x",
+                "value": "0"
+              },
+              {
+                "name": "y",
+                "value": "0"
+              }
+            ]
+          }
+        ],
+        "$$hashKey": "object:81"
+      },
+      {
+        "label": "Stretch",
+        "id": "com.moviemasher.scaler.default",
+        "filters": [
+          {
+            "id": "scale",
+            "parameters": [
+              {
+                "name": "width",
+                "value": "mm_width"
+              },
+              {
+                "name": "height",
+                "value": "mm_height"
+              }
+            ]
+          },
+          {
+            "id": "setsar",
+            "parameters": [
+              {
+                "name": "sar",
+                "value": "1"
+              },
+              {
+                "name": "max",
+                "value": "1"
+              }
+            ]
+          }
+        ],
+        "$$hashKey": "object:88"
+      },
+      {
+        "label": "Center",
+        "id": "com.moviemasher.merger.center",
+        "filters": [
+          {
+            "id": "overlay",
+            "parameters": [
+              {
+                "name": "x",
+                "value": "floor((mm_width - overlay_w) \/ 2)"
+              },
+              {
+                "name": "y",
+                "value": "floor((mm_height - overlay_h) \/ 2)"
+              }
+            ]
+          }
+        ],
+        "html": "\/angular-moviemasher\/app\/module\/overlay\/merger.html",
+        "type": "merger"
+      }
+    ],
+    "video": [
+      {
+        "type": "video",
+        "index": 0,
+        "clips": [
+          {
+            "id": "medium-4x3",
+            "track": 0,
+            "frame": 0,
+            "frames": 20,
+            "scaler": {
+              "id": "com.moviemasher.scaler.default"
+            },
+            "merger": {
+              "id": "com.moviemasher.merger.default"
+            },
+            "effects": [
+
+            ],
+            "$$hashKey": "object:112"
+          }
+        ],
+        "$$hashKey": "object:37"
+      },
+      {
+        "type": "video",
+        "index": 1,
+        "clips": [
+          {
+            "id": "com.moviemasher.theme.text",
+            "string": "Title",
+            "size": 0.3,
+            "x": 0,
+            "y": 0,
+            "color": "rgba(255,0,0,1)",
+            "shadowcolor": "rgba(0,0,0,0)",
+            "shadowx": 0.015,
+            "shadowy": 0.015,
+            "background": "rgb(130,71,71)",
+            "fontface": "com.moviemasher.font.default",
+            "track": 1,
+            "frame": 3,
+            "frames": 10,
+            "scaler": {
+              "id": "com.moviemasher.scaler.scale",
+              "scale": "0.479"
+            },
+            "merger": {
+              "id": "com.moviemasher.merger.center"
+            },
+            "effects": [
+
+            ],
+            "$$hashKey": "object:97"
+          }
+        ],
+        "$$hashKey": "object:91"
+      }
+    ],
+    "audio": [
+      {
+        "type": "audio",
+        "index": 0,
+        "clips": [
+
+        ],
+        "$$hashKey": "object:39"
+      }
+    ],
+    "$$hashKey": "object:43",
+    "source": "\/user-media\/doug\/8ef68dce-298c-4c36-800d-72b7d847cac0\/C76F1883-9004-426C-90AC-F6AFEF69B947.mp4"
+  }
+}
+

@@ -3,9 +3,6 @@ module MovieMasher
   # represents a downloadable media asset
   class Asset < Hashable
     # Returns a new instance.
-    def self.create(hash = nil)
-      (hash.is_a?(Asset) ? hash : Asset.new(hash))
-    end
     def self.av_type(input)
       case input[:type]
       when Type::AUDIO
@@ -20,6 +17,9 @@ module MovieMasher
         end
       end
     end
+    def self.create(hash = nil)
+      (hash.is_a?(Asset) ? hash : Asset.new(hash))
+    end
     def self.download_asset(asset, job)
       path = nil
       url = asset[:input_url].to_s
@@ -30,6 +30,12 @@ module MovieMasher
         __populate_asset_info(asset)
       end
       path
+    end
+    def self.url_path(url)
+      dir = MovieMasher.configuration[:download_directory]
+      dir = MovieMasher.configuration[:render_directory] if dir.to_s.empty?
+      hex = Digest::SHA2.new(256).hexdigest(url)
+      Path.concat(dir, "#{hex}/#{Info::DOWNLOADED}#{File.extname(url)}")
     end
     def self.__download_asset(asset, url, path, job)
       url = asset[:input_url].to_s
@@ -71,12 +77,6 @@ module MovieMasher
         end
       end
     end
-    def self.url_path(url)
-      dir = MovieMasher.configuration[:download_directory]
-      dir = MovieMasher.configuration[:render_directory] if dir.to_s.empty?
-      hex = Digest::SHA2.new(256).hexdigest(url)
-      Path.concat(dir, "#{hex}/#{Info::DOWNLOADED}#{File.extname(url)}")
-    end
     # String - The AV type.
     # Constant - AV::AUDIO_ONLY, AV::VIDEO_ONLY, AV::BOTH, or
     #            AV::NEITHER if an error was encountered while probing.
@@ -102,6 +102,21 @@ module MovieMasher
       options[:source] = d_source
       options[:asset] = self
       service.download(options)
+    end
+    def download_source
+      d_source = source
+      if source && source.is_a?(Source)
+        if source.relative?
+          # relative url
+          case type
+          when Type::THEME, Type::FONT, Type::EFFECT
+            d_source = module_source || base_source || source
+          else
+            d_source = base_source || source
+          end
+        end
+      end
+      d_source
     end
     def duration
       _get __method__
@@ -218,21 +233,6 @@ module MovieMasher
     # Default - Probed from downloaded.
     def type=(value)
       _set __method__, value
-    end
-    def download_source
-      d_source = source
-      if source && source.is_a?(Source)
-        if source.relative?
-          # relative url
-          case type
-          when Type::THEME, Type::FONT, Type::EFFECT
-            d_source = module_source || base_source || source
-          else
-            d_source = base_source || source
-          end
-        end
-      end
-      d_source
     end
     def url(base_src = nil, module_src = nil)
       u = nil

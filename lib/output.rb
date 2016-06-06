@@ -61,7 +61,7 @@ module MovieMasher
         Hashable._init_key output, :quality, 1
         output[:no_audio] = true
       when Type::IMAGE
-        Hashable._init_key output, :video_rate, 1
+        # Hashable._init_key output, :video_rate, 1
         Hashable._init_key output, :backcolor, 'black'
         Hashable._init_key output, :quality, 1
         Hashable._init_key output, :extension, 'jpg'

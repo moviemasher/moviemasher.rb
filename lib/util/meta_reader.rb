@@ -12,6 +12,9 @@ module MovieMasher
       @hash[symbol] ||= _meta(symbol)
       super
     end
+    def _info
+      Info.get(@path, __callee__.id2name)
+    end
     def _meta(symbol)
       s = ffmpeg
       metas = s.split('Metadata:')
@@ -32,18 +35,15 @@ module MovieMasher
       end
       ''
     end
-    def _info
-      Info.get(@path, __callee__.id2name)
-    end
     alias audio _info
+    alias audio_duration _info
     alias dimensions _info
     alias duration _info
-    alias video_duration _info
-    alias audio_duration _info
-    alias type _info
-    alias fps _info
     alias ffmpeg _info
-    alias sox _info
+    alias fps _info
     alias http _info
+    alias sox _info
+    alias type _info
+    alias video_duration _info
   end
 end

@@ -42,16 +42,15 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /data
 
-# ffmpeg prefers openjpeg 1.5.x, so we compile it from source - 11/15/2014
 RUN \
   cd /data; \
-  wget https://downloads.sourceforge.net/project/openjpeg.mirror/1.5.2/openjpeg-1.5.2.tar.gz; \
-  tar -xzvf openjpeg-1.5.2.tar.gz; \
-  cd /data/openjpeg-1.5.2; \
+  wget https://github.com/uclouvain/openjpeg/archive/version.2.1.tar.gz; \
+  tar -xzvf version.2.1.tar.gz; \
+  cd /data/openjpeg-version.2.1; \
   cmake .; \
   make; \
   make install; \
-  rm -R /data/openjpeg-1.5.2
+  rm -R /data/openjpeg-version.2.1
 
 # pull, configure, make and install x264
 RUN \

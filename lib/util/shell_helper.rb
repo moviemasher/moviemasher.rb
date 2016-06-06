@@ -48,16 +48,6 @@ module MovieMasher
     def self.execute(options)
       capture(command(options))
     end
-    def self.raise_unless_rendered(result, options)
-      logs = []
-      out_file = options[:file].to_s
-      outputs = !['', '/dev/null'].include?(out_file)
-      dur = options[:duration]
-      precision = options[:precision] || 1
-      logs += __raise_if_no_file(out_file, result) if outputs
-      logs += __raise_unless_duration(result, dur, precision, out_file) if dur
-      logs
-    end
     def self.output_command(output, av_type, duration = nil)
       switches = []
       switches << switch(FloatUtil.string(duration), 't') if duration
@@ -76,10 +66,13 @@ module MovieMasher
           switches << switch(output[:video_rate], 'r:v')
         when Type::IMAGE
           switches << switch(output[:quality], 'q:v')
-          if output[:offset]
+          switches << switch('1', 'vframes')
+          switches << switch('debug', 'v')
+          unless output[:offset].to_s.empty?
             output_time = TimeRange.input_time(output, :offset)
             switches << switch(output_time, 'ss')
           end
+          switches << switch('1', 'updatefirst')
         when Type::SEQUENCE
           switches << switch(output[:quality], 'q:v')
           switches << switch(output[:video_rate], 'r:v')
@@ -88,24 +81,15 @@ module MovieMasher
       switches << switch(output[:metadata], 'metadata')
       switches.join
     end
-    def self.__output_graphs(output, job)
-      v_graphs = []
-      a_graphs = []
-      avb = output[:av]
-      unless AV::AUDIO_ONLY == avb
-        v_graphs = job.video_graphs
-        avb = AV::AUDIO_ONLY if v_graphs.empty?
-      end
-      unless AV::VIDEO_ONLY == avb
-        a_graphs = job.audio_graphs
-        avb = AV::VIDEO_ONLY if a_graphs.empty?
-      end
-      [avb, v_graphs, a_graphs]
-    end
-    def self.__graph_command(graph, output)
-      cmd = graph.graph_command(output)
-      __raise_if_empty(cmd, "could not build graph command #{graph}")
-      switch_unescaped(%("#{cmd}"), 'filter_complex')
+    def self.raise_unless_rendered(result, options)
+      logs = []
+      out_file = options[:file].to_s
+      outputs = !['', '/dev/null'].include?(out_file)
+      dur = options[:duration]
+      precision = options[:precision] || 1
+      logs += __raise_if_no_file(out_file, result) if outputs
+      logs += __raise_unless_duration(result, dur, precision, out_file) if dur
+      logs
     end
     def self.set_output_commands(job, output)
       output[:commands] = []
@@ -131,7 +115,7 @@ module MovieMasher
             out_file = "#{out_path}#{out_file_name}"
             ffconcat += "\nfile '#{out_file_name}'\nduration #{duration}"
             output[:commands] << {
-              pass: true, duration: duration,
+              duration: duration,
               file: out_file, precision: output[:precision],
               command: '-y' + switches + __graph_command(graph, output) \
                 + output_command(output, AV::VIDEO_ONLY, duration) \
@@ -202,63 +186,6 @@ module MovieMasher
         }
       end
     end
-    def self.__job_paths(job, output)
-      [job.render_path(output), job.output_path(output)]
-    end
-    def self.__type_duration(type, max_dur)
-      (Type::IMAGES.include?(type) ? nil : max_dur)
-    end
-    def self.__output_duration(a_or_v, max_dur)
-      (a_or_v ? max_dur : nil)
-    end
-    def self.__audio_silence(c, dur)
-      " -a:#{c + 1} -i playat,0,tone,sine,0,#{dur} -a:all -z:mixmode,sum -o "
-    end
-    def self.__audio_path(out_path, audio_cmd)
-      hex = Digest::SHA2.new(256).hexdigest(audio_cmd)
-      "#{out_path}audio-#{hex}.#{Intermediate::AUDIO_EXTENSION}"
-    end
-    def self.__is_two_pass(a_or_v, v_graphs)
-      a_or_v && v_graphs.length < 2
-    end
-    def self.__audio_graph(graph, counter)
-      audio_cmd = ''
-      loops = graph[:loop] || 1
-      volume = graph[:gain]
-      audio_cmd += " -a:#{counter + 1} -i "
-      audio_cmd += 'audioloop,' if 1 < loops
-      audio_cmd += "playat,#{graph[:start]},"
-      audio_cmd += "select,#{graph[:offset]}"
-      audio_cmd += ",#{graph[:length]},#{graph[:waved_file]}"
-      audio_cmd += __audio_loops(loops, graph[:length])
-      audio_cmd += __audio_gains(volume, graph)
-      audio_cmd
-    end
-    def self.__audio_switches(graph, audio_dur)
-      switches = []
-      trim_not_needed = FloatUtil.cmp(graph[:offset], FloatUtil::ZERO)
-      trim_not_needed &&= FloatUtil.cmp(graph[:length], graph[:duration])
-      unless trim_not_needed
-        switches << switch(__atrim(graph[:offset], audio_dur), 'af')
-      end
-      switches << switch(1, 'async')
-      switches.join
-    end
-    def self.__waveform_switches(graph, output)
-      switches = []
-      dimensions = output[:dimensions].split 'x'
-      switches << switch(graph[:waved_file], '--input')
-      switches << switch(dimensions.first, '--width')
-      switches << switch(dimensions.last, '--height')
-      switches << switch(output[:forecolor], '--linecolor')
-      switches << switch(output[:backcolor], '--backgroundcolor')
-      switches << switch('0', '--padding')
-      switches << switch('', '--output')
-      switches.join
-    end
-    def self.switch_unescaped(value, prefix = '', suffix = '')
-      switch(value, prefix, suffix, true)
-    end
     def self.switch(value, prefix = '', suffix = '', dont_escape = false)
       cmd = ''
       if value
@@ -280,6 +207,9 @@ module MovieMasher
         end
       end
       cmd
+    end
+    def self.switch_unescaped(value, prefix = '', suffix = '')
+      switch(value, prefix, suffix, true)
     end
     def self.__atrim(offset, duration)
       offset = ShellHelper.escape(offset)
@@ -309,8 +239,25 @@ module MovieMasher
       end
       audio_cmd
     end
+    def self.__audio_graph(graph, counter)
+      audio_cmd = ''
+      loops = graph[:loop] || 1
+      volume = graph[:gain]
+      audio_cmd += " -a:#{counter + 1} -i "
+      audio_cmd += 'audioloop,' if 1 < loops
+      audio_cmd += "playat,#{graph[:start]},"
+      audio_cmd += "select,#{graph[:offset]}"
+      audio_cmd += ",#{graph[:length]},#{graph[:waved_file]}"
+      audio_cmd += __audio_loops(loops, graph[:length])
+      audio_cmd += __audio_gains(volume, graph)
+      audio_cmd
+    end
     def self.__audio_loops(loops, length)
       (1 < loops ? " -t:#{FloatUtil.string(length)}" : '')
+    end
+    def self.__audio_path(out_path, audio_cmd)
+      hex = Digest::SHA2.new(256).hexdigest(audio_cmd)
+      "#{out_path}audio-#{hex}.#{Intermediate::AUDIO_EXTENSION}"
     end
     def self.__audio_raw(graphs)
       graph = graphs.first
@@ -322,28 +269,56 @@ module MovieMasher
       raw &&= FloatUtil.cmp(graph[:start], FloatUtil::ZERO)
       raw
     end
-    def self.__raise_unless_duration(result, duration, precision, out_file)
-      logs = []
-      has_no_video = Info.get(out_file, Info::DIMENSIONS).to_s.empty?
-      dur_key = (has_no_video ? Info::AUDIO_DURATION : Info::VIDEO_DURATION)
-      test_duration = Info.get(out_file, dur_key).to_f
-      msg = "rendered with duration: #{test_duration} #{out_file}"
-      logs << { debug: (proc { msg }) }
-      if test_duration.zero?
-        msg = "could not determine if #{duration} == duration of #{out_file}"
-        raise(Error::JobRender.new(result, msg))
+    def self.__audio_silence(c, dur)
+      " -a:#{c + 1} -i playat,0,tone,sine,0,#{dur} -a:all -z:mixmode,sum -o "
+    end
+    def self.__audio_switches(graph, audio_dur)
+      switches = []
+      trim_not_needed = FloatUtil.cmp(graph[:offset], FloatUtil::ZERO)
+      trim_not_needed &&= FloatUtil.cmp(graph[:length], graph[:duration])
+      unless trim_not_needed
+        switches << switch(__atrim(graph[:offset], audio_dur), 'af')
       end
-      ok = FloatUtil.cmp(duration, test_duration, precision.abs)
-      unless ok
-        logs << { warn: (proc { result }) }
-        if -1 < precision
-          msg = "expected #{has_no_video ? 'audio' : 'video'} duration of "\
-            "#{duration} but found #{test_duration} in #{out_file}"
-          raise(Error::JobRender.new(result, msg))
+      switches << switch(1, 'async')
+      switches.join
+    end
+    def self.__graph_command(graph, output)
+      cmds = []
+      inputs = graph.inputs
+      cmd = graph.graph_command(output)
+      __raise_if_empty(cmd, "could not build graph command #{graph}")
+      inputs.length.times do |input_index|
+        input = inputs[input_index]
+        cmd = cmd.gsub("movie=filename=#{input[:i]},", "[#{input_index}:v]")
+        input.each do |k, v|
+          cmds << switch(v, k.to_s)
         end
-        logs << { warn: (proc { msg }) }
       end
-      logs
+      cmds << switch_unescaped(%("#{cmd}"), 'filter_complex')
+      cmds.join
+    end
+    def self.__is_two_pass(a_or_v, v_graphs)
+      a_or_v && v_graphs.length < 2
+    end
+    def self.__job_paths(job, output)
+      [job.render_path(output), job.output_path(output)]
+    end
+    def self.__output_duration(a_or_v, max_dur)
+      (a_or_v ? max_dur : nil)
+    end
+    def self.__output_graphs(output, job)
+      v_graphs = []
+      a_graphs = []
+      avb = output[:av]
+      unless AV::AUDIO_ONLY == avb
+        v_graphs = job.video_graphs
+        avb = AV::AUDIO_ONLY if v_graphs.empty?
+      end
+      unless AV::VIDEO_ONLY == avb
+        a_graphs = job.audio_graphs
+        avb = AV::VIDEO_ONLY if a_graphs.empty?
+      end
+      [avb, v_graphs, a_graphs]
     end
     def self.__raise_if_empty(s, msg)
       raise(Error::JobInput, msg) if s.empty?
@@ -372,6 +347,44 @@ module MovieMasher
     end
     def self.__raise_if_zero(f, msg)
       raise(Error::JobInput, msg) unless FloatUtil.gtr(f, FloatUtil::ZERO)
+    end
+    def self.__raise_unless_duration(result, duration, precision, out_file)
+      logs = []
+      has_no_video = Info.get(out_file, Info::DIMENSIONS).to_s.empty?
+      dur_key = (has_no_video ? Info::AUDIO_DURATION : Info::VIDEO_DURATION)
+      test_duration = Info.get(out_file, dur_key).to_f
+      msg = "rendered with duration: #{test_duration} #{out_file}"
+      logs << { debug: (proc { msg }) }
+      if test_duration.zero?
+        msg = "could not determine if #{duration} == duration of #{out_file}"
+        raise(Error::JobRender.new(result, msg))
+      end
+      ok = FloatUtil.cmp(duration, test_duration, precision.abs)
+      unless ok
+        logs << { warn: (proc { result }) }
+        if -1 < precision
+          msg = "expected #{has_no_video ? 'audio' : 'video'} duration of "\
+            "#{duration} but found #{test_duration} in #{out_file}"
+          raise(Error::JobRender.new(result, msg))
+        end
+        logs << { warn: (proc { msg }) }
+      end
+      logs
+    end
+    def self.__type_duration(type, max_dur)
+      (Type::IMAGES.include?(type) ? nil : max_dur)
+    end
+    def self.__waveform_switches(graph, output)
+      switches = []
+      dimensions = output[:dimensions].split 'x'
+      switches << switch(graph[:waved_file], '--input')
+      switches << switch(dimensions.first, '--width')
+      switches << switch(dimensions.last, '--height')
+      switches << switch(output[:forecolor], '--linecolor')
+      switches << switch(output[:backcolor], '--backgroundcolor')
+      switches << switch('0', '--padding')
+      switches << switch('', '--output')
+      switches.join
     end
   end
 end
