@@ -15,8 +15,7 @@ module MovieMasher
   class ChainModule < Chain
     attr_writer :input
     def chain_command(scope)
-      scope = input_scope(scope)
-      super
+      super(input_scope(scope))
     end
     def initialize(mod_input, mash_input, applied_input)
       # applied_input is same as mod_input for themes
@@ -147,6 +146,19 @@ module MovieMasher
         x: ((w_scaled - orig_w_f) / FloatUtil::TWO).floor.to_i,
         y: ((h_scaled - orig_h_f) / FloatUtil::TWO).floor.to_i
       )
+    end
+  end
+  # a merger chain supporting blend filter
+  class ChainBlend < ChainModule
+    def chain_labels(label, i)
+      label_1 = "#{label}#{i}"
+      label_2 = "#{label}#{1 == i ? '' : 'ed'}#{i - 1}"
+      cmds = []
+      cmds << "[#{label_1}]format=pix_fmts=rgba[#{label_1}_rgba]"
+      cmds << "[#{label_2}]format=pix_fmts=rgba[#{label_2}_rgba]"
+      cmds << "[#{label_1}_rgba][#{label_2}_rgba]"
+      puts "CHAIN_LABELS #{cmds.join(';')}"
+      cmds.join(';')
     end
   end
 end

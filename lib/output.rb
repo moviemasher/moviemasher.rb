@@ -21,12 +21,13 @@ module MovieMasher
   # setting Job#error the problem is added to Job#log as a warning.
   #
   #   Output.create {
-  #     type: Type::VIDEO,
-  #     name: "video.mp4",                       # extension implies format
-  #     dimensions: "512x288",                   # ffmpeg -s switch
+  #     type: Type::VIDEO,                       # aka 'video'
+  #     name: 'video.mp4',                       # implied extension
+  #     dimensions: '512x288',                   # ffmpeg -s switch
   #     video_rate: 30,                          # ffmpeg -r:v switch
-  #     video_codec: "libx264 -preset medium",   # ffmpeg -c:v switch
-  #     video_bitrate: "2000K",                  # ffmpeg -b:v switch
+  #     video_codec: 'libx264 -preset medium',   # ffmpeg -c:v switch
+  #     video_bitrate: '2000K',                  # ffmpeg -b:v switch
+  #     pixel_format: 'yuv420p'                  # ffmpeg -pix_fmt switch
   #   }
   class Output < Hashable
     # Returns a new instance.
@@ -48,6 +49,7 @@ module MovieMasher
         Hashable._init_key output, :extension, 'mp4'
         Hashable._init_key output, :fill, Fill::NONE
         Hashable._init_key output, :video_rate, 30
+        Hashable._init_key output, :pixel_format, 'yuv420p'
         Hashable._init_key output, :gain, Gain::None
         Hashable._init_key output, :precision, 1
         Hashable._init_key output, :video_bitrate, 2_000
@@ -61,7 +63,7 @@ module MovieMasher
         Hashable._init_key output, :quality, 1
         output[:no_audio] = true
       when Type::IMAGE
-        # Hashable._init_key output, :video_rate, 1
+        Hashable._init_key output, :video_rate, 10
         Hashable._init_key output, :backcolor, 'black'
         Hashable._init_key output, :quality, 1
         Hashable._init_key output, :extension, 'jpg'

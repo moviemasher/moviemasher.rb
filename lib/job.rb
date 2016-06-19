@@ -350,7 +350,7 @@ module MovieMasher
       result = ShellHelper.capture(command)
       log_entry(:debug) { result }
       @hash[:results] << result
-      logs = ShellHelper.raise_unless_rendered(result, options)
+      logs = ShellHelper.raise_unless_rendered(result, command, options)
       logs.each do |hash|
         hash.each do |sym, proc|
           log_entry(sym, &proc)

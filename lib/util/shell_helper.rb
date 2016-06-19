@@ -51,12 +51,16 @@ module MovieMasher
     def self.output_command(output, av_type, duration = nil)
       switches = []
       switches << switch(FloatUtil.string(duration), 't') if duration
-      unless AV::VIDEO_ONLY == av_type # we have audio output
+      if AV::VIDEO_ONLY == av_type
+        switches << switch('', 'an')
+      else # we have audio output
         switches << switch(output[:audio_bitrate], 'b:a', 'k')
         switches << switch(output[:audio_rate], 'r:a')
         switches << switch(output[:audio_codec], 'c:a')
       end
-      unless AV::AUDIO_ONLY == av_type # we have visuals
+      if AV::AUDIO_ONLY == av_type
+        switches << switch('', 'vn')
+      else # we have visuals
         case output[:type]
         when Type::VIDEO
           switches << switch(output[:dimensions], 's')
@@ -67,7 +71,7 @@ module MovieMasher
         when Type::IMAGE
           switches << switch(output[:quality], 'q:v')
           switches << switch('1', 'vframes')
-          switches << switch('debug', 'v')
+          # switches << switch('debug', 'v')
           unless output[:offset].to_s.empty?
             output_time = TimeRange.input_time(output, :offset)
             switches << switch(output_time, 'ss')
@@ -81,14 +85,16 @@ module MovieMasher
       switches << switch(output[:metadata], 'metadata')
       switches.join
     end
-    def self.raise_unless_rendered(result, options)
+    def self.raise_unless_rendered(result, cmd, options)
       logs = []
       out_file = options[:file].to_s
       outputs = !['', '/dev/null'].include?(out_file)
       dur = options[:duration]
       precision = options[:precision] || 1
-      logs += __raise_if_no_file(out_file, result) if outputs
-      logs += __raise_unless_duration(result, dur, precision, out_file) if dur
+      logs += __raise_if_no_file(out_file, cmd, result) if outputs
+      if dur
+        logs += __raise_unless_duration(result, dur, precision, out_file, cmd)
+      end
       logs
     end
     def self.set_output_commands(job, output)
@@ -99,35 +105,6 @@ module MovieMasher
       avb, v_graphs, a_graphs = __output_graphs(output, job)
       output_type = output[:type]
       a_or_v = Type::RAW_AVS.include?(output_type)
-      unless AV::AUDIO_ONLY == avb
-        switches = switch(output[:video_rate], 'r:v')
-        if 1 == v_graphs.length
-          graph = v_graphs.first
-          video_dur = graph.duration
-          switches += __graph_command(graph, output)
-        else
-          ffconcat = 'ffconcat version 1.0'
-          v_graphs.length.times do |index|
-            graph = v_graphs[index]
-            duration = graph.duration
-            video_dur += duration
-            out_file_name = "concat-#{index}.#{output[:extension]}"
-            out_file = "#{out_path}#{out_file_name}"
-            ffconcat += "\nfile '#{out_file_name}'\nduration #{duration}"
-            output[:commands] << {
-              duration: duration,
-              file: out_file, precision: output[:precision],
-              command: '-y' + switches + __graph_command(graph, output) \
-                + output_command(output, AV::VIDEO_ONLY, duration) \
-                + switch('0', 'qp')
-            }
-          end
-          file_path = "#{out_path}concat.txt"
-          output[:commands] << { content: ffconcat, file: file_path }
-          switches += switch("'#{file_path}'", 'i')
-          end_switches = switch('copy', 'c:v')
-        end
-      end
       unless AV::VIDEO_ONLY == avb
         if __audio_raw(a_graphs)
           # just one non-looping graph, starting at zero with no gain change
@@ -166,12 +143,39 @@ module MovieMasher
         if Type::WAVEFORM == output_type
           output[:commands] << {
             app: 'wav2png', file: rend_path,
-            command: switches + __waveform_switches(graph, output)
+            command: __waveform_switches(graph, output)
           }
-          switches = []
         else
-          switches += switch(graph[:waved_file], 'i') \
-            + __audio_switches(graph, audio_dur)
+          switches += switch(graph[:waved_file], 'i')
+          end_switches += __audio_switches(graph, audio_dur)
+        end
+      end
+      unless AV::AUDIO_ONLY == avb
+        if 1 == v_graphs.length
+          graph = v_graphs.first
+          video_dur = graph.duration
+          switches += __graph_command(graph, output)
+        else
+          ffconcat = 'ffconcat version 1.0'
+          v_graphs.length.times do |index|
+            graph = v_graphs[index]
+            duration = graph.duration
+            video_dur += duration
+            out_file_name = "concat-#{index}.#{output[:extension]}"
+            out_file = "#{out_path}#{out_file_name}"
+            ffconcat += "\nfile '#{out_file_name}'\nduration #{duration}"
+            output[:commands] << {
+              duration: duration,
+              file: out_file, precision: output[:precision],
+              command: '-y' + __graph_command(graph, output) \
+                + output_command(output, AV::VIDEO_ONLY, duration) \
+                + switch('0', 'qp')
+            }
+          end
+          file_path = "#{out_path}concat.txt"
+          output[:commands] << { content: ffconcat, file: file_path }
+          switches += switch("'#{file_path}'", 'i')
+          end_switches += switch('copy', 'c:v')
         end
       end
       unless switches.empty?
@@ -211,10 +215,10 @@ module MovieMasher
     def self.switch_unescaped(value, prefix = '', suffix = '')
       switch(value, prefix, suffix, true)
     end
-    def self.__atrim(offset, duration)
+    def self.__atrim(offset, dur)
       offset = ShellHelper.escape(offset)
-      duration = ShellHelper.escape(duration)
-      "'atrim=start=#{offset}:duration=#{duration},asetpts=expr=PTS-STARTPTS'"
+      dur = ShellHelper.escape(dur)
+      "'[0:a]atrim=start=#{offset}:duration=#{dur},asetpts=expr=PTS-STARTPTS'"
     end
     def self.__audio_gains(volume, graph)
       start = graph[:start]
@@ -264,7 +268,7 @@ module MovieMasher
       __raise_if_negative(graph[:start], "negative start time #{graph}")
       __raise_if_zero(graph[:length], "zero length #{graph}")
       raw = (1 == graphs.length)
-      raw &&= (1 == graph[:loop])
+      raw &&= graph[:loop].nil? || (1 == graph[:loop])
       raw &&= !Mash.gain_changes(graph[:gain])
       raw &&= FloatUtil.cmp(graph[:start], FloatUtil::ZERO)
       raw
@@ -287,14 +291,13 @@ module MovieMasher
       inputs = graph.inputs
       cmd = graph.graph_command(output)
       __raise_if_empty(cmd, "could not build graph command #{graph}")
-      inputs.length.times do |input_index|
-        input = inputs[input_index]
-        cmd = cmd.gsub("movie=filename=#{input[:i]},", "[#{input_index}:v]")
-        input.each do |k, v|
-          cmds << switch(v, k.to_s)
-        end
+      inputs.each { |i| i.each { |k, v| cmds << switch(v, k.to_s) } }
+      unless '[0:v]' == cmd
+        cmds << switch_unescaped(%("#{cmd}"), 'filter_complex')
       end
-      cmds << switch_unescaped(%("#{cmd}"), 'filter_complex')
+      if output[:pixel_format] && cmd.include?('format=pix_fmts=')
+        cmds << switch(output[:pixel_format], 'pix_fmt')
+      end
       cmds.join
     end
     def self.__is_two_pass(a_or_v, v_graphs)
@@ -326,29 +329,29 @@ module MovieMasher
     def self.__raise_if_negative(f, msg)
       raise(Error::JobInput, msg) unless FloatUtil.gtre(f, FloatUtil::ZERO)
     end
-    def self.__raise_if_no_file(out_file, result)
+    def self.__raise_if_no_file(path, cmd, result)
       logs = []
-      if out_file.include?('%')
-        file_count = Dir["#{File.dirname(out_file)}/"].count
-        msg = "created #{file_count} file#{1 == file_count ? '' : 's'}"
+      if path.include?('%')
+        file_count = Dir["#{File.dirname(path)}/"].count
+        msg = "created #{file_count} file#{1 == file_count ? '' : 's'}\n#{cmd}"
         raise(Error::JobRender.new(result, msg)) if file_count.zero?
         logs << { info: (proc { msg }) }
-      elsif File.exist?(out_file)
-        size = File.size?(out_file).to_i
+      elsif File.exist?(path)
+        size = File.size?(path).to_i
         if size.zero?
-          raise(Error::JobRender.new(result, "couldn't create #{out_file}"))
+          raise(Error::JobRender.new(result, "couldn't create #{path}\n#{cmd}"))
         else
-          logs << { info: (proc { "created #{size} byte file #{out_file}" }) }
+          logs << { info: (proc { "created #{size} byte file #{path}" }) }
         end
       else
-        raise(Error::JobRender.new(result, "couldn't create #{out_file}"))
+        raise(Error::JobRender.new(result, "couldn't create #{path}\n#{cmd}"))
       end
       logs
     end
     def self.__raise_if_zero(f, msg)
       raise(Error::JobInput, msg) unless FloatUtil.gtr(f, FloatUtil::ZERO)
     end
-    def self.__raise_unless_duration(result, duration, precision, out_file)
+    def self.__raise_unless_duration(result, duration, precision, out_file, cmd)
       logs = []
       has_no_video = Info.get(out_file, Info::DIMENSIONS).to_s.empty?
       dur_key = (has_no_video ? Info::AUDIO_DURATION : Info::VIDEO_DURATION)
@@ -356,7 +359,7 @@ module MovieMasher
       msg = "rendered with duration: #{test_duration} #{out_file}"
       logs << { debug: (proc { msg }) }
       if test_duration.zero?
-        msg = "could not determine if #{duration} == duration of #{out_file}"
+        msg = "failed to see if #{duration} == duration of #{out_file}\n#{cmd}"
         raise(Error::JobRender.new(result, msg))
       end
       ok = FloatUtil.cmp(duration, test_duration, precision.abs)
@@ -364,7 +367,7 @@ module MovieMasher
         logs << { warn: (proc { result }) }
         if -1 < precision
           msg = "expected #{has_no_video ? 'audio' : 'video'} duration of "\
-            "#{duration} but found #{test_duration} in #{out_file}"
+            "#{duration} but found #{test_duration} in #{out_file}\n#{cmd}"
           raise(Error::JobRender.new(result, msg))
         end
         logs << { warn: (proc { msg }) }

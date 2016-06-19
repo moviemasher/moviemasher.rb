@@ -2,6 +2,11 @@
 version <future>:
 - freeze frame
 
+version 4.0.18:
+  - support added for blend filter
+  - stopped using movie filter in favor of indexed video labels
+  - added support for pixel_format output option
+
 version 4.0.17:
 - now using labeled inputs instead of movie filter in filtergraphs
 - fixed issues with image output in ffmpeg 3 (don't include video_rate)

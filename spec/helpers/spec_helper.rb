@@ -35,19 +35,22 @@ def expect_color_video(color, video_file)
   expect_colors_video([{ color: color, frames: [0, frames] }], video_file)
 end
 def expect_colors_video(colors, video_file)
-  color_frames = MagickGenerator.color_frames video_file
+  color_frames = MagickGenerator.color_frames(video_file)
   puts "#{color_frames}\n#{colors}" unless color_frames.length == colors.length
   expect(color_frames.length).to eq colors.length
   color_frames.length.times do |i|
-    reported_range = color_frames[i]
-    expected_range = colors[i]
-    next if reported_range == expected_range
-    expected_range = expected_range.dup
-    c = expected_range[:color]
-    expected_range[:color] = MagickGenerator.output_color(c, 'jpg')
-    next if reported_range == expected_range
-    expected_range[:color] = MagickGenerator.output_color(c, 'png')
-    expect(reported_range).to eq expected_range
+    reported = color_frames[i]
+    expected = colors[i]
+    next if reported == expected
+    puts "#{reported} != #{expected}" if reported[:frames] != expected[:frames]
+    expect(reported[:frames]).to eq expected[:frames]
+    reported_color = reported[:color]
+    expected_color = MagickGenerator.output_color(expected[:color], 'jpg')
+    next if expected_color == reported_color
+    expected_color = MagickGenerator.output_color(expected[:color], 'png')
+    next if expected_color == reported_color
+    puts video_file
+    expect(reported).to eq expected
   end
 end
 def expect_fps(destination_file, fps)
@@ -163,7 +166,7 @@ def spec_generate_rgb_video(options = nil)
     }
   end
   job[:id] = Digest::SHA2.new(256).hexdigest(options.inspect)
-  rendered_video_path = spec_process_job job
+  rendered_video_path = spec_process_job(job)
   fps = job[:outputs].first.video_rate.to_i
   colors = []
   frame = 0

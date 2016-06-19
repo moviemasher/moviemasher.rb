@@ -2,6 +2,17 @@
 module MovieMasher
   # base class for most other graph related classes
   class GraphUtility
+    def __join_commands(cmds)
+      joined_commands = []
+      cmds = cmds.reject(&:empty?)
+      c = cmds.length
+      c.times do |i|
+        cmd = cmds[i]
+        cmd = "#{cmd}," unless (i.zero? && cmd.end_with?(':v]')) || i == c - 1
+        joined_commands << cmd
+      end
+      joined_commands.join
+    end
     def __coerce_if_numeric(value)
       Evaluate.coerce_if_numeric(value)
     end
@@ -49,6 +60,7 @@ module MovieMasher
       @render_range.length_seconds
     end
     def graph_command(output)
+      FilterSourceRaw.input_index = 0
       @job_output = output
     end
     def graph_scope
@@ -93,17 +105,13 @@ module MovieMasher
   # base for all filter chains
   class Chain < GraphUtility
     def chain_command(scope)
-      cmds = []
-      @filters.each do |filter|
-        cmd =
-          if filter.is_a?(Filter)
-            filter.filter_command(scope)
-          else
-            filter.chain_command(scope)
-          end
-        cmds << cmd unless cmd.to_s.empty?
+      cmds = @filters.map do |f|
+        f.send(f.is_a?(Filter) ? :filter_command : :chain_command, scope)
       end
-      cmds.join(',')
+      __join_commands(cmds)
+    end
+    def chain_labels(label, i)
+      "[#{label}#{1 == i ? '' : 'ed'}#{i - 1}][#{label}#{i}]"
     end
     def initialize(input = nil, job_input = nil)
       @input = input
@@ -132,7 +140,12 @@ module MovieMasher
     def initialize_chains
       if @input[:merger]
         @input[:merger][:dimensions] ||= @input[:dimensions]
-        @merger_chain = ChainModule.new(@input[:merger], @job_input, @input)
+        @merger_chain =
+          if 'com.moviemasher.merger.blend' == @input[:merger][:id]
+            ChainBlend.new(@input[:merger], @job_input, @input)
+          else
+            ChainModule.new(@input[:merger], @job_input, @input)
+          end
       else
         @merger_chain = ChainOverlay.new(@job_input)
       end
@@ -151,12 +164,7 @@ module MovieMasher
     end
     def layer_command(scope)
       layer_scope(scope)
-      cmds = []
-      @chains.each do |chain|
-        chain_cmd = chain.chain_command(scope)
-        cmds << chain_cmd unless chain_cmd.to_s.empty?
-      end
-      cmds.join(',')
+      __join_commands(@chains.map { |chain| chain.chain_command(scope) })
     end
     def layer_scope(scope)
       __raise_unless(@input[:length], "no input length #{@input}")
@@ -166,8 +174,10 @@ module MovieMasher
         scope[:overlay_w], scope[:overlay_h] = @input[:dimensions].split('x')
       end
     end
-    def merger_command(scope)
-      @merger_chain.chain_command(scope)
+    def merger_command(scope, label, i)
+      merge_cmd = @merger_chain.chain_command(scope)
+      __raise_if_empty(merge_cmd, "merger produced nothing #{self}")
+      "#{@merger_chain.chain_labels(label, i)}#{merge_cmd}"
     end
     def range
       (@input ? @input[:range] : nil)
@@ -177,8 +187,6 @@ module MovieMasher
       # puts "command_range_trim #{input_range}"
       cmd = ''
       if render_range && input_range && !input_range.equals?(render_range)
-        # puts "render_range #{render_range.inspect}"
-        # puts "input_range #{input_range.inspect}"
         range_start = render_range.start_seconds
         range_end = render_range.end_seconds
         input_start = input_range.start_seconds
@@ -204,8 +212,9 @@ module MovieMasher
       @layers << layer
       layer
     end
-    def graph_command(*)
-      super
+    def graph_command(output, dont_set_input_index = false) # LayerTransition
+      FilterSourceRaw.input_index = 0 unless dont_set_input_index
+      @job_output = output
       graph_cmds = []
       layer_length = @layers.length
       layer_length.times do |i|
@@ -218,11 +227,7 @@ module MovieMasher
       if 1 < layer_length
         (1..layer_length - 1).each do |i|
           layer = @layers[i]
-          cmd = (1 == i ? "[#{@label_name}0]" : "[#{@label_name}ed#{i - 1}]")
-          cmd += "[#{@label_name}#{i}]"
-          merge_cmd = layer.merger_command(graph_scope)
-          __raise_if_empty(merge_cmd, "merger produced nothing #{layer}")
-          cmd += merge_cmd
+          cmd = layer.merger_command(graph_scope, @label_name, i)
           cmd += "[#{@label_name}ed#{i}]" if i + 1 < layer_length
           graph_cmds << cmd
         end

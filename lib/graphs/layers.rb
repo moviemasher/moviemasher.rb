@@ -32,7 +32,7 @@ module MovieMasher
   # base class for a video or image layer
   class LayerRaw < Layer # LayerRawVideo, LayerRawImage
     def inputs
-      [{ i: @input[:cached_file] }]
+      @filter_movie.inputs
     end
     def layer_command(scope)
       scope[:mm_input_dimensions] = @input[:dimensions]
@@ -47,14 +47,12 @@ module MovieMasher
   class LayerRawImage < LayerRaw
     def initialize_chains
       chain = Chain.new(nil, @job_input)
-      chain << FilterSourceMovie.new(@input, @job_input)
+      @filter_movie = FilterSourceImage.new(@input, @job_input)
+      chain << @filter_movie
       @filter_timestamps = FilterSetpts.new
       chain << @filter_timestamps
       @chains << chain
       super
-    end
-    def inputs
-      [{ loop: 1, i: @input[:cached_file] }]
     end
     def layer_command(scope)
       unless @input[:cached_file]
@@ -69,7 +67,8 @@ module MovieMasher
     def initialize_chains
       # puts "LayerRawVideo#initialize_chains"
       chain = Chain.new(nil, @job_input)
-      chain << FilterSourceMovie.new(@input, @job_input)
+      @filter_movie = FilterSourceVideo.new(@input, @job_input)
+      chain << @filter_movie
       # trim filter, if needed
       @trim_filter = __filter_trim_input
       chain << @trim_filter if @trim_filter
@@ -171,14 +170,14 @@ module MovieMasher
       @graphs.length.times do |i|
         graph = @graphs[i]
         layer_label = "#{layer_letter}_#{Type::TRANSITION}"
-        cmd = graph.graph_command(scope[:mm_output])
+        cmd = graph.graph_command(scope[:mm_output], true)
         layer_chain = @layer_chains[i]
-        cmd += ','
+        cmd += ',' unless cmd.end_with?(':v]')
         cmd += layer_chain[:scaler].chain_command(scope)
         if layer_chain[:filters]
           chain_cmd = layer_chain[:filters].chain_command(scope)
           unless chain_cmd.to_s.empty?
-            cmd += ','
+            cmd += ',' unless cmd.end_with?(':v]')
             cmd += chain_cmd
           end
         end

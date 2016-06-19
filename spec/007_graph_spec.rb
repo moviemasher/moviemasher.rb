@@ -33,7 +33,7 @@ describe File.basename(__FILE__) do
       graph.add_new_layer input
 
       expected_output = 'color=color=blue:duration=2.0:size=320x240'\
-        ':rate=30[layer0];movie=filename=video.mov,trim=duration=2.0'\
+        ':rate=30[layer0];[0:v]trim=duration=2.0'\
         ':start=2.0,fps=fps=30,setpts=expr=PTS-STARTPTS,scale=width=320'\
         ':height=240,setsar=sar=1:max=1,trim=duration=2.0:start=3.0,'\
         'setpts=expr=PTS-STARTPTS[layer1];[layer0][layer1]overlay=x=0:y=0'
@@ -80,7 +80,7 @@ describe File.basename(__FILE__) do
       input[:length] = 2.0
       input[:offset] = 2.0
 
-      layer = MovieMasher::LayerRawVideo.new input, input
+      layer = MovieMasher::LayerRawVideo.new(input, input)
       output = {}
       output[:video_rate] = 30
       output[:dimensions] = '320x240'
@@ -95,8 +95,9 @@ describe File.basename(__FILE__) do
       options[:mm_width], options[:mm_height] = mm_dimensions.split('x')
 
       options[:mm_output] = { type: MovieMasher::Type::VIDEO }
-      expected = 'movie=filename=video.mov,trim=duration=2.0:start=2.0,fps='\
+      expected = '[0:v]trim=duration=2.0:start=2.0,fps='\
         'fps=30,setpts=expr=PTS-STARTPTS,scale=w=320:h=240,setsar=sar=1:max=1'
+      MovieMasher::FilterSourceRaw.input_index = 0
       expect(layer.layer_command(options)).to eq expected
     end
   end

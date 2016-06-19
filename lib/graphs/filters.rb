@@ -236,7 +236,7 @@ module MovieMasher
       super('setpts', expr: expr)
     end
   end
-  # raw input source
+  # base filter source
   class FilterSource < FilterHash
     def filter_command(scope)
       cmd = super
@@ -250,17 +250,41 @@ module MovieMasher
       @dimensions = dimensions
     end
   end
-  # video source
-  class FilterSourceMovie < FilterSource
+  # base raw source
+  class FilterSourceRaw < FilterSource
+    class << self
+      attr_accessor :input_index
+    end
+    FilterSourceRaw.input_index = 0
     def filter_name
       "#{super} #{File.basename(@hash[:filename])}"
     end
     def initialize(input, job_input)
       @input = input
       @job_input = job_input
-      super('movie', { filename: input[:cached_file] }, input[:dimensions])
+      # filename: @input[:cached_file]
+      super('movie', {}, @input[:dimensions])
+    end
+    def filter_command(*)
+      Filter.__outsize['w'], Filter.__outsize['h'] = @dimensions.split('x')
+      index = FilterSourceRaw.input_index
+      FilterSourceRaw.input_index += 1
+      "[#{index}:v]"
     end
   end
+  # video source
+  class FilterSourceVideo < FilterSourceRaw
+    def inputs
+      [{ i: @input[:cached_file] }]
+    end
+  end
+  # image source
+  class FilterSourceImage < FilterSourceRaw
+    def inputs
+      [{ loop: 1, i: @input[:cached_file] }]
+    end
+  end
+
   # simple color source
   class FilterSourceColor < FilterSource
     def filter_command(scope)

@@ -1,13 +1,12 @@
 {
-	"type": "video",
-	"name": "video-h264-{job.id}",
-	"extension": "mp4",
-	"dimensions": "512x288",
-	"video_rate": "30",
-	"video_codec": "libx264 -preset ultrafast -level 41",
-	"audio_codec": "aac -strict experimental",
-	"video_bitrate": "2000",
-	"audio_bitrate": "224",
-	"metadata": "title=test",
-	"precision": -1
+  "type": "video",
+  "name": "video-h264-{job.id}",
+  "extension": "mp4",
+  "dimensions": "512x288",
+  "video_rate": "30",
+  "video_bitrate": "2000",
+  "audio_bitrate": "224",
+  "pixel_format": "yuv444p",
+  "metadata": "title=test",
+  "precision": -1
 }
