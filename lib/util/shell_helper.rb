@@ -105,6 +105,34 @@ module MovieMasher
       avb, v_graphs, a_graphs = __output_graphs(output, job)
       output_type = output[:type]
       a_or_v = Type::RAW_AVS.include?(output_type)
+      unless AV::AUDIO_ONLY == avb
+        if 1 == v_graphs.length
+          graph = v_graphs.first
+          video_dur = graph.duration
+          switches += __graph_command(graph, output)
+        else
+          ffconcat = 'ffconcat version 1.0'
+          v_graphs.length.times do |index|
+            graph = v_graphs[index]
+            duration = graph.duration
+            video_dur += duration
+            out_file_name = "concat-#{index}.#{output[:extension]}"
+            out_file = "#{out_path}#{out_file_name}"
+            ffconcat += "\nfile '#{out_file_name}'\nduration #{duration}"
+            output[:commands] << {
+              duration: duration,
+              file: out_file, precision: output[:precision],
+              command: '-y' + __graph_command(graph, output) \
+                + output_command(output, AV::VIDEO_ONLY, duration) \
+                + switch('0', 'qp')
+            }
+          end
+          file_path = "#{out_path}concat.txt"
+          output[:commands] << { content: ffconcat, file: file_path }
+          switches += switch("'#{file_path}'", 'i')
+          end_switches += switch('copy', 'c:v')
+        end
+      end
       unless AV::VIDEO_ONLY == avb
         if __audio_raw(a_graphs)
           # just one non-looping graph, starting at zero with no gain change
@@ -148,34 +176,6 @@ module MovieMasher
         else
           switches += switch(graph[:waved_file], 'i')
           end_switches += __audio_switches(graph, audio_dur)
-        end
-      end
-      unless AV::AUDIO_ONLY == avb
-        if 1 == v_graphs.length
-          graph = v_graphs.first
-          video_dur = graph.duration
-          switches += __graph_command(graph, output)
-        else
-          ffconcat = 'ffconcat version 1.0'
-          v_graphs.length.times do |index|
-            graph = v_graphs[index]
-            duration = graph.duration
-            video_dur += duration
-            out_file_name = "concat-#{index}.#{output[:extension]}"
-            out_file = "#{out_path}#{out_file_name}"
-            ffconcat += "\nfile '#{out_file_name}'\nduration #{duration}"
-            output[:commands] << {
-              duration: duration,
-              file: out_file, precision: output[:precision],
-              command: '-y' + __graph_command(graph, output) \
-                + output_command(output, AV::VIDEO_ONLY, duration) \
-                + switch('0', 'qp')
-            }
-          end
-          file_path = "#{out_path}concat.txt"
-          output[:commands] << { content: ffconcat, file: file_path }
-          switches += switch("'#{file_path}'", 'i')
-          end_switches += switch('copy', 'c:v')
         end
       end
       unless switches.empty?
