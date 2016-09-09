@@ -27,13 +27,16 @@ module MovieMasher
       end
       symbolize(data)
     end
-    def self.symbolize(hash_or_array)
+    def self.symbolize(hash_or_array, key = nil)
       result = hash_or_array
-      if hash_or_array.is_a?(Hash)
+        if hash_or_array.is_a?(Hash)
         result = {}
         hash_or_array.each do |k, v|
-          k = k.downcase.to_sym if k.is_a?(String)
-          result[k] = symbolize(v)
+          if k.is_a?(String)
+            k = k.downcase unless :parameters == key
+          end
+          k = k.to_sym
+          result[k] = symbolize(v, k)
         end
       elsif hash_or_array.is_a?(Array)
         result = hash_or_array.map { |v| symbolize(v) }
