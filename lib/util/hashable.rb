@@ -29,7 +29,7 @@ module MovieMasher
     end
     def self.symbolize(hash_or_array, key = nil)
       result = hash_or_array
-        if hash_or_array.is_a?(Hash)
+      if hash_or_array.is_a?(Hash)
         result = {}
         hash_or_array.each do |k, v|
           if k.is_a?(String)
