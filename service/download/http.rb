@@ -22,7 +22,7 @@ module MovieMasher
       Net::HTTP.start(uri.host, uri.port, use_ssl: secure) do |http|
         request = Net::HTTP::Get.new uri
         http.request request do |response|
-          if '200' == response.code
+          if 200 == response.code.to_i
             File.open(cache_url_path, 'wb') do |io|
               response.read_body do |chunk|
                 io.write chunk

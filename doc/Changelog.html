@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>RDoc Documentation</title>
+<title>Changelog - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -20,7 +20,7 @@
 <script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
 
 
-<body>
+<body class="file">
 <nav id="metadata">
   <nav id="home-section" class="section">
   <h3 class="section-header">
@@ -42,6 +42,8 @@
   <ul id="search-results" class="initially-hidden"></ul>
 </nav>
 
+
+  
 
   <div id="project-metadata">
     <nav id="fileindex-section" class="section project-section">
@@ -248,91 +250,132 @@
 </nav>
 
 <div id="documentation" class="description">
-
-<p><img
-src="https://github.com/moviemasher/moviemasher.rb/raw/master/README/logo-120x60.png"
-/> <strong><a
-href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> |
-<a
-href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
-| <a
-href="https://github.com/moviemasher/moviemasher.rb">moviemasher.rb</a></strong></p>
-
-<p><em>Ruby library for mashing up video, images and audio utilizing FFmpeg
-and Ecasound</em></p>
-
-<h1 id="label-moviemasher.rb">moviemasher.rb<span><a href="#label-moviemasher.rb">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
-<hr style="height: 1px">
-
-<h3 id="label-RDoc+Documentation">RDoc <a href="Documentation_md.html">Documentation</a><span><a href="#label-RDoc+Documentation">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
-
-<h5 id="label-Core+Classes%2FModules">Core Classes/Modules<span><a href="#label-Core+Classes%2FModules">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
+  
+<p>version &lt;future&gt;:</p>
 <ul><li>
-<p><a href="MovieMasher.html">MovieMasher</a></p>
-</li><li>
-<p><a href="MovieMasher/Job.html">MovieMasher::Job</a></p>
-</li><li>
-<p><a href="MovieMasher/Input.html">MovieMasher::Input</a></p>
-</li><li>
-<p><a href="MovieMasher/Output.html">MovieMasher::Output</a></p>
-</li><li>
-<p><a href="MovieMasher/Transfer.html">MovieMasher::Transfer</a></p>
-</li><li>
-<p><a href="MovieMasher/Source.html">MovieMasher::Source</a></p>
-</li><li>
-<p><a href="MovieMasher/Destination.html">MovieMasher::Destination</a></p>
-</li><li>
-<p><a href="MovieMasher/Callback.html">MovieMasher::Callback</a></p>
+<p>freeze frame</p>
 </li></ul>
 
-<h5 id="label-Core+Usage">Core Usage<span><a href="#label-Core+Usage">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
+<p>version 4.0.21:</p>
 
-<pre class="ruby">    <span class="ruby-identifier">require_relative</span> <span class="ruby-string">&#39;lib/moviemasher.rb&#39;</span>
-    <span class="ruby-identifier">job</span> = { :<span class="ruby-identifier">inputs</span> =<span class="ruby-operator">&gt;</span> [], :<span class="ruby-identifier">base_source</span> =<span class="ruby-operator">&gt;</span> {}, :<span class="ruby-identifier">outputs</span> =<span class="ruby-operator">&gt;</span> [], :<span class="ruby-identifier">destination</span> =<span class="ruby-operator">&gt;</span> {} }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">base_source</span>][:<span class="ruby-identifier">path</span>] = <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">destination</span>][:<span class="ruby-identifier">path</span>] = <span class="ruby-string">&#39;~/&#39;</span>
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;video&#39;</span>, :<span class="ruby-identifier">source</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;input.mov&#39;</span>, :<span class="ruby-identifier">fill</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;crop&#39;</span> }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;image&#39;</span>, :<span class="ruby-identifier">source</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;input.jpg&#39;</span>, :<span class="ruby-identifier">length</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span> }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;audio&#39;</span>, :<span class="ruby-identifier">source</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;input.mp3&#39;</span>, :<span class="ruby-identifier">offset</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10</span> }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">outputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;video&#39;</span>, :<span class="ruby-identifier">name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;output.mp4&#39;</span> }
-    <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">process</span> <span class="ruby-identifier">job</span>
-</pre>
+<pre>- fixed upload response code checks</pre>
 
-<p>When inputs use relative URLs like the example above then either the input
-or the job needs a <code>base_source</code> key containing a <a
-href="MovieMasher/Transfer.html">MovieMasher::Transfer</a> object to
-resolve them to absolute ones. Likewise, a <code>destination</code> key
-containing a <a
-href="MovieMasher/Destination.html">MovieMasher::Destination</a> object can
-be placed either in an output or the job for all outputs to use to resolve
-relative locations. We&#39;ve set them both to our home directory in this
-case so all files live there.</p>
+<p>version 4.0.20:</p>
 
-<p>Inputs are arranged consecutively one after the other - at least the visual
-ones. Audio inputs will by default start where the last audio or video with
-audio ends, so if the video input in our example has audio the audio input
-will start after it, otherwise they will begin at the same time. You can
-also explicitly play an audio track at any time by specify its
-<code>start</code> value.</p>
+<pre>- stopped downcasing keys in transfer.parameters</pre>
 
-<p>In addition to raw media (video, audio and images) it&#39;s also possible
-to output image sequences from video tracks and waveform graphics from
-audio tracks. In terms of inputs, it&#39;s also possible to provide a mash
-JSON payload like moviemasher.js creates. Within a mash input, visual
-elements can be composited together just like audio elements can in the job
-itself.</p>
+<p>version 4.0.19:</p>
 
-<p>The visual composition of inputs is controlled by <em>effect, scaler</em>
-and <em>merger</em> media, which are all arrangements of FFmpeg
-<em>filters</em>. Only a subset of filters and their parameters are
-supported at this time, but they include basics like crop, scale, fade and
-drawtext. That last one relies on <em>font</em> media, the last of the
-modular types.</p>
+<pre>- fixed video channel issue</pre>
 
-<p><strong>To regenerate this documentation <code>cd</code> to project
-directory and execute:</strong></p>
+<p>version 4.0.18:</p>
 
-<pre>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39; --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude=&#39;/spec&#39; --exclude=&#39;/log&#39; --exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39; --exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39; --exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39; --exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39; --exclude=&#39;/README-short&#39; --exclude=&#39;/LICENSE&#39;</pre>
+<pre>- support added for blend filter
+- stopped using movie filter in favor of indexed video labels
+- added support for pixel_format output option</pre>
+
+<p>version 4.0.17:</p>
+<ul><li>
+<p>now using labeled inputs instead of movie filter in filtergraphs</p>
+</li><li>
+<p>fixed issues with image output in ffmpeg 3 (don&#39;t include video_rate)</p>
+</li><li>
+<p>fixed issues in image inputs with transforms over time (related)</p>
+</li><li>
+<p>upgraded openjpeg library to version 2</p>
+</li><li>
+<p>removed second pass during intermediate builds</p>
+</li></ul>
+
+<p>version 4.0.16</p>
+<ul><li>
+<p>support for FFMpeg 3.0.2</p>
+</li><li>
+<p>standard support for AAC (don&#39;t include experimental flag)</p>
+</li><li>
+<p>support for docker-compose and a few helpful compositions</p>
+</li><li>
+<p>support for offset in image outputs including negative and percentage</p>
+</li><li>
+<p>now using dentaku for evaluations</p>
+</li><li>
+<p>now linting ruby code with rubocop</p>
+</li></ul>
+
+<p>version 4.0.13:</p>
+<ul><li>
+<p>support in aws service for overriding angular-moviemasher config</p>
+</li><li>
+<p>fixed support for aws_* options in docker</p>
+</li><li>
+<p>support for values less then one/zero for precision</p>
+</li><li>
+<p>audio transition pop fix</p>
+</li></ul>
+
+<p>version 4.0.12:</p>
+<ul><li>
+<p>init services</p>
+</li><li>
+<p>require http in https services</p>
+</li><li>
+<p>better support for third party services</p>
+</li><li>
+<p>queue service</p>
+</li></ul>
+
+<p>version 4.0.11:</p>
+<ul><li>
+<p>support for input/output metadata evaluations</p>
+</li><li>
+<p>logging and encoding fixes</p>
+</li><li>
+<p>support rake process_queues config path parameters</p>
+</li><li>
+<p>ignore empty config keys</p>
+</li></ul>
+
+<p>version 4.0.10</p>
+<ul><li>
+<p>include Gemfile.lock for Docker build</p>
+</li><li>
+<p>create clips out of font media as well</p>
+</li><li>
+<p>proper scope in rakefile</p>
+</li><li>
+<p>update log directory path</p>
+</li><li>
+<p>use path.concat in makefile</p>
+</li><li>
+<p>default paths to match angular-moviemasher</p>
+</li></ul>
+
+<p>version 4.0.9</p>
+<ul><li>
+<p>documentation, <a href="README_md.html">README</a></p>
+</li><li>
+<p>auto-generated visuals for spec tests</p>
+</li><li>
+<p>docker integration, gem loading</p>
+</li><li>
+<p>fix __init_callback route</p>
+</li></ul>
+
+<p>Version 4.0.08</p>
+<ul><li>
+<p>updated path related option names</p>
+</li><li>
+<p>path transformations, http parameters</p>
+</li><li>
+<p>better aws-sdk optional loading</p>
+</li><li>
+<p>ami permission fixes</p>
+</li><li>
+<p>transition fixes</p>
+</li></ul>
+
 </div>
+
 
 
 <footer id="validator-badges">

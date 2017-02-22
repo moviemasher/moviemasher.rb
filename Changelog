@@ -2,6 +2,15 @@
 version <future>:
 - freeze frame
 
+version 4.0.21:
+  - fixed upload response code checks
+
+version 4.0.20:
+  - stopped downcasing keys in transfer.parameters
+
+version 4.0.19:
+  - fixed video channel issue
+
 version 4.0.18:
   - support added for blend filter
   - stopped using movie filter in favor of indexed video labels

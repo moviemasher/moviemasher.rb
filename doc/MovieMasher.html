@@ -164,6 +164,8 @@
 
   <ul>
   
+    <li class="file"><a href="./Changelog.html">Changelog</a>
+  
     <li class="file"><a href="./Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="./README_md.html">README</a>
@@ -189,6 +191,8 @@
     <li><a href="./MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="./MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="./MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="./MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -262,7 +266,11 @@
   
     <li><a href="./MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="./MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="./MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="./MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="./MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="./MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -480,8 +488,6 @@ download cache ismaintained by default.</p>
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>, <span class="ruby-node">&quot;invalid configuration #{hash_or_path}&quot;</span>)
     <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>, <span class="ruby-node">&quot;invalid configuration path #{hash_or_path}&quot;</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">hash_or_path</span>
 <span class="ruby-keyword">end</span></pre>
@@ -514,7 +520,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__configure_directories-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 167</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 165</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__configure_directories</span>
   [
     <span class="ruby-value">:render_directory</span>, <span class="ruby-value">:download_directory</span>, <span class="ruby-value">:queue_directory</span>,
@@ -562,7 +568,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__flush-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 185</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 183</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__flush</span>
   <span class="ruby-identifier">directory</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">__config</span>[<span class="ruby-value">:download_directory</span>].<span class="ruby-identifier">to_s</span>
   <span class="ruby-identifier">directory</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">__config</span>[<span class="ruby-value">:render_directory</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">directory</span>.<span class="ruby-identifier">empty?</span>
@@ -599,7 +605,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__flush_bytes_from_directory-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 192</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 190</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__flush_bytes_from_directory</span>(<span class="ruby-identifier">download_directory</span>, <span class="ruby-identifier">bytes_to_flush</span>)
   <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;-d 1 -k #{download_directory}&quot;</span>
   <span class="ruby-identifier">result</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-identifier">cmd</span>, <span class="ruby-identifier">app</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;du&#39;</span>)
@@ -654,7 +660,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__flush_directories-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 217</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 215</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__flush_directories</span>(<span class="ruby-identifier">directories</span>, <span class="ruby-identifier">bytes_to_flush</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">directories</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-identifier">directories</span>.<span class="ruby-identifier">sort!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-value">:at</span>] <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">b</span>[<span class="ruby-value">:at</span>] }
@@ -695,7 +701,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__flush_directory_bytes-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 228</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 226</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__flush_directory_bytes</span>(<span class="ruby-identifier">dir</span>)
   <span class="ruby-identifier">size</span> = <span class="ruby-value">0</span>
   <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;-d 0 -k #{dir}&quot;</span>
@@ -736,7 +742,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__flush_downloads-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 239</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 237</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__flush_downloads</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">size</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">dir</span>)
@@ -794,7 +800,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__log-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 267</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 265</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__log</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>)
   <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">__job</span>.<span class="ruby-identifier">log_entry</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">__job</span>
   <span class="ruby-identifier">__log_transcoder</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>) <span class="ruby-comment"># if &#39;debug&#39; == configuration[:verbose]</span>
@@ -828,7 +834,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__log_exception-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 271</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 269</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__log_exception</span>(<span class="ruby-identifier">exception</span>, <span class="ruby-identifier">is_warning</span> = <span class="ruby-keyword">false</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">exception</span>
     <span class="ruby-keyword">unless</span> <span class="ruby-identifier">exception</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Job</span>)
@@ -871,7 +877,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__log_process-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 284</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 282</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__log_process</span>(<span class="ruby-identifier">process_seconds</span>)
   <span class="ruby-identifier">how_long</span> =
     <span class="ruby-keyword">case</span> <span class="ruby-identifier">process_seconds</span>
@@ -917,7 +923,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__log_transcoder-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 300</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 298</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__log_transcoder</span>(<span class="ruby-identifier">type</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>)
   <span class="ruby-identifier">puts</span> <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">call</span>
   <span class="ruby-constant">STDOUT</span>.<span class="ruby-identifier">flush</span>
@@ -955,7 +961,7 @@ download cache ismaintained by default.</p>
 
           
           <div class="method-source-code" id="__logger_instance-source">
-            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 308</span>
+            <pre><span class="ruby-comment"># File lib/moviemasher.rb, line 306</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__logger_instance</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">__logger</span>
     <span class="ruby-identifier">log_dir</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">__config</span>[<span class="ruby-value">:log_directory</span>]

@@ -88,6 +88,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -113,6 +115,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -186,7 +190,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -329,14 +337,12 @@
 
           
           <div class="method-source-code" id="initialize_chains-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 42</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_chains</span>
-  <span class="ruby-identifier">chain</span> = <span class="ruby-constant">Chain</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">nil</span>, <span class="ruby-ivar">@job_input</span>
-  <span class="ruby-comment"># we will need to change movie_filter path, since we&#39;ll be building</span>
-  <span class="ruby-comment"># video file from image for each output</span>
-  <span class="ruby-ivar">@movie_filter</span> = <span class="ruby-constant">FilterSourceMovie</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>, <span class="ruby-ivar">@job_input</span>)
-  <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@movie_filter</span>
-  <span class="ruby-ivar">@filter_timestamps</span> = <span class="ruby-constant">FilterSetpts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;N&#39;</span>)
+  <span class="ruby-identifier">chain</span> = <span class="ruby-constant">Chain</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">nil</span>, <span class="ruby-ivar">@job_input</span>)
+  <span class="ruby-ivar">@filter_movie</span> = <span class="ruby-constant">FilterSourceImage</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>, <span class="ruby-ivar">@job_input</span>)
+  <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@filter_movie</span>
+  <span class="ruby-ivar">@filter_timestamps</span> = <span class="ruby-constant">FilterSetpts</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@filter_timestamps</span>
   <span class="ruby-ivar">@chains</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">chain</span>
   <span class="ruby-keyword">super</span>
@@ -375,19 +381,12 @@
 
           
           <div class="method-source-code" id="layer_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 53</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 57</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">layer_command</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:cached_file</span>]
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;no cached_file #{@input}&quot;</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">output_type_is_not_video</span> = (<span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>][<span class="ruby-value">:type</span>])
-  <span class="ruby-ivar">@movie_filter</span>.<span class="ruby-identifier">hash</span>[<span class="ruby-value">:loop</span>] = <span class="ruby-value">1</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">output_type_is_not_video</span>
-    <span class="ruby-identifier">loops</span> = <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_fps</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:length</span>])
-    <span class="ruby-ivar">@movie_filter</span>.<span class="ruby-identifier">hash</span>[<span class="ruby-value">:loop</span>] = <span class="ruby-identifier">loops</span>.<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-ivar">@filter_timestamps</span>.<span class="ruby-identifier">disabled</span> = <span class="ruby-identifier">output_type_is_not_video</span>
-  <span class="ruby-ivar">@movie_filter</span>.<span class="ruby-identifier">hash</span>[<span class="ruby-value">:filename</span>] = <span class="ruby-ivar">@input</span>[<span class="ruby-value">:cached_file</span>]
+  <span class="ruby-ivar">@filter_timestamps</span>.<span class="ruby-identifier">disabled</span> = (<span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>][<span class="ruby-value">:type</span>])
   <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- layer_command-source -->

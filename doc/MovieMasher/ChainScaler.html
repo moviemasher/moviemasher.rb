@@ -96,6 +96,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -121,6 +123,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -194,7 +198,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -337,7 +345,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 61</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">job_input</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-ivar">@input_dimensions</span> = <span class="ruby-ivar">@input</span>[<span class="ruby-value">:dimensions</span>]
@@ -378,7 +386,7 @@
 
           
           <div class="method-source-code" id="__crop_filter-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 129</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 114</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__crop_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
   <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(
     <span class="ruby-string">&#39;crop&#39;</span>,
@@ -417,7 +425,7 @@
 
           
           <div class="method-source-code" id="__crop_or_pad-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 115</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 123</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__crop_or_pad</span>(<span class="ruby-identifier">gtr</span>, <span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">gtr</span>
     <span class="ruby-identifier">__crop_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
@@ -454,7 +462,7 @@
 
           
           <div class="method-source-code" id="__min_or_max-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 122</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 130</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__min_or_max</span>(<span class="ruby-identifier">fill_is_scale</span>, <span class="ruby-identifier">ratio_h</span>, <span class="ruby-identifier">ratio_w</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">fill_is_scale</span>
     <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">min</span>(<span class="ruby-identifier">ratio_h</span>, <span class="ruby-identifier">ratio_w</span>)
@@ -491,7 +499,7 @@
 
           
           <div class="method-source-code" id="__pad_filter-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 138</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 137</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__pad_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
   <span class="ruby-identifier">backcolor</span> = <span class="ruby-string">&#39;black&#39;</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:backcolor</span>]
@@ -539,7 +547,7 @@
 
           
           <div class="method-source-code" id="chain_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">chain_command</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-ivar">@filters</span> = []
   <span class="ruby-identifier">target_dims</span> = <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_dimensions</span>]

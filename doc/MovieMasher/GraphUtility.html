@@ -77,6 +77,8 @@
     
     <li ><a href="#method-i-__is_and_not_empty">#__is_and_not_empty</a>
     
+    <li ><a href="#method-i-__join_commands">#__join_commands</a>
+    
     <li ><a href="#method-i-__raise_if_empty">#__raise_if_empty</a>
     
     <li ><a href="#method-i-__raise_unless">#__raise_unless</a>
@@ -91,6 +93,8 @@
   <h3 class="section-header">Pages</h3>
 
   <ul>
+  
+    <li class="file"><a href="../Changelog.html">Changelog</a>
   
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
@@ -117,6 +121,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -190,7 +196,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -328,7 +338,7 @@
 
           
           <div class="method-source-code" id="__coerce_if_numeric-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 14</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__coerce_if_numeric</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">coerce_if_numeric</span>(<span class="ruby-identifier">value</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -361,7 +371,7 @@
 
           
           <div class="method-source-code" id="__is_and_not_empty-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 5</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__is_and_not_empty</span>(<span class="ruby-identifier">thing</span>)
   <span class="ruby-identifier">thing</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">thing</span>.<span class="ruby-identifier">empty?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -373,6 +383,47 @@
 
         
       </div><!-- __is_and_not_empty-method -->
+
+    
+      <div id="method-i-__join_commands" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__join_commands</span><span
+            class="method-args">(cmds)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__join_commands-source">
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">__join_commands</span>(<span class="ruby-identifier">cmds</span>)
+  <span class="ruby-identifier">joined_commands</span> = []
+  <span class="ruby-identifier">cmds</span> = <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">reject</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:empty?</span>)
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">length</span>
+  <span class="ruby-identifier">c</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">cmds</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;#{cmd},&quot;</span> <span class="ruby-keyword">unless</span> (<span class="ruby-identifier">i</span>.<span class="ruby-identifier">zero?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-string">&#39;:v]&#39;</span>)) <span class="ruby-operator">||</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">joined_commands</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">joined_commands</span>.<span class="ruby-identifier">join</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __join_commands-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __join_commands-method -->
 
     
       <div id="method-i-__raise_if_empty" class="method-detail ">
@@ -394,7 +445,7 @@
 
           
           <div class="method-source-code" id="__raise_if_empty-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 11</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__raise_if_empty</span>(<span class="ruby-identifier">s</span>, <span class="ruby-identifier">msg</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-identifier">msg</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">empty?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -427,7 +478,7 @@
 
           
           <div class="method-source-code" id="__raise_unless-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 8</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-identifier">tf</span>, <span class="ruby-identifier">msg</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-identifier">msg</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">tf</span>
 <span class="ruby-keyword">end</span></pre>

@@ -88,6 +88,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -113,6 +115,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -186,7 +190,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -390,7 +398,7 @@
   <span class="ruby-keyword">end</span>
   <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>, <span class="ruby-identifier">use_ssl</span><span class="ruby-operator">:</span> <span class="ruby-identifier">secure</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">result</span> = <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">req</span>)
-    <span class="ruby-keyword">if</span> <span class="ruby-value">200</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">code</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-value">200</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">code</span>.<span class="ruby-identifier">to_i</span>
       <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;#{result.code} upload #{uri} response #{result.body}&quot;</span>
       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobUpload</span>, <span class="ruby-identifier">msg</span>)
     <span class="ruby-keyword">end</span>

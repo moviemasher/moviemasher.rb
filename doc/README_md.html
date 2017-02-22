@@ -49,7 +49,7 @@
     <h3 class="section-header">Table of Contents</h3>
     <ul>
       <li><a href="#label-moviemasher.rb">moviemasher.rb</a>
-      <li><a href="#label-Overview">Overview</a>
+      <li><a href="#label-Overview%3A+FFMpeg+%2B+Mash+%3D+Transcoder">Overview: FFMpeg + Mash = Transcoder</a>
       <li><a href="#label-AWS+Integration">AWS Integration</a>
       <li><a href="#label-Docker+Usage">Docker Usage</a>
       <li><a href="#label-Requirements">Requirements</a>
@@ -69,6 +69,8 @@
   <h3 class="section-header">Pages</h3>
 
   <ul>
+  
+    <li class="file"><a href="./Changelog.html">Changelog</a>
   
     <li class="file"><a href="./Documentation_md.html">Documentation</a>
   
@@ -95,6 +97,8 @@
     <li><a href="./MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="./MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="./MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="./MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -168,7 +172,11 @@
   
     <li><a href="./MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="./MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="./MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="./MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="./MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="./MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -299,7 +307,7 @@ authentication</p>
 milestones</p>
 </li></ul>
 
-<h3 id="label-Overview">Overview<span><a href="#label-Overview">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+<h3 id="label-Overview%3A+FFMpeg+%2B+Mash+%3D+Transcoder">Overview: FFMpeg + Mash = Transcoder<span><a href="#label-Overview%3A+FFMpeg+%2B+Mash+%3D+Transcoder">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
 
 <p>The project aims to simplify common audio/video editing operations by
 turning your job into a series of shell commands, and then overseeing their
@@ -309,8 +317,8 @@ request mechanisms, external systems can be alerted by <em>callbacks</em>
 triggered when a job is started, during its processing and/or when it&#39;s
 completed.</p>
 <ul><li>
-<p><strong>Documentation:</strong> generated with RDoc from source <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/index.html">(HTML)</a></p>
+<p><strong>System Documentation:</strong> <a
+href="http://moviemasher.com/docs/">MovieMasher.com</a></p>
 </li><li>
 <p><strong>Docker Image:</strong> <code>moviemasher/moviemasher.rb</code> <a
 href="http://Dockerfile">(Dockerfile)</a></p>
@@ -373,55 +381,54 @@ shared password.</p>
 
 <p>Docker&#39;s <a
 href="https://registry.hub.docker.com/u/moviemasher/moviemasher.rb/">moviemasher/moviemasher.rb</a>
-image is based off the official <a
+image is automatically built from the official <a
 href="https://registry.hub.docker.com/_/ruby/">ruby</a> image, adding
 builds of <a href="http://www.ffmpeg.org">FFmpeg</a>, <a
 href="http://eca.cx/ecasound/">Ecasound</a> and supporting audio/visual
-libraries. It can be used to process jobs supplied directly on the command
-line, or to grab them from a directory/queue - either approach supports
-running in interractive or daemon mode. The Dockerfile contains a
-<strong>VOLUME</strong> instruction for each directory it works with,
-including <strong>queue_directory</strong> so that job files residing on
-the host can be easily processed.</p>
-<ul><li>
-<p>To display documentation of configuration options:</p>
+applications and libraries. It can be used to process jobs supplied
+directly on the command line, or to grab them from a directory/queue -
+either approach supports running in interactive or daemon mode. The
+Dockerfile contains a <strong>VOLUME</strong> instruction for each
+directory it works with, including <strong>queue_directory</strong> so that
+job files residing on the host can be easily processed.</p>
 
-<p><code>docker run -it --rm moviemasher/moviemasher.rb moviemasher
---help</code></p>
-</li><li>
-<p>To process jobs directly from the command line:</p>
+<p>To display documentation of configuration options:
+- <code>docker run -it
+--rm moviemasher/moviemasher.rb moviemasher --help</code></p>
 
-<pre>`docker run -it --rm moviemasher/moviemasher.rb process &quot;JOB&quot; &quot;JOB&quot;`</pre>
-</li></ul>
+<p>To process jobs formatted in JSON/YAML or paths to them directly from the
+command line:
+- <code>docker run -it --rm moviemasher/moviemasher.rb
+process &quot;JOB&quot; &quot;JOB&quot;</code></p>
 
-<p>JOB can be a JSON or YAML formatted string, or a path to one in the
-container.</p>
-<ul><li>
 <p>To process all JSON or YAML formatted jobs in directory &#39;my_jobs&#39;
 residing on the host:</p>
+<ul><li>
+<p><code>docker run -it --rm -v my_jobs:/tmp/moviemasher/queue
+moviemasher/moviemasher.rb</code></p>
+</li></ul>
 
-<pre>`docker run -it --rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`</pre>
-</li><li>
 <p>To continually process jobs from container&#39;s queue volume:</p>
-
-<pre>`docker run -d -t --name=moviemasher moviemasher/moviemasher.rb process_loop`</pre>
+<ul><li>
+<p><code>docker run -d -t --name=moviemasher moviemasher/moviemasher.rb
+process_loop</code></p>
 </li></ul>
 
 <p>Note the <code>t</code> switch - it&#39;s required for Ecasound to function
 properly. You&#39;ll need to subsequently execute <code>docker stop
 moviemasher</code> and <code>docker rm moviemasher</code> to stop
 processing and remove the container created.</p>
-<ul><li>
-<p>To process a single job from an SQS queue:</p>
 
-<pre>`docker run -it --rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`</pre>
+<p>To process a single job from an SQS queue:</p>
+<ul><li>
+<p><code>docker run -it --rm moviemasher/moviemasher.rb process_one
+--queue_url=[URL] --aws_access_key_id=[ID]
+--aws_secret_access_key=[SECRET]</code></p>
 </li></ul>
 
 <p>URL points to an existing SQS Queue that provides read/write access to the
 owner of the access key with ID and SECRET. Messages can be in JSON or YAML
-format.</p>
-
-<p>The last example demonstrates overriding the configuration with command
+format. This example demonstrates overriding the configuration with command
 line arguments - all commands support this. The
 <strong>MOVIEMASHER_CONFIG</strong> environmental variable can also be set
 to a configuration file residing on the container in JSON/YAML format,
@@ -582,6 +589,18 @@ rubocop</code></p>
 <p>To rebuild Gemfile.lock from Gemfile:
 - <code>docker-compose -f
 config/docker/bundler/bundler.yml run --rm bundler</code></p>
+
+<p>To have rdoc rebuild documentation in <code>docs</code> from source code:</p>
+<ul><li>
+<p><code>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39;
+--fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov
+--exclude=&#39;/spec&#39; --exclude=&#39;/log&#39;
+--exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39;
+--exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39;
+--exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39;
+--exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39;
+--exclude=&#39;/README-short&#39; --exclude=&#39;/LICENSE&#39;</code></p>
+</li></ul>
 
 <h5 id="label-Known+issues+in+this+version">Known issues in this version<span><a href="#label-Known+issues+in+this+version">&para;</a> <a href="#documentation">&uarr;</a></span></h5>
 <ul><li>

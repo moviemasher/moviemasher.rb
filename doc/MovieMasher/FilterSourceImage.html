@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class MovieMasher::GraphMash - RDoc Documentation</title>
+<title>class MovieMasher::FilterSourceImage - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -49,7 +49,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/graph.rb
+    <li>lib/graphs/filters.rb
   </ul>
 </nav>
 
@@ -61,7 +61,7 @@
     <nav id="parent-class-section" class="section">
   <h3 class="section-header">Parent</h3>
   
-  <p class="link"><a href="Graph.html">MovieMasher::Graph</a>
+  <p class="link"><a href="FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
   
 </nav>
 
@@ -72,12 +72,6 @@
   <h3 class="section-header">Methods</h3>
 
   <ul class="link-list">
-    
-    <li class="calls-super" ><a href="#method-c-new">::new</a>
-    
-    <li ><a href="#method-i-add_new_layer">#add_new_layer</a>
-    
-    <li ><a href="#method-i-graph_command">#graph_command</a>
     
     <li ><a href="#method-i-inputs">#inputs</a>
     
@@ -291,11 +285,11 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class MovieMasher::GraphMash</h1>
+  <h1 class="class">class MovieMasher::FilterSourceImage</h1>
 
   <div id="description" class="description">
     
-<p>a mash represented as a graph</p>
+<p>image source</p>
 
   </div><!-- description -->
 
@@ -313,143 +307,8 @@
 
     <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Class Methods</h3>
-
-    
-      <div id="method-c-new" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">new</span><span
-            class="method-args">(job, mash_input, render_range = nil, label_name = 'layer')</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-            <div class="method-calls-super">
-              Calls superclass method
-              <a href="Graph.html#method-c-new">MovieMasher::Graph.new</a>
-            </div>
-          
-
-          
-          <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 238</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">mash_input</span>, <span class="ruby-identifier">render_range</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">label_name</span> = <span class="ruby-string">&#39;layer&#39;</span>)
-  <span class="ruby-ivar">@label_name</span> = <span class="ruby-identifier">label_name</span>
-  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">mash_input</span>, <span class="ruby-identifier">render_range</span>)
-  <span class="ruby-ivar">@layers</span> = []
-  <span class="ruby-ivar">@layers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">LayerColor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-identifier">mash_input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:backcolor</span>])
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- new-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- new-method -->
-
-    
-    </section><!-- public-class-method-details -->
-  
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
       <h3 class="section-header">Public Instance Methods</h3>
-
-    
-      <div id="method-i-add_new_layer" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">add_new_layer</span><span
-            class="method-args">(input)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="add_new_layer-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 210</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_new_layer</span>(<span class="ruby-identifier">input</span>)
-  <span class="ruby-identifier">layer</span> = <span class="ruby-identifier">create_layer</span>(<span class="ruby-identifier">input</span>)
-  <span class="ruby-ivar">@layers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">layer</span>
-  <span class="ruby-identifier">layer</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- add_new_layer-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- add_new_layer-method -->
-
-    
-      <div id="method-i-graph_command" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">graph_command</span><span
-            class="method-args">(output, dont_set_input_index = false)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="graph_command-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 215</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">graph_command</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">dont_set_input_index</span> = <span class="ruby-keyword">false</span>) <span class="ruby-comment"># LayerTransition</span>
-  <span class="ruby-constant">FilterSourceRaw</span>.<span class="ruby-identifier">input_index</span> = <span class="ruby-value">0</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">dont_set_input_index</span>
-  <span class="ruby-ivar">@job_output</span> = <span class="ruby-identifier">output</span>
-  <span class="ruby-identifier">graph_cmds</span> = []
-  <span class="ruby-identifier">layer_length</span> = <span class="ruby-ivar">@layers</span>.<span class="ruby-identifier">length</span>
-  <span class="ruby-identifier">layer_length</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">layer</span> = <span class="ruby-ivar">@layers</span>[<span class="ruby-identifier">i</span>]
-    <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">layer</span>.<span class="ruby-identifier">layer_command</span>(<span class="ruby-identifier">graph_scope</span>)
-    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">layer</span>.<span class="ruby-identifier">trim_command</span>(<span class="ruby-ivar">@render_range</span>)
-    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;[#{@label_name}#{i}]&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-value">1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">layer_length</span>
-    <span class="ruby-identifier">graph_cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-value">1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">layer_length</span>
-    (<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-identifier">layer_length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">layer</span> = <span class="ruby-ivar">@layers</span>[<span class="ruby-identifier">i</span>]
-      <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">layer</span>.<span class="ruby-identifier">merger_command</span>(<span class="ruby-identifier">graph_scope</span>, <span class="ruby-ivar">@label_name</span>, <span class="ruby-identifier">i</span>)
-      <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;[#{@label_name}ed#{i}]&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">layer_length</span>
-      <span class="ruby-identifier">graph_cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">graph_cmds</span>.<span class="ruby-identifier">join</span> <span class="ruby-string">&#39;;&#39;</span>
-  <span class="ruby-identifier">cmd</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- graph_command-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- graph_command-method -->
 
     
       <div id="method-i-inputs" class="method-detail ">
@@ -471,11 +330,9 @@
 
           
           <div class="method-source-code" id="inputs-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 244</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 283</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">inputs</span>
-  <span class="ruby-identifier">layer_inputs</span> = []
-  <span class="ruby-ivar">@layers</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">layer</span><span class="ruby-operator">|</span> <span class="ruby-identifier">layer_inputs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">layer</span>.<span class="ruby-identifier">inputs</span> }
-  <span class="ruby-identifier">layer_inputs</span>
+  [{ <span class="ruby-identifier">loop</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:cached_file</span>] }]
 <span class="ruby-keyword">end</span></pre>
           </div><!-- inputs-source -->
           

@@ -90,6 +90,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -115,6 +117,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -188,7 +192,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -326,7 +334,7 @@
 
           
           <div class="method-source-code" id="__filter_trim_input-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 97</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_trim_input</span>
   <span class="ruby-identifier">filter</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;no offset&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:offset</span>]
@@ -377,11 +385,12 @@
 
           
           <div class="method-source-code" id="initialize_chains-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 70</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 67</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_chains</span>
   <span class="ruby-comment"># puts &quot;LayerRawVideo#initialize_chains&quot;</span>
-  <span class="ruby-identifier">chain</span> = <span class="ruby-constant">Chain</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">nil</span>, <span class="ruby-ivar">@job_input</span>
-  <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">FilterSourceMovie</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>, <span class="ruby-ivar">@job_input</span>)
+  <span class="ruby-identifier">chain</span> = <span class="ruby-constant">Chain</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">nil</span>, <span class="ruby-ivar">@job_input</span>)
+  <span class="ruby-ivar">@filter_movie</span> = <span class="ruby-constant">FilterSourceVideo</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>, <span class="ruby-ivar">@job_input</span>)
+  <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@filter_movie</span>
   <span class="ruby-comment"># trim filter, if needed</span>
   <span class="ruby-ivar">@trim_filter</span> = <span class="ruby-identifier">__filter_trim_input</span>
   <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@trim_filter</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@trim_filter</span>
@@ -429,7 +438,7 @@
 
           
           <div class="method-source-code" id="layer_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 87</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">layer_command</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-string">&#39;layer_command with empty scope&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">scope</span>
   <span class="ruby-identifier">output_type_is_not_video</span> = (<span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>][<span class="ruby-value">:type</span>])

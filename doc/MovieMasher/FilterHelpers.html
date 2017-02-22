@@ -112,6 +112,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -137,6 +139,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -210,7 +214,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -522,7 +530,7 @@
 
           
           <div class="method-source-code" id="mm_cmp-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 91</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_cmp</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">_mash</span>, <span class="ruby-identifier">_scope</span>)
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span>(<span class="ruby-identifier">param_string</span>)
   <span class="ruby-identifier">param_0</span> = <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">equation</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">0</span>], <span class="ruby-keyword">true</span>)
@@ -558,7 +566,7 @@
 
           
           <div class="method-source-code" id="mm_dir_horz-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 45</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_dir_horz</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">_mash</span>, <span class="ruby-identifier">_scope</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">param_string</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;mm_dir_horz no parameters #{param_string}&quot;</span>)
@@ -605,7 +613,7 @@
 
           
           <div class="method-source-code" id="mm_dir_vert-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_dir_vert</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">_mash</span>, <span class="ruby-identifier">_scope</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">param_string</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;mm_dir_vert no parameters #{param_string}&quot;</span>)
@@ -654,7 +662,7 @@
 
           
           <div class="method-source-code" id="mm_fontfamily-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 32</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_fontfamily</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">_scope</span>)
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span>(<span class="ruby-identifier">param_string</span>)
   <span class="ruby-identifier">font_id</span> = <span class="ruby-identifier">params</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;,&#39;</span>)
@@ -691,7 +699,7 @@
 
           
           <div class="method-source-code" id="mm_fontfile-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 23</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_fontfile</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">_scope</span>)
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span>(<span class="ruby-identifier">param_string</span>)
   <span class="ruby-identifier">font_id</span> = <span class="ruby-identifier">params</span>.<span class="ruby-identifier">join</span> <span class="ruby-string">&#39;,&#39;</span>
@@ -730,7 +738,7 @@
 
           
           <div class="method-source-code" id="mm_horz-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 39</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_horz</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">__horz_vert</span>(<span class="ruby-value">:mm_width</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -763,7 +771,7 @@
 
           
           <div class="method-source-code" id="mm_max-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 85</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_max</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">__max_min</span>(<span class="ruby-value">:max</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -796,7 +804,7 @@
 
           
           <div class="method-source-code" id="mm_min-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 88</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_min</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">__max_min</span>(<span class="ruby-value">:min</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -829,7 +837,7 @@
 
           
           <div class="method-source-code" id="mm_paren-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 62</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 71</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_paren</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">_mash</span>, <span class="ruby-identifier">_scope</span>)
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span>(<span class="ruby-identifier">param_string</span>)
   <span class="ruby-node">&quot;(#{params.join &#39;,&#39;})&quot;</span>
@@ -863,7 +871,7 @@
 
           
           <div class="method-source-code" id="mm_textfile-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 4</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_textfile</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">_mash</span>, <span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">job</span> = <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_job</span>]
   <span class="ruby-identifier">output</span> = <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>]
@@ -901,7 +909,7 @@
 
           
           <div class="method-source-code" id="mm_vert-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 42</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 83</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mm_vert</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">__horz_vert</span>(<span class="ruby-value">:mm_height</span>, <span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">scope</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -934,7 +942,7 @@
 
           
           <div class="method-source-code" id="rgb-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 12</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">rgb</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">_mash</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_scope</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span>(<span class="ruby-identifier">param_string</span>)
   <span class="ruby-identifier">format</span>(<span class="ruby-string">&#39;0x%02x%02x%02x&#39;</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">params</span>)
@@ -968,7 +976,7 @@
 
           
           <div class="method-source-code" id="rgba-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 16</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filter_helpers.rb, line 90</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">rgba</span>(<span class="ruby-identifier">param_string</span>, <span class="ruby-identifier">_mash</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_scope</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">params</span> = <span class="ruby-identifier">__params_from_str</span>(<span class="ruby-identifier">param_string</span>)
   <span class="ruby-identifier">alpha</span> = <span class="ruby-identifier">params</span>.<span class="ruby-identifier">pop</span>.<span class="ruby-identifier">to_f</span>

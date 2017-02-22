@@ -178,6 +178,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -203,6 +205,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -276,7 +280,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -837,7 +845,7 @@ parse to the Hash.</p>
   <span class="ruby-identifier">result</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">capture</span>(<span class="ruby-identifier">command</span>)
   <span class="ruby-identifier">log_entry</span>(<span class="ruby-value">:debug</span>) { <span class="ruby-identifier">result</span> }
   <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:results</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">result</span>
-  <span class="ruby-identifier">logs</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">raise_unless_rendered</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">options</span>)
+  <span class="ruby-identifier">logs</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">raise_unless_rendered</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">command</span>, <span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sym</span>, <span class="ruby-identifier">proc</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">log_entry</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>)
@@ -1241,11 +1249,9 @@ parse to the Hash.</p>
     <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">MASH</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">AV</span>.<span class="ruby-identifier">includes?</span>(<span class="ruby-constant">Asset</span>.<span class="ruby-identifier">av_type</span>(<span class="ruby-identifier">input</span>), <span class="ruby-identifier">desired</span>)
       <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:media</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">media</span><span class="ruby-operator">|</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">ASSETS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">media</span>[<span class="ruby-value">:type</span>])
-          <span class="ruby-keyword">if</span> <span class="ruby-constant">AV</span>.<span class="ruby-identifier">includes?</span>(<span class="ruby-constant">Asset</span>.<span class="ruby-identifier">av_type</span>(<span class="ruby-identifier">media</span>), <span class="ruby-identifier">desired</span>)
-            <span class="ruby-identifier">__cache_asset</span>(<span class="ruby-identifier">media</span>)
-          <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">ASSETS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">media</span>[<span class="ruby-value">:type</span>])
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">AV</span>.<span class="ruby-identifier">includes?</span>(<span class="ruby-constant">Asset</span>.<span class="ruby-identifier">av_type</span>(<span class="ruby-identifier">media</span>), <span class="ruby-identifier">desired</span>)
+        <span class="ruby-identifier">__cache_asset</span>(<span class="ruby-identifier">media</span>)
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@hash</span>[<span class="ruby-value">:error</span>]
@@ -1282,7 +1288,7 @@ parse to the Hash.</p>
 
           
           <div class="method-source-code" id="__process_render-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 499</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 497</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__process_render</span>
   <span class="ruby-identifier">outputs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">output</span><span class="ruby-operator">|</span>
     <span class="ruby-keyword">begin</span>
@@ -1296,7 +1302,6 @@ parse to the Hash.</p>
         <span class="ruby-identifier">progress</span>[<span class="ruby-value">:uploading</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">frames</span>.<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">last_file</span> = <span class="ruby-keyword">nil</span>
-      <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
       <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cmd_hash</span><span class="ruby-operator">|</span>
         <span class="ruby-identifier">last_file</span> = <span class="ruby-identifier">cmd_hash</span>[<span class="ruby-value">:file</span>]
         <span class="ruby-identifier">__execute_output_command</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">cmd_hash</span>)
@@ -1342,7 +1347,7 @@ parse to the Hash.</p>
 
           
           <div class="method-source-code" id="__process_upload-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 529</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 526</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__process_upload</span>
   <span class="ruby-identifier">outputs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">output</span><span class="ruby-operator">|</span>
     <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:rendered_file</span>]
@@ -1383,7 +1388,7 @@ parse to the Hash.</p>
 
           
           <div class="method-source-code" id="__result_error-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 540</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 537</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__result_error</span>(<span class="ruby-identifier">result</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;200&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">code</span>
     <span class="ruby-identifier">log_entry</span>(<span class="ruby-value">:debug</span>) { <span class="ruby-node">&quot;callback OK response: #{result.body}&quot;</span> }
@@ -1421,7 +1426,7 @@ parse to the Hash.</p>
 
           
           <div class="method-source-code" id="__scope-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 548</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 545</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__scope</span>(<span class="ruby-identifier">object</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">hash</span> = {}
   <span class="ruby-identifier">hash</span>[<span class="ruby-value">:job</span>] = <span class="ruby-keyword">self</span>
@@ -1457,7 +1462,7 @@ parse to the Hash.</p>
 
           
           <div class="method-source-code" id="__transfer_job_output-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 554</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 551</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__transfer_job_output</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">file</span>)
   <span class="ruby-identifier">output_dest</span> = <span class="ruby-identifier">output</span>[<span class="ruby-value">:destination</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">destination</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-string">&#39;no output destination&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">output_dest</span>
@@ -1508,7 +1513,7 @@ parse to the Hash.</p>
 
           
           <div class="method-source-code" id="__update_sizing-source">
-            <pre><span class="ruby-comment"># File lib/job.rb, line 575</span>
+            <pre><span class="ruby-comment"># File lib/job.rb, line 572</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__update_sizing</span>
   <span class="ruby-comment"># make sure visual outputs have dimensions, using input&#39;s for default</span>
   <span class="ruby-identifier">in_dimensions</span> = <span class="ruby-keyword">nil</span>

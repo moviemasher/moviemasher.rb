@@ -118,6 +118,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -143,6 +145,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -216,7 +220,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -387,7 +395,7 @@
 
           
           <div class="method-source-code" id="__resolved_string-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 43</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 80</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__resolved_string</span>(<span class="ruby-identifier">hash_or_path</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">__string_type</span>(<span class="ruby-identifier">hash_or_path</span>)
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;json&#39;</span>, <span class="ruby-string">&#39;yaml&#39;</span>
@@ -425,7 +433,7 @@
 
           
           <div class="method-source-code" id="__string_type-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 51</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__string_type</span>(<span class="ruby-identifier">hash_or_path</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">hash_or_path</span>[<span class="ruby-value">0</span>]
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;{&#39;</span>, <span class="ruby-string">&#39;[&#39;</span>
@@ -463,7 +471,7 @@
 
           
           <div class="method-source-code" id="_init_key-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 115</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">_init_key</span>(<span class="ruby-identifier">hash</span>, <span class="ruby-identifier">key</span>, <span class="ruby-identifier">default</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash</span>
     <span class="ruby-identifier">value</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">key</span>]
@@ -508,7 +516,7 @@
 
           
           <div class="method-source-code" id="_init_time-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 130</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 61</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">_init_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">key</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>]
     <span class="ruby-identifier">rel_key</span> = <span class="ruby-value">:&quot;#{key.id2name}_is_relative&quot;</span>
@@ -557,7 +565,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 83</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
     <span class="ruby-comment"># puts &quot;Hashable#initialize NOT HASH #{hash}&quot;</span>
@@ -595,7 +603,7 @@
 
           
           <div class="method-source-code" id="resolved_hash-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 18</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">resolved_hash</span>(<span class="ruby-identifier">hash_or_path</span>)
   <span class="ruby-identifier">data</span> = {}
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
@@ -635,7 +643,7 @@
         
         <div class="method-heading">
           <span class="method-name">symbolize</span><span
-            class="method-args">(hash_or_array)</span>
+            class="method-args">(hash_or_array, key = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -650,14 +658,17 @@
 
           
           <div class="method-source-code" id="symbolize-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 5</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">hash_or_array</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">hash_or_array</span>, <span class="ruby-identifier">key</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-identifier">hash_or_array</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
     <span class="ruby-identifier">result</span> = {}
     <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">k</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
-      <span class="ruby-identifier">result</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">v</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+        <span class="ruby-identifier">k</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-keyword">unless</span> <span class="ruby-value">:parameters</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">key</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">k</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span>
+      <span class="ruby-identifier">result</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">v</span>, <span class="ruby-identifier">k</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
     <span class="ruby-identifier">result</span> = <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">v</span>) }
@@ -705,7 +716,7 @@
 
           
           <div class="method-source-code" id="5B-5D-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 133</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">symbol</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -747,7 +758,7 @@
 
           
           <div class="method-source-code" id="5B-5D-3D-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 75</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 142</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">symbol</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>] = <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -780,7 +791,7 @@
 
           
           <div class="method-source-code" id="_get-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 112</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 149</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">symbol</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -813,7 +824,7 @@
 
           
           <div class="method-source-code" id="_set-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 108</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 145</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">_set</span>(<span class="ruby-identifier">symbol</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">symbol</span> = <span class="ruby-identifier">symbol</span>.<span class="ruby-identifier">to_s</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>].<span class="ruby-identifier">to_sym</span>
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>] = <span class="ruby-identifier">value</span>
@@ -847,7 +858,7 @@
 
           
           <div class="method-source-code" id="class_symbol-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 79</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 99</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">class_symbol</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;::&#39;</span>).<span class="ruby-identifier">last</span>.<span class="ruby-identifier">to_sym</span>
 <span class="ruby-keyword">end</span></pre>
@@ -880,7 +891,7 @@
 
           
           <div class="method-source-code" id="keys-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 91</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 111</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">keys</span>
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">keys</span>
 <span class="ruby-keyword">end</span></pre>
@@ -913,7 +924,7 @@
 
           
           <div class="method-source-code" id="to_hash-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 95</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_hash</span>
   <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-ivar">@hash</span>))
 <span class="ruby-keyword">end</span></pre>
@@ -946,7 +957,7 @@
 
           
           <div class="method-source-code" id="to_json-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 99</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 119</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_json</span>(<span class="ruby-identifier">state</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-identifier">state</span>
 <span class="ruby-keyword">end</span></pre>
@@ -979,7 +990,7 @@
 
           
           <div class="method-source-code" id="to_s-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 102</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1012,7 +1023,7 @@
 
           
           <div class="method-source-code" id="values-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 105</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 125</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">values</span>
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">values</span>
 <span class="ruby-keyword">end</span></pre>

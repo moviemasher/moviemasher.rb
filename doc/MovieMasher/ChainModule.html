@@ -92,6 +92,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -117,6 +119,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -190,7 +194,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -353,7 +361,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 17</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">mod_input</span>, <span class="ruby-identifier">mash_input</span>, <span class="ruby-identifier">applied_input</span>)
   <span class="ruby-comment"># applied_input is same as mod_input for themes</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Parameter</span>, <span class="ruby-string">&#39;no mod_input&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">mod_input</span>
@@ -402,10 +410,9 @@
 
           
           <div class="method-source-code" id="chain_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 34</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">chain_command</span>(<span class="ruby-identifier">scope</span>)
-  <span class="ruby-identifier">scope</span> = <span class="ruby-identifier">input_scope</span>(<span class="ruby-identifier">scope</span>)
-  <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">input_scope</span>(<span class="ruby-identifier">scope</span>))
 <span class="ruby-keyword">end</span></pre>
           </div><!-- chain_command-source -->
           
@@ -436,7 +443,7 @@
 
           
           <div class="method-source-code" id="initialize_filters-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 25</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_filters</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">__is_and_not_empty</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:filters</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:filters</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
     <span class="ruby-ivar">@filters</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:filters</span>].<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">filter_config</span><span class="ruby-operator">|</span>
@@ -475,7 +482,7 @@
 
           
           <div class="method-source-code" id="input_scope-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 38</span>
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">input_scope</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">scope</span> = <span class="ruby-identifier">scope</span>.<span class="ruby-identifier">dup</span> <span class="ruby-comment"># shallow copy, so any objects are just pointers</span>
   <span class="ruby-identifier">properties</span> = <span class="ruby-ivar">@input</span>[<span class="ruby-value">:properties</span>]

@@ -87,6 +87,8 @@
     
     <li ><a href="#method-c-__is_two_pass">::__is_two_pass</a>
     
+    <li ><a href="#method-c-__job_paths">::__job_paths</a>
+    
     <li ><a href="#method-c-__output_duration">::__output_duration</a>
     
     <li ><a href="#method-c-__output_graphs">::__output_graphs</a>
@@ -136,6 +138,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -161,6 +165,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -234,7 +240,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -357,7 +367,7 @@
         
         <div class="method-heading">
           <span class="method-name">__atrim</span><span
-            class="method-args">(offset, duration)</span>
+            class="method-args">(offset, dur)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -372,11 +382,11 @@
 
           
           <div class="method-source-code" id="__atrim-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 295</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__atrim</span>(<span class="ruby-identifier">offset</span>, <span class="ruby-identifier">duration</span>)
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 218</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__atrim</span>(<span class="ruby-identifier">offset</span>, <span class="ruby-identifier">dur</span>)
   <span class="ruby-identifier">offset</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">offset</span>)
-  <span class="ruby-identifier">duration</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">duration</span>)
-  <span class="ruby-node">&quot;&#39;atrim=start=#{offset}:duration=#{duration},asetpts=expr=PTS-STARTPTS&#39;&quot;</span>
+  <span class="ruby-identifier">dur</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">dur</span>)
+  <span class="ruby-node">&quot;&#39;[0:a]atrim=start=#{offset}:duration=#{dur},asetpts=expr=PTS-STARTPTS&#39;&quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- __atrim-source -->
           
@@ -407,7 +417,7 @@
 
           
           <div class="method-source-code" id="__audio_gains-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 300</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 223</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_gains</span>(<span class="ruby-identifier">volume</span>, <span class="ruby-identifier">graph</span>)
   <span class="ruby-identifier">start</span> = <span class="ruby-identifier">graph</span>[<span class="ruby-value">:start</span>]
   <span class="ruby-identifier">length</span> = <span class="ruby-identifier">graph</span>[<span class="ruby-value">:length</span>]
@@ -460,12 +470,12 @@
 
           
           <div class="method-source-code" id="__audio_graph-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 235</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 246</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_graph</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">counter</span>)
   <span class="ruby-identifier">audio_cmd</span> = <span class="ruby-string">&#39;&#39;</span>
   <span class="ruby-identifier">loops</span> = <span class="ruby-identifier">graph</span>[<span class="ruby-value">:loop</span>] <span class="ruby-operator">||</span> <span class="ruby-value">1</span>
   <span class="ruby-identifier">volume</span> = <span class="ruby-identifier">graph</span>[<span class="ruby-value">:gain</span>]
-  <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -a:#{counter} -i &quot;</span>
+  <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -a:#{counter + 1} -i &quot;</span>
   <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;audioloop,&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-value">1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">loops</span>
   <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;playat,#{graph[:start]},&quot;</span>
   <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;select,#{graph[:offset]}&quot;</span>
@@ -503,7 +513,7 @@
 
           
           <div class="method-source-code" id="__audio_loops-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 323</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 259</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_loops</span>(<span class="ruby-identifier">loops</span>, <span class="ruby-identifier">length</span>)
   (<span class="ruby-value">1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">loops</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot; -t:#{FloatUtil.string(length)}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -536,7 +546,7 @@
 
           
           <div class="method-source-code" id="__audio_path-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 228</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 262</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_path</span>(<span class="ruby-identifier">out_path</span>, <span class="ruby-identifier">audio_cmd</span>)
   <span class="ruby-identifier">hex</span> = <span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">SHA2</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">256</span>).<span class="ruby-identifier">hexdigest</span>(<span class="ruby-identifier">audio_cmd</span>)
   <span class="ruby-node">&quot;#{out_path}audio-#{hex}.#{Intermediate::AUDIO_EXTENSION}&quot;</span>
@@ -570,13 +580,13 @@
 
           
           <div class="method-source-code" id="__audio_raw-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 326</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 266</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_raw</span>(<span class="ruby-identifier">graphs</span>)
   <span class="ruby-identifier">graph</span> = <span class="ruby-identifier">graphs</span>.<span class="ruby-identifier">first</span>
   <span class="ruby-identifier">__raise_if_negative</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:start</span>], <span class="ruby-node">&quot;negative start time #{graph}&quot;</span>)
   <span class="ruby-identifier">__raise_if_zero</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:length</span>], <span class="ruby-node">&quot;zero length #{graph}&quot;</span>)
   <span class="ruby-identifier">raw</span> = (<span class="ruby-value">1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">graphs</span>.<span class="ruby-identifier">length</span>)
-  <span class="ruby-identifier">raw</span> <span class="ruby-operator">&amp;&amp;=</span> (<span class="ruby-value">1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">graph</span>[<span class="ruby-value">:loop</span>])
+  <span class="ruby-identifier">raw</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-identifier">graph</span>[<span class="ruby-value">:loop</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-value">1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">graph</span>[<span class="ruby-value">:loop</span>])
   <span class="ruby-identifier">raw</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-operator">!</span><span class="ruby-constant">Mash</span>.<span class="ruby-identifier">gain_changes</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:gain</span>])
   <span class="ruby-identifier">raw</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:start</span>], <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
   <span class="ruby-identifier">raw</span>
@@ -595,7 +605,7 @@
         
         <div class="method-heading">
           <span class="method-name">__audio_silence</span><span
-            class="method-args">(c, duration)</span>
+            class="method-args">(c, dur)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -610,9 +620,9 @@
 
           
           <div class="method-source-code" id="__audio_silence-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 225</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_silence</span>(<span class="ruby-identifier">c</span>, <span class="ruby-identifier">duration</span>)
-  <span class="ruby-node">&quot; -a:#{c} -i playat,0,tone,sine,0,#{duration} -a:all -z:mixmode,sum -o &quot;</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 276</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_silence</span>(<span class="ruby-identifier">c</span>, <span class="ruby-identifier">dur</span>)
+  <span class="ruby-node">&quot; -a:#{c + 1} -i playat,0,tone,sine,0,#{dur} -a:all -z:mixmode,sum -o &quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- __audio_silence-source -->
           
@@ -643,7 +653,7 @@
 
           
           <div class="method-source-code" id="__audio_switches-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 248</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 279</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__audio_switches</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">audio_dur</span>)
   <span class="ruby-identifier">switches</span> = []
   <span class="ruby-identifier">trim_not_needed</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:offset</span>], <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
@@ -652,7 +662,7 @@
     <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">__atrim</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:offset</span>], <span class="ruby-identifier">audio_dur</span>), <span class="ruby-string">&#39;af&#39;</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-value">1</span>, <span class="ruby-string">&#39;async&#39;</span>)
-  <span class="ruby-identifier">switches</span>
+  <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">join</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- __audio_switches-source -->
           
@@ -683,11 +693,20 @@
 
           
           <div class="method-source-code" id="__graph_command-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 105</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 289</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__graph_command</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)
+  <span class="ruby-identifier">cmds</span> = []
+  <span class="ruby-identifier">inputs</span> = <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">inputs</span>
   <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">graph_command</span>(<span class="ruby-identifier">output</span>)
   <span class="ruby-identifier">__raise_if_empty</span>(<span class="ruby-identifier">cmd</span>, <span class="ruby-node">&quot;could not build graph command #{graph}&quot;</span>)
-  <span class="ruby-identifier">switch_unescaped</span>(<span class="ruby-node">%Q(&quot;#{cmd}&quot;)</span>, <span class="ruby-string">&#39;filter_complex&#39;</span>)
+  <span class="ruby-identifier">inputs</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">v</span>, <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>) } }
+  <span class="ruby-keyword">unless</span> <span class="ruby-string">&#39;[0:v]&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">cmd</span>
+    <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch_unescaped</span>(<span class="ruby-node">%Q(&quot;#{cmd}&quot;)</span>, <span class="ruby-string">&#39;filter_complex&#39;</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:pixel_format</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;format=pix_fmts=&#39;</span>)
+    <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:pixel_format</span>], <span class="ruby-string">&#39;pix_fmt&#39;</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">join</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- __graph_command-source -->
           
@@ -703,7 +722,7 @@
         
         <div class="method-heading">
           <span class="method-name">__is_two_pass</span><span
-            class="method-args">(video_or_audio_output, v_graphs)</span>
+            class="method-args">(a_or_v, v_graphs)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -718,9 +737,9 @@
 
           
           <div class="method-source-code" id="__is_two_pass-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 232</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__is_two_pass</span>(<span class="ruby-identifier">video_or_audio_output</span>, <span class="ruby-identifier">v_graphs</span>)
-  <span class="ruby-identifier">video_or_audio_output</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">v_graphs</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 303</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__is_two_pass</span>(<span class="ruby-identifier">a_or_v</span>, <span class="ruby-identifier">v_graphs</span>)
+  <span class="ruby-identifier">a_or_v</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">v_graphs</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- __is_two_pass-source -->
           
@@ -732,11 +751,44 @@
       </div><!-- __is_two_pass-method -->
 
     
+      <div id="method-c-__job_paths" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">__job_paths</span><span
+            class="method-args">(job, output)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="__job_paths-source">
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 306</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__job_paths</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">output</span>)
+  [<span class="ruby-identifier">job</span>.<span class="ruby-identifier">render_path</span>(<span class="ruby-identifier">output</span>), <span class="ruby-identifier">job</span>.<span class="ruby-identifier">output_path</span>(<span class="ruby-identifier">output</span>)]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- __job_paths-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- __job_paths-method -->
+
+    
       <div id="method-c-__output_duration" class="method-detail ">
         
         <div class="method-heading">
           <span class="method-name">__output_duration</span><span
-            class="method-args">(video_or_audio_output, max_dur)</span>
+            class="method-args">(a_or_v, max_dur)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -751,9 +803,9 @@
 
           
           <div class="method-source-code" id="__output_duration-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 222</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__output_duration</span>(<span class="ruby-identifier">video_or_audio_output</span>, <span class="ruby-identifier">max_dur</span>)
-  (<span class="ruby-identifier">video_or_audio_output</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">max_dur</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 309</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__output_duration</span>(<span class="ruby-identifier">a_or_v</span>, <span class="ruby-identifier">max_dur</span>)
+  (<span class="ruby-identifier">a_or_v</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">max_dur</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- __output_duration-source -->
           
@@ -784,7 +836,7 @@
 
           
           <div class="method-source-code" id="__output_graphs-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 91</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 312</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__output_graphs</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">job</span>)
   <span class="ruby-identifier">v_graphs</span> = []
   <span class="ruby-identifier">a_graphs</span> = []
@@ -828,7 +880,7 @@
 
           
           <div class="method-source-code" id="__raise_if_empty-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 359</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 326</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_if_empty</span>(<span class="ruby-identifier">s</span>, <span class="ruby-identifier">msg</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-identifier">msg</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">empty?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -861,7 +913,7 @@
 
           
           <div class="method-source-code" id="__raise_if_negative-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 362</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 329</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_if_negative</span>(<span class="ruby-identifier">f</span>, <span class="ruby-identifier">msg</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-identifier">msg</span>) <span class="ruby-keyword">unless</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtre</span>(<span class="ruby-identifier">f</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -879,7 +931,7 @@
         
         <div class="method-heading">
           <span class="method-name">__raise_if_no_file</span><span
-            class="method-args">(out_file, result)</span>
+            class="method-args">(path, cmd, result)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -894,25 +946,23 @@
 
           
           <div class="method-source-code" id="__raise_if_no_file-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 365</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_if_no_file</span>(<span class="ruby-identifier">out_file</span>, <span class="ruby-identifier">result</span>)
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 332</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_if_no_file</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">cmd</span>, <span class="ruby-identifier">result</span>)
   <span class="ruby-identifier">logs</span> = []
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">out_file</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;%&#39;</span>)
-    <span class="ruby-identifier">file_count</span> = <span class="ruby-constant">Dir</span>[<span class="ruby-node">&quot;#{File.dirname(out_file)}/&quot;</span>].<span class="ruby-identifier">count</span>
-    <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;created #{file_count} file#{1 == file_count ? &#39;&#39; : &#39;s&#39;}&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;%&#39;</span>)
+    <span class="ruby-identifier">file_count</span> = <span class="ruby-constant">Dir</span>[<span class="ruby-node">&quot;#{File.dirname(path)}/&quot;</span>].<span class="ruby-identifier">count</span>
+    <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;created #{file_count} file#{1 == file_count ? &#39;&#39; : &#39;s&#39;}\n#{cmd}&quot;</span>
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">msg</span>)) <span class="ruby-keyword">if</span> <span class="ruby-identifier">file_count</span>.<span class="ruby-identifier">zero?</span>
     <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">info</span><span class="ruby-operator">:</span> (<span class="ruby-identifier">proc</span> { <span class="ruby-identifier">msg</span> }) }
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">out_file</span>)
-      <span class="ruby-identifier">size</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>(<span class="ruby-identifier">out_file</span>).<span class="ruby-identifier">to_i</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">size</span>.<span class="ruby-identifier">zero?</span>
-        <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>, <span class="ruby-node">&quot;couldn&#39;t create #{out_file}&quot;</span>))
-      <span class="ruby-keyword">else</span>
-        <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">info</span><span class="ruby-operator">:</span> (<span class="ruby-identifier">proc</span> { <span class="ruby-node">&quot;created #{size} byte file #{out_file}&quot;</span> }) }
-      <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">path</span>)
+    <span class="ruby-identifier">size</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>(<span class="ruby-identifier">path</span>).<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">size</span>.<span class="ruby-identifier">zero?</span>
+      <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>, <span class="ruby-node">&quot;couldn&#39;t create #{path}\n#{cmd}&quot;</span>))
     <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>, <span class="ruby-node">&quot;couldn&#39;t create #{out_file}&quot;</span>))
+      <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">info</span><span class="ruby-operator">:</span> (<span class="ruby-identifier">proc</span> { <span class="ruby-node">&quot;created #{size} byte file #{path}&quot;</span> }) }
     <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>, <span class="ruby-node">&quot;couldn&#39;t create #{path}\n#{cmd}&quot;</span>))
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">logs</span>
 <span class="ruby-keyword">end</span></pre>
@@ -945,7 +995,7 @@
 
           
           <div class="method-source-code" id="__raise_if_zero-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 386</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 351</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_if_zero</span>(<span class="ruby-identifier">f</span>, <span class="ruby-identifier">msg</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-identifier">msg</span>) <span class="ruby-keyword">unless</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">f</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -963,7 +1013,7 @@
         
         <div class="method-heading">
           <span class="method-name">__raise_unless_duration</span><span
-            class="method-args">(result, duration, precision, out_file)</span>
+            class="method-args">(result, duration, precision, out_file, cmd)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -978,8 +1028,8 @@
 
           
           <div class="method-source-code" id="__raise_unless_duration-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 336</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_unless_duration</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">duration</span>, <span class="ruby-identifier">precision</span>, <span class="ruby-identifier">out_file</span>)
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 354</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_unless_duration</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">duration</span>, <span class="ruby-identifier">precision</span>, <span class="ruby-identifier">out_file</span>, <span class="ruby-identifier">cmd</span>)
   <span class="ruby-identifier">logs</span> = []
   <span class="ruby-identifier">has_no_video</span> = <span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">out_file</span>, <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">DIMENSIONS</span>).<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">dur_key</span> = (<span class="ruby-identifier">has_no_video</span> <span class="ruby-operator">?</span> <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_DURATION</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Info</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_DURATION</span>)
@@ -987,14 +1037,14 @@
   <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;rendered with duration: #{test_duration} #{out_file}&quot;</span>
   <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">debug</span><span class="ruby-operator">:</span> (<span class="ruby-identifier">proc</span> { <span class="ruby-identifier">msg</span> }) }
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_duration</span>.<span class="ruby-identifier">zero?</span>
-    <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;could not determine if #{duration} == duration of #{out_file}&quot;</span>
+    <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;failed to see if #{duration} == duration of #{out_file}\n#{cmd}&quot;</span>
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">msg</span>))
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">ok</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-identifier">test_duration</span>, <span class="ruby-identifier">precision</span>.<span class="ruby-identifier">abs</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">ok</span>
     <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">warn</span><span class="ruby-operator">:</span> (<span class="ruby-identifier">proc</span> { <span class="ruby-identifier">result</span> }) }
     <span class="ruby-keyword">if</span> <span class="ruby-value">-1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">precision</span>
-      <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;expected #{has_no_video ? &#39;audio&#39; : &#39;video&#39;} duration of &quot;</span>             <span class="ruby-node">&quot;#{duration} but found #{test_duration} in #{out_file}&quot;</span>
+      <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;expected #{has_no_video ? &#39;audio&#39; : &#39;video&#39;} duration of &quot;</span>             <span class="ruby-node">&quot;#{duration} but found #{test_duration} in #{out_file}\n#{cmd}&quot;</span>
       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobRender</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">msg</span>))
     <span class="ruby-keyword">end</span>
     <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">warn</span><span class="ruby-operator">:</span> (<span class="ruby-identifier">proc</span> { <span class="ruby-identifier">msg</span> }) }
@@ -1030,7 +1080,7 @@
 
           
           <div class="method-source-code" id="__type_duration-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 219</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 377</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__type_duration</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">max_dur</span>)
   (<span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">IMAGES</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">type</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">max_dur</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -1063,7 +1113,7 @@
 
           
           <div class="method-source-code" id="__waveform_switches-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 258</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 380</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__waveform_switches</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)
   <span class="ruby-identifier">switches</span> = []
   <span class="ruby-identifier">dimensions</span> = <span class="ruby-identifier">output</span>[<span class="ruby-value">:dimensions</span>].<span class="ruby-identifier">split</span> <span class="ruby-string">&#39;x&#39;</span>
@@ -1074,7 +1124,7 @@
   <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:backcolor</span>], <span class="ruby-string">&#39;--backgroundcolor&#39;</span>)
   <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;0&#39;</span>, <span class="ruby-string">&#39;--padding&#39;</span>)
   <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-string">&#39;--output&#39;</span>)
-  <span class="ruby-identifier">switches</span>
+  <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">join</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- __waveform_switches-source -->
           
@@ -1299,16 +1349,20 @@
 
           
           <div class="method-source-code" id="output_command-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 61</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output_command</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">av_type</span>, <span class="ruby-identifier">duration</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">switches</span> = []
   <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">string</span>(<span class="ruby-identifier">duration</span>), <span class="ruby-string">&#39;t&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">duration</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">av_type</span> <span class="ruby-comment"># we have audio output</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">av_type</span>
+    <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-string">&#39;an&#39;</span>)
+  <span class="ruby-keyword">else</span> <span class="ruby-comment"># we have audio output</span>
     <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:audio_bitrate</span>], <span class="ruby-string">&#39;b:a&#39;</span>, <span class="ruby-string">&#39;k&#39;</span>)
     <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:audio_rate</span>], <span class="ruby-string">&#39;r:a&#39;</span>)
     <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:audio_codec</span>], <span class="ruby-string">&#39;c:a&#39;</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_ONLY</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">av_type</span> <span class="ruby-comment"># we have visuals</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_ONLY</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">av_type</span>
+    <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-string">&#39;vn&#39;</span>)
+  <span class="ruby-keyword">else</span> <span class="ruby-comment"># we have visuals</span>
     <span class="ruby-keyword">case</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>]
     <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>
       <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:dimensions</span>], <span class="ruby-string">&#39;s&#39;</span>)
@@ -1318,17 +1372,20 @@
       <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:video_rate</span>], <span class="ruby-string">&#39;r:v&#39;</span>)
     <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">IMAGE</span>
       <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:quality</span>], <span class="ruby-string">&#39;q:v&#39;</span>)
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:offset</span>]
+      <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;1&#39;</span>, <span class="ruby-string">&#39;vframes&#39;</span>)
+      <span class="ruby-comment"># switches &lt;&lt; switch(&#39;debug&#39;, &#39;v&#39;)</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:offset</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
         <span class="ruby-identifier">output_time</span> = <span class="ruby-constant">TimeRange</span>.<span class="ruby-identifier">input_time</span>(<span class="ruby-identifier">output</span>, <span class="ruby-value">:offset</span>)
         <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output_time</span>, <span class="ruby-string">&#39;ss&#39;</span>)
       <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;1&#39;</span>, <span class="ruby-string">&#39;updatefirst&#39;</span>)
     <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">SEQUENCE</span>
       <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:quality</span>], <span class="ruby-string">&#39;q:v&#39;</span>)
       <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:video_rate</span>], <span class="ruby-string">&#39;r:v&#39;</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:metadata</span>], <span class="ruby-string">&#39;metadata&#39;</span>)
-  <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">join</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- output_command-source -->
           
@@ -1344,7 +1401,7 @@
         
         <div class="method-heading">
           <span class="method-name">raise_unless_rendered</span><span
-            class="method-args">(result, options)</span>
+            class="method-args">(result, cmd, options)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -1359,15 +1416,17 @@
 
           
           <div class="method-source-code" id="raise_unless_rendered-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 51</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">raise_unless_rendered</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">options</span>)
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 88</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">raise_unless_rendered</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">cmd</span>, <span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">logs</span> = []
   <span class="ruby-identifier">out_file</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:file</span>].<span class="ruby-identifier">to_s</span>
   <span class="ruby-identifier">outputs</span> = <span class="ruby-operator">!</span>[<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-string">&#39;/dev/null&#39;</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">out_file</span>)
   <span class="ruby-identifier">dur</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:duration</span>]
   <span class="ruby-identifier">precision</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:precision</span>] <span class="ruby-operator">||</span> <span class="ruby-value">1</span>
-  <span class="ruby-identifier">logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__raise_if_no_file</span>(<span class="ruby-identifier">out_file</span>, <span class="ruby-identifier">result</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">outputs</span>
-  <span class="ruby-identifier">logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__raise_unless_duration</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">dur</span>, <span class="ruby-identifier">precision</span>, <span class="ruby-identifier">out_file</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">dur</span>
+  <span class="ruby-identifier">logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__raise_if_no_file</span>(<span class="ruby-identifier">out_file</span>, <span class="ruby-identifier">cmd</span>, <span class="ruby-identifier">result</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">outputs</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">dur</span>
+    <span class="ruby-identifier">logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__raise_unless_duration</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">dur</span>, <span class="ruby-identifier">precision</span>, <span class="ruby-identifier">out_file</span>, <span class="ruby-identifier">cmd</span>)
+  <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">logs</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- raise_unless_rendered-source -->
@@ -1399,54 +1458,39 @@
 
           
           <div class="method-source-code" id="set_output_commands-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 110</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 100</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">set_output_commands</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">output</span>)
   <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] = []
-  <span class="ruby-identifier">switches</span> = []
-  <span class="ruby-identifier">end_switches</span> = []
-  <span class="ruby-identifier">rend_path</span> = <span class="ruby-identifier">job</span>.<span class="ruby-identifier">render_path</span>(<span class="ruby-identifier">output</span>)
-  <span class="ruby-identifier">out_path</span> = <span class="ruby-identifier">job</span>.<span class="ruby-identifier">output_path</span>(<span class="ruby-identifier">output</span>)
-  <span class="ruby-identifier">avb</span>, <span class="ruby-identifier">v_graphs</span>, <span class="ruby-identifier">a_graphs</span> = <span class="ruby-identifier">__output_graphs</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">job</span>)
-  <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-string">&#39;no graphs&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">v_graphs</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">a_graphs</span>.<span class="ruby-identifier">empty?</span>
-  <span class="ruby-identifier">video_or_audio_output</span> = <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">RAW_AVS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>])
+  <span class="ruby-identifier">switches</span> = <span class="ruby-identifier">end_switches</span> = <span class="ruby-string">&#39;&#39;</span>
   <span class="ruby-identifier">audio_dur</span> = <span class="ruby-identifier">video_dur</span> = <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>
+  <span class="ruby-identifier">rend_path</span>, <span class="ruby-identifier">out_path</span> = <span class="ruby-identifier">__job_paths</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">output</span>)
+  <span class="ruby-identifier">avb</span>, <span class="ruby-identifier">v_graphs</span>, <span class="ruby-identifier">a_graphs</span> = <span class="ruby-identifier">__output_graphs</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">job</span>)
+  <span class="ruby-identifier">output_type</span> = <span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>]
+  <span class="ruby-identifier">a_or_v</span> = <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">RAW_AVS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">output_type</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_ONLY</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">avb</span>
-    <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:video_rate</span>], <span class="ruby-string">&#39;r:v&#39;</span>)
     <span class="ruby-keyword">if</span> <span class="ruby-value">1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">v_graphs</span>.<span class="ruby-identifier">length</span>
       <span class="ruby-identifier">graph</span> = <span class="ruby-identifier">v_graphs</span>.<span class="ruby-identifier">first</span>
       <span class="ruby-identifier">video_dur</span> = <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">duration</span>
-      <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">__graph_command</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)
+      <span class="ruby-identifier">switches</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__graph_command</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)
     <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">ffconcat_lines</span> = []
-      <span class="ruby-identifier">ffconcat_lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;ffconcat version 1.0&#39;</span>
-      <span class="ruby-identifier">concat_files</span> = []
+      <span class="ruby-identifier">ffconcat</span> = <span class="ruby-string">&#39;ffconcat version 1.0&#39;</span>
       <span class="ruby-identifier">v_graphs</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
         <span class="ruby-identifier">graph</span> = <span class="ruby-identifier">v_graphs</span>[<span class="ruby-identifier">index</span>]
         <span class="ruby-identifier">duration</span> = <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">duration</span>
         <span class="ruby-identifier">video_dur</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">duration</span>
         <span class="ruby-identifier">out_file_name</span> = <span class="ruby-node">&quot;concat-#{index}.#{output[:extension]}&quot;</span>
         <span class="ruby-identifier">out_file</span> = <span class="ruby-node">&quot;#{out_path}#{out_file_name}&quot;</span>
-        <span class="ruby-identifier">concat_files</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">out_file</span>
-        <span class="ruby-identifier">ffconcat_lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;file &#39;#{out_file_name}&#39;&quot;</span>
-        <span class="ruby-identifier">ffconcat_lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;duration #{duration}&quot;</span>
-        <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&#39;-y&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">join</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">__graph_command</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)
-        <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">output_command</span>(<span class="ruby-identifier">output</span>, <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span>, <span class="ruby-identifier">duration</span>)
-        <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;0&#39;</span>, <span class="ruby-string">&#39;qp&#39;</span>)
+        <span class="ruby-identifier">ffconcat</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;\nfile &#39;#{out_file_name}&#39;\nduration #{duration}&quot;</span>
         <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] <span class="ruby-operator">&lt;&lt;</span> {
-          <span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-identifier">cmd</span>,
-          <span class="ruby-identifier">pass</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>,
           <span class="ruby-identifier">duration</span><span class="ruby-operator">:</span> <span class="ruby-identifier">duration</span>,
-          <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:precision</span>],
-          <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">out_file</span>
+          <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">out_file</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:precision</span>],
+          <span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;-y&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">__graph_command</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)                  <span class="ruby-operator">+</span> <span class="ruby-identifier">output_command</span>(<span class="ruby-identifier">output</span>, <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span>, <span class="ruby-identifier">duration</span>)                  <span class="ruby-operator">+</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;0&#39;</span>, <span class="ruby-string">&#39;qp&#39;</span>)
         }
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">file_path</span> = <span class="ruby-node">&quot;#{out_path}concat.txt&quot;</span>
-      <span class="ruby-identifier">exec_opts</span> = {}
-      <span class="ruby-identifier">exec_opts</span>[<span class="ruby-value">:content</span>] = <span class="ruby-identifier">ffconcat_lines</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>)
-      <span class="ruby-identifier">exec_opts</span>[<span class="ruby-value">:file</span>] = <span class="ruby-identifier">file_path</span>
-      <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">exec_opts</span>
-      <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-node">&quot;&#39;#{file_path}&#39;&quot;</span>, <span class="ruby-string">&#39;i&#39;</span>)
-      <span class="ruby-identifier">end_switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;copy&#39;</span>, <span class="ruby-string">&#39;c:v&#39;</span>)
+      <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">content</span><span class="ruby-operator">:</span> <span class="ruby-identifier">ffconcat</span>, <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">file_path</span> }
+      <span class="ruby-identifier">switches</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">switch</span>(<span class="ruby-node">&quot;&#39;#{file_path}&#39;&quot;</span>, <span class="ruby-string">&#39;i&#39;</span>)
+      <span class="ruby-identifier">end_switches</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">switch</span>(<span class="ruby-string">&#39;copy&#39;</span>, <span class="ruby-string">&#39;c:v&#39;</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">avb</span>
@@ -1460,8 +1504,8 @@
     <span class="ruby-keyword">else</span>
       <span class="ruby-comment"># merge audio and feed resulting file to ffmpeg</span>
       <span class="ruby-identifier">audio_cmd</span> = <span class="ruby-string">&#39;&#39;</span>
-      <span class="ruby-identifier">counter</span> = <span class="ruby-value">1</span>
-      <span class="ruby-identifier">a_graphs</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">a_len</span> = <span class="ruby-identifier">a_graphs</span>.<span class="ruby-identifier">length</span>
+      <span class="ruby-identifier">a_len</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
         <span class="ruby-identifier">graph</span> = <span class="ruby-identifier">a_graphs</span>[<span class="ruby-identifier">index</span>]
         <span class="ruby-identifier">__raise_if_negative</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:start</span>], <span class="ruby-node">&quot;negative start time #{graph}&quot;</span>)
         <span class="ruby-identifier">__raise_if_zero</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:length</span>], <span class="ruby-node">&quot;zero length #{graph}&quot;</span>)
@@ -1469,11 +1513,10 @@
         <span class="ruby-identifier">cmd_hash</span> = <span class="ruby-identifier">audio_command</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:cached_file</span>])
         <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd_hash</span>
         <span class="ruby-identifier">graph</span>[<span class="ruby-value">:waved_file</span>] = <span class="ruby-identifier">cmd_hash</span>[<span class="ruby-value">:file</span>]
-        <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__audio_graph</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">counter</span>)
-        <span class="ruby-identifier">counter</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+        <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__audio_graph</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">index</span>)
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">max_dur</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">max</span>(<span class="ruby-identifier">audio_dur</span>, <span class="ruby-identifier">video_dur</span>)
-      <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__audio_silence</span>(<span class="ruby-identifier">counter</span>, <span class="ruby-identifier">max_dur</span>)
+      <span class="ruby-identifier">audio_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__audio_silence</span>(<span class="ruby-identifier">a_len</span>, <span class="ruby-identifier">max_dur</span>)
       <span class="ruby-identifier">path</span> = <span class="ruby-identifier">__audio_path</span>(<span class="ruby-identifier">out_path</span>, <span class="ruby-identifier">audio_cmd</span>)
       <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] <span class="ruby-operator">&lt;&lt;</span> {
         <span class="ruby-identifier">app</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;ecasound&#39;</span>, <span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-identifier">audio_cmd</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:precision</span>],
@@ -1485,27 +1528,24 @@
       }
     <span class="ruby-keyword">end</span>
     <span class="ruby-comment"># audio graph now represents just one file</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">WAVEFORM</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>]
-      <span class="ruby-identifier">switches</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__waveform_switches</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">WAVEFORM</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">output_type</span>
       <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] <span class="ruby-operator">&lt;&lt;</span> {
-        <span class="ruby-identifier">app</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wav2png&#39;</span>, <span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">join</span>, <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rend_path</span>
+        <span class="ruby-identifier">app</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wav2png&#39;</span>, <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rend_path</span>,
+        <span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-identifier">__waveform_switches</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">output</span>)
       }
-      <span class="ruby-identifier">switches</span> = []
     <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:waved_file</span>], <span class="ruby-string">&#39;i&#39;</span>)
-      <span class="ruby-identifier">switches</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">__audio_switches</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">audio_dur</span>)
+      <span class="ruby-identifier">switches</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">graph</span>[<span class="ruby-value">:waved_file</span>], <span class="ruby-string">&#39;i&#39;</span>)
+      <span class="ruby-identifier">end_switches</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">__audio_switches</span>(<span class="ruby-identifier">graph</span>, <span class="ruby-identifier">audio_dur</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-comment"># we&#39;ve got audio and/or video</span>
     <span class="ruby-identifier">max_dur</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">max</span>(<span class="ruby-identifier">audio_dur</span>, <span class="ruby-identifier">video_dur</span>)
-    <span class="ruby-identifier">output_dur</span> = <span class="ruby-identifier">__output_duration</span>(<span class="ruby-identifier">video_or_audio_output</span>, <span class="ruby-identifier">max_dur</span>)
-    <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&#39;-y &#39;</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">switches</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_switches</span>).<span class="ruby-identifier">join</span>
-    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">output_command</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">avb</span>, <span class="ruby-identifier">output_dur</span>)
     <span class="ruby-identifier">output</span>[<span class="ruby-value">:commands</span>] <span class="ruby-operator">&lt;&lt;</span> {
-      <span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-identifier">cmd</span>, <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rend_path</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:precision</span>],
-      <span class="ruby-identifier">pass</span><span class="ruby-operator">:</span> <span class="ruby-identifier">__is_two_pass</span>(<span class="ruby-identifier">video_or_audio_output</span>, <span class="ruby-identifier">v_graphs</span>),
-      <span class="ruby-identifier">duration</span><span class="ruby-operator">:</span> <span class="ruby-identifier">__type_duration</span>(<span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>], <span class="ruby-identifier">max_dur</span>)
+      <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rend_path</span>, <span class="ruby-identifier">precision</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:precision</span>],
+      <span class="ruby-identifier">pass</span><span class="ruby-operator">:</span> <span class="ruby-identifier">__is_two_pass</span>(<span class="ruby-identifier">a_or_v</span>, <span class="ruby-identifier">v_graphs</span>),
+      <span class="ruby-identifier">duration</span><span class="ruby-operator">:</span> <span class="ruby-identifier">__type_duration</span>(<span class="ruby-identifier">output_type</span>, <span class="ruby-identifier">max_dur</span>),
+      <span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;-y &#39;</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">switches</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_switches</span>)              <span class="ruby-operator">+</span> <span class="ruby-identifier">output_command</span>(<span class="ruby-identifier">output</span>, <span class="ruby-identifier">avb</span>, <span class="ruby-identifier">__output_duration</span>(<span class="ruby-identifier">a_or_v</span>, <span class="ruby-identifier">max_dur</span>))
     }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1538,7 +1578,7 @@
 
           
           <div class="method-source-code" id="switch-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 273</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 193</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">switch</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">prefix</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">suffix</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">dont_escape</span> = <span class="ruby-keyword">false</span>)
   <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&#39;&#39;</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>
@@ -1590,7 +1630,7 @@
 
           
           <div class="method-source-code" id="switch_unescaped-source">
-            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 270</span>
+            <pre><span class="ruby-comment"># File lib/util/shell_helper.rb, line 215</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">switch_unescaped</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">prefix</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">suffix</span> = <span class="ruby-string">&#39;&#39;</span>)
   <span class="ruby-identifier">switch</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">prefix</span>, <span class="ruby-identifier">suffix</span>, <span class="ruby-keyword">true</span>)
 <span class="ruby-keyword">end</span></pre>

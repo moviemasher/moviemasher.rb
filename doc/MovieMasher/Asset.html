@@ -152,6 +152,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -177,6 +179,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -250,7 +254,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -388,7 +396,7 @@
 
           
           <div class="method-source-code" id="__download_asset-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 34</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 40</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__download_asset</span>(<span class="ruby-identifier">asset</span>, <span class="ruby-identifier">url</span>, <span class="ruby-identifier">path</span>, <span class="ruby-identifier">job</span>)
   <span class="ruby-identifier">url</span> = <span class="ruby-identifier">asset</span>[<span class="ruby-value">:input_url</span>].<span class="ruby-identifier">to_s</span>
   <span class="ruby-identifier">path</span> = <span class="ruby-identifier">url_path</span>(<span class="ruby-identifier">url</span>)
@@ -433,7 +441,7 @@
 
           
           <div class="method-source-code" id="__populate_asset_info-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 49</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__populate_asset_info</span>(<span class="ruby-identifier">asset</span>)
   <span class="ruby-identifier">path</span> = <span class="ruby-identifier">asset</span>[<span class="ruby-value">:cached_file</span>]
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">asset</span>[<span class="ruby-value">:type</span>]
@@ -482,13 +490,13 @@
 
         <div class="method-description">
           
-          
+          <p>Returns a new instance.</p>
           
           
 
           
           <div class="method-source-code" id="av_type-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 9</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">av_type</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>]
   <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO</span>
@@ -526,13 +534,13 @@
 
         <div class="method-description">
           
-          <p>Returns a new instance.</p>
+          
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 6</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Asset</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Asset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
@@ -606,7 +614,7 @@
 
           
           <div class="method-source-code" id="url_path-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 74</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">url_path</span>(<span class="ruby-identifier">url</span>)
   <span class="ruby-identifier">dir</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">configuration</span>[<span class="ruby-value">:download_directory</span>]
   <span class="ruby-identifier">dir</span> = <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">configuration</span>[<span class="ruby-value">:render_directory</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
@@ -846,7 +854,7 @@ probing.</p>
 
           
           <div class="method-source-code" id="download_source-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 222</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">download_source</span>
   <span class="ruby-identifier">d_source</span> = <span class="ruby-identifier">source</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Source</span>)
@@ -891,7 +899,7 @@ probing.</p>
 
           
           <div class="method-source-code" id="duration-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 106</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 121</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">duration</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -933,7 +941,7 @@ probing.</p>
 
           
           <div class="method-source-code" id="duration-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 112</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 127</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">duration=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -966,7 +974,7 @@ probing.</p>
 
           
           <div class="method-source-code" id="error-3F-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 115</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 130</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">error?</span>
   <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
@@ -999,7 +1007,7 @@ probing.</p>
 
           
           <div class="method-source-code" id="gain-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 118</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 133</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gain</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1047,7 +1055,7 @@ out over the last10%.</p>
 
           
           <div class="method-source-code" id="gain-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 129</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 144</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gain=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1080,7 +1088,7 @@ out over the last10%.</p>
 
           
           <div class="method-source-code" id="length-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 132</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 147</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">length</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1120,7 +1128,7 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="length-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 137</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 152</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">length=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1153,7 +1161,7 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="loop-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 140</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 155</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">loop</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1192,7 +1200,7 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="loop-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 145</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 160</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">loop=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1225,7 +1233,7 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="metadata-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 148</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 163</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">metadata</span>
   (<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">MetaReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>]) <span class="ruby-operator">:</span> {})
 <span class="ruby-keyword">end</span></pre>
@@ -1258,7 +1266,7 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="no_audio-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 151</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 166</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1301,7 +1309,7 @@ change after probing.</p>
 
           
           <div class="method-source-code" id="no_audio-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 157</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 172</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1334,7 +1342,7 @@ change after probing.</p>
 
           
           <div class="method-source-code" id="no_video-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 160</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 175</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_video</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1377,7 +1385,7 @@ change after probing.</p>
 
           
           <div class="method-source-code" id="no_video-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 166</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 181</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_video=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1410,7 +1418,7 @@ change after probing.</p>
 
           
           <div class="method-source-code" id="offset-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 169</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 184</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">offset</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1452,7 +1460,7 @@ change after probing.</p>
 
           
           <div class="method-source-code" id="offset-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 175</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 190</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">offset=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1485,7 +1493,7 @@ change after probing.</p>
 
           
           <div class="method-source-code" id="preflight-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 178</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 193</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight</span>(<span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">source</span> = <span class="ruby-constant">Source</span>.<span class="ruby-identifier">create_if</span> <span class="ruby-identifier">source</span>
@@ -1529,7 +1537,7 @@ change after probing.</p>
 
           
           <div class="method-source-code" id="source-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 192</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 207</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">source</span>
   <span class="ruby-identifier">s</span> = <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
   <span class="ruby-identifier">s</span>
@@ -1585,7 +1593,7 @@ afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
 
           
           <div class="method-source-code" id="source-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 210</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 225</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">source=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1618,7 +1626,7 @@ afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
 
           
           <div class="method-source-code" id="type-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 213</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 228</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1660,7 +1668,7 @@ afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
 
           
           <div class="method-source-code" id="type-3D-source">
-            <pre><span class="ruby-comment"># File lib/asset.rb, line 219</span>
+            <pre><span class="ruby-comment"># File lib/asset.rb, line 234</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>

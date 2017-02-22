@@ -102,6 +102,8 @@
 
   <ul>
   
+    <li class="file"><a href="../Changelog.html">Changelog</a>
+  
     <li class="file"><a href="../Documentation_md.html">Documentation</a>
   
     <li class="file"><a href="../README_md.html">README</a>
@@ -127,6 +129,8 @@
     <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
   
     <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
+  
+    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
   
     <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
   
@@ -200,7 +204,11 @@
   
     <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
   
-    <li><a href="../MovieMasher/FilterSourceMovie.html">MovieMasher::FilterSourceMovie</a>
+    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
+  
+    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
+  
+    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
   
     <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
   
@@ -485,7 +493,7 @@
 
           
           <div class="method-source-code" id="__filter_dimension_keys-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 192</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 119</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_dimension_keys</span>(<span class="ruby-identifier">filter_id</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">filter_id</span>
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;crop&#39;</span>
@@ -523,7 +531,7 @@
 
           
           <div class="method-source-code" id="__filter_is_source-3F-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 200</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 127</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_is_source?</span>(<span class="ruby-identifier">filter_id</span>)
   <span class="ruby-node">%w(color movie)</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">filter_id</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -556,7 +564,7 @@
 
           
           <div class="method-source-code" id="__filter_scope_binding-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 203</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 130</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_scope_binding</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">bind</span> = {}
   <span class="ruby-identifier">scope</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">bind</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">__coerce_if_numeric</span>(<span class="ruby-identifier">v</span>) } <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
@@ -591,7 +599,7 @@
 
           
           <div class="method-source-code" id="__is_filter_helper-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 186</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 113</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__is_filter_helper</span>(<span class="ruby-identifier">func</span>)
   <span class="ruby-identifier">func_sym</span> = <span class="ruby-identifier">func</span>.<span class="ruby-identifier">to_sym</span>
   <span class="ruby-identifier">ok</span> = <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">func_sym</span>)
@@ -627,7 +635,7 @@
 
           
           <div class="method-source-code" id="__scope_value-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 113</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">__scope_value</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">value_str</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
     <span class="ruby-comment"># puts &quot;1 value_str = #{value_str}&quot;</span>
@@ -730,7 +738,7 @@
 
           
           <div class="method-source-code" id="command_parameters-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 44</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">command_parameters</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">cmds</span> = []
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@parameters</span>
@@ -778,7 +786,7 @@
 
           
           <div class="method-source-code" id="filter_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 6</span>
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_command</span>(<span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">cmd</span> = <span class="ruby-keyword">super</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">cmd</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">empty?</span>

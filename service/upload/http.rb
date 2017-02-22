@@ -34,7 +34,7 @@ module MovieMasher
       end
       Net::HTTP.start(uri.host, uri.port, use_ssl: secure) do |http|
         result = http.request(req)
-        if 200 < result.code
+        if 200 != result.code.to_i
           msg = "#{result.code} upload #{uri} response #{result.body}"
           raise(Error::JobUpload, msg)
         end
