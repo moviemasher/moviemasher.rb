@@ -65,9 +65,9 @@ RUN \
 # pull, configure, make and install most recent ffmpeg stable release
 RUN \
   cd /data; \
-  wget https://ffmpeg.org/releases/ffmpeg-3.0.2.tar.gz; \
-  tar -xzvf ffmpeg-3.0.2.tar.gz; \
-  cd /data/ffmpeg-3.0.2; \
+  wget https://ffmpeg.org/releases/ffmpeg-3.2.4.tar.gz; \
+  tar -xzvf ffmpeg-3.2.4.tar.gz; \
+  cd /data/ffmpeg-3.2.4; \
   ./configure \
     --enable-frei0r \
     --enable-gpl \
@@ -92,7 +92,7 @@ RUN \
   ; \
   make; \
   make install; \
-  rm -R /data/ffmpeg-3.0.2;
+  rm -R /data/ffmpeg-3.2.4;
 
 # needed for binaries to find libraries
 RUN ldconfig

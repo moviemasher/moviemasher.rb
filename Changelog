@@ -3,18 +3,19 @@ version <future>:
 - freeze frame
 
 version 4.0.21:
-  - fixed upload response code checks
+- fixed upload response code checks
+- support for FFMpeg 3.2.4
 
 version 4.0.20:
-  - stopped downcasing keys in transfer.parameters
+- stopped downcasing keys in transfer.parameters
 
 version 4.0.19:
-  - fixed video channel issue
+- fixed video channel issue
 
 version 4.0.18:
-  - support added for blend filter
-  - stopped using movie filter in favor of indexed video labels
-  - added support for pixel_format output option
+- support added for blend filter
+- stopped using movie filter in favor of indexed video labels
+- added support for pixel_format output option
 
 version 4.0.17:
 - now using labeled inputs instead of movie filter in filtergraphs
