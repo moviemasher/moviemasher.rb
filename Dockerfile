@@ -1,4 +1,4 @@
-FROM ruby:2.1
+FROM ruby:2.2
 MAINTAINER Movie Masher <support@moviemasher.com>
 
 ENV HOME /root
@@ -52,22 +52,35 @@ RUN \
   make install; \
   rm -R /data/openjpeg-version.2.1
 
+# latest nasm required for x264
+RUN \
+  cd /data; \
+  wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.02/nasm-2.13.02.tar.gz; \
+  tar -xzvf nasm-2.13.02.tar.gz; \
+  cd /data/nasm-2.13.02; \
+  ./configure; \
+  make; \
+  make install; \
+  checkinstall --pkgname=nasm --pkgversion="2.13.02" --backup=no --deldoc=yes --fstrans=no --default
+
+
 # pull, configure, make and install x264
 RUN \
   cd /data; \
   git clone git://git.videolan.org/x264.git; \
   cd /data/x264; \
+  git checkout ba24899b0bf23345921da022f7a51e0c57dbe73d; \
   ./configure --prefix=/usr --enable-shared; \
   make; \
   make install; \
   rm -R /data/x264
 
-# pull, configure, make and install most recent ffmpeg stable release
+# pull, configure, make and install most recent ffmpeg
 RUN \
   cd /data; \
-  wget https://ffmpeg.org/releases/ffmpeg-3.2.4.tar.gz; \
-  tar -xzvf ffmpeg-3.2.4.tar.gz; \
-  cd /data/ffmpeg-3.2.4; \
+  wget https://ffmpeg.org/releases/ffmpeg-3.4.1.tar.gz; \
+  tar -xzvf ffmpeg-3.4.1.tar.gz; \
+  cd /data/ffmpeg-3.4.1; \
   ./configure \
     --enable-frei0r \
     --enable-gpl \
@@ -92,7 +105,7 @@ RUN \
   ; \
   make; \
   make install; \
-  rm -R /data/ffmpeg-3.2.4;
+  rm -R /data/ffmpeg-3.4.1;
 
 # needed for binaries to find libraries
 RUN ldconfig

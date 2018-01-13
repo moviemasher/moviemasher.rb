@@ -1,7 +1,7 @@
 
 module MovieMasher
-  # Base class for Callback and Source as well as used directly to resolve
-  # Input and Output relative paths to a specific location.
+  # Base class for Callback and Source as well as used directly to
+  # resolve Input and Output relative paths to a specific location.
   #
   # There are three basic types of transfers - Type::FILE, Type::HTTP and
   # Type::S3 representing locations on the local drive, remote web servers and
@@ -164,11 +164,7 @@ module MovieMasher
       parameters = transfer[:parameters]
       if parameters && parameters.is_a?(Hash) && !parameters.empty?
         parameters = Marshal.load(Marshal.dump(parameters))
-        scope_object = {
-          job: job,
-          transfer.class_symbol => transfer
-        }
-        Evaluate.object(parameters, scope_object)
+        Evaluate.object(parameters, job: job, transfer: transfer)
         parameters = URI.encode_www_form(parameters)
       end
       parameters

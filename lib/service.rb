@@ -5,59 +5,80 @@ module MovieMasher
     SERVICES_DIRECTORY = File.expand_path("#{__dir__}/../service")
     class << self
       attr_accessor :__configuration
-      attr_accessor :__cache
+      attr_accessor :__instances
+      attr_accessor :__services
     end
-    Service.__cache = {}
     Service.__configuration = {}
+    Service.__instances = {}
+    Service.__services = {}
     def self.configure_services(config)
       Service.__configuration = config
     end
     def self.downloader(type)
-      __service(:download, type)
+      instance(:download, type)
     end
     def self.initer(type)
-      __service(:init, type)
+      instance(:init, type)
     end
     def self.queues
       array = []
-      __service_names(:queue).each do |type|
-        service = __service(:queue, type)
-        array << service if service
+      services(:queue).each do |hash|
+        type = hash[:name]
+        s = instance(:queue, type)
+        array << s if s
       end
       array
     end
+    def self.services(kind = nil)
+      kind_nil = kind.nil?
+      kinds = kind_nil ? [:queue, :upload, :download, :init] : [kind.to_sym]
+      kinds.each do |kind_sym|
+        Service.__services[kind_sym] ||= __scan_for_services(kind_sym)
+      end
+      kind_nil ? Service.__services : Service.__services[kind.to_sym]
+    end
     def self.uploader(type)
-      __service(:upload, type)
+      instance(:upload, type)
     end
     def self.__create_service(name, kind = :queue)
-      service = nil
-      class_sym = "#{name.capitalize}#{kind.id2name.capitalize}Service".to_sym
-      unless MovieMasher.const_defined?(class_sym)
-        path = "#{SERVICES_DIRECTORY}/#{kind.id2name}/#{name}.rb"
-        require path if File.exist?(path)
+      s = nil
+      return s if Service.__configuration[:disable_local] && 'file' == name.to_s
+      service_config = services(kind).find{ |s| s[:name] == name.to_s }
+      if service_config
+        class_sym = service_config[:sym]
+        unless MovieMasher.const_defined?(class_sym)
+          path = service_config[:path]
+          require path if File.exist?(path)
+        end
+        if MovieMasher.const_defined?(class_sym)
+          s = MovieMasher.const_get(class_sym).new
+        end
       end
-      if MovieMasher.const_defined?(class_sym)
-        service = MovieMasher.const_get(class_sym).new
-      end
-      service
+      s
     end
-    def self.__service(kind, type)
-      Service.__cache[kind] ||= {}
-      if Service.__cache[kind][type].nil?
-        service = __create_service(type, kind)
-        Service.__cache[kind][type] =
-          if service && service.configure(Service.__configuration)
-            service
+    def self.__scan_for_services(kind)
+      kind_fragment = "_#{kind.id2name}"
+      Dir["#{SERVICES_DIRECTORY}/*/*#{kind_fragment}.rb"].map do |path|
+        name = File.basename(path, '.rb')
+        name[kind_fragment] = ''
+        {
+          name: name, path: path,
+          sym: "#{name.capitalize}#{kind.id2name.capitalize}Service".to_sym
+        }
+      end
+    end
+    def self.instance(kind, type)
+      Service.__instances[kind] ||= {}
+      if Service.__instances[kind][type].nil?
+        s = __create_service(type, kind)
+        Service.__instances[kind][type] =
+          if s && s.configure(Service.__configuration)
+            s
           else
             false
           end
       end
-      Service.__cache[kind][type]
-    end
-    def self.__service_names(kind = :queue)
-      Dir["#{SERVICES_DIRECTORY}/#{kind.id2name}/*.rb"].map do |path|
-        File.basename(path, '.rb')
-      end
+      Service.__instances[kind][type]
     end
     def configuration
       Service.__configuration

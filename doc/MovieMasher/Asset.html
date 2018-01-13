@@ -2,76 +2,73 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>class MovieMasher::Asset - RDoc Documentation</title>
-
-<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
 
 
-<body id="top" class="class">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="../index.html">Home</a>
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
     <a href="../table_of_contents.html#classes">Classes</a>
     <a href="../table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
-
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>lib/asset.rb
-  </ul>
-</nav>
-
-    
-  </div>
 
   <div id="class-metadata">
     
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
   
   <p class="link">Hashable
   
-</nav>
+</div>
 
     
     
     <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
 
-  <ul class="link-list">
+  <ul class="link-list" role="directory">
     
     <li ><a href="#method-c-__download_asset">::__download_asset</a>
     
@@ -142,222 +139,21 @@
     <li ><a href="#method-i-url">#url</a>
     
   </ul>
-</nav>
-
-  </div>
-
-  <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="../Changelog.html">Changelog</a>
-  
-    <li class="file"><a href="../Documentation_md.html">Documentation</a>
-  
-    <li class="file"><a href="../README_md.html">README</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
-
-  <ul class="link-list">
-  
-    <li><a href="../MovieMasher.html">MovieMasher</a>
-  
-    <li><a href="../MovieMasher/AV.html">MovieMasher::AV</a>
-  
-    <li><a href="../MovieMasher/Asset.html">MovieMasher::Asset</a>
-  
-    <li><a href="../MovieMasher/AwsInitService.html">MovieMasher::AwsInitService</a>
-  
-    <li><a href="../MovieMasher/AzureInitService.html">MovieMasher::AzureInitService</a>
-  
-    <li><a href="../MovieMasher/Callback.html">MovieMasher::Callback</a>
-  
-    <li><a href="../MovieMasher/Chain.html">MovieMasher::Chain</a>
-  
-    <li><a href="../MovieMasher/ChainBlend.html">MovieMasher::ChainBlend</a>
-  
-    <li><a href="../MovieMasher/ChainEffects.html">MovieMasher::ChainEffects</a>
-  
-    <li><a href="../MovieMasher/ChainModule.html">MovieMasher::ChainModule</a>
-  
-    <li><a href="../MovieMasher/ChainOverlay.html">MovieMasher::ChainOverlay</a>
-  
-    <li><a href="../MovieMasher/ChainScaler.html">MovieMasher::ChainScaler</a>
-  
-    <li><a href="../MovieMasher/Clip.html">MovieMasher::Clip</a>
-  
-    <li><a href="../MovieMasher/Defaults.html">MovieMasher::Defaults</a>
-  
-    <li><a href="../MovieMasher/Destination.html">MovieMasher::Destination</a>
-  
-    <li><a href="../MovieMasher/DownloadService.html">MovieMasher::DownloadService</a>
-  
-    <li><a href="../MovieMasher/Error.html">MovieMasher::Error</a>
-  
-    <li><a href="../MovieMasher/Error/Configuration.html">MovieMasher::Error::Configuration</a>
-  
-    <li><a href="../MovieMasher/Error/Critical.html">MovieMasher::Error::Critical</a>
-  
-    <li><a href="../MovieMasher/Error/Job.html">MovieMasher::Error::Job</a>
-  
-    <li><a href="../MovieMasher/Error/JobInput.html">MovieMasher::Error::JobInput</a>
-  
-    <li><a href="../MovieMasher/Error/JobOutput.html">MovieMasher::Error::JobOutput</a>
-  
-    <li><a href="../MovieMasher/Error/JobRender.html">MovieMasher::Error::JobRender</a>
-  
-    <li><a href="../MovieMasher/Error/JobSource.html">MovieMasher::Error::JobSource</a>
-  
-    <li><a href="../MovieMasher/Error/JobSyntax.html">MovieMasher::Error::JobSyntax</a>
-  
-    <li><a href="../MovieMasher/Error/JobUpload.html">MovieMasher::Error::JobUpload</a>
-  
-    <li><a href="../MovieMasher/Error/Object.html">MovieMasher::Error::Object</a>
-  
-    <li><a href="../MovieMasher/Error/Parameter.html">MovieMasher::Error::Parameter</a>
-  
-    <li><a href="../MovieMasher/Error/Runtime.html">MovieMasher::Error::Runtime</a>
-  
-    <li><a href="../MovieMasher/Error/State.html">MovieMasher::Error::State</a>
-  
-    <li><a href="../MovieMasher/Error/Todo.html">MovieMasher::Error::Todo</a>
-  
-    <li><a href="../MovieMasher/Evaluate.html">MovieMasher::Evaluate</a>
-  
-    <li><a href="../MovieMasher/FileDownloadService.html">MovieMasher::FileDownloadService</a>
-  
-    <li><a href="../MovieMasher/FileHelper.html">MovieMasher::FileHelper</a>
-  
-    <li><a href="../MovieMasher/FileQueueService.html">MovieMasher::FileQueueService</a>
-  
-    <li><a href="../MovieMasher/FileUploadService.html">MovieMasher::FileUploadService</a>
-  
-    <li><a href="../MovieMasher/Fill.html">MovieMasher::Fill</a>
-  
-    <li><a href="../MovieMasher/Filter.html">MovieMasher::Filter</a>
-  
-    <li><a href="../MovieMasher/FilterEvaluated.html">MovieMasher::FilterEvaluated</a>
-  
-    <li><a href="../MovieMasher/FilterHash.html">MovieMasher::FilterHash</a>
-  
-    <li><a href="../MovieMasher/FilterHelpers.html">MovieMasher::FilterHelpers</a>
-  
-    <li><a href="../MovieMasher/FilterSetpts.html">MovieMasher::FilterSetpts</a>
-  
-    <li><a href="../MovieMasher/FilterSource.html">MovieMasher::FilterSource</a>
-  
-    <li><a href="../MovieMasher/FilterSourceColor.html">MovieMasher::FilterSourceColor</a>
-  
-    <li><a href="../MovieMasher/FilterSourceImage.html">MovieMasher::FilterSourceImage</a>
-  
-    <li><a href="../MovieMasher/FilterSourceRaw.html">MovieMasher::FilterSourceRaw</a>
-  
-    <li><a href="../MovieMasher/FilterSourceVideo.html">MovieMasher::FilterSourceVideo</a>
-  
-    <li><a href="../MovieMasher/FloatUtil.html">MovieMasher::FloatUtil</a>
-  
-    <li><a href="../MovieMasher/Gain.html">MovieMasher::Gain</a>
-  
-    <li><a href="../MovieMasher/Graph.html">MovieMasher::Graph</a>
-  
-    <li><a href="../MovieMasher/GraphMash.html">MovieMasher::GraphMash</a>
-  
-    <li><a href="../MovieMasher/GraphRaw.html">MovieMasher::GraphRaw</a>
-  
-    <li><a href="../MovieMasher/GraphUtility.html">MovieMasher::GraphUtility</a>
-  
-    <li><a href="../MovieMasher/Hashable.html">MovieMasher::Hashable</a>
-  
-    <li><a href="../MovieMasher/HttpDownloadService.html">MovieMasher::HttpDownloadService</a>
-  
-    <li><a href="../MovieMasher/HttpUploadService.html">MovieMasher::HttpUploadService</a>
-  
-    <li><a href="../MovieMasher/HttpsDownloadService.html">MovieMasher::HttpsDownloadService</a>
-  
-    <li><a href="../MovieMasher/HttpsUploadService.html">MovieMasher::HttpsUploadService</a>
-  
-    <li><a href="../MovieMasher/Info.html">MovieMasher::Info</a>
-  
-    <li><a href="../MovieMasher/InitService.html">MovieMasher::InitService</a>
-  
-    <li><a href="../MovieMasher/Input.html">MovieMasher::Input</a>
-  
-    <li><a href="../MovieMasher/Intermediate.html">MovieMasher::Intermediate</a>
-  
-    <li><a href="../MovieMasher/Job.html">MovieMasher::Job</a>
-  
-    <li><a href="../MovieMasher/Layer.html">MovieMasher::Layer</a>
-  
-    <li><a href="../MovieMasher/LayerColor.html">MovieMasher::LayerColor</a>
-  
-    <li><a href="../MovieMasher/LayerModule.html">MovieMasher::LayerModule</a>
-  
-    <li><a href="../MovieMasher/LayerRaw.html">MovieMasher::LayerRaw</a>
-  
-    <li><a href="../MovieMasher/LayerRawImage.html">MovieMasher::LayerRawImage</a>
-  
-    <li><a href="../MovieMasher/LayerRawVideo.html">MovieMasher::LayerRawVideo</a>
-  
-    <li><a href="../MovieMasher/LayerTheme.html">MovieMasher::LayerTheme</a>
-  
-    <li><a href="../MovieMasher/LayerTransition.html">MovieMasher::LayerTransition</a>
-  
-    <li><a href="../MovieMasher/Mash.html">MovieMasher::Mash</a>
-  
-    <li><a href="../MovieMasher/MetaReader.html">MovieMasher::MetaReader</a>
-  
-    <li><a href="../MovieMasher/Method.html">MovieMasher::Method</a>
-  
-    <li><a href="../MovieMasher/Output.html">MovieMasher::Output</a>
-  
-    <li><a href="../MovieMasher/Parameters.html">MovieMasher::Parameters</a>
-  
-    <li><a href="../MovieMasher/Path.html">MovieMasher::Path</a>
-  
-    <li><a href="../MovieMasher/QueueService.html">MovieMasher::QueueService</a>
-  
-    <li><a href="../MovieMasher/S3DownloadService.html">MovieMasher::S3DownloadService</a>
-  
-    <li><a href="../MovieMasher/S3UploadService.html">MovieMasher::S3UploadService</a>
-  
-    <li><a href="../MovieMasher/Service.html">MovieMasher::Service</a>
-  
-    <li><a href="../MovieMasher/ShellHelper.html">MovieMasher::ShellHelper</a>
-  
-    <li><a href="../MovieMasher/Source.html">MovieMasher::Source</a>
-  
-    <li><a href="../MovieMasher/SqsQueueService.html">MovieMasher::SqsQueueService</a>
-  
-    <li><a href="../MovieMasher/TimeRange.html">MovieMasher::TimeRange</a>
-  
-    <li><a href="../MovieMasher/Transfer.html">MovieMasher::Transfer</a>
-  
-    <li><a href="../MovieMasher/Trigger.html">MovieMasher::Trigger</a>
-  
-    <li><a href="../MovieMasher/Type.html">MovieMasher::Type</a>
-  
-    <li><a href="../MovieMasher/UploadService.html">MovieMasher::UploadService</a>
-  
-  </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation">
-  <h1 class="class">class MovieMasher::Asset</h1>
+<main role="main" aria-labelledby="class-MovieMasher::Asset">
+  <h1 id="class-MovieMasher::Asset" class="class">
+    class MovieMasher::Asset
+  </h1>
 
-  <div id="description" class="description">
+  <section class="description">
     
 <p>represents a downloadable media asset</p>
 
-  </div><!-- description -->
+  </section>
 
   
   
@@ -371,10 +167,11 @@
 
     
 
-    <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Class Methods</h3>
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
 
     
       <div id="method-c-__download_asset" class="method-detail ">
@@ -412,14 +209,14 @@
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- __download_asset-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- __download_asset-method -->
+      </div>
 
     
       <div id="method-c-__populate_asset_info" class="method-detail ">
@@ -467,14 +264,14 @@
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- __populate_asset_info-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- __populate_asset_info-method -->
+      </div>
 
     
       <div id="method-c-av_type" class="method-detail ">
@@ -490,7 +287,9 @@
 
         <div class="method-description">
           
-          <p>Returns a new instance.</p>
+          <h3 id="method-c-av_type-label-Returns">Returns<span><a href="#method-c-av_type-label-Returns">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>Returns a new instance.</p>
           
           
 
@@ -511,14 +310,14 @@
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- av_type-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- av_type-method -->
+      </div>
 
     
       <div id="method-c-create" class="method-detail ">
@@ -544,14 +343,14 @@
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Asset</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Asset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- create-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- create-method -->
+      </div>
 
     
       <div id="method-c-download_asset" class="method-detail ">
@@ -585,14 +384,14 @@
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">path</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- download_asset-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- download_asset-method -->
+      </div>
 
     
       <div id="method-c-url_path" class="method-detail ">
@@ -621,20 +420,22 @@
   <span class="ruby-identifier">hex</span> = <span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">SHA2</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">256</span>).<span class="ruby-identifier">hexdigest</span>(<span class="ruby-identifier">url</span>)
   <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-node">&quot;#{hex}/#{Info::DOWNLOADED}#{File.extname(url)}&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- url_path-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- url_path-method -->
+      </div>
 
     
-    </section><!-- public-class-method-details -->
+    </section>
   
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
 
     
       <div id="method-i-__url" class="method-detail ">
@@ -664,14 +465,14 @@
     <span class="ruby-constant">URI</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">base_url</span>, <span class="ruby-identifier">u</span>).<span class="ruby-identifier">to_s</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- __url-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- __url-method -->
+      </div>
 
     
       <div id="method-i-av" class="method-detail ">
@@ -692,7 +493,7 @@
 <p>The <a href="AV.html">AV</a> type.</p>
 </dd><dt>Constant
 <dd>
-<p>AV::AUDIO_ONLY, AV::VIDEO_ONLY, AV::BOTH, orAV::NEITHER if an error was
+<p>AV::AUDIO_ONLY, AV::VIDEO_ONLY, AV::BOTH, or AV::NEITHER if an error was
 encountered while probing.</p>
 </dd><dt>Types
 <dd>
@@ -700,7 +501,7 @@ encountered while probing.</p>
 </dd><dt>Default
 <dd>
 <p>Initially based on <a href="Asset.html#method-i-type">type</a> and <a
-href="Asset.html#method-i-no_audio">no_audio</a>, but might changeafter
+href="Asset.html#method-i-no_audio">no_audio</a>, but might change after
 probing.</p>
 </dd></dl>
           
@@ -712,14 +513,14 @@ probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">av</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- av-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- av-method -->
+      </div>
 
     
       <div id="method-i-dimensions" class="method-detail ">
@@ -745,14 +546,14 @@ probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- dimensions-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- dimensions-method -->
+      </div>
 
     
       <div id="method-i-dimensions-3D" class="method-detail ">
@@ -787,14 +588,14 @@ probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- dimensions-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- dimensions-3D-method -->
+      </div>
 
     
       <div id="method-i-download" class="method-detail ">
@@ -825,14 +626,14 @@ probing.</p>
   <span class="ruby-identifier">options</span>[<span class="ruby-value">:asset</span>] = <span class="ruby-keyword">self</span>
   <span class="ruby-identifier">service</span>.<span class="ruby-identifier">download</span>(<span class="ruby-identifier">options</span>)
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- download-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- download-method -->
+      </div>
 
     
       <div id="method-i-download_source" class="method-detail ">
@@ -870,14 +671,14 @@ probing.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">d_source</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- download_source-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- download_source-method -->
+      </div>
 
     
       <div id="method-i-duration" class="method-detail ">
@@ -903,14 +704,14 @@ probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">duration</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- duration-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- duration-method -->
+      </div>
 
     
       <div id="method-i-duration-3D" class="method-detail ">
@@ -945,14 +746,14 @@ probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">duration=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- duration-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- duration-3D-method -->
+      </div>
 
     
       <div id="method-i-error-3F" class="method-detail ">
@@ -978,14 +779,14 @@ probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">error?</span>
   <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- error-3F-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- error-3F-method -->
+      </div>
 
     
       <div id="method-i-gain" class="method-detail ">
@@ -1011,14 +812,14 @@ probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gain</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- gain-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- gain-method -->
+      </div>
 
     
       <div id="method-i-gain-3D" class="method-detail ">
@@ -1039,10 +840,10 @@ probing.</p>
 <p>Multiplier to adjust volume of audio when mixed into mashup.</p>
 </dd><dt>Array
 <dd>
-<p>Duple Float values signifying element offset andmultiplier for arbitrary
-volume fading over time. For instance,[0.0, 0.0, 0.1, 1.0, 0.9, 1.0, 1.0,
-0.0] would fade volume inover the first 10% of the element&#39;s length and
-out over the last10%.</p>
+<p>Duple Float values signifying element offset and multiplier for arbitrary
+volume fading over time. For instance, [0.0, 0.0, 0.1, 1.0, 0.9, 1.0, 1.0,
+0.0] would fade volume in over the first 10% of the element&#39;s length
+and out over the last 10%.</p>
 </dd><dt>Default
 <dd>
 <p>Gain::None (1.0) means no change in volume.</p>
@@ -1059,14 +860,14 @@ out over the last10%.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gain=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- gain-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- gain-3D-method -->
+      </div>
 
     
       <div id="method-i-length" class="method-detail ">
@@ -1092,14 +893,14 @@ out over the last10%.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">length</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- length-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- length-method -->
+      </div>
 
     
       <div id="method-i-length-3D" class="method-detail ">
@@ -1132,14 +933,14 @@ href="Asset.html#method-i-offset">offset</a></p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">length=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- length-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- length-3D-method -->
+      </div>
 
     
       <div id="method-i-loop" class="method-detail ">
@@ -1165,14 +966,14 @@ href="Asset.html#method-i-offset">offset</a></p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">loop</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- loop-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- loop-method -->
+      </div>
 
     
       <div id="method-i-loop-3D" class="method-detail ">
@@ -1204,14 +1005,14 @@ href="Asset.html#method-i-offset">offset</a></p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">loop=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- loop-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- loop-3D-method -->
+      </div>
 
     
       <div id="method-i-metadata" class="method-detail ">
@@ -1237,14 +1038,14 @@ href="Asset.html#method-i-offset">offset</a></p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">metadata</span>
   (<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">MetaReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:cached_file</span>]) <span class="ruby-operator">:</span> {})
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- metadata-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- metadata-method -->
+      </div>
 
     
       <div id="method-i-no_audio" class="method-detail ">
@@ -1270,14 +1071,14 @@ href="Asset.html#method-i-offset">offset</a></p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- no_audio-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- no_audio-method -->
+      </div>
 
     
       <div id="method-i-no_audio-3D" class="method-detail ">
@@ -1313,14 +1114,14 @@ change after probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- no_audio-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- no_audio-3D-method -->
+      </div>
 
     
       <div id="method-i-no_video" class="method-detail ">
@@ -1346,14 +1147,14 @@ change after probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_video</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- no_video-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- no_video-method -->
+      </div>
 
     
       <div id="method-i-no_video-3D" class="method-detail ">
@@ -1389,14 +1190,14 @@ change after probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">no_video=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- no_video-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- no_video-3D-method -->
+      </div>
 
     
       <div id="method-i-offset" class="method-detail ">
@@ -1422,14 +1223,14 @@ change after probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">offset</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- offset-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- offset-method -->
+      </div>
 
     
       <div id="method-i-offset-3D" class="method-detail ">
@@ -1464,14 +1265,14 @@ change after probing.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">offset=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- offset-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- offset-3D-method -->
+      </div>
 
     
       <div id="method-i-preflight" class="method-detail ">
@@ -1508,14 +1309,14 @@ change after probing.</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-comment"># puts &quot;preflight #{self.class.name} URL: #{self[:input_url]}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- preflight-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- preflight-method -->
+      </div>
 
     
       <div id="method-i-source" class="method-detail ">
@@ -1542,14 +1343,14 @@ change after probing.</p>
   <span class="ruby-identifier">s</span> = <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
   <span class="ruby-identifier">s</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- source-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- source-method -->
+      </div>
 
     
       <div id="method-i-source-3D" class="method-detail ">
@@ -1565,28 +1366,30 @@ change after probing.</p>
 
         <div class="method-description">
           
-          <p>Describes the download request for the element, as either a URL
-orHash/Source. If the URL is relative it&#39;s based fromJob#base_source.
-Assets of Type::MASH can point to anything thatresponds with a JSON
-formatted mash. After download they will passthe parsed Hash to <a
+          <p>Describes the download request for the element, as either a URL or
+Hash/Source. If the URL is relative it&#39;s based from <a
+href="Job.html#method-i-base_source">MovieMasher::Job#base_source</a>.
+Assets of Type::MASH can point to anything that responds with a JSON
+formatted mash. After download they will pass the parsed Hash to <a
 href="Mash.html#method-c-new">MovieMasher::Mash.new</a> and reset their <a
-href="Asset.html#method-i-source">source</a> to thereturned instance.
+href="Asset.html#method-i-source">source</a> to the returned instance.
 Alternatively, <a href="Asset.html#method-i-source">source</a> can be
-initially set toa Hash/Mash so as to avoid download.</p>
+initially set to a Hash/Mash so as to avoid download.</p>
 <dl class="rdoc-list note-list"><dt>String
 <dd>
 <p>A HTTP or HTTPS URL to element, converted to appropriate <a
 href="Source.html">Source</a>.</p>
 </dd><dt>Hash
 <dd>
-<p>Can describe either a download request or, for Type::MASHAssets, a JSON
-formatted <a href="Mash.html">Mash</a>. The former is sent to
-Source.createwhile the later is sent to <a
+<p>Can describe either a download request or, for Type::MASH Assets, a JSON
+formatted <a href="Mash.html">Mash</a>. The former is sent to <a
+href="Source.html#method-c-create">MovieMasher::Source.create</a> while the
+later is sent to <a
 href="Mash.html#method-c-new">MovieMasher::Mash.new</a>.</p>
 </dd><dt>Returns
 <dd>
-<p>A <a href="Source.html">Source</a> object or, for Type::MASH Assets
-afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
+<p>A <a href="Source.html">Source</a> object or, for Type::MASH Assets after
+downloading, a <a href="Mash.html">Mash</a> object.</p>
 </dd></dl>
           
           
@@ -1597,14 +1400,14 @@ afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">source=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- source-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- source-3D-method -->
+      </div>
 
     
       <div id="method-i-type" class="method-detail ">
@@ -1630,14 +1433,14 @@ afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- type-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- type-method -->
+      </div>
 
     
       <div id="method-i-type-3D" class="method-detail ">
@@ -1672,14 +1475,14 @@ afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">type=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- type-3D-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- type-3D-method -->
+      </div>
 
     
       <div id="method-i-url" class="method-detail ">
@@ -1719,26 +1522,25 @@ afterdownloading, a <a href="Mash.html">Mash</a> object.</p>
   <span class="ruby-comment"># puts &quot;#{self.class.name}#url URL: #{u}&quot;</span>
   <span class="ruby-identifier">u</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- url-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- url-method -->
+      </div>
 
     
-    </section><!-- public-instance-method-details -->
+    </section>
   
-  </section><!-- 5Buntitled-5D -->
+  </section>
+</main>
 
-</div><!-- documentation -->
 
-
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

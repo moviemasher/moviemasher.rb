@@ -1,11 +1,4 @@
 
-gem 'rspec', '~> 3.2.0'
-gem 'rack-test', '~> 0.5.7'
-gem 'rmagick', github: 'gemhome/rmagick'
+gem 'rspec', '3.6.0'
+gem 'rmagick', '2.16.0'
 
-# for clientside_aws
-gem 'uuid', '~> 2.3.1'
-gem 'sinatra', '~> 1.4.6'
-gem 'redis', '~> 3.2.0'
-gem 'hiredis', '~> 0.4.5'
-gem 'rack-cors', '~> 0.2.9', require: 'rack/cors'

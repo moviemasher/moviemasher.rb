@@ -5,15 +5,12 @@ module MovieMasher
     def download(options)
       source = options[:source]
       cache_url_path = options[:path]
-      uri = URI options[:asset][:input_url]
+      uri = URI(options[:asset][:input_url])
       uri.port = source[:port] if source[:port]
       parameters = source[:parameters]
       if parameters && parameters.is_a?(Hash) && !parameters.empty?
-        scope = {}
-        scope[:job] = options[:job]
-        scope[options[:asset].class_symbol] = options[:asset]
         parameters = Marshal.load(Marshal.dump(parameters))
-        Evaluate.object parameters, scope
+        Evaluate.object(parameters, job: options[:job], input: options[:asset])
         uri.query = URI.encode_www_form parameters
       end
       if source[:user] && source[:pass]

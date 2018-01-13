@@ -139,9 +139,9 @@ module MovieMasher
         job_data = queue.receive_job
         next unless job_data
         found = true
-        __log_transcoder(:info) { "starting #{job_data[:id]}" }
+        __log_transcoder(:debug) { "starting #{job_data[:id]}" }
         process(job_data)
-        __log_transcoder(:info) { "finishing #{job_data[:id]}" }
+        __log_transcoder(:debug) { "finishing #{job_data[:id]}" }
         break
       end
       break if -1 == process_seconds
@@ -264,7 +264,7 @@ module MovieMasher
   end
   def self.__log(type, &proc)
     MovieMasher.__job.log_entry(type, &proc) if MovieMasher.__job
-    __log_transcoder(type, &proc) # if 'debug' == configuration[:verbose]
+    __log_transcoder(type, &proc)
   end
   def self.__log_exception(exception, is_warning = false)
     if exception
@@ -293,10 +293,10 @@ module MovieMasher
       else
         "for #{process_seconds} seconds"
       end
-    __log_transcoder(:info) { "process_queues #{how_long}" }
+    __log_transcoder(:debug) { "process_queues #{how_long}" }
   end
   def self.__log_transcoder(type, &proc)
-    puts proc.call
+    puts proc.call if 'debug' == configuration[:verbose]
     STDOUT.flush
     logger = __logger_instance
     if logger && logger.send("#{type.id2name}?".to_sym)

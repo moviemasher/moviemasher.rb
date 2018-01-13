@@ -79,7 +79,7 @@ module MovieMasher
       err ||= callbacks.find(&:error?)
       err ||= inputs.find(&:error?)
       err ||= outputs.find(&:error?)
-      found_destination = destination || outputs.any?(:destination)
+      found_destination = destination || outputs.any?(&:destination)
       err ||= 'no destinations specified' unless found_destination
       err ||= destination.error? if destination
       err ||= base_source.error? if base_source
@@ -235,7 +235,7 @@ module MovieMasher
         path = "/#{output[:name]}#{output[:sequence]}"
       end
       path = "#{path}.#{output[:extension]}"
-      path = Evaluate.value(path, __scope(output))
+      path = Evaluate.value(path, job: self, output: output)
       "#{output_path(output, true)}#{path}"
     end
     def video_graphs
@@ -285,7 +285,7 @@ module MovieMasher
       err = nil
       begin
         destination_path = callback.full_path
-        destination_path = Evaluate.value(destination_path, __scope(callback))
+        destination_path = Evaluate.value(destination_path, job: self, callback: callback)
         case callback[:type]
         when Type::FILE
           FileHelper.safe_path(File.dirname(destination_path))
@@ -339,8 +339,9 @@ module MovieMasher
         end
       end
       key = Path.concat(output_dest[:directory], output_dest[:path])
-      key = Path.concat key, file_name
-      Evaluate.value key, __scope(output)
+      key = Path.concat(key, file_name)
+      key = Evaluate.value(key, job: self, output: output)
+      key
     end
     def __execute_and_log(options)
       # retrieve command before execution, so we can log before problems
@@ -395,7 +396,7 @@ module MovieMasher
       data = nil unless data.is_a?(Hash) || data.is_a?(Array)
       if data
         data = Marshal.load(Marshal.dump(data))
-        Evaluate.object(data, __scope(callback))
+        Evaluate.object(data, job: self, callback: callback)
       end
       data
     end
@@ -527,7 +528,7 @@ module MovieMasher
       outputs.each do |output|
         next unless output[:rendered_file]
         begin
-          __transfer_job_output(output, output[:rendered_file])
+          __transfer_job_output(output)
         rescue Error::Job => e
           __log_exception(e, !output[:required])
           raise if output[:required]
@@ -542,31 +543,31 @@ module MovieMasher
         "callback ERROR #{result.code} response: #{result.body}"
       end
     end
-    def __scope(object = nil)
-      hash = {}
-      hash[:job] = self
-      hash[object.class_symbol] = object if object && object.is_a?(Hashable)
-      hash
-    end
-    def __transfer_job_output(output, file)
+    def __transfer_job_output(output)
+      rendered_output = output[:rendered_file]
       output_dest = output[:destination] || destination
-      raise(Error::JobInput, 'no output destination') unless output_dest
-      if File.exist?(file)
-        if output_dest[:archive] || output[:archive]
+      raise(Error::JobOutput, 'no destination defined') unless output_dest
+      if File.exist?(rendered_output)
+        archiving = output_dest[:archive] || output[:archive]
+        if archiving
+          # rendered_output = "#{rendered_output}.#{archiving}"
+          # change extension and mime type too?
           raise(Error::Todo, 'support for archive option coming...')
         end
         options = {
-          upload: file, output: output, destination: output_dest,
+          job: self, output: output,
           path: __evaluated_transfer_path(output_dest, output)
         }
-        output_dest.directory_files(file).each do |up_file|
+        output_dest.directory_files(rendered_output).each do |up_file|
           output_dest.upload(options.merge(file: up_file))
           progress[:uploaded] += 1
           __callback(:progress)
         end
       else
-        log_entry(:warn) { "file was not rendered #{file}" }
-        log_entry(:error) { 'output not rendered' } if output[:required]
+        log_entry(:warn) { "output not rendered #{rendered_output}" }
+        if output[:required]
+          log_entry(:error) { "output not rendered #{rendered_output}" }
+        end
       end
     end
     def __update_sizing

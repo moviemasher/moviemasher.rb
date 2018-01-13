@@ -37,7 +37,7 @@ module MovieMasher
       evaluated
     end
     def self.object(data, scope = nil)
-      scope = {} unless scope
+      scope ||= {}
       keys = (data.is_a?(Array) ? (0..(data.length - 1)) : data.keys)
       keys.each do |k|
         v = data[k]
@@ -50,7 +50,8 @@ module MovieMasher
         end
       end
     end
-    def self.value(v, scope)
+    def self.value(v, scope = nil)
+      scope ||= {}
       split_value = __split(v)
       unless split_value.empty? # otherwise there are no curly braces
         v = ''

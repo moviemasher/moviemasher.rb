@@ -5,4 +5,12 @@ render_directory: tmp/spec/temporary
 render_save: true
 log_directory: tmp/spec/log
 verbose: info
-s3_read_at_once: true
+queue_name: rspec
+aws_access_key_id: '...'
+aws_secret_access_key: '...'
+s3_endpoint: 'http://localstack:4572'
+s3_force_path_style: true
+sqs_endpoint: 'http://localstack:4576'
+process_seconds: -1
+queue_wait_seconds: 0
+queue_directory: tmp/spec/queue

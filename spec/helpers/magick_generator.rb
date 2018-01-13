@@ -55,7 +55,7 @@ module MagickGenerator
   PURPLE = '#FF00FF'.freeze
   AQUA = '#00FFFF'.freeze
 
-  DIRECTORY = "#{__dir__}/../../tmp/spec/magick".freeze
+  DIRECTORY = File.expand_path("#{__dir__}/../../tmp/spec/magick").freeze
 
   def self.canvas(options = {})
     options[:width] = LG16X9W unless options[:width]

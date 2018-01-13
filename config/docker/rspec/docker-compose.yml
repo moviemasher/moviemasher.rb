@@ -2,6 +2,7 @@ version: '2'
 services:
   rspec:
     image: moviemasher_rspec
+    container_name: moviemasher_rspec
     build:
       context: ../../../
       dockerfile: ./config/docker/rspec/Dockerfile-rspec
@@ -15,5 +16,25 @@ services:
       - ../../../tmp:/mnt/moviemasher.rb/tmp
       - ../../../config:/mnt/moviemasher.rb/config
       - ../../../../angular-moviemasher:/mnt/angular-moviemasher
-      - ../../../../clientside_aws:/mnt/clientside_aws
-      - ../../../../moviemasher.js:/mnt/angular-moviemasher/bower_components/moviemasher.js
+      - ../../../../moviemasher.js:/mnt/angular-moviemasher/node_modules/@moviemasher/moviemasher.js
+    links:
+      - localstack
+      - http
+    environment:
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: '...'
+      AWS_SECRET_ACCESS_KEY: '...'
+  http:
+    image: php:apache
+    container_name: moviemasher_http
+    volumes:
+      - ./http/:/var/www/html
+    ports:
+      - "8888:80"
+  localstack:
+    image: localstack/localstack
+    container_name: moviemasher_localstack
+    environment:
+      SERVICES: s3,sqs
+      HOSTNAME_EXTERNAL: localstack
+      DEFAULT_REGION: us-east-1

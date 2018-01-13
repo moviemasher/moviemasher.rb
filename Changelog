@@ -2,6 +2,15 @@
 version <future>:
 - freeze frame
 
+version 4.0.22:
+- spec tests for all services
+- use localstack instead of clientside_aws in tests
+- support for FFMpeg 3.4.1
+- update Ruby to version 2.2 and gem dependencies
+- refactored service file hierarchy
+- better parsing of configuration for service options
+- added disable_local and aws_region configuration options
+
 version 4.0.21:
 - fixed upload response code checks
 - support for FFMpeg 3.2.4

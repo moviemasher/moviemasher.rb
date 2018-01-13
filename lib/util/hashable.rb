@@ -95,10 +95,6 @@ module MovieMasher
     end
     attr_accessor :hash
     attr_accessor :identifier
-    # Returns Symbol of lowercased class name without namespace qualifiers.
-    def class_symbol
-      self.class.name.downcase.split('::').last.to_sym
-    end
     # Set the actual Hash when creating.
     def initialize(hash = nil)
       unless hash.is_a?(Hash)

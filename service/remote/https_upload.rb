@@ -1,5 +1,5 @@
 
-require_relative 'http'
+require_relative 'http_upload'
 
 module MovieMasher
   # uploads via http securely

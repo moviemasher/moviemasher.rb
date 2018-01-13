@@ -39,6 +39,12 @@ module MovieMasher
       output[:av] = __av_type_for_output(output)
       output_type = (Type::SEQUENCE == output[:type] ? '' : output[:type])
       Hashable._init_key output, :name, output_type
+      if output[:name].include?('.') && !output[:extension]
+        ext = File.extname(output[:name])
+        output[:name][ext] = ''
+        ext['.'] = ''
+        output[:extension] = ext
+      end
       case output[:type]
       when Type::VIDEO
         Hashable._init_key output, :audio_bitrate, 224
@@ -203,7 +209,7 @@ module MovieMasher
       _set __method__, value
     end
     def file_name
-      fn = Path.strip_slashes name
+      fn = Path.strip_slashes(name)
       fn += '.' + extension if extension
       fn
     end

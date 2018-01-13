@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
+ruby '~> 2.2.8'
 
-ruby '~> 2.1.8'
-
-gem 'aws-sdk', '= 1.66.0'
+gem 'aws-sdk', '~> 2.10.26'
 gem 'builder', '~> 3.1.4'
-gem 'mime-types', '~> 2.3'
+gem 'dentaku', '~> 3.0.0'
+gem 'json', '~> 1.8.6'
+gem 'mime-types', '~> 3.1'
 gem 'multipart-post', '~> 2.0.0'
-gem 'json', '~> 1.4'
-gem 'dentaku', '~> 2.0.8'
-gem 'require_all', '= 1.3.2'
+gem 'require_all', '~> 1.4.0'
+
+

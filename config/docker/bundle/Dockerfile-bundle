@@ -1,5 +1,5 @@
 
-FROM ruby:2.1
+FROM ruby:2.2
 MAINTAINER Movie Masher <support@moviemasher.com>
 
 # # # # # # # # # # # # # # # #

@@ -1,5 +1,5 @@
 
-require_relative 'http'
+require_relative 'http_download'
 
 module MovieMasher
   # downloads assets via http securely

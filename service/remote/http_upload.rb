@@ -14,18 +14,15 @@ module MovieMasher
       uri.port = output_destination[:port].to_i if output_destination[:port]
       parameters = output_destination[:parameters]
       if parameters && parameters.is_a?(Hash) && !parameters.empty?
-        scope = {}
-        scope[:job] = options[:job]
-        scope[output.class_symbol] = output
         parameters = Marshal.load(Marshal.dump(parameters))
-        Evaluate.object parameters, scope
+        Evaluate.object(parameters, job: options[:job], output: output)
         uri.query = URI.encode_www_form parameters
       end
-      file_name = File.basename file
+      file_name = File.basename(file)
       io = File.open(file)
       raise(Error::Object, "could not open file #{file}") unless io
       upload_io = UploadIO.new(io, output_content_type, file_name)
-      req = Net::HTTP::Post::Multipart.new(uri, key: path, file: upload_io)
+      req = Net::HTTP::Post::Multipart.new(uri, key: output.file_name, file: upload_io)
       unless req
         raise(Error::JobUpload, 'could not construct multipart POST request')
       end

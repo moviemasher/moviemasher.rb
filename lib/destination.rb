@@ -27,19 +27,16 @@ module MovieMasher
       end
     end
     def upload(options)
-      transfer_service = Service.uploader(type)
-      unless transfer_service
-        raise(Error::Configuration, "no upload service #{type}")
-      end
       options[:destination] = self
-      transfer_service.upload(options)
+      __service.upload(options)
     end
     def directory_files(file)
-      transfer_service = Service.uploader(type)
-      unless transfer_service
-        raise(Error::Configuration, "no upload service #{type}")
-      end
-      transfer_service.directory_files(file)
+      __service.directory_files(file)
+    end
+    def __service
+      service = Service.uploader(type)
+      raise(Error::Configuration, "no #{type} upload service") unless service
+      service
     end
   end
 end

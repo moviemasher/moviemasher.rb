@@ -36,7 +36,7 @@ namespace :moviemasher do
     dir = MovieMasher.configuration[:render_directory]
     stop_file = MovieMasher::Path.concat(dir, 'disable_process_queues.txt')
     if File.exist?(stop_file)
-      puts "#{Time.now} moviemasher:process_queues aborted no stop file found"
+      puts "#{Time.now} moviemasher:process_queues aborted - stop file found"
     else
       begin
         File.open(stop_file, 'w') {}

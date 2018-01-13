@@ -3,24 +3,35 @@
 *Ruby library for mashing up video, images and audio utilizing FFmpeg and Ecasound*
 # moviemasher.rb
 
-Use moviemasher.rb to encode mashups of video, audio, and images together with titles and other visual effects. Each transcoding `job` specifies multiple media `inputs` to be encoded together into one or more `outputs`, as well as metadata like where to find source assets and where to put the final rendering.
+Use moviemasher.rb to encode mashups of video, audio, and images together with titles and other visual effects.
 
-- **join** files together sequentially with trimming and transitions
+- **join** files together sequentially with trimming, cropping, and transitions
 - **mix** audio tracks together with variable fading and looping
 - **composite** visual tracks together with transformations and chromakey
 - **add** titling with your own fonts overtop other elements translucently
 - **transfer** media files to and from remote hosts using authentication
 - **specify** callbacks that alert your system of processing milestones
 
-### Overview: FFMpeg + Mash = Transcoder
+### Overview
 The project aims to simplify common audio/video editing operations by turning your job into a series of shell commands, and then overseeing their execution. As part of job processing, media inputs can be downloaded from remote hosts and rendered outputs can be uploaded as well. Using the same request mechanisms, external systems can be alerted by *callbacks* triggered when a job is started, during its processing and/or when it's completed.
 
-- **System Documentation:** [MovieMasher.com](http://moviemasher.com/docs/)
+- **Documentation:** generated with RDoc from source [(HTML)](https://rawgit.com/moviemasher/moviemasher.rb/master/doc/index.html)
 - **Docker Image:** `moviemasher/moviemasher.rb` [(Dockerfile)](Dockerfile)
 
 In addition to the raw media assets (video, audio and images), jobs can contain *mash* inputs that describe more complex compositing, titling and other effects. The related [**moviemasher.js**](https://github.com/moviemasher/moviemasher.js) project can be used to generate and display JSON formatted mash descriptions within a web browser, and [**angular-moviemasher**](https://github.com/moviemasher/angular-moviemasher) can be used to package these into job descriptions.
 
 Jobs are provided to the system for processing in different ways, depending on how it's been configured and deployed. At the lowest level, the [MovieMasher.process](https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process) method is sent a job as a hash, a JSON/YAML formatted string or a local path to one. The [MovieMasher.process_queues](https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues) method calls it with any jobs it finds while scanning a preconfigured watch folder or queue. This scanning can be done for a certain number of seconds, until no jobs are found, just once or forever. There are rake tasks for each of these methods, to simplify calling from shell scripts, cron jobs and other tasks.
+
+### Job Syntax
+Each transcoding `job` specifies multiple media `inputs` to be encoded together into one or more `outputs`, as well as metadata like `destination` which defines where to put the final rendered file(s).
+##### Scale down local image
+```json
+{
+  "inputs": [{ "source": "/path/to/local.png", "type": "image" }],
+  "outputs": [{ "type": "image", "name": "smaller.png", "dimensions": "1536x864" }],
+  "destination": { "type": "file", "path": "/path/to", "method": "move" }
+}
+```
 
 ### AWS Integration
 The system *optionally* supports [Amazon Web Services](http://aws.amazon.com) for media storage and job queueing, through the ruby [aws-sdk](https://github.com/aws/aws-sdk-ruby) gem. The following mechanisms are available through configuration or job options:
@@ -33,29 +44,35 @@ The system *optionally* supports [Amazon Web Services](http://aws.amazon.com) fo
 Additionally, the [Movie Masher AMI](https://aws.amazon.com/marketplace/pp/B00QKW0P2A) is launchable with OneClick in Marketplace as a deployment of all related projects and supporting applications. It includes an upstart task that executes `rake moviemasher:init` to merge any User Data supplied in JSON format into the configuration plus a cron job that continually executes `rake moviemasher:process_queues`, so it's possible to run in a headless mode polling an SQS queue for jobs. Without User Data, the instance will start up Apache and serve the angular-moviemasher project for demonstration - the instance id acts as a shared password.
 
 ### Docker Usage
-Docker's  [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher/moviemasher.rb/) image is automatically built from the official [`ruby`](https://registry.hub.docker.com/_/ruby/) image, adding builds of [FFmpeg](http://www.ffmpeg.org), [Ecasound](http://eca.cx/ecasound/) and supporting audio/visual applications and libraries. It can be used to process jobs supplied directly on the command line, or to grab them from a directory/queue - either approach supports running in interactive or daemon mode. The Dockerfile contains a **VOLUME** instruction for each directory it works with, including **queue_directory** so that job files residing on the host can be easily processed.
+Docker's  [`moviemasher/moviemasher.rb`](https://registry.hub.docker.com/u/moviemasher/moviemasher.rb/) image is based off the official [`ruby`](https://registry.hub.docker.com/_/ruby/) image, adding builds of [FFmpeg](http://www.ffmpeg.org), [Ecasound](http://eca.cx/ecasound/) and supporting audio/visual libraries. It can be used to process jobs supplied directly on the command line, or to grab them from a directory/queue - either approach supports running in interractive or daemon mode. The Dockerfile contains a **VOLUME** instruction for each directory it works with, including **queue_directory** so that job files residing on the host can be easily processed.
 
-To display documentation of configuration options:
-- `docker run -it --rm moviemasher/moviemasher.rb moviemasher --help`
+- To display documentation of configuration options:
 
-To process jobs formatted in JSON/YAML or paths to them directly from the command line:
-- `docker run -it --rm moviemasher/moviemasher.rb process "JOB" "JOB"`
+    `docker run -it --rm moviemasher/moviemasher.rb moviemasher --help`
 
-To process all JSON or YAML formatted jobs in directory 'my_jobs' residing on the host:
+- To process jobs directly from the command line:
 
-- `docker run -it --rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`
+	`docker run -it --rm moviemasher/moviemasher.rb process "JOB" "JOB"`
 
-To continually process jobs from container's queue volume:
+  JOB can be a JSON or YAML formatted string, or a path to one in the container.
 
-- `docker run -d -t --name=moviemasher moviemasher/moviemasher.rb process_loop`
+- To process all JSON or YAML formatted jobs in directory 'my_jobs' residing on the host:
 
-Note the `t` switch - it's required for Ecasound to function properly. You'll need to subsequently execute `docker stop moviemasher` and `docker rm moviemasher` to stop processing and remove the container created.
+	`docker run -it --rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`
 
-To process a single job from an SQS queue:
+- To continually process jobs from container's queue volume:
 
-- `docker run -it --rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`
+  	`docker run -d -t --name=moviemasher moviemasher/moviemasher.rb process_loop`
 
-URL points to an existing SQS Queue that provides read/write access to the owner of the access key with ID and SECRET. Messages can be in JSON or YAML format. This example demonstrates overriding the configuration with command line arguments - all commands support this. The **MOVIEMASHER_CONFIG** environmental variable can also be set to a configuration file residing on the container in JSON/YAML format, though arguments take precedence.
+  Note the `t` switch - it's required for Ecasound to function properly. You'll need to subsequently execute `docker stop moviemasher` and `docker rm moviemasher` to stop processing and remove the container created.
+
+- To process a single job from an SQS queue:
+
+	`docker run -it --rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`
+
+  URL points to an existing SQS Queue that provides read/write access to the owner of the access key with ID and SECRET. Messages can be in JSON or YAML format.
+
+The last example demonstrates overriding the configuration with command line arguments - all commands support this. The **MOVIEMASHER_CONFIG** environmental variable can also be set to a configuration file residing on the container in JSON/YAML format, though arguments take precedence.
 
 When processing jobs in a directory or queue, the **process_seconds** configuration option ultimately controls how long polling continues and therefore how long the container runs. The following values are supported:
 
@@ -91,7 +108,7 @@ Transcoding audio and video is extremely processor intensive, so while installat
 1. Install ruby and bundler gem
 1. To install required gems `cd` to project directory and execute:
 
-  `bundle install`
+   `bundle install`
 
 6. Edit config/config.yml configuration file to match paths on system and configure logging/debugging options
 
@@ -110,16 +127,15 @@ If any problems arise while utilizing this repository, a [GitHub Issue Ticket](h
 Please join in the shareable economy by gifting your efforts towards improving this project in any way you feel inclined. Pull requests for fixes, features and refactorings are always appreciated, as are documentation updates. Creative help with graphics, video and the web site is also needed. Please contact through [MovieMasher.com](https://moviemasher.com) to discuss your ideas.
 
 #### Developer Setup
-Docker is used extensively to develop this project. Additionally, the spec tests rely on the other two Movie Masher projects and the clientside_aws project which should all be pulled into the same directory that contains this repository:
+Docker is used extensively to develop this project. Additionally, the spec tests rely on the other two Movie Masher projects which should both be cloned into the same directory that contains this repository:
 
 - [moviemasher.js](https://github.com/moviemasher/moviemasher.js)
 - [angular-moviemasher](https://github.com/moviemasher/angular-moviemasher)
-- [clientside_aws](https://github.com/perrystreetsoftware/clientside_aws)
 
 
 To run spec tests utilizing options from `.rspec` file:
 
-- `docker-compose -f config/docker/test/test.yml run --rm rspec`
+- `docker-compose -f config/docker/rspec/docker-compose.yml run --rm rspec`
 
 All files generated by tests appear in `tmp/spec` sub directories. Each job has its own log file in `tmp/spec/temporary`.
 
@@ -127,19 +143,18 @@ To run rubocop with options from
 `config/docker/rubocop/rubocop-rules.yml`
 file:
 
-- `docker-compose -f config/docker/rubocop/rubocop.yml run --rm rubocop`
+- `docker-compose -f config/docker/rubocop/docker-compose.yml run --rm rubocop`
 
 To rebuild Gemfile.lock from Gemfile:
-- `docker-compose -f config/docker/bundler/bundler.yml run --rm bundler`
+- `docker-compose -f config/docker/bundler/docker-compose.yml run --rm bundler`
 
-To have rdoc rebuild documentation in `docs` from source code:
+To have rdoc rebuild documentation in `doc` from source code:
 
 - `rdoc --visibility=public -o doc --main='Documentation.md' --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude='/spec' --exclude='/log' --exclude='/Gemfile' --exclude='/tmp' --exclude='/config' --exclude='/index.rb' --exclude='/doc' --exclude='/bin' --exclude='/Rakefile' --exclude='/Docker' --exclude='/README-short' --exclude='/LICENSE'`
 
 
 ##### Known issues in this version
-- local/sqs import/export has not been thoroughly tested
-- archiving of outputs not yet supported
+- archiving of outputs not yet supported (coming soon)
 - freeze frame not yet supported
 - audio still being done in Ecasound
 - audio spec tests not yet generating files from scratch
