@@ -31,7 +31,7 @@ module MovieMasher
       enc_options[:undef] = :replace
       enc_options[:replace] = '?'
       # enc_options[:universal_newline] = true
-      result.encode(Encoding::UTF_8, enc_options)
+      result.encode(Encoding::UTF_8, **enc_options)
     end
     def self.command(options)
       out_file = options[:file].to_s
@@ -76,7 +76,7 @@ module MovieMasher
             output_time = TimeRange.input_time(output, :offset)
             switches << switch(output_time, 'ss')
           end
-          switches << switch('1', 'updatefirst')
+#           switches << switch('1', 'updatefirst')
         when Type::SEQUENCE
           switches << switch(output[:quality], 'q:v')
           switches << switch(output[:video_rate], 'r:v')
@@ -170,7 +170,7 @@ module MovieMasher
         # audio graph now represents just one file
         if Type::WAVEFORM == output_type
           output[:commands] << {
-            app: 'wav2png', file: rend_path,
+            app: 'audiowaveform', file: rend_path,
             command: __waveform_switches(graph, output)
           }
         else
@@ -380,13 +380,18 @@ module MovieMasher
     def self.__waveform_switches(graph, output)
       switches = []
       dimensions = output[:dimensions].split 'x'
-      switches << switch(graph[:waved_file], '--input')
+      duration = graph[:duration]
+      pixels_per_second = (dimensions.first.to_f / graph[:duration]).to_i
+
+      puts "pixels_per_second: #{pixels_per_second}"
+      switches << switch(graph[:waved_file], '--input-filename')
       switches << switch(dimensions.first, '--width')
       switches << switch(dimensions.last, '--height')
-      switches << switch(output[:forecolor], '--linecolor')
-      switches << switch(output[:backcolor], '--backgroundcolor')
-      switches << switch('0', '--padding')
-      switches << switch('', '--output')
+      switches << switch(pixels_per_second, '--pixels-per-second')
+      switches << switch(output[:forecolor], '--waveform-color')
+      switches << switch(output[:backcolor], '--background-color')
+      switches << switch('', '--no-axis-labels')
+      switches << switch('', '--output-filename')
       switches.join
     end
   end

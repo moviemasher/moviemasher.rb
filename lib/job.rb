@@ -104,11 +104,11 @@ module MovieMasher
       path_job = __path_job
       FileHelper.safe_path path_job
       path_log = "#{path_job}/log.txt"
-      @hash[:log] = proc { File.read(path_log) }
       # write massaged job json to job directory
       path_job = Path.concat(path_job, 'job.json')
       File.open(path_job, 'w') { |f| f << @hash.to_json }
       # if we encountered a parsing error, log it
+      @hash[:log] = proc { File.read(path_log) }
       log_entry(:error) { @hash[:error] } if @hash[:error]
     end
     # Array - One or more Input objects.
