@@ -48,7 +48,10 @@ module MovieMasher
     end
 
     def __require_sdk
-      require 'aws-sdk' unless defined?(Aws)
+      return if defined?(Aws)
+
+      require 'aws-sdk-s3'
+      require 'aws-sdk-sqs'
     end
   end
 end

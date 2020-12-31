@@ -13,7 +13,7 @@ module MovieMasher
             when Type::AUDIO
               clip[:source] || clip[:audio]
             when Type::VIDEO
-              clip[:source] || clip[:audio] unless clip[:audio] == 0
+              clip[:source] || __nonzero_audio(clip)
             end
           if url
             has = !clip[:gain]
@@ -424,6 +424,13 @@ module MovieMasher
         else
           true
         end
+      end
+
+      def __nonzero_audio(clip)
+        audio = clip[:audio].to_s
+        return if audio == '0'
+
+        audio
       end
 
       def __ob_prop(sym, object)
