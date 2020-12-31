@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MovieMasher
   # Represents a single transcoding operation. Once #process is called all of
   # the job's #inputs are downloaded and combined together into one mashup,
@@ -24,44 +26,55 @@ module MovieMasher
   #     uploaded: 1
   #   }
   class Job < Hashable
-    def self.create(hash = nil)
-      (hash.is_a?(Job) ? hash : Job.new(hash))
+    class << self
+      def create(hash = nil)
+        (hash.is_a?(Job) ? hash : Job.new(hash))
+      end
+
+      def init_hash(job)
+        job[:progress] = Hash.new { 0 }
+        Hashable._init_key(job, :id, SecureRandom.uuid)
+        Hashable._init_key(job, :inputs, [])
+        Hashable._init_key(job, :outputs, [])
+        Hashable._init_key(job, :callbacks, [])
+        Hashable._init_key(job, :commands, []) # stores commands as executed
+        Hashable._init_key(job, :results, []) # stores results of commands
+        job
+      end
     end
-    def self.__init_hash(job)
-      job[:progress] = Hash.new { 0 }
-      Hashable._init_key(job, :id, SecureRandom.uuid)
-      Hashable._init_key(job, :inputs, [])
-      Hashable._init_key(job, :outputs, [])
-      Hashable._init_key(job, :callbacks, [])
-      Hashable._init_key(job, :commands, []) # stores commands as executed
-      Hashable._init_key(job, :results, []) # stores results of commands
-      job
-    end
+
     def audio_graphs
-      @cached_audio_graphs ||= Input.audio_graphs(inputs)
+      @audio_graphs ||= Input.audio_graphs(inputs)
     end
+
     def base_source
       _get(__method__)
     end
+
     # Transfer - Resolves relative paths within Input#source and Media#source
     #            String values.
     def base_source=(value)
       _set(__method__, value)
     end
+
     # Array - Zero or more Callback objects.
     def callbacks
       _get(__method__)
     end
+
     def destination
       _get(__method__)
     end
+
     # Destination - Shared by all Output objects that haven't one of their own.
     def destination=(value)
       _set(__method__, value)
     end
+
     def error
       _get(__method__)
     end
+
     # Problem encountered during #new or #process. If the source of the problem
     # is a command line application then lines from its output that include
     # common phrases will be included. Problems encountered during rendering of
@@ -71,36 +84,32 @@ module MovieMasher
     def error=(value)
       _set(__method__, value)
     end
+
     def error?
       preflight
       err = error
-      err ||= (inputs.empty? ? 'no inputs specified' : nil)
-      err ||= (outputs.empty? ? 'no outputs specified' : nil)
-      err ||= callbacks.find(&:error?)
-      err ||= inputs.find(&:error?)
-      err ||= outputs.find(&:error?)
-      found_destination = destination || outputs.any?(&:destination)
-      err ||= 'no destinations specified' unless found_destination
-      err ||= destination.error? if destination
-      err ||= base_source.error? if base_source
-      err ||= module_source.error? if module_source
+      err ||= __error_blank_io?
+      err ||= __error_io_or_callbacks?
+      err ||= __error_destination_or_sources?
       self.error = err
     end
+
     # String - user supplied identifier.
     # Default - Nil, or messageId if the Job originated from an SQS message.
     def id
       _get(__method__)
     end
+
     # Create a new Job object from a nested structure or a file path.
     #
     # hash_or_path - Hash or String expected to be a path to a JSON or YML file,
     # which will be parse to the Hash.
     def initialize(hash_or_path)
       @logger = nil
-      @cached_audio_graphs = nil
-      @cached_video_graphs = nil
+      @audio_graphs = nil
+      @video_graphs = nil
       super Hashable.resolved_hash(hash_or_path)
-      self.class.__init_hash(@hash)
+      self.class.init_hash(@hash)
       path_job = __path_job
       FileHelper.safe_path path_job
       path_log = "#{path_job}/log.txt"
@@ -111,45 +120,51 @@ module MovieMasher
       @hash[:log] = proc { File.read(path_log) }
       log_entry(:error) { @hash[:error] } if @hash[:error]
     end
+
     # Array - One or more Input objects.
     def inputs
       _get(__method__)
     end
+
     # String - Current content of the job's log file.
     def log
       proc = _get(__method__)
       proc.call
     end
+
     # Output to the job's log file. If *type* is :error then job will be halted
     # and its #error will be set to the result of *proc*.
     #
     # type - Symbol :debug, :info, :warn or :error.
     # proc - Proc returning a string representing log entry.
     def log_entry(type, &proc)
-      @hash[:error] = yield if :error == type
+      @hash[:error] = yield if type == :error
       logger_job = __logger
-      if logger_job && logger_job.send(:"#{type.id2name}?")
-        logger_job.send(type, &proc)
-      end
-      puts yield if 'debug' == MovieMasher.configuration[:verbose]
+      logger_job.send(type, &proc) if logger_job&.send("#{type}?".to_sym)
+      puts yield if MovieMasher.configuration[:verbose] == 'debug'
     end
+
     # Array - One or more Output objects.
     def outputs
       _get(__method__)
     end
+
     def module_source
       _get(__method__)
     end
+
     # Transfer - Resolves relative font paths within Media#source String values.
     # Default - #base_source
     def module_source=(value)
       _set(__method__, value)
     end
-    def output_path(output, no_trailing_slash = false)
+
+    def output_path(output, no_trailing_slash: false)
       path = Path.concat(__path_job, output.identifier)
       path = Path.add_slash_end(path) unless no_trailing_slash
       path
     end
+
     def outputs_desire
       desired = nil
       outputs.each do |output|
@@ -157,8 +172,9 @@ module MovieMasher
       end
       desired
     end
+
     def preflight
-      self.destination = Destination.create_if destination # must say self. here
+      self.destination = Destination.create_if destination
       self.base_source = Transfer.create_if base_source
       self.module_source = Transfer.create_if module_source
       inputs.map! do |input|
@@ -175,6 +191,7 @@ module MovieMasher
         Callback.create callback
       end
     end
+
     # Downloads assets for each Input, renders each Output and uploads to
     # #destination or Output#destination so long as #error is false.
     #
@@ -188,7 +205,7 @@ module MovieMasher
         __process_download unless error
         __process_render unless error
         __process_upload unless error
-      rescue => e
+      rescue StandardError => e
         rescued_exception = e
       end
       begin
@@ -197,18 +214,19 @@ module MovieMasher
           rescued_exception = __log_exception(rescued_exception)
           __callback(:error)
         end
-      rescue => e
+      rescue StandardError => e
         rescued_exception = e
       end
       begin
         __log_exception(rescued_exception)
         __callback(:complete)
-      rescue => e
+      rescue StandardError => e
         puts "CAUGHT #{e.is_a?(Error::Job)} #{e.message} #{e.backtrace}"
         # no point in logging after complete
       end
       !error
     end
+
     # Current status of processing. The following keys are available:
     #
     # :downloading - number of files referenced by inputs
@@ -229,6 +247,7 @@ module MovieMasher
     def progress
       _get(__method__)
     end
+
     def render_path(output)
       path = ''
       if Type::SEQUENCE == output[:type]
@@ -236,11 +255,15 @@ module MovieMasher
       end
       path = "#{path}.#{output[:extension]}"
       path = Evaluate.value(path, job: self, output: output)
-      "#{output_path(output, true)}#{path}"
+      "#{output_path(output, no_trailing_slash: true)}#{path}"
     end
+
     def video_graphs
-      @cached_video_graphs ||= Input.video_graphs(inputs, self)
+      @video_graphs ||= Input.video_graphs(inputs, self)
     end
+
+    private
+
     def __assure_sequence_complete(output)
       if Type::SEQUENCE == output[:type]
         output[:rendered_file] = File.dirname(output[:rendered_file])
@@ -249,43 +272,38 @@ module MovieMasher
         true
       end
     end
-    def __cache_asset(asset) # input or media
+
+    # input or media
+    def __cache_asset(asset)
       url_path = Asset.download_asset(asset, self)
       return unless url_path
+
       progress[:downloaded] += 1
       __callback(:progress)
     end
+
     def __callback(type)
       log_entry(:debug) { "__callback #{type.id2name}" }
       did_trigger = false
-      type_str = type.id2name
-      type_callbacks = @hash[:callbacks].select { |c| type_str == c[:trigger] }
-      type_callbacks.each do |callback|
-        dont_trigger = false
-        if :progress == type
-          called = callback[:called]
-          next if called && called + callback[:progress_seconds] > Time.now
-          callback[:called] = Time.now
-        else
-          dont_trigger = callback[:called]
-          callback[:called] = true unless dont_trigger
-        end
-        next if dont_trigger
+      __callbacks_of_type(type).each do |callback|
+        next unless __callback_update(callback)
+
         did_trigger = true
-        data = __hash_or_array(callback)
-        trigger_error = __callback_request(data, callback)
-        progress[:called] += 1 unless :progress == type
-        if trigger_error && callback[:required]
-          log_entry(:error) { trigger_error }
-        end
+        trigger_error = __callback_request(__hash_or_array(callback), callback)
+        progress[:called] += 1 unless type == :progress
+        next unless trigger_error && callback[:required]
+
+        log_entry(:error) { trigger_error }
       end
       did_trigger
     end
+
     def __callback_request(data, callback)
       err = nil
       begin
         destination_path = callback.full_path
-        destination_path = Evaluate.value(destination_path, job: self, callback: callback)
+        destination_path = Evaluate.value(destination_path, job: self,
+                                                            callback: callback)
         case callback[:type]
         when Type::FILE
           FileHelper.safe_path(File.dirname(destination_path))
@@ -322,13 +340,56 @@ module MovieMasher
         else
           err = "unsupported callback type #{callback[:type]}"
         end
-      rescue => e
+      rescue StandardError => e
         err = e.message
         puts "CAUGHT #{e.is_a?(Error::Job)} #{e.message} #{e.backtrace}"
       end
       log_entry(:warn) { err } if err
       err
     end
+
+    def __callback_update(callback)
+      trigger = true
+      if callback[:trigger] == :progress
+        called = callback[:called]
+        unless called && called + callback[:progress_seconds] > Time.now
+          callback[:called] = Time.now
+        end
+      else
+        trigger = !callback[:called]
+        callback[:called] = true if trigger
+      end
+      trigger
+    end
+
+    def __callbacks_of_type(type)
+      type_str = type.id2name
+      @hash[:callbacks].select { |c| type_str == c[:trigger] }
+    end
+
+    def __error_blank_io?
+      err = inputs.empty? ? 'no inputs specified' : nil
+      err ||= outputs.empty? ? 'no outputs specified' : nil
+      err
+    end
+
+    def __error_io_or_callbacks?
+      err = callbacks.find(&:error?)
+      err ||= inputs.find(&:error?)
+      err ||= outputs.find(&:error?)
+      err
+    end
+
+    def __error_destination_or_sources?
+      err = nil
+      found_destination = destination || outputs.any?(&:destination)
+      err ||= 'no destinations specified' unless found_destination
+      err ||= destination.error?
+      err ||= base_source.error? if base_source
+      err ||= module_source.error? if module_source
+      err
+    end
+
     def __evaluated_transfer_path(output_dest, output)
       file_name = output_dest.file_name
       if file_name.empty?
@@ -340,9 +401,9 @@ module MovieMasher
       end
       key = Path.concat(output_dest[:directory], output_dest[:path])
       key = Path.concat(key, file_name)
-      key = Evaluate.value(key, job: self, output: output)
-      key
+      Evaluate.value(key, job: self, output: output)
     end
+
     def __execute_and_log(options)
       # retrieve command before execution, so we can log before problems
       command = ShellHelper.command(options)
@@ -359,29 +420,27 @@ module MovieMasher
       end
       result
     end
+
     def __execute_output_command(output, cmd_hash)
-      out_path = cmd_hash[:file]
-      content = cmd_hash[:content]
+      out_path, content = cmd_hash.values_at(*%i[file content])
       FileHelper.safe_path(File.dirname(out_path))
       if content
         File.open(out_path, 'w') { |f| f << content }
       elsif !File.exist?(out_path)
-        cmd = cmd_hash[:command]
-        duration = cmd_hash[:duration]
-        precision = cmd_hash[:precision]
-        app = cmd_hash[:app]
+        keys = %i[command duration precision app]
+        cmd, duration, precision, app = cmd_hash.values_at(*keys)
         do_single_pass = !cmd_hash[:pass]
         unless do_single_pass
-          pl = Path.concat(__path_job, "pass-#{SecureRandom.uuid}") #
-          cmd_1 = "#{cmd} -pass 1 -passlogfile #{pl} -f #{output[:extension]}"
-          cmd_2 = "#{cmd} -pass 2 -passlogfile #{pl}"
+          pl = Path.concat(__path_job, "pass-#{SecureRandom.uuid}")
+          cmd1 = "#{cmd} -pass 1 -passlogfile #{pl} -f #{output[:extension]}"
+          cmd2 = "#{cmd} -pass 2 -passlogfile #{pl}"
           begin
-            __execute_and_log(app: app, command: cmd_1, file: '/dev/null')
+            __execute_and_log(app: app, command: cmd1, file: '/dev/null')
             __execute_and_log(
-              app: app, command: cmd_2, file: out_path,
+              app: app, command: cmd2, file: out_path,
               duration: duration, precision: precision
             )
-          rescue => e
+          rescue StandardError => e
             puts "CAUGHT #{e.is_a?(Error::Job)} #{e.message} #{e.backtrace}"
             log_entry(:debug) { e.message }
             log_entry(:warn) { 'two pass encoding failed, retrying in one' }
@@ -391,6 +450,7 @@ module MovieMasher
         __execute_and_log(cmd_hash) if do_single_pass
       end
     end
+
     def __hash_or_array(callback)
       data = callback[:data]
       data = nil unless data.is_a?(Hash) || data.is_a?(Array)
@@ -400,6 +460,7 @@ module MovieMasher
       end
       data
     end
+
     def __init_progress
       # clear existing progress, but not error (allows callback testing)
       self[:progress] = Hash.new { 0 }
@@ -413,9 +474,9 @@ module MovieMasher
           progress[:downloading] += (mash ? mash.url_count(outputs_desire) : 1)
         end
       end
-      progress_callbacks = callbacks.select { |c| 'progress' == c[:trigger] }
-      progress[:calling] += progress_callbacks.length
+      progress[:calling] += __callbacks_of_type(:progress).length
     end
+
     def __input_dimensions
       dimensions = nil
       found_mash = false
@@ -431,6 +492,13 @@ module MovieMasher
       dimensions = '' if !dimensions && found_mash
       dimensions
     end
+
+    def __input_needs_caching?(input, desired)
+      return unless input[:input_url]
+
+      Type::MASH == input[:type] || AV.includes?(Asset.av_type(input), desired)
+    end
+
     def __logger
       unless @logger
         log_dir = __path_job
@@ -445,48 +513,51 @@ module MovieMasher
       end
       @logger
     end
-    def __log_exception(exception, is_warning = false)
+
+    def __log_exception(exception, is_warning: false)
       if exception
         unless exception.is_a?(Error::Job)
-          str = "#{exception.backtrace.join "\n"}\n#{exception.message}"
-          puts str # so it gets in cron log as well
+          # so it gets in cron log as well
+          puts "#{exception.backtrace.join "\n"}\n#{exception.message}"
         end
         log_entry(:debug) { exception.backtrace.join("\n") }
         log_entry(is_warning ? :warn : :error) { exception.message }
       end
       nil
     end
+
     def __output_commands(output)
       ShellHelper.set_output_commands(self, output) unless output[:commands]
       output[:commands]
     end
+
     def __path_job
       path = MovieMasher.configuration[:render_directory]
-      path = Path.concat(path, identifier)
-      Path.add_slash_end(path)
+      Path.add_slash_end(Path.concat(path, identifier))
     end
+
     def __process_download
       __callback(:initiate)
       desired = outputs_desire
       inputs.each do |input|
-        input_url = input[:input_url]
-        type = input[:type]
-        if input_url
-          if Type::MASH == type || AV.includes?(Asset.av_type(input), desired)
-            # we won't know if desired content types exist until cached & parsed
-            __cache_asset(input)
-            if Type::MASH == type
-              # read and parse mash json file
-              input[:mash] = JSON.parse(File.read(input[:cached_file]))
-              Mash.init_mash_input(input)
-              progress[:downloading] += input.mash.url_count(outputs_desire)
-            end
+        is_mash = Type::MASH == input[:type]
+        if __input_needs_caching?(input, desired)
+          # we won't know if desired content types exist until cached & parsed
+          __cache_asset(input)
+
+          if is_mash
+            # read and parse mash json file
+            input[:mash] = JSON.parse(File.read(input[:cached_file]))
+            Mash.init_mash_input(input)
+            progress[:downloading] += input.mash.url_count(outputs_desire)
           end
         end
-        if Type::MASH == type && AV.includes?(Asset.av_type(input), desired)
+
+        if is_mash && AV.includes?(Asset.av_type(input), desired)
           input[:mash][:media].each do |media|
             next unless Type::ASSETS.include?(media[:type])
             next unless AV.includes?(Asset.av_type(media), desired)
+
             __cache_asset(media)
           end
         end
@@ -495,69 +566,75 @@ module MovieMasher
       @hash[:duration] = TimeRange.update(inputs, outputs)
       __update_sizing
     end
+
     def __process_render
       outputs.each do |output|
-        begin
-          cmds = __output_commands(output)
-          raise(Error::JobInput, 'could not build commands') if cmds.empty?
-          # we only added one for each output, so add more minus one
-          progress[:rendering] += cmds.length - 1
-          if Type::SEQUENCE == output[:type]
-            # sequences have additional uploads, which we can now calculate
-            frames = output[:video_rate].to_f * output[:duration]
-            progress[:uploading] += frames.floor.to_i - 1
-          end
-          last_file = nil
-          cmds.each do |cmd_hash|
-            last_file = cmd_hash[:file]
-            __execute_output_command(output, cmd_hash)
-            progress[:rendered] += 1
-            __callback(:progress)
-          end
-          output[:rendered_file] = last_file
-          unless __assure_sequence_complete(output)
-            raise(Error::JobRender, 'no sequence files generated')
-          end
-        rescue Error::Job => e
-          __log_exception(e, !output[:required])
-          raise if output[:required]
+        cmds = __output_commands(output)
+        raise(Error::JobInput, 'could not build commands') if cmds.empty?
+
+        # we only added one for each output, so add more minus one
+        progress[:rendering] += cmds.length - 1
+        if Type::SEQUENCE == output[:type]
+          # sequences have additional uploads, which we can now calculate
+          frames = output[:video_rate].to_f * output[:duration]
+          progress[:uploading] += frames.floor.to_i - 1
         end
+        last_file = nil
+        cmds.each do |cmd_hash|
+          last_file = cmd_hash[:file]
+          __execute_output_command(output, cmd_hash)
+          progress[:rendered] += 1
+          __callback(:progress)
+        end
+        output[:rendered_file] = last_file
+        unless __assure_sequence_complete(output)
+          raise(Error::JobRender, 'no sequence files generated')
+        end
+      rescue Error::Job => e
+        __log_exception(e, is_warning: !output[:required])
+        raise if output[:required]
       end
     end
+
     def __process_upload
       outputs.each do |output|
         next unless output[:rendered_file]
+
         begin
           __transfer_job_output(output)
         rescue Error::Job => e
-          __log_exception(e, !output[:required])
+          __log_exception(e, is_warning: !output[:required])
           raise if output[:required]
         end
       end
     end
+
     def __result_error(result)
-      if '200' == result.code
+      if result.code == '200'
         log_entry(:debug) { "callback OK response: #{result.body}" }
-        nil
-      else
-        "callback ERROR #{result.code} response: #{result.body}"
+        return
       end
+
+      "callback ERROR #{result.code} response: #{result.body}"
     end
+
     def __transfer_job_output(output)
       rendered_output = output[:rendered_file]
       output_dest = output[:destination] || destination
       raise(Error::JobOutput, 'no destination defined') unless output_dest
+
       if File.exist?(rendered_output)
-        archiving = output_dest[:archive] || output[:archive]
-        if archiving
+        if output_dest[:archive] || output[:archive]
           # rendered_output = "#{rendered_output}.#{archiving}"
           # change extension and mime type too?
           raise(Error::Todo, 'support for archive option coming...')
         end
+
         options = {
           job: self, output: output,
           path: __evaluated_transfer_path(output_dest, output)
         }
+
         output_dest.directory_files(rendered_output).each do |up_file|
           output_dest.upload(options.merge(file: up_file))
           progress[:uploaded] += 1
@@ -570,13 +647,14 @@ module MovieMasher
         end
       end
     end
+
     def __update_sizing
       # make sure visual outputs have dimensions, using input's for default
       in_dimensions = nil
       outputs.each do |output|
-        next if AV::AUDIO_ONLY == output[:av]
-        next if output[:dimensions]
-        in_dimensions = __input_dimensions unless in_dimensions
+        next if AV::AUDIO_ONLY == output[:av] || output[:dimensions]
+
+        in_dimensions ||= __input_dimensions
         output[:dimensions] = in_dimensions
       end
     end

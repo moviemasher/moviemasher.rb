@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module MovieMasher
   # transfer methods
   module Method
-    SYMLINK = 'symlink'.freeze
-    MOVE = 'move'.freeze
-    COPY = 'copy'.freeze
-    GET = 'get'.freeze
-    POST = 'post'.freeze
-    PUT = 'put'.freeze
+    SYMLINK = 'symlink'
+    MOVE = 'move'
+    COPY = 'copy'
+    GET = 'get'
+    POST = 'post'
+    PUT = 'put'
   end
 end

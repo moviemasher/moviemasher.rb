@@ -1,7 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 RAILS_ROOT = File.expand_path("#{__dir__}/../../") unless defined?(RAILS_ROOT)
 DIR_HTTP_POSTS = File.expand_path("#{RAILS_ROOT}/config/docker/rspec/http/posts")
-DIR_LOCAL_POSTS = '/tmp/spec/service_output'
+DIR_LOCAL_POSTS = '/tmp/spec/service_output'.freeze
 
 require 'rspec'
 require_relative 'magick_generator'

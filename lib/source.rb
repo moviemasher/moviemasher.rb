@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # A Transfer object used for Input#source and Media#source, describing how to
@@ -21,11 +22,13 @@ module MovieMasher
     def self.create(hash = nil)
       (hash.is_a?(Source) ? hash : Source.new(hash))
     end
+
     def self.create_if(hash)
       (hash ? create(hash) : nil)
     end
+
     def self.init_hash(hash = nil)
-      hash = {} unless hash
+      hash ||= {}
       Hashable._init_key hash, :type, Type::FILE
       case hash[:type]
       when Type::FILE
@@ -35,6 +38,7 @@ module MovieMasher
       end
       Transfer.init_hash(hash)
     end
+
     def self.init_string(url)
       hash = {}
       uri = URI url
@@ -47,13 +51,16 @@ module MovieMasher
       hash[:parameters] = CGI.parse(uri.query) if uri.query
       hash
     end
+
     def extension
       _get __method__
     end
+
     # String - Appended to file path after #name, with period inserted between.
     def extension=(value)
       _set __method__, value
     end
+
     def initialize(hash_or_string = nil)
       if hash_or_string.is_a?(String)
         hash_or_string = self.class.init_string(hash_or_string)
@@ -61,9 +68,11 @@ module MovieMasher
       self.class.init_hash hash_or_string
       super hash_or_string
     end
+
     def name
       _get __method__
     end
+
     # String - The full or basename of file appended to file path. If full,
     # #extension will be set and removed from value.
     def name=(value)

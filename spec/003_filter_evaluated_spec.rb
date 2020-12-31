@@ -1,23 +1,22 @@
-
 require_relative 'helpers/spec_helper'
 
 describe File.basename(__FILE__) do
   let(:filter) { MovieMasher::FilterEvaluated.new({ id: 'id' }, {}, {}) }
-  context '__scope_value' do
+  context 'scope_value' do
     it 'returns string value when sent invalid expression' do
       value = 'this expression cannot be evaluated'
       scope = {}
-      expect(filter.__scope_value(scope, value)).to eq value
+      expect(filter.scope_value(scope, value)).to eq value
     end
     it 'returns expression when variables undefined' do
       value = '2 + a * m - j'
       scope = {}
-      expect(filter.__scope_value(scope, value)).to eq value
+      expect(filter.scope_value(scope, value)).to eq value
     end
     it 'returns result when variables defined' do
       value = '2 + a * m - j'
       scope = { a: 3, m: '5.5', j: -2.5 }
-      expect(filter.__scope_value(scope, value)).to eq 21
+      expect(filter.scope_value(scope, value)).to eq 21
     end
     it 'returns proper nested array for nested non calls' do
       value = '(in_h-mm_max(mm_width, mm_height))-'\
@@ -26,20 +25,20 @@ describe File.basename(__FILE__) do
       scope[:mm_width] = '320'
       scope[:mm_height] = 240
       result = '(in_h-320)-((in_h-320)*mm_t)'
-      value = filter.__scope_value(scope, value)
+      value = filter.scope_value(scope, value)
       expect(value).to eq result
     end
     it 'returns proper nested array for nested non calls' do
       value = '(in_h-mm_max(512, 288))-((in_h-mm_max(512, 288))*(t/5.5))'
       scope = {}
       result = '(in_h-512)-((in_h-512)*(t/5.5))'
-      value = filter.__scope_value(scope, value)
+      value = filter.scope_value(scope, value)
       expect(value).to eq result
     end
     it 'returns proper evaluated result for nested calls' do
       value = '(in_h-mm_max(512, 288))-((in_h-mm_max(512, 288))*(t/5.5))'
       scope = { in_h: 1012, t: 11 }
-      value = filter.__scope_value(scope, value)
+      value = filter.scope_value(scope, value)
       expect(value).to eq(-500)
     end
   end

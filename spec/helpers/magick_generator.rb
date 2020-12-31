@@ -1,4 +1,3 @@
-
 require 'rmagick'
 
 module MagickGenerator
@@ -7,7 +6,7 @@ module MagickGenerator
   R3X2 = '3x2'.freeze
   R1X1 = '1x1'.freeze
   RATIOS = [R4X3, R16X9].freeze
-  SIZES = %w(XL LG MD SM XS).freeze
+  SIZES = %w[XL LG MD SM XS].freeze
 
   XL16X9W = 1536
   XL16X9H = 864
@@ -110,7 +109,7 @@ module MagickGenerator
     file_name[extension] = ''
     bits = file_name.split('-')
     extension = extension[1..-1]
-    is_image = %w(jpg png).include?(extension)
+    is_image = %w[jpg png].include?(extension)
     options = {
       size: 'sm',
       ratio: R16X9,

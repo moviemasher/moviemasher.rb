@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # 'uploads' within the local file system
@@ -25,6 +26,7 @@ module MovieMasher
       end
       output_destination[:file] = path # for spec tests to find file...
     end
+
     def directory_files(path)
       [path]
     end

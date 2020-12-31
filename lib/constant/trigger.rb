@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # callback types
   module Trigger
-    COMPLETE = 'complete'.freeze
-    ERROR = 'error'.freeze
-    INITIATE = 'initiate'.freeze
-    PROGRESS = 'progress'.freeze
+    COMPLETE = 'complete'
+    ERROR = 'error'
+    INITIATE = 'initiate'
+    PROGRESS = 'progress'
   end
 end

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '~> 2.7.1'
+ruby '~> 2.7'
 
 gem 'aws-sdk', '~> 2.10.26'
 gem 'builder', '~> 3.1.4'

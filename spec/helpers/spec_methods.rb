@@ -1,4 +1,3 @@
-
 def spec_callback_file(job)
   callback = job.callbacks.first
   (callback ? callback[:callback_file] : nil)
@@ -107,7 +106,7 @@ def spec_generate_rgb_video(options = nil)
   options[:green] ||= 2
   options[:blue] ||= 2
   job = spec_job
-  %w(red green blue).each do |c|
+  %w[red green blue].each do |c|
     source = MagickGenerator.image_file(
       back: MagickGenerator.const_get(c.upcase), width: SM16X9W, height: SM16X9H
     )
@@ -258,6 +257,7 @@ def spec_process_files(input_id, output = nil, destination = nil)
 end
 def spec_process_job(job, expect_error = nil)
   return nil unless job
+
   spec_magick(job)
   job = MovieMasher.process(job)
   if job[:error] && !expect_error

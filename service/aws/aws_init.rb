@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # initializes aws service
@@ -23,7 +24,7 @@ module MovieMasher
             launch_apache = true
           end
           result = result['moviemasher.rb'] unless result['moviemasher.rb'].nil?
-        rescue => e
+        rescue StandardError => e
           puts "#{Time.now} #{me} couldn't parse user data as JSON #{e.message}"
         end
       end
@@ -36,6 +37,7 @@ module MovieMasher
       end
       result
     end
+
     def __lines_in_ini(result)
       lines = []
       File.foreach(PathIni) do |line|

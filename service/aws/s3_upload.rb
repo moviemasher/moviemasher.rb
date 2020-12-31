@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 require_relative 'aws_helper'
 
@@ -20,6 +21,7 @@ module MovieMasher
         s3_client.put_object(bucket_options)
       end
     end
+
     def __bucket_options(options)
       bucket_options = {}
       output_destination = options[:destination]
