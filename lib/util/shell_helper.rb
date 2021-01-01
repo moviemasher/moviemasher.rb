@@ -157,8 +157,9 @@ module MovieMasher
               graph = a_graphs[index]
               __raise_if_negative(graph[:start], "negative start time #{graph}")
               __raise_if_zero(graph[:length], "zero length #{graph}")
-              audio_dur = FloatUtil.max(audio_dur,
-                                        graph[:start] + graph[:length])
+              audio_dur = FloatUtil.max(
+                audio_dur, graph[:start] + graph[:length]
+              )
               cmd_hash = audio_command(graph[:cached_file])
               output[:commands] << cmd_hash
               graph[:waved_file] = cmd_hash[:file]

@@ -2,7 +2,6 @@ FROM ruby:2.7
 MAINTAINER Movie Masher <support@moviemasher.com>
 
 ENV HOME /root
-#  checkinstall \
 
 # install tools and helpers
 RUN apt-get update && apt-get install -y \
@@ -47,9 +46,8 @@ WORKDIR /data
 RUN \
   cd /data; \
   git clone https://github.com/uclouvain/openjpeg.git; \
-  cd /data/openjpeg; \
-  mkdir build; \
-  cd build; \
+  mkdir openjpeg/build; \
+  cd openjpeg/build; \
   cmake .. -DCMAKE_BUILD_TYPE=Release; \
   make; \
   make install; \
@@ -84,7 +82,6 @@ RUN \
     --enable-libspeex \
     --enable-libtheora \
     --enable-libvorbis \
-    --enable-libvpx \
     --enable-libx264 \
     --enable-libxvid \
     --enable-postproc \
@@ -104,9 +101,8 @@ RUN ldconfig
 RUN \
   cd /data; \
   git clone https://github.com/bbc/audiowaveform.git; \
-  cd audiowaveform; \
-  mkdir build; \
-  cd build; \
+  mkdir audiowaveform/build; \
+  cd audiowaveform/build; \
   cmake -D ENABLE_TESTS=0 ..; \
   make; \
   make install; \

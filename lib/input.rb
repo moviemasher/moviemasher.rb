@@ -32,7 +32,7 @@ module MovieMasher
   #
   class Input < Asset
     KEYS_AV_GRAPH = %i[
-      type offset length start cached_file duration gain loop
+      type offset length cached_file duration gain loop
     ].freeze
     class << self
       def audio_graphs(inputs)
@@ -42,7 +42,9 @@ module MovieMasher
 
           case input[:type]
           when Type::VIDEO, Type::AUDIO
-            graphs << input.slice(*KEYS_AV_GRAPH)
+            graph = input.slice(*KEYS_AV_GRAPH)
+            graph[:start] = input[:start]
+            graphs << graph
           when Type::MASH
             quantize = input[:mash][:quantize]
             audio_clips = Mash.clips_having_audio(input[:mash])
@@ -54,10 +56,12 @@ module MovieMasher
               next if clip[:no_audio] ||= media[:no_audio]
               raise('could not find cached file') unless media[:cached_file]
 
-              data = input.slice(*KEYS_AV_GRAPH)
-
-              data[:start] += clip[:frame].to_f / quantize
-              graphs << data
+              graph = clip.slice(*KEYS_AV_GRAPH)
+              graph[:start] = input[:start].to_f
+              graph[:start] += (clip[:frame].to_f / quantize)
+              graph[:cached_file] = media[:cached_file]
+              graph[:duration] = media[:duration]
+              graphs << graph
             end
           end
         end

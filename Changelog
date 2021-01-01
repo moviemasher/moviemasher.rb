@@ -2,6 +2,13 @@
 version <future>:
 - freeze frame
 
+version 4.0.24:
+- update FFMpeg to 4.2.4
+- update Ruby to 2.7
+- update many other dependencies
+- replace wav2png with audiowaveform
+- cleaned up code for Rubocop
+
 version 4.0.22:
 - spec tests for all services
 - use localstack instead of clientside_aws in tests
