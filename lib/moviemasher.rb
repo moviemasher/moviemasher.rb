@@ -167,7 +167,7 @@ module MovieMasher
       if File.exist?(hash_or_path)
         case File.extname(hash_or_path)
         when '.yml'
-          hash_or_path = YAML.safe_load(File.open(hash_or_path))
+          hash_or_path = YAML.load(File.open(hash_or_path))
         when '.json'
           hash_or_path = JSON.parse(File.read(hash_or_path))
         else

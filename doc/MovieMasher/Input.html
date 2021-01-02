@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -70,10 +72,6 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-c-__copy_raw_from_media">::__copy_raw_from_media</a>
-    
-    <li ><a href="#method-c-__mash_range_graph">::__mash_range_graph</a>
-    
     <li ><a href="#method-c-audio_graphs">::audio_graphs</a>
     
     <li ><a href="#method-c-create">::create</a>
@@ -123,55 +121,44 @@
 
   <section class="description">
     
-<p>An element in <a
-href="Job.html#method-i-inputs">MovieMasher::Job#inputs</a> representing
-media to be included in the mashup, which is eventually rendered into each
-<a href="Output.html">Output</a> format and uploaded. Inputs are generally
-combined together in the order they appear, though audio can be mixed by
-specifying <a href="Input.html#method-i-start">start</a> times.</p>
+<p>An element in <a href="Job.html#method-i-inputs"><code>Job#inputs</code></a> representing media to be included in the mashup, which is eventually rendered into each <a href="Output.html"><code>Output</code></a> format and uploaded. Inputs are generally combined together in the order they appear, though audio can be mixed by specifying <a href="Input.html#method-i-start"><code>start</code></a> times.</p>
 
-<p>There are four types of inputs: Type::AUDIO, Type::IMAGE and Type::VIDEO
-(the three raw types) plus Type::MASH, which allows a <a
-href="Mash.html">Mash</a> to be included like normal audio/video. Mashes
-can be generated in a web browser utilizing <a
-href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> or
-<a
-href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
-and can include raw elements composited on multiple tracks along with
-titling, effects and transformations over time.</p>
+<p>There are four types of inputs: Type::AUDIO, Type::IMAGE and Type::VIDEO (the three raw types) plus Type::MASH, which allows a <a href="Mash.html"><code>Mash</code></a> to be included like normal audio/video. Mashes can be generated in a web browser utilizing <a href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> or <a href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a> and can include raw elements composited on multiple tracks along with titling, effects and transformations over time.</p>
 
-<p>Relevant keys depend on <a href="Asset.html#method-i-type">type</a>, though
-all inputs have <a href="Asset.html#method-i-av">av</a>, <a
-href="Asset.html#method-i-source">source</a> and <a
-href="Input.html#method-i-length">length</a> keys. After downloading,
-relevant inputs are probed and will have their <a
-href="Asset.html#method-i-duration">duration</a> set if it&#39;s not
-already. The <a href="Asset.html#method-i-no_audio">no_audio</a> or <a
-href="Asset.html#method-i-no_video">no_video</a> keys might change to, as
-well as <a href="Asset.html#method-i-av">av</a> which relies on them (for
-instance, from AV::BOTH to AV::VIDEO_ONLY for a video that is found to
-contain no audio track).</p>
+<p>Relevant keys depend on <a href="Asset.html#method-i-type"><code>type</code></a>, though all inputs have <a href="Asset.html#method-i-av"><code>av</code></a>, <a href="Asset.html#method-i-source"><code>source</code></a> and <a href="Input.html#method-i-length"><code>length</code></a> keys. After downloading, relevant inputs are probed and will have their <a href="Asset.html#method-i-duration"><code>duration</code></a> set if it&#39;s not already. The <a href="Asset.html#method-i-no_audio"><code>no_audio</code></a> or <a href="Asset.html#method-i-no_video"><code>no_video</code></a> keys might change to, as well as <a href="Asset.html#method-i-av"><code>av</code></a> which relies on them (for instance, from AV::BOTH to AV::VIDEO_ONLY for a video that is found to contain no audio track).</p>
 
 <pre class="ruby"><span class="ruby-constant">Input</span>.<span class="ruby-identifier">create</span>(
-  <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>,
-  <span class="ruby-identifier">source</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;video.mp4&#39;</span>,
-  <span class="ruby-identifier">fill</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;crop&#39;</span>,        <span class="ruby-comment"># remove pixels outside output&#39;s aspect ratio</span>
-  <span class="ruby-identifier">gain</span><span class="ruby-operator">:</span> <span class="ruby-value">0.8</span>,           <span class="ruby-comment"># reduce volume by 20%</span>
-  <span class="ruby-identifier">offset</span><span class="ruby-operator">:</span> <span class="ruby-value">10</span>,          <span class="ruby-comment"># remove first ten seconds</span>
-  <span class="ruby-identifier">length</span><span class="ruby-operator">:</span> <span class="ruby-value">50</span>,          <span class="ruby-comment"># remove everything after the first minute</span>
+  <span class="ruby-value">type:</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>,
+  <span class="ruby-value">source:</span> <span class="ruby-string">&#39;video.mp4&#39;</span>,
+  <span class="ruby-value">fill:</span> <span class="ruby-string">&#39;crop&#39;</span>,        <span class="ruby-comment"># remove pixels outside output&#39;s aspect ratio</span>
+  <span class="ruby-value">gain:</span> <span class="ruby-value">0.8</span>,           <span class="ruby-comment"># reduce volume by 20%</span>
+  <span class="ruby-value">offset:</span> <span class="ruby-value">10</span>,          <span class="ruby-comment"># remove first ten seconds</span>
+  <span class="ruby-value">length:</span> <span class="ruby-value">50</span>,          <span class="ruby-comment"># remove everything after the first minute</span>
 )
 </pre>
 
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
     
 
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="KEYS_AV_GRAPH">KEYS_AV_GRAPH
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
     
 
     
@@ -181,105 +168,6 @@ contain no audio track).</p>
        <header>
          <h3>Public Class Methods</h3>
        </header>
-
-    
-      <div id="method-c-__copy_raw_from_media" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__copy_raw_from_media</span><span
-            class="method-args">(clip, mash)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__copy_raw_from_media-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 106</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__copy_raw_from_media</span>(<span class="ruby-identifier">clip</span>, <span class="ruby-identifier">mash</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">RAW_VISUALS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">clip</span>[<span class="ruby-value">:type</span>])
-    <span class="ruby-identifier">media</span> = <span class="ruby-constant">Mash</span>.<span class="ruby-identifier">media</span>(<span class="ruby-identifier">mash</span>, <span class="ruby-identifier">clip</span>[<span class="ruby-value">:id</span>])
-    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;couldn&#39;t find media #{clip[:id]}&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">media</span>
-    <span class="ruby-comment"># media props were copied to clip BEFORE file was cached, so do now</span>
-    <span class="ruby-identifier">clip</span>[<span class="ruby-value">:cached_file</span>] = <span class="ruby-identifier">media</span>[<span class="ruby-value">:cached_file</span>]
-    <span class="ruby-identifier">raise</span>(<span class="ruby-node">&quot;no cached_file #{media}&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">clip</span>[<span class="ruby-value">:cached_file</span>]
-    <span class="ruby-identifier">clip</span>[<span class="ruby-value">:no_video</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">media</span>[<span class="ruby-value">:no_video</span>]
-    <span class="ruby-identifier">clip</span>[<span class="ruby-value">:dimensions</span>] = <span class="ruby-identifier">media</span>[<span class="ruby-value">:dimensions</span>]
-    <span class="ruby-identifier">raise</span>(<span class="ruby-node">&quot;couldn&#39;t find dimensions #{media}&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">clip</span>[<span class="ruby-value">:dimensions</span>]
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__mash_range_graph" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__mash_range_graph</span><span
-            class="method-args">(input, mash, range, job)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__mash_range_graph-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 118</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__mash_range_graph</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">mash</span>, <span class="ruby-identifier">range</span>, <span class="ruby-identifier">job</span>)
-  <span class="ruby-identifier">graph</span> = <span class="ruby-constant">GraphMash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">input</span>, <span class="ruby-identifier">range</span>)
-  <span class="ruby-identifier">clips</span> = <span class="ruby-constant">Mash</span>.<span class="ruby-identifier">clips_in_range</span>(<span class="ruby-identifier">mash</span>, <span class="ruby-identifier">range</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>)
-  <span class="ruby-identifier">transition_layer</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">trans_clips</span> = []
-  <span class="ruby-identifier">clips</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">clip</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">__copy_raw_from_media</span>(<span class="ruby-identifier">clip</span>, <span class="ruby-identifier">mash</span>)
-    <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">TRANSITION</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">clip</span>[<span class="ruby-value">:type</span>]
-      <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;two transitions #{range}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">transition_layer</span>
-      <span class="ruby-identifier">transition_layer</span> = <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">add_new_layer</span>(<span class="ruby-identifier">clip</span>)
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">clip</span>[<span class="ruby-value">:track</span>].<span class="ruby-identifier">zero?</span>
-      <span class="ruby-identifier">trans_clips</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">clip</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">transition_layer</span>
-    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;too many in #{range}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-value">2</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">trans_clips</span>.<span class="ruby-identifier">length</span>
-    <span class="ruby-identifier">trans_clips</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">clip</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">transition_layer</span>.<span class="ruby-identifier">add_new_layer</span>(<span class="ruby-identifier">clip</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">clips</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">clip</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">transition_layer</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">clip</span>[<span class="ruby-value">:track</span>].<span class="ruby-identifier">zero?</span>
-    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VISUALS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">clip</span>[<span class="ruby-value">:type</span>])
-    <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">add_new_layer</span>(<span class="ruby-identifier">clip</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">graph</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
 
     
       <div id="method-c-audio_graphs" class="method-detail ">
@@ -301,23 +189,17 @@ contain no audio track).</p>
 
           
           <div class="method-source-code" id="audio_graphs-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 33</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">audio_graphs</span>(<span class="ruby-identifier">inputs</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">audio_graphs</span>(<span class="ruby-identifier">inputs</span>)
   <span class="ruby-identifier">graphs</span> = []
   <span class="ruby-identifier">inputs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">input</span><span class="ruby-operator">|</span>
     <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:no_audio</span>]
+
     <span class="ruby-keyword">case</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>]
     <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO</span>
-      <span class="ruby-identifier">data</span> = {}
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:type</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>]
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:offset</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:offset</span>]
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:length</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:length</span>]
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:start</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:start</span>]
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:cached_file</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:cached_file</span>]
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:duration</span>]
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:gain</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:gain</span>]
-      <span class="ruby-identifier">data</span>[<span class="ruby-value">:loop</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:loop</span>]
-      <span class="ruby-identifier">graphs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">data</span>
+      <span class="ruby-identifier">graph</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-operator">*</span><span class="ruby-constant">KEYS_AV_GRAPH</span>)
+      <span class="ruby-identifier">graph</span>[<span class="ruby-value">:start</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:start</span>]
+      <span class="ruby-identifier">graphs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">graph</span>
     <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">MASH</span>
       <span class="ruby-identifier">quantize</span> = <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:quantize</span>]
       <span class="ruby-identifier">audio_clips</span> = <span class="ruby-constant">Mash</span>.<span class="ruby-identifier">clips_having_audio</span>(<span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>])
@@ -328,17 +210,13 @@ contain no audio track).</p>
         <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">clip</span>[<span class="ruby-value">:no_audio</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">media</span>[<span class="ruby-value">:no_audio</span>]
         <span class="ruby-identifier">raise</span>(<span class="ruby-string">&#39;could not find cached file&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">media</span>[<span class="ruby-value">:cached_file</span>]
-        <span class="ruby-identifier">data</span> = {}
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:type</span>] = <span class="ruby-identifier">clip</span>[<span class="ruby-value">:type</span>]
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:offset</span>] = <span class="ruby-identifier">clip</span>[<span class="ruby-value">:offset</span>]
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:length</span>] = <span class="ruby-identifier">clip</span>[<span class="ruby-value">:length</span>]
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:start</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:start</span>].<span class="ruby-identifier">to_f</span>
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:start</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">clip</span>[<span class="ruby-value">:frame</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">quantize</span>.<span class="ruby-identifier">to_f</span>
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:cached_file</span>] = <span class="ruby-identifier">media</span>[<span class="ruby-value">:cached_file</span>]
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:gain</span>] = <span class="ruby-identifier">clip</span>[<span class="ruby-value">:gain</span>]
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-identifier">media</span>[<span class="ruby-value">:duration</span>]
-        <span class="ruby-identifier">data</span>[<span class="ruby-value">:loop</span>] = <span class="ruby-identifier">clip</span>[<span class="ruby-value">:loop</span>]
-        <span class="ruby-identifier">graphs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">data</span>
+
+        <span class="ruby-identifier">graph</span> = <span class="ruby-identifier">clip</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-operator">*</span><span class="ruby-constant">KEYS_AV_GRAPH</span>)
+        <span class="ruby-identifier">graph</span>[<span class="ruby-value">:start</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-value">:start</span>].<span class="ruby-identifier">to_f</span>
+        <span class="ruby-identifier">graph</span>[<span class="ruby-value">:start</span>] <span class="ruby-operator">+=</span> (<span class="ruby-identifier">clip</span>[<span class="ruby-value">:frame</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">quantize</span>)
+        <span class="ruby-identifier">graph</span>[<span class="ruby-value">:cached_file</span>] = <span class="ruby-identifier">media</span>[<span class="ruby-value">:cached_file</span>]
+        <span class="ruby-identifier">graph</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-identifier">media</span>[<span class="ruby-value">:duration</span>]
+        <span class="ruby-identifier">graphs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">graph</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
@@ -375,8 +253,8 @@ contain no audio track).</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 76</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Input</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Input</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -408,8 +286,8 @@ contain no audio track).</p>
 
           
           <div class="method-source-code" id="init_hash-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 79</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">input</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">init_hash</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-identifier">_init_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-value">:offset</span>)
   <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span>(<span class="ruby-identifier">input</span>, <span class="ruby-value">:start</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">NEG_ONE</span>)
   <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span>(<span class="ruby-identifier">input</span>, <span class="ruby-value">:duration</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
@@ -454,10 +332,10 @@ contain no audio track).</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 161</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 186</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-comment"># puts &quot;Input#initialize #{hash}&quot;</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-identifier">hash</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">hash</span>)
   <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -489,11 +367,12 @@ contain no audio track).</p>
 
           
           <div class="method-source-code" id="video_graphs-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 90</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">video_graphs</span>(<span class="ruby-identifier">inputs</span>, <span class="ruby-identifier">job</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 88</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_graphs</span>(<span class="ruby-identifier">inputs</span>, <span class="ruby-identifier">job</span>)
   <span class="ruby-identifier">graphs</span> = []
   <span class="ruby-identifier">inputs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">input</span><span class="ruby-operator">|</span>
     <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:no_video</span>]
+
     <span class="ruby-keyword">case</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>]
     <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">MASH</span>
       <span class="ruby-identifier">mash</span> = <span class="ruby-identifier">input</span>[<span class="ruby-value">:mash</span>]
@@ -537,12 +416,12 @@ contain no audio track).</p>
 
         <div class="method-description">
           
-          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html"><code>Transfer</code></a>
 <dd>
 <p>Resolves relative URLs.</p>
 </dd><dt>Default
 <dd>
-<p><a href="Job.html#method-i-base_source">MovieMasher::Job#base_source</a></p>
+<p><a href="Job.html#method-i-base_source"><code>Job#base_source</code></a></p>
 </dd><dt>Types
 <dd>
 <p>Just Type::MASH.</p>
@@ -552,8 +431,8 @@ contain no audio track).</p>
 
           
           <div class="method-source-code" id="base_source-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 148</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">base_source</span>
+            <pre><span class="ruby-comment"># File lib/input.rb, line 170</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">base_source</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -585,8 +464,8 @@ contain no audio track).</p>
 
           
           <div class="method-source-code" id="fill-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 151</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">fill</span>
+            <pre><span class="ruby-comment"># File lib/input.rb, line 174</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fill</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -614,8 +493,7 @@ contain no audio track).</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>How to size in relation to <a
-href="Output.html#method-i-dimensions">MovieMasher::Output#dimensions</a>.</p>
+<p>How to size in relation to <a href="Output.html#method-i-dimensions"><code>Output#dimensions</code></a>.</p>
 </dd><dt>Constant
 <dd>
 <p>Fill::CROP, Fill::NONE, Fill::SCALE or Fill::STRETCH.</p>
@@ -631,8 +509,8 @@ href="Output.html#method-i-dimensions">MovieMasher::Output#dimensions</a>.</p>
 
           
           <div class="method-source-code" id="fill-3D-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 158</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">fill=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 182</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fill=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -664,8 +542,8 @@ href="Output.html#method-i-dimensions">MovieMasher::Output#dimensions</a>.</p>
 
           
           <div class="method-source-code" id="length-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 166</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">length</span>
+            <pre><span class="ruby-comment"># File lib/input.rb, line 192</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">length</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -696,16 +574,15 @@ href="Output.html#method-i-dimensions">MovieMasher::Output#dimensions</a>.</p>
 <p>Seconds the input appears in the mashup.</p>
 </dd><dt>Default
 <dd>
-<p><a href="Asset.html#method-i-duration">duration</a> - <a
-href="Input.html#method-i-offset">offset</a></p>
+<p><a href="Asset.html#method-i-duration"><code>duration</code></a> - <a href="Input.html#method-i-offset"><code>offset</code></a></p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="length-3D-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 171</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">length=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 198</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">length=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -737,8 +614,8 @@ href="Input.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="mash-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 174</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">mash</span>
+            <pre><span class="ruby-comment"># File lib/input.rb, line 202</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">mash</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -764,7 +641,7 @@ href="Input.html#method-i-offset">offset</a></p>
 
         <div class="method-description">
           
-          <dl class="rdoc-list note-list"><dt><a href="Mash.html">Mash</a>
+          <dl class="rdoc-list note-list"><dt><a href="Mash.html"><code>Mash</code></a>
 <dd>
 <p>The mash to include in rendering.</p>
 </dd><dt>Default
@@ -779,8 +656,8 @@ href="Input.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="mash-3D-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 180</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">mash=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 209</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">mash=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -806,13 +683,12 @@ href="Input.html#method-i-offset">offset</a></p>
 
         <div class="method-description">
           
-          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html"><code>Transfer</code></a>
 <dd>
 <p>Resolves relative font URLs for modules.</p>
 </dd><dt>Default
 <dd>
-<p><a
-href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
+<p><a href="Job.html#method-i-module_source"><code>Job#module_source</code></a></p>
 </dd><dt>Types
 <dd>
 <p>Just Type::MASH.</p>
@@ -822,8 +698,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="module_source-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 186</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">module_source</span>
+            <pre><span class="ruby-comment"># File lib/input.rb, line 216</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">module_source</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -855,8 +731,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="offset-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 189</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">offset</span>
+            <pre><span class="ruby-comment"># File lib/input.rb, line 220</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">offset</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -897,8 +773,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="offset-3D-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 195</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">offset=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 227</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">offset=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -929,16 +805,16 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Asset.html#method-i-preflight">MovieMasher::Asset#preflight</a>
+              <a href="Asset.html#method-i-preflight"><code>MovieMasher::Asset#preflight</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="preflight-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 198</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight</span>(<span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 231</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">preflight</span>(<span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">super</span>
-  <span class="ruby-identifier">mash</span>.<span class="ruby-identifier">preflight</span> <span class="ruby-identifier">job</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">mash</span>
+  <span class="ruby-identifier">mash</span>&amp;.<span class="ruby-identifier">preflight</span> <span class="ruby-identifier">job</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -969,8 +845,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="start-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 202</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>
+            <pre><span class="ruby-comment"># File lib/input.rb, line 236</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">start</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1011,8 +887,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="start-3D-source">
-            <pre><span class="ruby-comment"># File lib/input.rb, line 208</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">start=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/input.rb, line 243</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">start=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1028,12 +904,13 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

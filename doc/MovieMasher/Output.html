@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -69,8 +71,6 @@
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
-    <li ><a href="#method-c-__av_type_for_output">::__av_type_for_output</a>
     
     <li ><a href="#method-c-create">::create</a>
     
@@ -179,32 +179,13 @@
 
   <section class="description">
     
-<p>Represents a single rendered version of the mashup, including all
-formatting parameters and quality settings.</p>
+<p>Represents a single rendered version of the mashup, including all formatting parameters and quality settings.</p>
 
-<p>There are five types of outputs: Type::AUDIO, Type::IMAGE and Type::VIDEO
-(the three raw types) as well as Type::SEQUENCE which outputs a folder full
-of image files from the video in the mashup, and Type::WAVEFORM which
-outputs an image file from the audio in the mashup.</p>
+<p>There are five types of outputs: Type::AUDIO, Type::IMAGE and Type::VIDEO (the three raw types) as well as Type::SEQUENCE which outputs a folder full of image files from the video in the mashup, and Type::WAVEFORM which outputs an image file from the audio in the mashup.</p>
 
-<p>If outputs need to be uploaded to different locations then each should have
-its own <a href="Output.html#method-i-destination">destination</a>,
-otherwise they will all share <a
-href="Job.html#method-i-destination">MovieMasher::Job#destination</a>.
-Typically <a href="Output.html#method-i-name">name</a> is set to define the
-filename that&#39;s ultimately uploaded, but this can be overridden by <a
-href="Output.html#method-i-destination">destination</a>. It&#39;s important
-to set <a href="Output.html#method-i-extension">extension</a> regardless
-though since this generally determines the container format used during
-rendering.</p>
+<p>If outputs need to be uploaded to different locations then each should have its own <a href="Output.html#method-i-destination"><code>destination</code></a>, otherwise they will all share <a href="Job.html#method-i-destination"><code>Job#destination</code></a>. Typically <a href="Output.html#method-i-name"><code>name</code></a> is set to define the filename that&#39;s ultimately uploaded, but this can be overridden by <a href="Output.html#method-i-destination"><code>destination</code></a>. It&#39;s important to set <a href="Output.html#method-i-extension"><code>extension</code></a> regardless though since this generally determines the container format used during rendering.</p>
 
-<p>By default outputs are optional, unless <a
-href="Output.html#method-i-required">required</a> is true. Optional outputs
-will not halt job processing if there&#39;s a problem rendering them.
-Instead of setting <a
-href="Job.html#method-i-error">MovieMasher::Job#error</a> the problem is
-added to <a href="Job.html#method-i-log">MovieMasher::Job#log</a> as a
-warning.</p>
+<p>By default outputs are optional, unless <a href="Output.html#method-i-required"><code>required</code></a> is true. Optional outputs will not halt job processing if there&#39;s a problem rendering them. Instead of setting <a href="Job.html#method-i-error"><code>Job#error</code></a> the problem is added to <a href="Job.html#method-i-log"><code>Job#log</code></a> as a warning.</p>
 
 <pre>Output.create {
   type: Type::VIDEO,                       # aka &#39;video&#39;
@@ -218,8 +199,6 @@ warning.</p>
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -235,46 +214,6 @@ warning.</p>
        <header>
          <h3>Public Class Methods</h3>
        </header>
-
-    
-      <div id="method-c-__av_type_for_output" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__av_type_for_output</span><span
-            class="method-args">(output)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__av_type_for_output-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 122</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__av_type_for_output</span>(<span class="ruby-identifier">output</span>)
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>]
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">WAVEFORM</span>
-    <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">AUDIO_ONLY</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">IMAGE</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">SEQUENCE</span>
-    <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO_ONLY</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>
-    <span class="ruby-constant">AV</span><span class="ruby-operator">::</span><span class="ruby-constant">BOTH</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
 
     
       <div id="method-c-create" class="method-detail ">
@@ -298,8 +237,8 @@ warning.</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 34</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Output</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Output</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -331,8 +270,8 @@ warning.</p>
 
           
           <div class="method-source-code" id="init_hash-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 37</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">output</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">init_hash</span>(<span class="ruby-identifier">output</span>)
   <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:type</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>
   <span class="ruby-identifier">output</span>[<span class="ruby-value">:av</span>] = <span class="ruby-identifier">__av_type_for_output</span>(<span class="ruby-identifier">output</span>)
   <span class="ruby-identifier">output_type</span> = (<span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">SEQUENCE</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">?</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>])
@@ -357,8 +296,8 @@ warning.</p>
     <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:gain</span>, <span class="ruby-constant">Gain</span><span class="ruby-operator">::</span><span class="ruby-constant">None</span>
     <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:precision</span>, <span class="ruby-value">1</span>
     <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:video_bitrate</span>, <span class="ruby-value">2_000</span>
-    <span class="ruby-identifier">lib_264</span> = <span class="ruby-string">&#39;libx264 -level 41 -movflags faststart&#39;</span>
-    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:video_codec</span>, <span class="ruby-identifier">lib_264</span>
+    <span class="ruby-identifier">lib264</span> = <span class="ruby-string">&#39;libx264 -level 41 -movflags faststart&#39;</span>
+    <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:video_codec</span>, <span class="ruby-identifier">lib264</span>
   <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">SEQUENCE</span>
     <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:backcolor</span>, <span class="ruby-string">&#39;black&#39;</span>
     <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">output</span>, <span class="ruby-value">:video_rate</span>, <span class="ruby-value">10</span>
@@ -426,9 +365,9 @@ warning.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 225</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">hash</span>)
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_hash</span> <span class="ruby-identifier">hash</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 251</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">hash</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">hash</span>)
   <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -460,13 +399,13 @@ warning.</p>
 
           
           <div class="method-source-code" id="sequence_complete-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 97</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">sequence_complete</span>(<span class="ruby-identifier">output</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sequence_complete</span>(<span class="ruby-identifier">output</span>)
   <span class="ruby-identifier">dir_path</span> = <span class="ruby-identifier">output</span>[<span class="ruby-value">:rendered_file</span>]
   <span class="ruby-identifier">ok</span> = <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">dir_path</span>)
     <span class="ruby-identifier">first_frame</span> = <span class="ruby-value">1</span>
-    <span class="ruby-identifier">frame_count</span> = (<span class="ruby-identifier">output</span>[<span class="ruby-value">:video_rate</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:duration</span>]).<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">frame_count</span> = (<span class="ruby-identifier">output</span>[<span class="ruby-value">:video_rate</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:duration</span>]).<span class="ruby-identifier">to_i</span>
     <span class="ruby-identifier">padding</span> = (<span class="ruby-identifier">first_frame</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">frame_count</span>).<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">length</span>
     <span class="ruby-identifier">last_file</span> = <span class="ruby-keyword">nil</span>
     <span class="ruby-identifier">frame_count</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">frame_number</span><span class="ruby-operator">|</span>
@@ -523,8 +462,8 @@ warning.</p>
 
           
           <div class="method-source-code" id="audio_bitrate-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 132</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_bitrate</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">audio_bitrate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -552,8 +491,7 @@ warning.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>FFmpeg -b:a switch, placed before <a
-href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
+<p>FFmpeg -b:a switch, placed before <a href="Output.html#method-i-audio_rate"><code>audio_rate</code></a>.</p>
 </dd><dt>Integer
 <dd>
 <p>The character &#39;k&#39; will be appended.</p>
@@ -569,8 +507,8 @@ href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
 
           
           <div class="method-source-code" id="audio_bitrate-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 139</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_bitrate=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 149</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">audio_bitrate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -602,8 +540,8 @@ href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
 
           
           <div class="method-source-code" id="audio_codec-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 142</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_codec</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 153</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">audio_codec</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -631,8 +569,7 @@ href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>FFmpeg -c:a switch, placed after <a
-href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
+<p>FFmpeg -c:a switch, placed after <a href="Output.html#method-i-audio_rate"><code>audio_rate</code></a>.</p>
 </dd><dt>Default
 <dd>
 <p>aac -strict experimental</p>
@@ -645,8 +582,8 @@ href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
 
           
           <div class="method-source-code" id="audio_codec-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 148</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_codec=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 160</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">audio_codec=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -678,8 +615,8 @@ href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
 
           
           <div class="method-source-code" id="audio_rate-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 151</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_rate</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">audio_rate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -707,9 +644,7 @@ href="Output.html#method-i-audio_rate">audio_rate</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>FFmpeg -r:a switch, placed between <a
-href="Output.html#method-i-audio_bitrate">audio_bitrate</a> &amp; <a
-href="Output.html#method-i-audio_codec">audio_codec</a>.</p>
+<p>FFmpeg -r:a switch, placed between <a href="Output.html#method-i-audio_bitrate"><code>audio_bitrate</code></a> &amp; <a href="Output.html#method-i-audio_codec"><code>audio_codec</code></a>.</p>
 </dd><dt>Default
 <dd>
 <p>44_100</p>
@@ -722,8 +657,8 @@ href="Output.html#method-i-audio_codec">audio_codec</a>.</p>
 
           
           <div class="method-source-code" id="audio_rate-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 157</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">audio_rate=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">audio_rate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -751,22 +686,21 @@ href="Output.html#method-i-audio_codec">audio_codec</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>The <a href="AV.html">AV</a> type.</p>
+<p>The <a href="AV.html"><code>AV</code></a> type.</p>
 </dd><dt>Constant
 <dd>
 <p>AV::AUDIO_ONLY, AV::VIDEO_ONLY or AV::BOTH.</p>
 </dd><dt>Default
 <dd>
-<p>Based on <a href="Output.html#method-i-type">type</a> and <a
-href="Output.html#method-i-no_audio">no_audio</a>.</p>
+<p>Based on <a href="Output.html#method-i-type"><code>type</code></a> and <a href="Output.html#method-i-no_audio"><code>no_audio</code></a>.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="av-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 163</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">av</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 178</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">av</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -798,8 +732,8 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
           
           <div class="method-source-code" id="backcolor-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 166</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">backcolor</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 182</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">backcolor</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -840,8 +774,8 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
           
           <div class="method-source-code" id="backcolor-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 172</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">backcolor=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 189</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">backcolor=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -873,8 +807,8 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
           
           <div class="method-source-code" id="destination-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 175</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">destination</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 193</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">destination</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -900,20 +834,20 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
         <div class="method-description">
           
-          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html"><code>Transfer</code></a>
 <dd>
 <p>Describes where to upload this output.</p>
 </dd><dt>Default
 <dd>
-<p><a href="Job.html#method-i-destination">MovieMasher::Job#destination</a></p>
+<p><a href="Job.html#method-i-destination"><code>Job#destination</code></a></p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="destination-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 180</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">destination=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 199</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">destination=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -945,8 +879,8 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
           
           <div class="method-source-code" id="dimensions-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 183</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 203</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">dimensions</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -974,7 +908,7 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p><a href="Output.html">Output</a> pixel size formatted as WIDTHxHEIGHT.</p>
+<p><a href="Output.html"><code>Output</code></a> pixel size formatted as WIDTHxHEIGHT.</p>
 </dd><dt>Default
 <dd>
 <p>512x288 for Type::VIDEO, 8000x32 for Type::WAVEFORM, or 256x144.</p>
@@ -987,8 +921,8 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
           
           <div class="method-source-code" id="dimensions-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 189</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">dimensions=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 210</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">dimensions=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1020,14 +954,12 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
           
           <div class="method-source-code" id="error-3F-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 192</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">error?</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 214</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">error?</span>
   <span class="ruby-identifier">err</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">err</span> = <span class="ruby-identifier">destination</span>.<span class="ruby-identifier">error?</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">destination</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">err</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;/&#39;</span>
-      <span class="ruby-identifier">err</span> = <span class="ruby-node">&quot;output name contains slash - use path instead #{name}&quot;</span>
-    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">err</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;/&#39;</span>)
+    <span class="ruby-identifier">err</span> = <span class="ruby-node">&quot;output name contains slash - use path instead #{name}&quot;</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">err</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1060,8 +992,8 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 
           
           <div class="method-source-code" id="extension-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 202</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 223</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">extension</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1092,17 +1024,15 @@ href="Output.html#method-i-no_audio">no_audio</a>.</p>
 <p>Extension for rendered file, also implies format.</p>
 </dd><dt>Default
 <dd>
-<p>Removed from <a href="Output.html#method-i-name">name</a> if present,
-otherwise mp4 for Type::VIDEO, mp3 for Type::AUDIO, png for Type::WAVEFORM
-and jpg for others.</p>
+<p>Removed from <a href="Output.html#method-i-name"><code>name</code></a> if present, otherwise mp4 for Type::VIDEO, mp3 for Type::AUDIO, png for Type::WAVEFORM and jpg for others.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="extension-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 208</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 230</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">extension=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1134,10 +1064,10 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="file_name-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 211</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">file_name</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 234</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">file_name</span>
   <span class="ruby-identifier">fn</span> = <span class="ruby-constant">Path</span>.<span class="ruby-identifier">strip_slashes</span>(<span class="ruby-identifier">name</span>)
-  <span class="ruby-identifier">fn</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;.&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">extension</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">extension</span>
+  <span class="ruby-identifier">fn</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;.#{extension}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">extension</span>
   <span class="ruby-identifier">fn</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1169,8 +1099,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="forecolor-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 216</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">forecolor</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 240</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">forecolor</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1211,8 +1141,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="forecolor-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 222</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">forecolor=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 247</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">forecolor=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1244,8 +1174,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="metadata-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 229</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">metadata</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 256</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">metadata</span>
   (<span class="ruby-keyword">self</span>[<span class="ruby-value">:rendered_file</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">MetaReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:rendered_file</span>]) <span class="ruby-operator">:</span> {})
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1277,8 +1207,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="name-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 232</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 260</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">name</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1309,7 +1239,7 @@ and jpg for others.</p>
 <p>Basename for rendered file.</p>
 </dd><dt>Default
 <dd>
-<p><a href="Output.html#method-i-type">type</a>, or empty for Type::SEQUENCE.</p>
+<p><a href="Output.html#method-i-type"><code>type</code></a>, or empty for Type::SEQUENCE.</p>
 </dd><dt>Types
 <dd>
 <p>All, but Type::SEQUENCE appends the frame number to each file.</p>
@@ -1319,8 +1249,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="name-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 238</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 267</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">name=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1352,8 +1282,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="no_audio-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 241</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 271</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">no_audio</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1394,8 +1324,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="no_audio-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 247</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">no_audio=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 278</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">no_audio=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1427,8 +1357,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="path-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 250</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">path</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 282</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">path</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1456,7 +1386,7 @@ and jpg for others.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>Prepended to <a href="Output.html#method-i-name">name</a> during upload.</p>
+<p>Prepended to <a href="Output.html#method-i-name"><code>name</code></a> during upload.</p>
 </dd><dt>Default
 <dd>
 <p>empty</p>
@@ -1466,8 +1396,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="path-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 255</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">path=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 288</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">path=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1499,8 +1429,8 @@ and jpg for others.</p>
 
           
           <div class="method-source-code" id="precision-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 258</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">precision</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 292</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precision</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1528,23 +1458,21 @@ and jpg for others.</p>
           
           <dl class="rdoc-list note-list"><dt>Integer
 <dd>
-<p>Number of decimal places that Job#duration and duration must match by for
-successful rendering - use negative number to skip duration check.</p>
+<p>Number of decimal places that Job#duration and duration must match by for successful rendering - use negative number to skip duration check.</p>
 </dd><dt>Default
 <dd>
 <p>1 for Type::VIDEO, 0 for others.</p>
 </dd><dt>Types
 <dd>
-<p>Type::VIDEO, Type::AUDIO, Type::WAVEFORM (Type::SEQUENCE copies last frame
-repeatedly to match).</p>
+<p>Type::VIDEO, Type::AUDIO, Type::WAVEFORM (Type::SEQUENCE copies last frame repeatedly to match).</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="precision-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 267</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">precision=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 302</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precision=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1576,17 +1504,17 @@ repeatedly to match).</p>
 
           
           <div class="method-source-code" id="preflight-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 270</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight</span>(<span class="ruby-identifier">_job</span>)
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">destination</span> = <span class="ruby-constant">Destination</span>.<span class="ruby-identifier">create_if</span> <span class="ruby-identifier">destination</span> <span class="ruby-comment"># must say self. =</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">extension</span>
-    <span class="ruby-comment"># try to determine from name if it has one</span>
-    <span class="ruby-identifier">output_name_extension</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">extname</span> <span class="ruby-identifier">name</span>
-    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">output_name_extension</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
-      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">output_name_extension</span>)
-      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extension</span> = <span class="ruby-identifier">output_name_extension</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-string">&#39;.&#39;</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 306</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">preflight</span>(<span class="ruby-identifier">_job</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">destination</span> = <span class="ruby-constant">Destination</span>.<span class="ruby-identifier">create_if</span> <span class="ruby-identifier">destination</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">extension</span>
+
+  <span class="ruby-comment"># try to determine from name if it has one</span>
+  <span class="ruby-identifier">output_name_extension</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">extname</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">output_name_extension</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
+
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">output_name_extension</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extension</span> = <span class="ruby-identifier">output_name_extension</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-string">&#39;.&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -1617,8 +1545,8 @@ repeatedly to match).</p>
 
           
           <div class="method-source-code" id="quality-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 281</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">quality</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 318</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">quality</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1659,8 +1587,8 @@ repeatedly to match).</p>
 
           
           <div class="method-source-code" id="quality-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 287</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">quality=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 325</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">quality=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1692,8 +1620,8 @@ repeatedly to match).</p>
 
           
           <div class="method-source-code" id="required-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 290</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">required</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 329</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">required</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1721,8 +1649,7 @@ repeatedly to match).</p>
           
           <dl class="rdoc-list note-list"><dt>Boolean
 <dd>
-<p>Whether or not <a href="Job.html">Job</a> should halt if output fails
-render or upload.</p>
+<p>Whether or not <a href="Job.html"><code>Job</code></a> should halt if output fails render or upload.</p>
 </dd><dt>Default
 <dd>
 <p>nil</p>
@@ -1732,8 +1659,8 @@ render or upload.</p>
 
           
           <div class="method-source-code" id="required-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 295</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">required=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 335</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">required=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1765,8 +1692,8 @@ render or upload.</p>
 
           
           <div class="method-source-code" id="type-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 298</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 339</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">type</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1807,8 +1734,8 @@ render or upload.</p>
 
           
           <div class="method-source-code" id="type-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 305</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">type=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 347</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">type=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1840,8 +1767,8 @@ render or upload.</p>
 
           
           <div class="method-source-code" id="video_bitrate-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 308</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_bitrate</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 351</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_bitrate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1869,9 +1796,7 @@ render or upload.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>FFmpeg -b:v switch, placed between <a
-href="Output.html#method-i-video_codec">video_codec</a> &amp; <a
-href="Output.html#method-i-video_rate">video_rate</a>.</p>
+<p>FFmpeg -b:v switch, placed between <a href="Output.html#method-i-video_codec"><code>video_codec</code></a> &amp; <a href="Output.html#method-i-video_rate"><code>video_rate</code></a>.</p>
 </dd><dt>Integer
 <dd>
 <p>The character &#39;k&#39; will be appended.</p>
@@ -1887,8 +1812,8 @@ href="Output.html#method-i-video_rate">video_rate</a>.</p>
 
           
           <div class="method-source-code" id="video_bitrate-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 315</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_bitrate=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 359</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_bitrate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1920,8 +1845,8 @@ href="Output.html#method-i-video_rate">video_rate</a>.</p>
 
           
           <div class="method-source-code" id="video_codec-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 318</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_codec</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 363</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_codec</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1949,9 +1874,7 @@ href="Output.html#method-i-video_rate">video_rate</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>FFmpeg -c:v switch, between <a
-href="Output.html#method-i-video_format">video_format</a> &amp; <a
-href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
+<p>FFmpeg -c:v switch, between <a href="Output.html#method-i-video_format"><code>video_format</code></a> &amp; <a href="Output.html#method-i-video_bitrate"><code>video_bitrate</code></a>.</p>
 </dd><dt>Default
 <dd>
 <p>libx264 -level 41 -movflags faststart</p>
@@ -1964,8 +1887,8 @@ href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
 
           
           <div class="method-source-code" id="video_codec-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 324</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_codec=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 370</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_codec=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -1997,8 +1920,8 @@ href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
 
           
           <div class="method-source-code" id="video_format-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 327</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_format</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 374</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_format</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -2026,9 +1949,7 @@ href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>FFmpeg -f:v switch, placed between <a
-href="Output.html#method-i-dimensions">dimensions</a> &amp; <a
-href="Output.html#method-i-video_codec">video_codec</a>.</p>
+<p>FFmpeg -f:v switch, placed between <a href="Output.html#method-i-dimensions"><code>dimensions</code></a> &amp; <a href="Output.html#method-i-video_codec"><code>video_codec</code></a>.</p>
 </dd><dt>Default
 <dd>
 <p>nil</p>
@@ -2041,8 +1962,8 @@ href="Output.html#method-i-video_codec">video_codec</a>.</p>
 
           
           <div class="method-source-code" id="video_format-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 333</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_format=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 381</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_format=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -2074,8 +1995,8 @@ href="Output.html#method-i-video_codec">video_codec</a>.</p>
 
           
           <div class="method-source-code" id="video_rate-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 336</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_rate</span>
+            <pre><span class="ruby-comment"># File lib/output.rb, line 385</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_rate</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -2103,8 +2024,7 @@ href="Output.html#method-i-video_codec">video_codec</a>.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>FFmpeg -r:v switch, placed after <a
-href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
+<p>FFmpeg -r:v switch, placed after <a href="Output.html#method-i-video_bitrate"><code>video_bitrate</code></a>.</p>
 </dd><dt>Default
 <dd>
 <p>30</p>
@@ -2117,8 +2037,8 @@ href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
 
           
           <div class="method-source-code" id="video_rate-3D-source">
-            <pre><span class="ruby-comment"># File lib/output.rb, line 342</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">video_rate=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/output.rb, line 392</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">video_rate=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -2134,12 +2054,13 @@ href="Output.html#method-i-video_bitrate">video_bitrate</a>.</p>
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -72,7 +74,7 @@
     
     <li ><a href="#method-c-color_value">::color_value</a>
     
-    <li ><a href="#method-c-new">::new</a>
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
     
     <li ><a href="#method-i-create_layer">#create_layer</a>
     
@@ -101,8 +103,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -139,15 +139,15 @@
 
           
           <div class="method-source-code" id="color_value-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 31</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">color_value</span>(<span class="ruby-identifier">color</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-string">&#39;)&#39;</span>)
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;rgb(&#39;</span>, <span class="ruby-string">&#39;rgba(&#39;</span>)
-      <span class="ruby-identifier">color_split</span> = <span class="ruby-identifier">color</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;(&#39;</span>)
-      <span class="ruby-identifier">method</span> = <span class="ruby-identifier">color_split</span>.<span class="ruby-identifier">shift</span>.<span class="ruby-identifier">to_sym</span>
-      <span class="ruby-identifier">params</span> = <span class="ruby-identifier">color_split</span>.<span class="ruby-identifier">shift</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>]
-      <span class="ruby-identifier">color</span> = <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">method</span>, <span class="ruby-identifier">params</span>)
-    <span class="ruby-keyword">end</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">color_value</span>(<span class="ruby-identifier">color</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-string">&#39;)&#39;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">color</span>.<span class="ruby-identifier">start_with?</span>(
+    <span class="ruby-string">&#39;rgb(&#39;</span>, <span class="ruby-string">&#39;rgba(&#39;</span>
+  )
+    <span class="ruby-identifier">color_split</span> = <span class="ruby-identifier">color</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;(&#39;</span>)
+    <span class="ruby-identifier">method</span> = <span class="ruby-identifier">color_split</span>.<span class="ruby-identifier">shift</span>.<span class="ruby-identifier">to_sym</span>
+    <span class="ruby-identifier">params</span> = <span class="ruby-identifier">color_split</span>.<span class="ruby-identifier">shift</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>]
+    <span class="ruby-identifier">color</span> = <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">method</span>, <span class="ruby-identifier">params</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">color</span>
 <span class="ruby-keyword">end</span></pre>
@@ -177,11 +177,17 @@
           
           
           
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 77</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">job_input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">render_range</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">job_input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">render_range</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">super</span>()
   <span class="ruby-ivar">@job</span> = <span class="ruby-identifier">job</span>
   <span class="ruby-ivar">@job_input</span> = <span class="ruby-identifier">job_input</span>
   <span class="ruby-ivar">@render_range</span> = <span class="ruby-identifier">render_range</span>
@@ -223,9 +229,10 @@
 
           
           <div class="method-source-code" id="create_layer-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 42</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_layer</span>(<span class="ruby-identifier">input</span>)
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_layer</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-string">&#39;no job&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@job</span>
+
   <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>], <span class="ruby-node">&quot;input with no type #{input}&quot;</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">input</span>[<span class="ruby-value">:type</span>]
   <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span>
@@ -270,8 +277,8 @@
 
           
           <div class="method-source-code" id="duration-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 59</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">duration</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">duration</span>
   <span class="ruby-ivar">@render_range</span>.<span class="ruby-identifier">length_seconds</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -303,8 +310,8 @@
 
           
           <div class="method-source-code" id="graph_command-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 62</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">graph_command</span>(<span class="ruby-identifier">output</span>)
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">graph_command</span>(<span class="ruby-identifier">output</span>)
   <span class="ruby-constant">FilterSourceRaw</span>.<span class="ruby-identifier">input_index</span> = <span class="ruby-value">0</span>
   <span class="ruby-ivar">@job_output</span> = <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
@@ -337,9 +344,10 @@
 
           
           <div class="method-source-code" id="graph_scope-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 66</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">graph_scope</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">graph_scope</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-string">&#39;no job&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@job</span>
+
   <span class="ruby-identifier">scope</span> = {}
   <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_job</span>] = <span class="ruby-ivar">@job</span>
   <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>] = <span class="ruby-ivar">@job_output</span>
@@ -378,8 +386,8 @@
 
           
           <div class="method-source-code" id="inputs-source">
-            <pre><span class="ruby-comment"># File lib/graph.rb, line 82</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">inputs</span>
+            <pre><span class="ruby-comment"># File lib/graph.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inputs</span>
   []
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -395,12 +403,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

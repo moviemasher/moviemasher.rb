@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -109,8 +111,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -151,8 +151,8 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 12</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
   <span class="ruby-ivar">@queue_url</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
@@ -193,10 +193,10 @@
 
           
           <div class="method-source-code" id="__queue_url-source">
-            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 19</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__queue_url</span>
+            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__queue_url</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_url</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">options</span> = { <span class="ruby-identifier">queue_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_name</span>] }
+    <span class="ruby-identifier">options</span> = { <span class="ruby-value">queue_name:</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_name</span>] }
     <span class="ruby-identifier">sqs_client</span>.<span class="ruby-identifier">get_queue_url</span>(<span class="ruby-identifier">options</span>).<span class="ruby-identifier">queue_url</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_url</span>]
@@ -231,8 +231,8 @@
 
           
           <div class="method-source-code" id="configure-source">
-            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 7</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">configure</span>(<span class="ruby-identifier">config</span>)
+            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">configure</span>(<span class="ruby-identifier">config</span>)
   <span class="ruby-identifier">problem</span> = <span class="ruby-identifier">config</span>[<span class="ruby-value">:queue_url</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">problem</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-identifier">config</span>[<span class="ruby-value">:queue_name</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-operator">!</span><span class="ruby-identifier">problem</span>
@@ -266,8 +266,8 @@
 
           
           <div class="method-source-code" id="queue_url-source">
-            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 16</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">queue_url</span>
+            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">queue_url</span>
   <span class="ruby-ivar">@queue_url</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">__queue_url</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -299,11 +299,11 @@
 
           
           <div class="method-source-code" id="receive_job-source">
-            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">receive_job</span>
+            <pre><span class="ruby-comment"># File service/aws/sqs_queue.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">receive_job</span>
   <span class="ruby-identifier">receive_options</span> = {
-    <span class="ruby-identifier">max_number_of_messages</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">queue_url</span><span class="ruby-operator">:</span> <span class="ruby-identifier">queue_url</span>,
-    <span class="ruby-identifier">wait_time_seconds</span><span class="ruby-operator">:</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_wait_seconds</span>]
+    <span class="ruby-value">max_number_of_messages:</span> <span class="ruby-value">1</span>, <span class="ruby-value">queue_url:</span> <span class="ruby-identifier">queue_url</span>,
+    <span class="ruby-value">wait_time_seconds:</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-value">:queue_wait_seconds</span>]
   }
   <span class="ruby-identifier">message</span> = <span class="ruby-identifier">sqs_client</span>.<span class="ruby-identifier">receive_message</span>(<span class="ruby-identifier">receive_options</span>).<span class="ruby-identifier">messages</span>.<span class="ruby-identifier">first</span>
   <span class="ruby-identifier">job_hash</span> = <span class="ruby-keyword">nil</span>
@@ -316,7 +316,7 @@
       <span class="ruby-identifier">job_hash</span>[<span class="ruby-value">:id</span>] = <span class="ruby-identifier">message</span>.<span class="ruby-identifier">message_id</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-identifier">sqs_client</span>.<span class="ruby-identifier">delete_message</span>(
-      <span class="ruby-identifier">queue_url</span><span class="ruby-operator">:</span> <span class="ruby-identifier">queue_url</span>, <span class="ruby-identifier">receipt_handle</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">receipt_handle</span>
+      <span class="ruby-value">queue_url:</span> <span class="ruby-identifier">queue_url</span>, <span class="ruby-value">receipt_handle:</span> <span class="ruby-identifier">message</span>.<span class="ruby-identifier">receipt_handle</span>
     )
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">job_hash</span>
@@ -334,12 +334,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

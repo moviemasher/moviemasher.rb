@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -95,8 +97,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -131,7 +131,7 @@
         
         <div class="method-heading">
           <span class="method-name">add_slash_end</span><span
-            class="method-args">(s)</span>
+            class="method-args">(string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -146,11 +146,11 @@
 
           
           <div class="method-source-code" id="add_slash_end-source">
-            <pre><span class="ruby-comment"># File lib/util/path.rb, line 9</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_slash_end</span>(<span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">s</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-identifier">s</span> = <span class="ruby-node">&quot;#{s}#{SLASH}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-constant">SLASH</span>)
-  <span class="ruby-identifier">s</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_slash_end</span>(<span class="ruby-identifier">string</span>)
+  <span class="ruby-identifier">string</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">string</span> = <span class="ruby-node">&quot;#{string}#{SLASH}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-constant">SLASH</span>)
+  <span class="ruby-identifier">string</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -166,7 +166,7 @@
         
         <div class="method-heading">
           <span class="method-name">add_slash_start</span><span
-            class="method-args">(s)</span>
+            class="method-args">(string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -181,11 +181,11 @@
 
           
           <div class="method-source-code" id="add_slash_start-source">
-            <pre><span class="ruby-comment"># File lib/util/path.rb, line 14</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_slash_start</span>(<span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">s</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-identifier">s</span> = <span class="ruby-node">&quot;#{SLASH}#{s}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-constant">SLASH</span>)
-  <span class="ruby-identifier">s</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_slash_start</span>(<span class="ruby-identifier">string</span>)
+  <span class="ruby-identifier">string</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">string</span> = <span class="ruby-node">&quot;#{SLASH}#{string}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-constant">SLASH</span>)
+  <span class="ruby-identifier">string</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -201,7 +201,7 @@
         
         <div class="method-heading">
           <span class="method-name">add_slashes</span><span
-            class="method-args">(s)</span>
+            class="method-args">(string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -216,9 +216,9 @@
 
           
           <div class="method-source-code" id="add_slashes-source">
-            <pre><span class="ruby-comment"># File lib/util/path.rb, line 6</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_slashes</span>(<span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">add_slash_start</span>(<span class="ruby-identifier">add_slash_end</span>(<span class="ruby-identifier">s</span>))
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_slashes</span>(<span class="ruby-identifier">string</span>)
+  <span class="ruby-identifier">add_slash_start</span>(<span class="ruby-identifier">add_slash_end</span>(<span class="ruby-identifier">string</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -234,7 +234,7 @@
         
         <div class="method-heading">
           <span class="method-name">concat</span><span
-            class="method-args">(s1, s2)</span>
+            class="method-args">(string1, string2)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -249,16 +249,16 @@
 
           
           <div class="method-source-code" id="concat-source">
-            <pre><span class="ruby-comment"># File lib/util/path.rb, line 19</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">s1</span>, <span class="ruby-identifier">s2</span>)
-  <span class="ruby-identifier">s1</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-identifier">s2</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">s1</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">s2</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">s1</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">s2</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">concat</span>(<span class="ruby-identifier">string1</span>, <span class="ruby-identifier">string2</span>)
+  <span class="ruby-identifier">string1</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">string2</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">string1</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">string2</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">string1</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">string2</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">s1</span> = <span class="ruby-identifier">add_slash_end</span>(<span class="ruby-identifier">s1</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">strip_slash_start</span>(<span class="ruby-identifier">s2</span>)
+    <span class="ruby-identifier">string1</span> = <span class="ruby-identifier">add_slash_end</span>(<span class="ruby-identifier">string1</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">strip_slash_start</span>(<span class="ruby-identifier">string2</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">s1</span>
+  <span class="ruby-identifier">string1</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -274,7 +274,7 @@
         
         <div class="method-heading">
           <span class="method-name">strip_slash_end</span><span
-            class="method-args">(s)</span>
+            class="method-args">(string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -289,11 +289,11 @@
 
           
           <div class="method-source-code" id="strip_slash_end-source">
-            <pre><span class="ruby-comment"># File lib/util/path.rb, line 32</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">strip_slash_end</span>(<span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">s</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-identifier">s</span> = <span class="ruby-identifier">s</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-constant">SLASH</span>)
-  <span class="ruby-identifier">s</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">strip_slash_end</span>(<span class="ruby-identifier">string</span>)
+  <span class="ruby-identifier">string</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">string</span> = <span class="ruby-identifier">string</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-constant">SLASH</span>)
+  <span class="ruby-identifier">string</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -309,7 +309,7 @@
         
         <div class="method-heading">
           <span class="method-name">strip_slash_start</span><span
-            class="method-args">(s)</span>
+            class="method-args">(string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -324,11 +324,11 @@
 
           
           <div class="method-source-code" id="strip_slash_start-source">
-            <pre><span class="ruby-comment"># File lib/util/path.rb, line 37</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">strip_slash_start</span>(<span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">s</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-identifier">s</span> = <span class="ruby-identifier">s</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-constant">SLASH</span>)
-  <span class="ruby-identifier">s</span>
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">strip_slash_start</span>(<span class="ruby-identifier">string</span>)
+  <span class="ruby-identifier">string</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">string</span> = <span class="ruby-identifier">string</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-constant">SLASH</span>)
+  <span class="ruby-identifier">string</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -344,7 +344,7 @@
         
         <div class="method-heading">
           <span class="method-name">strip_slashes</span><span
-            class="method-args">(s)</span>
+            class="method-args">(string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -359,9 +359,9 @@
 
           
           <div class="method-source-code" id="strip_slashes-source">
-            <pre><span class="ruby-comment"># File lib/util/path.rb, line 29</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">strip_slashes</span>(<span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">strip_slash_start</span>(<span class="ruby-identifier">strip_slash_end</span>(<span class="ruby-identifier">s</span>))
+            <pre><span class="ruby-comment"># File lib/util/path.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">strip_slashes</span>(<span class="ruby-identifier">string</span>)
+  <span class="ruby-identifier">strip_slash_start</span>(<span class="ruby-identifier">strip_slash_end</span>(<span class="ruby-identifier">string</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -376,12 +376,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -82,6 +84,8 @@
     
     <li class="calls-super" ><a href="#method-i-chain_command">#chain_command</a>
     
+    <li ><a href="#method-i-chain_command_resize">#chain_command_resize</a>
+    
   </ul>
 </div>
 
@@ -99,8 +103,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -136,14 +138,14 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Chain.html#method-c-new">MovieMasher::Chain.new</a>
+              <a href="Chain.html#method-c-new"><code>MovieMasher::Chain::new</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 109</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">job_input</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">job_input</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-ivar">@input_dimensions</span> = <span class="ruby-ivar">@input</span>[<span class="ruby-value">:dimensions</span>]
   <span class="ruby-ivar">@fill</span> = <span class="ruby-ivar">@input</span>[<span class="ruby-value">:fill</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">STRETCH</span>
@@ -185,14 +187,14 @@
 
           
           <div class="method-source-code" id="__crop_filter-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 114</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__crop_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 128</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__crop_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
   <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(
     <span class="ruby-string">&#39;crop&#39;</span>,
-    <span class="ruby-identifier">w</span><span class="ruby-operator">:</span> <span class="ruby-identifier">w_scaled</span>.<span class="ruby-identifier">to_i</span>,
-    <span class="ruby-identifier">h</span><span class="ruby-operator">:</span> <span class="ruby-identifier">h_scaled</span>.<span class="ruby-identifier">to_i</span>,
-    <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> ((<span class="ruby-identifier">orig_w_f</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">w_scaled</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">ceil</span>.<span class="ruby-identifier">to_i</span>,
-    <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> ((<span class="ruby-identifier">orig_h_f</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">h_scaled</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">ceil</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-value">w:</span> <span class="ruby-identifier">w_scaled</span>.<span class="ruby-identifier">to_i</span>,
+    <span class="ruby-value">h:</span> <span class="ruby-identifier">h_scaled</span>.<span class="ruby-identifier">to_i</span>,
+    <span class="ruby-value">x:</span> ((<span class="ruby-identifier">orig_w_f</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">w_scaled</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">ceil</span>.<span class="ruby-identifier">to_i</span>,
+    <span class="ruby-value">y:</span> ((<span class="ruby-identifier">orig_h_f</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">h_scaled</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">ceil</span>.<span class="ruby-identifier">to_i</span>
   )
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -224,8 +226,8 @@
 
           
           <div class="method-source-code" id="__crop_or_pad-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 123</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__crop_or_pad</span>(<span class="ruby-identifier">gtr</span>, <span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 138</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__crop_or_pad</span>(<span class="ruby-identifier">gtr</span>, <span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">gtr</span>
     <span class="ruby-identifier">__crop_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
   <span class="ruby-keyword">else</span>
@@ -261,8 +263,8 @@
 
           
           <div class="method-source-code" id="__min_or_max-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 130</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__min_or_max</span>(<span class="ruby-identifier">fill_is_scale</span>, <span class="ruby-identifier">ratio_h</span>, <span class="ruby-identifier">ratio_w</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 146</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__min_or_max</span>(<span class="ruby-identifier">fill_is_scale</span>, <span class="ruby-identifier">ratio_h</span>, <span class="ruby-identifier">ratio_w</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">fill_is_scale</span>
     <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">min</span>(<span class="ruby-identifier">ratio_h</span>, <span class="ruby-identifier">ratio_w</span>)
   <span class="ruby-keyword">else</span>
@@ -298,18 +300,18 @@
 
           
           <div class="method-source-code" id="__pad_filter-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 137</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__pad_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 154</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__pad_filter</span>(<span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
   <span class="ruby-identifier">backcolor</span> = <span class="ruby-string">&#39;black&#39;</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:backcolor</span>]
     <span class="ruby-identifier">backcolor</span> = <span class="ruby-constant">Graph</span>.<span class="ruby-identifier">color_value</span>(<span class="ruby-ivar">@job_input</span>[<span class="ruby-value">:mash</span>][<span class="ruby-value">:backcolor</span>])
   <span class="ruby-keyword">end</span>
   <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(
     <span class="ruby-string">&#39;pad&#39;</span>,
-    <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-identifier">backcolor</span>,
-    <span class="ruby-identifier">w</span><span class="ruby-operator">:</span> <span class="ruby-identifier">w_scaled</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">h</span><span class="ruby-operator">:</span> <span class="ruby-identifier">h_scaled</span>.<span class="ruby-identifier">to_i</span>,
-    <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> ((<span class="ruby-identifier">w_scaled</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">orig_w_f</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_i</span>,
-    <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> ((<span class="ruby-identifier">h_scaled</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">orig_h_f</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-value">color:</span> <span class="ruby-identifier">backcolor</span>,
+    <span class="ruby-value">w:</span> <span class="ruby-identifier">w_scaled</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-value">h:</span> <span class="ruby-identifier">h_scaled</span>.<span class="ruby-identifier">to_i</span>,
+    <span class="ruby-value">x:</span> ((<span class="ruby-identifier">w_scaled</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">orig_w_f</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_i</span>,
+    <span class="ruby-value">y:</span> ((<span class="ruby-identifier">h_scaled</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">orig_h_f</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">TWO</span>).<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_i</span>
   )
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -340,61 +342,92 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Chain.html#method-i-chain_command">MovieMasher::Chain#chain_command</a>
+              <a href="Chain.html#method-i-chain_command"><code>MovieMasher::Chain#chain_command</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="chain_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 60</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">chain_command</span>(<span class="ruby-identifier">scope</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">chain_command</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-ivar">@filters</span> = []
   <span class="ruby-identifier">target_dims</span> = <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_dimensions</span>]
   <span class="ruby-identifier">orig_dims</span> = <span class="ruby-ivar">@input_dimensions</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">target_dims</span>
   <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-identifier">orig_dims</span>, <span class="ruby-string">&#39;input dimensions nil&#39;</span>)
   <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-identifier">target_dims</span>, <span class="ruby-string">&#39;output dimensions nil&#39;</span>)
-  <span class="ruby-identifier">orig_dims</span> = <span class="ruby-identifier">orig_dims</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;x&#39;</span>)
-  <span class="ruby-identifier">target_dims</span> = <span class="ruby-identifier">target_dims</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;x&#39;</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">orig_dims</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">target_dims</span>
-    <span class="ruby-identifier">orig_w</span> = <span class="ruby-identifier">orig_dims</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
-    <span class="ruby-identifier">orig_h</span> = <span class="ruby-identifier">orig_dims</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
-    <span class="ruby-identifier">target_w</span> = <span class="ruby-identifier">target_dims</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
-    <span class="ruby-identifier">target_h</span> = <span class="ruby-identifier">target_dims</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
-    <span class="ruby-identifier">orig_w_f</span> = <span class="ruby-identifier">orig_w</span>.<span class="ruby-identifier">to_f</span>
-    <span class="ruby-identifier">orig_h_f</span> = <span class="ruby-identifier">orig_h</span>.<span class="ruby-identifier">to_f</span>
-    <span class="ruby-identifier">target_w_f</span> = <span class="ruby-identifier">target_w</span>.<span class="ruby-identifier">to_f</span>
-    <span class="ruby-identifier">target_h_f</span> = <span class="ruby-identifier">target_h</span>.<span class="ruby-identifier">to_f</span>
-    <span class="ruby-identifier">simple_scale</span> = (<span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">STRETCH</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>)
-    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">simple_scale</span>
-      <span class="ruby-identifier">fill_is_scale</span> = (<span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">SCALE</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>)
-      <span class="ruby-identifier">ratio_w</span> = <span class="ruby-identifier">target_w_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">orig_w_f</span>
-      <span class="ruby-identifier">ratio_h</span> = <span class="ruby-identifier">target_h_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">orig_h_f</span>
-      <span class="ruby-identifier">ratio</span> = <span class="ruby-identifier">__min_or_max</span>(<span class="ruby-identifier">fill_is_scale</span>, <span class="ruby-identifier">ratio_h</span>, <span class="ruby-identifier">ratio_w</span>)
-      <span class="ruby-identifier">simple_scale</span> = (<span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">NONE</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>)
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">simple_scale</span>
-        <span class="ruby-identifier">target_w</span> = (<span class="ruby-identifier">orig_w_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">ratio</span>).<span class="ruby-identifier">to_i</span>
-        <span class="ruby-identifier">target_h</span> = (<span class="ruby-identifier">orig_h_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">ratio</span>).<span class="ruby-identifier">to_i</span>
-      <span class="ruby-keyword">else</span>
-        <span class="ruby-identifier">w_scaled</span> = <span class="ruby-identifier">target_w_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">ratio</span>
-        <span class="ruby-identifier">h_scaled</span> = <span class="ruby-identifier">target_h_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">ratio</span>
-        <span class="ruby-identifier">simple_scale</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">w_scaled</span>)
-        <span class="ruby-identifier">simple_scale</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">orig_h_f</span>, <span class="ruby-identifier">h_scaled</span>)
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">simple_scale</span>
-      <span class="ruby-identifier">gtr</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">w_scaled</span>)
-      <span class="ruby-identifier">gtr</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">orig_h_f</span>, <span class="ruby-identifier">h_scaled</span>)
-      <span class="ruby-ivar">@filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">__crop_or_pad</span>(<span class="ruby-identifier">gtr</span>, <span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
-      <span class="ruby-identifier">simple_scale</span> = <span class="ruby-operator">!</span>((<span class="ruby-identifier">orig_w</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">target_w</span>) <span class="ruby-operator">||</span> (<span class="ruby-identifier">orig_h</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">target_h</span>))
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">simple_scale</span>
-      <span class="ruby-ivar">@filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;scale&#39;</span>, <span class="ruby-identifier">w</span><span class="ruby-operator">:</span> <span class="ruby-identifier">target_w</span>, <span class="ruby-identifier">h</span><span class="ruby-operator">:</span> <span class="ruby-identifier">target_h</span>)
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">STRETCH</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>
-      <span class="ruby-ivar">@filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;setsar&#39;</span>, <span class="ruby-identifier">sar</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">max</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
-    <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">chain_command_resize</span>(<span class="ruby-identifier">orig_dims</span>, <span class="ruby-identifier">target_dims</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">orig_dims</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">target_dims</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">STRETCH</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>
+    <span class="ruby-ivar">@filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;setsar&#39;</span>, <span class="ruby-value">sar:</span> <span class="ruby-value">1</span>, <span class="ruby-value">max:</span> <span class="ruby-value">1</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-chain_command_resize" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">chain_command_resize</span><span
+            class="method-args">(orig_dims, target_dims)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="chain_command_resize-source">
+            <pre><span class="ruby-comment"># File lib/graphs/chains.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">chain_command_resize</span>(<span class="ruby-identifier">orig_dims</span>, <span class="ruby-identifier">target_dims</span>)
+  <span class="ruby-identifier">orig_dims</span> = <span class="ruby-identifier">orig_dims</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;x&#39;</span>)
+  <span class="ruby-identifier">target_dims</span> = <span class="ruby-identifier">target_dims</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;x&#39;</span>)
+  <span class="ruby-identifier">orig_w</span> = <span class="ruby-identifier">orig_dims</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">orig_h</span> = <span class="ruby-identifier">orig_dims</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">target_w</span> = <span class="ruby-identifier">target_dims</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">target_h</span> = <span class="ruby-identifier">target_dims</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">orig_w_f</span> = <span class="ruby-identifier">orig_w</span>.<span class="ruby-identifier">to_f</span>
+  <span class="ruby-identifier">orig_h_f</span> = <span class="ruby-identifier">orig_h</span>.<span class="ruby-identifier">to_f</span>
+  <span class="ruby-identifier">target_w_f</span> = <span class="ruby-identifier">target_w</span>.<span class="ruby-identifier">to_f</span>
+  <span class="ruby-identifier">target_h_f</span> = <span class="ruby-identifier">target_h</span>.<span class="ruby-identifier">to_f</span>
+  <span class="ruby-identifier">simple_scale</span> = (<span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">STRETCH</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">simple_scale</span>
+    <span class="ruby-identifier">fill_is_scale</span> = (<span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">SCALE</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>)
+    <span class="ruby-identifier">ratio_w</span> = <span class="ruby-identifier">target_w_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">orig_w_f</span>
+    <span class="ruby-identifier">ratio_h</span> = <span class="ruby-identifier">target_h_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">orig_h_f</span>
+    <span class="ruby-identifier">ratio</span> = <span class="ruby-identifier">__min_or_max</span>(<span class="ruby-identifier">fill_is_scale</span>, <span class="ruby-identifier">ratio_h</span>, <span class="ruby-identifier">ratio_w</span>)
+    <span class="ruby-identifier">simple_scale</span> = (<span class="ruby-constant">Fill</span><span class="ruby-operator">::</span><span class="ruby-constant">NONE</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@fill</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">simple_scale</span>
+      <span class="ruby-identifier">target_w</span> = (<span class="ruby-identifier">orig_w_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">ratio</span>).<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">target_h</span> = (<span class="ruby-identifier">orig_h_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">ratio</span>).<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">w_scaled</span> = <span class="ruby-identifier">target_w_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">ratio</span>
+      <span class="ruby-identifier">h_scaled</span> = <span class="ruby-identifier">target_h_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">ratio</span>
+      <span class="ruby-identifier">simple_scale</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">w_scaled</span>)
+      <span class="ruby-identifier">simple_scale</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">orig_h_f</span>, <span class="ruby-identifier">h_scaled</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">simple_scale</span>
+    <span class="ruby-identifier">gtr</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">w_scaled</span>)
+    <span class="ruby-identifier">gtr</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">orig_h_f</span>, <span class="ruby-identifier">h_scaled</span>)
+    <span class="ruby-ivar">@filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">__crop_or_pad</span>(<span class="ruby-identifier">gtr</span>, <span class="ruby-identifier">w_scaled</span>, <span class="ruby-identifier">h_scaled</span>, <span class="ruby-identifier">orig_w_f</span>, <span class="ruby-identifier">orig_h_f</span>)
+    <span class="ruby-identifier">simple_scale</span> = <span class="ruby-operator">!</span>((<span class="ruby-identifier">orig_w</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">target_w</span>) <span class="ruby-operator">||</span> (<span class="ruby-identifier">orig_h</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">target_h</span>))
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">simple_scale</span>
+
+  <span class="ruby-ivar">@filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;scale&#39;</span>, <span class="ruby-value">w:</span> <span class="ruby-identifier">target_w</span>, <span class="ruby-value">h:</span> <span class="ruby-identifier">target_h</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -409,12 +442,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -30,7 +30,7 @@ module MovieMasher
       end
       if launch_apache
         puts "#{Time.now} #{me} starting web server"
-        cmd = '/sbin/service httpd restart'
+        cmd = 'systemctl restart httpd'
         puts cmd
         apache_result = Open3.capture3 cmd
         puts apache_result

@@ -13,7 +13,7 @@ module MovieMasher
             begin
               case __string_type(hash_or_path)
               when 'yaml'
-                data = YAML.safe_load(hash_or_path)
+                data = YAML.load(hash_or_path)
               when 'json'
                 data = JSON.parse(hash_or_path)
               else

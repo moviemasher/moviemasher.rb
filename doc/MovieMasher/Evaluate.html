@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -63,16 +65,6 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-c-__evaluated_scope_child">::__evaluated_scope_child</a>
-    
-    <li ><a href="#method-c-__is_eval_object-3F">::__is_eval_object?</a>
-    
-    <li ><a href="#method-c-__scope_target">::__scope_target</a>
-    
-    <li ><a href="#method-c-__split">::__split</a>
-    
-    <li ><a href="#method-c-__value">::__value</a>
-    
     <li ><a href="#method-c-calculator">::calculator</a>
     
     <li ><a href="#method-c-coerce_if_numeric">::coerce_if_numeric</a>
@@ -100,8 +92,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -140,196 +130,6 @@
        </header>
 
     
-      <div id="method-c-__evaluated_scope_child" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__evaluated_scope_child</span><span
-            class="method-args">(child, split_bit)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__evaluated_scope_child-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 81</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__evaluated_scope_child</span>(<span class="ruby-identifier">child</span>, <span class="ruby-identifier">split_bit</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">__is_eval_object?</span>(<span class="ruby-identifier">child</span>)
-    <span class="ruby-identifier">__value</span>(<span class="ruby-identifier">child</span>, <span class="ruby-identifier">split_bit</span>)
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proc</span>)
-    <span class="ruby-identifier">child</span>.<span class="ruby-identifier">call</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">child</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__is_eval_object-3F" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__is_eval_object?</span><span
-            class="method-args">(ob)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__is_eval_object-3F-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 90</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__is_eval_object?</span>(<span class="ruby-identifier">ob</span>)
-  (<span class="ruby-identifier">ob</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">ob</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">ob</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hashable</span>))
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__scope_target" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__scope_target</span><span
-            class="method-args">(split_bit, scope)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__scope_target-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 93</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__scope_target</span>(<span class="ruby-identifier">split_bit</span>, <span class="ruby-identifier">scope</span>)
-  <span class="ruby-identifier">scope_child</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-keyword">until</span> <span class="ruby-identifier">split_bit</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">first_key</span> = <span class="ruby-identifier">split_bit</span>.<span class="ruby-identifier">shift</span>
-    <span class="ruby-identifier">scope_child</span> = <span class="ruby-identifier">scope</span>[<span class="ruby-identifier">first_key</span>.<span class="ruby-identifier">to_sym</span>]
-    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope_child</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">scope_child</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__split" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__split</span><span
-            class="method-args">(s)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__split-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 102</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__split</span>(<span class="ruby-identifier">s</span>)
-  <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/{([^}]*)}/</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__value" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__value</span><span
-            class="method-args">(ob, path_array)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__value-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 105</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__value</span>(<span class="ruby-identifier">ob</span>, <span class="ruby-identifier">path_array</span>)
-  <span class="ruby-identifier">v</span> = <span class="ruby-identifier">ob</span>
-  <span class="ruby-identifier">key</span> = <span class="ruby-identifier">path_array</span>.<span class="ruby-identifier">shift</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span>
-    <span class="ruby-identifier">key</span> = (<span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_sym</span>)
-    <span class="ruby-identifier">v</span> = ((<span class="ruby-identifier">key</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">key</span>)) <span class="ruby-operator">?</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">key</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">v</span>[<span class="ruby-identifier">key</span>])
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">__is_eval_object?</span> <span class="ruby-identifier">v</span>
-      <span class="ruby-identifier">v</span> = <span class="ruby-identifier">__value</span>(<span class="ruby-identifier">v</span>, <span class="ruby-identifier">path_array</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">path_array</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proc</span>)
-      <span class="ruby-identifier">v</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">call</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">v</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_s</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">v</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
       <div id="method-c-calculator" class="method-detail ">
         
         <div class="method-heading">
@@ -350,7 +150,7 @@
           
           <div class="method-source-code" id="calculator-source">
             <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 11</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">calculator</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">calculator</span>
   <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">__calculator</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Dentaku</span><span class="ruby-operator">::</span><span class="ruby-constant">Calculator</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -382,8 +182,8 @@
 
           
           <div class="method-source-code" id="coerce_if_numeric-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 14</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">coerce_if_numeric</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">coerce_if_numeric</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">v_str</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">v_str</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39; &#39;</span>)
     <span class="ruby-identifier">sym</span> = (<span class="ruby-identifier">v_str</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;.&#39;</span>) <span class="ruby-operator">?</span> <span class="ruby-value">:to_f</span> <span class="ruby-operator">:</span> <span class="ruby-value">:to_i</span>)
@@ -405,7 +205,7 @@
         
         <div class="method-heading">
           <span class="method-name">equation</span><span
-            class="method-args">(s, raise_on_fail = nil)</span>
+            class="method-args">(string, raise_on_fail = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -420,18 +220,18 @@
 
           
           <div class="method-source-code" id="equation-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">equation</span>(<span class="ruby-identifier">s</span>, <span class="ruby-identifier">raise_on_fail</span> = <span class="ruby-keyword">nil</span>)
-  <span class="ruby-identifier">evaluated</span> = <span class="ruby-identifier">s</span>
+            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">equation</span>(<span class="ruby-identifier">string</span>, <span class="ruby-identifier">raise_on_fail</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">evaluated</span> = <span class="ruby-identifier">string</span>
   <span class="ruby-comment"># change all numbers to floats</span>
-  <span class="ruby-identifier">fs</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/([0-9]+[.]?[0-9]*)/</span>, <span class="ruby-operator">&amp;</span><span class="ruby-value">:to_f</span>)
+  <span class="ruby-identifier">fs</span> = <span class="ruby-identifier">string</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/([0-9]+[.]?[0-9]*)/</span>, <span class="ruby-operator">&amp;</span><span class="ruby-value">:to_f</span>)
   <span class="ruby-identifier">fs</span> = <span class="ruby-node">&quot;0 + (#{fs})&quot;</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-comment"># puts &quot;Evaluating: #{fs} #{fs.class.name}&quot;</span>
     <span class="ruby-identifier">evaluated</span> = <span class="ruby-identifier">calculator</span>.<span class="ruby-identifier">evaluate!</span>(<span class="ruby-identifier">fs</span>)
     <span class="ruby-identifier">evaluated</span> = <span class="ruby-identifier">evaluated</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">evaluated</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">BigDecimal</span>)
     <span class="ruby-comment"># puts &quot;Evaluated: #{evaluated} #{evaluated.class.name}&quot;</span>
-  <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">StandardError</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">e</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">raise_on_fail</span>
       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;evaluation failed #{fs} #{e.message}&quot;</span>)
     <span class="ruby-keyword">end</span>
@@ -467,8 +267,8 @@
 
           
           <div class="method-source-code" id="object-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 39</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">object</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">object</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">scope</span> <span class="ruby-operator">||=</span> {}
   <span class="ruby-identifier">keys</span> = (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> (<span class="ruby-value">0</span><span class="ruby-operator">..</span>(<span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)) <span class="ruby-operator">:</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">keys</span>)
   <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
@@ -496,7 +296,7 @@
         
         <div class="method-heading">
           <span class="method-name">value</span><span
-            class="method-args">(v, scope = nil)</span>
+            class="method-args">(string, scope = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -511,34 +311,34 @@
 
           
           <div class="method-source-code" id="value-source">
-            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 53</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">value</span>(<span class="ruby-identifier">v</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/util/evaluate.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">value</span>(<span class="ruby-identifier">string</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">scope</span> <span class="ruby-operator">||=</span> {}
-  <span class="ruby-identifier">split_value</span> = <span class="ruby-identifier">__split</span>(<span class="ruby-identifier">v</span>)
+  <span class="ruby-identifier">split_value</span> = <span class="ruby-identifier">__split</span>(<span class="ruby-identifier">string</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">split_value</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-comment"># otherwise there are no curly braces</span>
-    <span class="ruby-identifier">v</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">string</span> = <span class="ruby-string">&#39;&#39;</span>
     <span class="ruby-identifier">is_static</span> = <span class="ruby-keyword">true</span>
     <span class="ruby-identifier">split_value</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bit</span><span class="ruby-operator">|</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_static</span>
-        <span class="ruby-identifier">v</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bit</span>
+        <span class="ruby-identifier">string</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bit</span>
       <span class="ruby-keyword">else</span>
         <span class="ruby-identifier">split_bit</span> = <span class="ruby-identifier">bit</span>.<span class="ruby-identifier">split</span> <span class="ruby-string">&#39;.&#39;</span>
         <span class="ruby-identifier">child</span> = <span class="ruby-identifier">__scope_target</span>(<span class="ruby-identifier">split_bit</span>, <span class="ruby-identifier">scope</span>) <span class="ruby-comment"># shifts off first</span>
         <span class="ruby-identifier">evaled</span> = <span class="ruby-keyword">nil</span>
         <span class="ruby-identifier">evaled</span> = <span class="ruby-identifier">__evaluated_scope_child</span>(<span class="ruby-identifier">child</span>, <span class="ruby-identifier">split_bit</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">child</span>
-        <span class="ruby-identifier">v</span> =
+        <span class="ruby-identifier">string</span> =
           <span class="ruby-keyword">if</span> <span class="ruby-identifier">__is_eval_object?</span>(<span class="ruby-identifier">evaled</span>)
             <span class="ruby-identifier">evaled</span>
           <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">evaled</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proc</span>)
             <span class="ruby-identifier">evaled</span>.<span class="ruby-identifier">call</span>
           <span class="ruby-keyword">else</span>
-            <span class="ruby-node">&quot;#{v}#{evaled}&quot;</span>
+            <span class="ruby-node">&quot;#{string}#{evaled}&quot;</span>
           <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
       <span class="ruby-identifier">is_static</span> = <span class="ruby-operator">!</span><span class="ruby-identifier">is_static</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">v</span>
+  <span class="ruby-identifier">string</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -553,12 +353,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -97,10 +99,7 @@
 
   <section class="description">
     
-<p>A <a href="Transfer.html">Transfer</a> object used as <a
-href="Job.html#method-i-destination">MovieMasher::Job#destination</a> or <a
-href="Output.html#method-i-destination">MovieMasher::Output#destination</a>
-representing a remote host ready to accept rendered file(s).</p>
+<p>A <a href="Transfer.html"><code>Transfer</code></a> object used as <a href="Job.html#method-i-destination"><code>Job#destination</code></a> or <a href="Output.html#method-i-destination"><code>Output#destination</code></a> representing a remote host ready to accept rendered file(s).</p>
 
 <pre>Destination.create {
   type: Type::HTTP,
@@ -111,8 +110,6 @@ representing a remote host ready to accept rendered file(s).</p>
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -151,8 +148,8 @@ representing a remote host ready to accept rendered file(s).</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/destination.rb, line 15</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/destination.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Destination</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -184,8 +181,8 @@ representing a remote host ready to accept rendered file(s).</p>
 
           
           <div class="method-source-code" id="create_if-source">
-            <pre><span class="ruby-comment"># File lib/destination.rb, line 18</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_if</span>(<span class="ruby-identifier">hash</span>)
+            <pre><span class="ruby-comment"># File lib/destination.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_if</span>(<span class="ruby-identifier">hash</span>)
   (<span class="ruby-identifier">hash</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -217,8 +214,8 @@ representing a remote host ready to accept rendered file(s).</p>
 
           
           <div class="method-source-code" id="init_hash-source">
-            <pre><span class="ruby-comment"># File lib/destination.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">hash</span>)
+            <pre><span class="ruby-comment"># File lib/destination.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">init_hash</span>(<span class="ruby-identifier">hash</span>)
   <span class="ruby-constant">Transfer</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">hash</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -258,10 +255,11 @@ representing a remote host ready to accept rendered file(s).</p>
 
           
           <div class="method-source-code" id="__service-source">
-            <pre><span class="ruby-comment"># File lib/destination.rb, line 36</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__service</span>
+            <pre><span class="ruby-comment"># File lib/destination.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__service</span>
   <span class="ruby-identifier">service</span> = <span class="ruby-constant">Service</span>.<span class="ruby-identifier">uploader</span>(<span class="ruby-identifier">type</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Configuration</span>, <span class="ruby-node">&quot;no #{type} upload service&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">service</span>
+
   <span class="ruby-identifier">service</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -293,8 +291,8 @@ representing a remote host ready to accept rendered file(s).</p>
 
           
           <div class="method-source-code" id="directory_files-source">
-            <pre><span class="ruby-comment"># File lib/destination.rb, line 33</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">directory_files</span>(<span class="ruby-identifier">file</span>)
+            <pre><span class="ruby-comment"># File lib/destination.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">directory_files</span>(<span class="ruby-identifier">file</span>)
   <span class="ruby-identifier">__service</span>.<span class="ruby-identifier">directory_files</span>(<span class="ruby-identifier">file</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -326,11 +324,11 @@ representing a remote host ready to accept rendered file(s).</p>
 
           
           <div class="method-source-code" id="error-3F-source">
-            <pre><span class="ruby-comment"># File lib/destination.rb, line 24</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">error?</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;/&#39;</span>)
-    <span class="ruby-node">&quot;destination name contains slash - use path instead #{name}&quot;</span>
-  <span class="ruby-keyword">end</span>
+            <pre><span class="ruby-comment"># File lib/destination.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">error?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;/&#39;</span>)
+
+  <span class="ruby-node">&quot;destination name contains slash - use path instead #{name}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -361,8 +359,8 @@ representing a remote host ready to accept rendered file(s).</p>
 
           
           <div class="method-source-code" id="upload-source">
-            <pre><span class="ruby-comment"># File lib/destination.rb, line 29</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">upload</span>(<span class="ruby-identifier">options</span>)
+            <pre><span class="ruby-comment"># File lib/destination.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">upload</span>(<span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">options</span>[<span class="ruby-value">:destination</span>] = <span class="ruby-keyword">self</span>
   <span class="ruby-identifier">__service</span>.<span class="ruby-identifier">upload</span>(<span class="ruby-identifier">options</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -379,12 +377,13 @@ representing a remote host ready to accept rendered file(s).</p>
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

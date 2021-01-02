@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -70,14 +72,6 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-c-__resolved_string">::__resolved_string</a>
-    
-    <li ><a href="#method-c-__string_type">::__string_type</a>
-    
-    <li ><a href="#method-c-_init_key">::_init_key</a>
-    
-    <li ><a href="#method-c-_init_time">::_init_time</a>
-    
     <li ><a href="#method-c-new">::new</a>
     
     <li ><a href="#method-c-resolved_hash">::resolved_hash</a>
@@ -93,6 +87,8 @@
     <li ><a href="#method-i-_set">#_set</a>
     
     <li ><a href="#method-i-keys">#keys</a>
+    
+    <li ><a href="#method-i-slice">#slice</a>
     
     <li ><a href="#method-i-to_hash">#to_hash</a>
     
@@ -119,8 +115,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -172,176 +166,6 @@
        </header>
 
     
-      <div id="method-c-__resolved_string" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__resolved_string</span><span
-            class="method-args">(hash_or_path)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__resolved_string-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 80</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__resolved_string</span>(<span class="ruby-identifier">hash_or_path</span>)
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">__string_type</span>(<span class="ruby-identifier">hash_or_path</span>)
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;json&#39;</span>, <span class="ruby-string">&#39;yaml&#39;</span>
-    <span class="ruby-identifier">hash_or_path</span>
-  <span class="ruby-keyword">else</span>
-    (<span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">hash_or_path</span>) <span class="ruby-operator">?</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">hash_or_path</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__string_type" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__string_type</span><span
-            class="method-args">(hash_or_path)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__string_type-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 88</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__string_type</span>(<span class="ruby-identifier">hash_or_path</span>)
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">hash_or_path</span>[<span class="ruby-value">0</span>]
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;{&#39;</span>, <span class="ruby-string">&#39;[&#39;</span>
-    <span class="ruby-string">&#39;json&#39;</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;-&#39;</span>
-    <span class="ruby-string">&#39;yaml&#39;</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-_init_key" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">_init_key</span><span
-            class="method-args">(hash, key, default)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="_init_key-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 46</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">_init_key</span>(<span class="ruby-identifier">hash</span>, <span class="ruby-identifier">key</span>, <span class="ruby-identifier">default</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash</span>
-    <span class="ruby-identifier">value</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">key</span>]
-    <span class="ruby-identifier">overwrite</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span>
-    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">overwrite</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">default</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">default</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
-        <span class="ruby-identifier">overwrite</span> = <span class="ruby-operator">!</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>))
-        <span class="ruby-identifier">overwrite</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">empty?</span>
-      <span class="ruby-keyword">else</span>
-        <span class="ruby-identifier">overwrite</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">default</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">overwrite</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-_init_time" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">_init_time</span><span
-            class="method-args">(input, key)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="_init_time-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 61</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">_init_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">key</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>]
-    <span class="ruby-identifier">rel_key</span> = <span class="ruby-value">:&quot;#{key.id2name}_is_relative&quot;</span>
-    <span class="ruby-identifier">val_key</span> = <span class="ruby-value">:&quot;#{key.id2name}_relative_value&quot;</span>
-    <span class="ruby-identifier">value</span> = <span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">to_s</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;-&#39;</span>)
-      <span class="ruby-identifier">input</span>[<span class="ruby-identifier">val_key</span>] = <span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">to_f</span>
-      <span class="ruby-identifier">input</span>[<span class="ruby-identifier">rel_key</span>] = <span class="ruby-string">&#39;-&#39;</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-string">&#39;%&#39;</span>)
-      <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;%&#39;</span>] = <span class="ruby-string">&#39;&#39;</span>
-      <span class="ruby-identifier">input</span>[<span class="ruby-identifier">val_key</span>] = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_f</span>
-      <span class="ruby-identifier">input</span>[<span class="ruby-identifier">rel_key</span>] = <span class="ruby-string">&#39;%&#39;</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_f</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
       <div id="method-c-new" class="method-detail ">
         
         <div class="method-heading">
@@ -361,8 +185,8 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 99</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 112</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
     <span class="ruby-comment"># puts &quot;Hashable#initialize NOT HASH #{hash}&quot;</span>
     <span class="ruby-identifier">hash</span> = {}
@@ -399,10 +223,11 @@
 
           
           <div class="method-source-code" id="resolved_hash-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 5</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">resolved_hash</span>(<span class="ruby-identifier">hash_or_path</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">resolved_hash</span>(<span class="ruby-identifier">hash_or_path</span>)
   <span class="ruby-identifier">data</span> = {}
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">hash_or_path</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">String</span>
     <span class="ruby-identifier">hash_or_path</span> = <span class="ruby-identifier">__resolved_string</span>(<span class="ruby-identifier">hash_or_path</span>)
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_path</span>
       <span class="ruby-keyword">begin</span>
@@ -414,13 +239,13 @@
         <span class="ruby-keyword">else</span>
           <span class="ruby-identifier">data</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;unsupported configuration type #{hash_or_path}&quot;</span>
         <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-keyword">rescue</span> <span class="ruby-constant">StandardError</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">e</span>
         <span class="ruby-identifier">data</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;job file could not be parsed: #{e.message}&quot;</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">data</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;job file could not be found: #{hash_or_path}&quot;</span>
     <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">hash_or_path</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Hash</span>
     <span class="ruby-identifier">data</span> = <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">hash_or_path</span>))
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">data</span>)
@@ -454,19 +279,18 @@
 
           
           <div class="method-source-code" id="symbolize-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 30</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">hash_or_array</span>, <span class="ruby-identifier">key</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">symbolize</span>(<span class="ruby-identifier">hash_or_array</span>, <span class="ruby-identifier">key</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-identifier">hash_or_array</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">hash_or_array</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Hash</span>
     <span class="ruby-identifier">result</span> = {}
     <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
-        <span class="ruby-identifier">k</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-keyword">unless</span> <span class="ruby-value">:parameters</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">key</span>
-      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">k</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">!=</span> <span class="ruby-value">:parameters</span>
       <span class="ruby-identifier">k</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span>
       <span class="ruby-identifier">result</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">v</span>, <span class="ruby-identifier">k</span>)
     <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Array</span>
     <span class="ruby-identifier">result</span> = <span class="ruby-identifier">hash_or_array</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">v</span>) }
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">result</span>
@@ -516,8 +340,8 @@
 
           
           <div class="method-source-code" id="5B-5D-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 129</span>
-<span class="ruby-keyword">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">symbol</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]</span>(<span class="ruby-identifier">symbol</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -560,8 +384,8 @@
 
           
           <div class="method-source-code" id="5B-5D-3D-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 138</span>
-<span class="ruby-keyword">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">symbol</span>, <span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 162</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]=</span>(<span class="ruby-identifier">symbol</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>] = <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -593,8 +417,8 @@
 
           
           <div class="method-source-code" id="_get-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 145</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">symbol</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">_get</span>(<span class="ruby-identifier">symbol</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -626,8 +450,8 @@
 
           
           <div class="method-source-code" id="_set-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 141</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">_set</span>(<span class="ruby-identifier">symbol</span>, <span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 166</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">_set</span>(<span class="ruby-identifier">symbol</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">symbol</span> = <span class="ruby-identifier">symbol</span>.<span class="ruby-identifier">to_s</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>].<span class="ruby-identifier">to_sym</span>
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>] = <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
@@ -660,9 +484,42 @@
 
           
           <div class="method-source-code" id="keys-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 107</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">keys</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">keys</span>
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">keys</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-slice" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">slice</span><span
+            class="method-args">(*keys)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="slice-source">
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">slice</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">keys</span>)
+  <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">keys</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -693,8 +550,8 @@
 
           
           <div class="method-source-code" id="to_hash-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 111</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_hash</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 130</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_hash</span>
   <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-ivar">@hash</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -726,8 +583,8 @@
 
           
           <div class="method-source-code" id="to_json-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 115</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_json</span>(<span class="ruby-identifier">state</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 135</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_json</span>(<span class="ruby-identifier">state</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-identifier">state</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -759,8 +616,8 @@
 
           
           <div class="method-source-code" id="to_s-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 118</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 139</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_s</span>
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -792,8 +649,8 @@
 
           
           <div class="method-source-code" id="values-source">
-            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 121</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">values</span>
+            <pre><span class="ruby-comment"># File lib/util/hashable.rb, line 143</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">values</span>
   <span class="ruby-ivar">@hash</span>.<span class="ruby-identifier">values</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -809,12 +666,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

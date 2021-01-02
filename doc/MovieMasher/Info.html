@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -63,18 +65,6 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-c-__app_for_path">::__app_for_path</a>
-    
-    <li ><a href="#method-c-__check_ffmpeg">::__check_ffmpeg</a>
-    
-    <li ><a href="#method-c-__check_sox">::__check_sox</a>
-    
-    <li ><a href="#method-c-__get">::__get</a>
-    
-    <li ><a href="#method-c-__mime">::__mime</a>
-    
-    <li ><a href="#method-c-__raise_if_empty">::__raise_if_empty</a>
-    
     <li ><a href="#method-c-get">::get</a>
     
     <li ><a href="#method-c-meta_path">::meta_path</a>
@@ -104,8 +94,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -207,261 +195,6 @@
        </header>
 
     
-      <div id="method-c-__app_for_path" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__app_for_path</span><span
-            class="method-args">(path)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__app_for_path-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 63</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__app_for_path</span>(<span class="ruby-identifier">path</span>)
-  (<span class="ruby-constant">AUDIO</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>(<span class="ruby-identifier">path</span>) <span class="ruby-operator">?</span> <span class="ruby-value">:sox</span> <span class="ruby-operator">:</span> <span class="ruby-value">:ffmpeg</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__check_ffmpeg" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__check_ffmpeg</span><span
-            class="method-args">(path, type)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__check_ffmpeg-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 66</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__check_ffmpeg</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
-  <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">data</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;ffmpeg&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;ffmpeg&#39;</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">type</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">data</span>
-    <span class="ruby-identifier">data</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-identifier">path</span>, <span class="ruby-identifier">app</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;ffprobe&#39;</span>)
-    <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;ffmpeg&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
-      <span class="ruby-identifier">result</span> = <span class="ruby-identifier">data</span>
-      <span class="ruby-identifier">data</span> = <span class="ruby-keyword">nil</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;ffmpeg&#39;</span>, <span class="ruby-identifier">data</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">data</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">data</span>
-  <span class="ruby-identifier">result</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__check_sox" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__check_sox</span><span
-            class="method-args">(path, type)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__check_sox-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 85</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__check_sox</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
-  <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">data</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;sox&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;sox&#39;</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">type</span>
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">data</span>
-    <span class="ruby-identifier">data</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">command</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;--i #{path}&quot;</span>, <span class="ruby-identifier">app</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;sox&#39;</span>)
-    <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;sox&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
-      <span class="ruby-identifier">result</span> = <span class="ruby-identifier">data</span>
-      <span class="ruby-identifier">data</span> = <span class="ruby-keyword">nil</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;sox&#39;</span>, <span class="ruby-identifier">data</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">data</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">data</span>
-  <span class="ruby-identifier">result</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__get" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__get</span><span
-            class="method-args">(path, type)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__get-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 29</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
-  <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">check</span> = {}
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;ffmpeg&#39;</span>, <span class="ruby-string">&#39;sox&#39;</span>
-    <span class="ruby-identifier">check</span>[<span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-keyword">true</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">TYPE</span>, <span class="ruby-string">&#39;http&#39;</span>
-    <span class="ruby-comment"># do nothing if file doesn&#39;t already exist</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">DIMENSIONS</span>
-    <span class="ruby-identifier">check</span>[<span class="ruby-value">:ffmpeg</span>] = <span class="ruby-keyword">true</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">VIDEO_DURATION</span>
-    <span class="ruby-identifier">check</span>[<span class="ruby-value">:ffmpeg</span>] = <span class="ruby-keyword">true</span>
-    <span class="ruby-identifier">type</span> = <span class="ruby-constant">DURATION</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">AUDIO_DURATION</span>
-    <span class="ruby-identifier">check</span>[<span class="ruby-value">:sox</span>] = <span class="ruby-keyword">true</span>
-    <span class="ruby-identifier">type</span> = <span class="ruby-constant">DURATION</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">DURATION</span>
-    <span class="ruby-identifier">check</span>[<span class="ruby-identifier">__app_for_path</span>(<span class="ruby-identifier">path</span>)] = <span class="ruby-keyword">true</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-constant">FPS</span>, <span class="ruby-constant">AUDIO</span> <span class="ruby-comment"># only from FFMPEG</span>
-    <span class="ruby-identifier">check</span>[<span class="ruby-value">:ffmpeg</span>] = <span class="ruby-keyword">true</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">check</span>[<span class="ruby-value">:ffmpeg</span>]
-    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">__check_ffmpeg</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">check</span>[<span class="ruby-value">:sox</span>]
-    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">__check_sox</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">set_if</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">result</span>)
-  <span class="ruby-identifier">result</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__mime" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__mime</span><span
-            class="method-args">(path)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__mime-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 150</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__mime</span>(<span class="ruby-identifier">path</span>)
-  <span class="ruby-identifier">type</span> = <span class="ruby-constant">MIME</span><span class="ruby-operator">::</span><span class="ruby-constant">Types</span>.<span class="ruby-identifier">of</span>(<span class="ruby-identifier">path</span>).<span class="ruby-identifier">first</span>
-  <span class="ruby-identifier">mime</span> = <span class="ruby-identifier">type</span>.<span class="ruby-identifier">simplified</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span>
-  <span class="ruby-identifier">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;Content-Type&#39;</span>, <span class="ruby-identifier">mime</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">mime</span>
-  <span class="ruby-identifier">mime</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__raise_if_empty" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__raise_if_empty</span><span
-            class="method-args">(path, type)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__raise_if_empty-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 58</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__raise_if_empty</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Parameter</span>, <span class="ruby-node">&quot;path or type empty: #{path}, #{type}&quot;</span>)
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
       <div id="method-c-get" class="method-detail ">
         
         <div class="method-heading">
@@ -481,8 +214,8 @@
 
           
           <div class="method-source-code" id="get-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 20</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
+            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">__raise_if_empty</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>(<span class="ruby-identifier">path</span>)
@@ -520,8 +253,8 @@
 
           
           <div class="method-source-code" id="meta_path-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 101</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">meta_path</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">path</span>)
+            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">meta_path</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">path</span>)
   <span class="ruby-identifier">file_name</span> = <span class="ruby-node">&quot;#{File.basename(path, &#39;.*&#39;)}.#{type}.#{EXTENSION}&quot;</span>
   <span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">path</span>), <span class="ruby-identifier">file_name</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -554,18 +287,18 @@
 
           
           <div class="method-source-code" id="parse-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 105</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">ffmpeg_output</span>)
+            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">parse</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">ffmpeg_output</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">ffmpeg_output</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
     <span class="ruby-keyword">when</span> <span class="ruby-constant">AUDIO</span>
       <span class="ruby-constant">AUDIO_REGEX</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">ffmpeg_output</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
-        <span class="ruby-identifier">result</span> = <span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;none&#39;</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
+        <span class="ruby-identifier">result</span> = <span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;none&#39;</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">when</span> <span class="ruby-constant">DIMENSIONS</span>
       <span class="ruby-constant">DIMENSIONS_REGEX</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">ffmpeg_output</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
-        <span class="ruby-identifier">result</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;x&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">match</span>[<span class="ruby-value">2</span>]
+        <span class="ruby-identifier">result</span> = <span class="ruby-node">&quot;#{match[1]}x#{match[2]}&quot;</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">when</span> <span class="ruby-constant">DURATION</span>
       <span class="ruby-constant">DURATION_REGEX</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">ffmpeg_output</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
@@ -575,7 +308,7 @@
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">when</span> <span class="ruby-constant">FPS</span>
       <span class="ruby-identifier">match</span> = <span class="ruby-constant">FPS_REGEX</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">ffmpeg_output</span>)
-      <span class="ruby-identifier">match</span> = <span class="ruby-constant">FPS_TB_REGEX</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">ffmpeg_output</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">match</span>
+      <span class="ruby-identifier">match</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">FPS_TB_REGEX</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">ffmpeg_output</span>)
       <span class="ruby-identifier">result</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">round</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
@@ -610,8 +343,8 @@
 
           
           <div class="method-source-code" id="set-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 131</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">data</span>)
+            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">data</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">path</span>
     <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">meta_path</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">path</span>), <span class="ruby-string">&#39;w&#39;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">data</span>) }
   <span class="ruby-keyword">end</span>
@@ -646,8 +379,8 @@
 
           
           <div class="method-source-code" id="set_if-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 82</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">set_if</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">result</span>)
+            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">set_if</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">result</span>)
   <span class="ruby-identifier">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">result</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -679,14 +412,14 @@
 
           
           <div class="method-source-code" id="type-source">
-            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 137</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>(<span class="ruby-identifier">path</span>)
+            <pre><span class="ruby-comment"># File lib/constant/info.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">type</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">path</span>
     <span class="ruby-identifier">result</span> = <span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;type&#39;</span>)
     <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>
       <span class="ruby-identifier">mime</span> = <span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;Content-Type&#39;</span>)
-      <span class="ruby-identifier">mime</span> = <span class="ruby-identifier">__mime</span>(<span class="ruby-identifier">path</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">mime</span>
+      <span class="ruby-identifier">mime</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">__mime</span>(<span class="ruby-identifier">path</span>)
       <span class="ruby-identifier">result</span> = <span class="ruby-identifier">mime</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;/&#39;</span>).<span class="ruby-identifier">shift</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">mime</span>
       <span class="ruby-identifier">set</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;type&#39;</span>, <span class="ruby-identifier">result</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>
     <span class="ruby-keyword">end</span>
@@ -706,12 +439,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -101,25 +103,12 @@
 
   <section class="description">
     
-<p>A <a href="Transfer.html">Transfer</a> object used for <a
-href="Asset.html#method-i-source">MovieMasher::Asset#source</a> and
-Media#source, describing how to retrieve an audio, image, video or mash
-JSON/YML file.</p>
+<p>A <a href="Transfer.html"><code>Transfer</code></a> object used for <a href="Asset.html#method-i-source"><code>Input#source</code></a> and Media#source, describing how to retrieve an audio, image, video or mash JSON/YML file.</p>
 
-<p>When building file paths, components will automatically have slashes
-inserted between them as needed so trailing and leading slashes are
-optional. The <a href="Source.html#method-i-extension">extension</a> will
-be populated and removed from <a href="Source.html#method-i-name">name</a>
-if it exists there. # <a
-href="https://user:pass@example.com:444/media/video.mp4">user:pass@example.com:444/media/video.mp4</a>
-<a href="Source.html#method-c-create">::create</a> { type: Type::HTTPS,
-user: &#39;user&#39;, pass: &#39;pass&#39;, host: &#39;example.com&#39;,
-port: 444, path: &#39;media/video.mp4&#39; }</p>
+<p>When building file paths, components will automatically have slashes inserted between them as needed so trailing and leading slashes are optional. The <a href="Source.html#method-i-extension"><code>extension</code></a> will be populated and removed from <a href="Source.html#method-i-name"><code>name</code></a> if it exists there. # <a href="https://user:pass@example.com:444/media/video.mp4">user:pass@example.com:444/media/video.mp4</a> <a href="Source.html#method-c-create"><code>Source.create</code></a> { type: Type::HTTPS, user: &#39;user&#39;, pass: &#39;pass&#39;, host: &#39;example.com&#39;, port: 444, path: &#39;media/video.mp4&#39; }</p>
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -158,8 +147,8 @@ port: 444, path: &#39;media/video.mp4&#39; }</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/source.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Source</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Source</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -191,8 +180,8 @@ port: 444, path: &#39;media/video.mp4&#39; }</p>
 
           
           <div class="method-source-code" id="create_if-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 24</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_if</span>(<span class="ruby-identifier">hash</span>)
+            <pre><span class="ruby-comment"># File lib/source.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">create_if</span>(<span class="ruby-identifier">hash</span>)
   (<span class="ruby-identifier">hash</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -224,9 +213,9 @@ port: 444, path: &#39;media/video.mp4&#39; }</p>
 
           
           <div class="method-source-code" id="init_hash-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_hash</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
-  <span class="ruby-identifier">hash</span> = {} <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hash</span>
+            <pre><span class="ruby-comment"># File lib/source.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">init_hash</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">hash</span> <span class="ruby-operator">||=</span> {}
   <span class="ruby-constant">Hashable</span>.<span class="ruby-identifier">_init_key</span> <span class="ruby-identifier">hash</span>, <span class="ruby-value">:type</span>, <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">hash</span>[<span class="ruby-value">:type</span>]
   <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span>
@@ -265,8 +254,8 @@ port: 444, path: &#39;media/video.mp4&#39; }</p>
 
           
           <div class="method-source-code" id="init_string-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 38</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init_string</span>(<span class="ruby-identifier">url</span>)
+            <pre><span class="ruby-comment"># File lib/source.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">init_string</span>(<span class="ruby-identifier">url</span>)
   <span class="ruby-identifier">hash</span> = {}
   <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span> <span class="ruby-identifier">url</span>
   <span class="ruby-identifier">hash</span>[<span class="ruby-value">:type</span>] = <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">scheme</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">scheme</span> <span class="ruby-comment">#=&gt; &quot;http(s)&quot;</span>
@@ -312,8 +301,8 @@ port: 444, path: &#39;media/video.mp4&#39; }</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 57</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">hash_or_string</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/source.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">hash_or_string</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">hash_or_string</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
     <span class="ruby-identifier">hash_or_string</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">init_string</span>(<span class="ruby-identifier">hash_or_string</span>)
   <span class="ruby-keyword">end</span>
@@ -357,8 +346,8 @@ port: 444, path: &#39;media/video.mp4&#39; }</p>
 
           
           <div class="method-source-code" id="extension-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 50</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension</span>
+            <pre><span class="ruby-comment"># File lib/source.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">extension</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -386,16 +375,15 @@ port: 444, path: &#39;media/video.mp4&#39; }</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>Appended to file path after <a href="Source.html#method-i-name">name</a>,
-with period inserted between.</p>
+<p>Appended to file path after <a href="Source.html#method-i-name"><code>name</code></a>, with period inserted between.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="extension-3D-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 54</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/source.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">extension=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -427,8 +415,8 @@ with period inserted between.</p>
 
           
           <div class="method-source-code" id="name-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 64</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
+            <pre><span class="ruby-comment"># File lib/source.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">name</span>
   <span class="ruby-identifier">_get</span> <span class="ruby-identifier">__method__</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -456,17 +444,15 @@ with period inserted between.</p>
           
           <dl class="rdoc-list note-list"><dt>String
 <dd>
-<p>The full or basename of file appended to file path. If full, <a
-href="Source.html#method-i-extension">extension</a> will be set and removed
-from value.</p>
+<p>The full or basename of file appended to file path. If full, <a href="Source.html#method-i-extension"><code>extension</code></a> will be set and removed from value.</p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="name-3D-source">
-            <pre><span class="ruby-comment"># File lib/source.rb, line 69</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/source.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">name=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span> <span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -482,12 +468,13 @@ from value.</p>
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

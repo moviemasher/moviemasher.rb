@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -94,8 +96,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -131,19 +131,21 @@
 
           
           <div class="method-source-code" id="__filter_trim_input-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 95</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_trim_input</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 114</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__filter_trim_input</span>
   <span class="ruby-identifier">filter</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;no offset&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:offset</span>]
+
   <span class="ruby-identifier">offset</span> = <span class="ruby-ivar">@input</span>[<span class="ruby-value">:offset</span>]
   <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;no length&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@input</span>[<span class="ruby-value">:length</span>]
+
   <span class="ruby-identifier">length</span> = <span class="ruby-ivar">@input</span>[<span class="ruby-value">:length</span>]
   <span class="ruby-identifier">trim_beginning</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">offset</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
   <span class="ruby-identifier">trim_end</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">length</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
   <span class="ruby-identifier">trim_end</span> <span class="ruby-operator">&amp;&amp;=</span> (<span class="ruby-ivar">@input</span>[<span class="ruby-value">:duration</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">offset</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">length</span>))
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">trim_beginning</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">trim_end</span>
     <span class="ruby-comment"># start and duration look at timestamp and change it</span>
-    <span class="ruby-identifier">filter</span> = <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;trim&#39;</span>, <span class="ruby-identifier">duration</span><span class="ruby-operator">:</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>(<span class="ruby-identifier">length</span>))
+    <span class="ruby-identifier">filter</span> = <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;trim&#39;</span>, <span class="ruby-value">duration:</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>(<span class="ruby-identifier">length</span>))
     <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">hash</span>[<span class="ruby-value">:start</span>] = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>(<span class="ruby-identifier">offset</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">trim_beginning</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">filter</span>
@@ -176,14 +178,14 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Layer.html#method-i-initialize_chains">MovieMasher::Layer#initialize_chains</a>
+              <a href="Layer.html#method-i-initialize_chains"><code>MovieMasher::Layer#initialize_chains</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="initialize_chains-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 67</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_chains</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize_chains</span>
   <span class="ruby-comment"># puts &quot;LayerRawVideo#initialize_chains&quot;</span>
   <span class="ruby-identifier">chain</span> = <span class="ruby-constant">Chain</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">nil</span>, <span class="ruby-ivar">@job_input</span>)
   <span class="ruby-ivar">@filter_movie</span> = <span class="ruby-constant">FilterSourceVideo</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>, <span class="ruby-ivar">@job_input</span>)
@@ -192,7 +194,7 @@
   <span class="ruby-ivar">@trim_filter</span> = <span class="ruby-identifier">__filter_trim_input</span>
   <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@trim_filter</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@trim_filter</span>
   <span class="ruby-comment"># fps is placeholder since each output has its own rate</span>
-  <span class="ruby-ivar">@fps_filter</span> = <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;fps&#39;</span>, <span class="ruby-identifier">fps</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>)
+  <span class="ruby-ivar">@fps_filter</span> = <span class="ruby-constant">FilterHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;fps&#39;</span>, <span class="ruby-value">fps:</span> <span class="ruby-value">0</span>)
   <span class="ruby-identifier">chain</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@fps_filter</span>
   <span class="ruby-comment"># set presentation timestamp filter</span>
   <span class="ruby-ivar">@filter_timestamps</span> = <span class="ruby-constant">FilterSetpts</span>.<span class="ruby-identifier">new</span>
@@ -229,15 +231,16 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="LayerRaw.html#method-i-layer_command">MovieMasher::LayerRaw#layer_command</a>
+              <a href="LayerRaw.html#method-i-layer_command"><code>MovieMasher::LayerRaw#layer_command</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="layer_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 85</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">layer_command</span>(<span class="ruby-identifier">scope</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">layer_command</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-string">&#39;layer_command with empty scope&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">scope</span>
+
   <span class="ruby-identifier">output_type_is_not_video</span> = (<span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">VIDEO</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>][<span class="ruby-value">:type</span>])
   <span class="ruby-comment"># puts &quot;output_type_is_not_video = #{output_type_is_not_video}&quot;</span>
   <span class="ruby-ivar">@fps_filter</span>.<span class="ruby-identifier">disabled</span> = <span class="ruby-identifier">output_type_is_not_video</span>
@@ -259,12 +262,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

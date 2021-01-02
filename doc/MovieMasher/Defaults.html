@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -91,8 +93,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -152,15 +152,16 @@
 
           
           <div class="method-source-code" id="__font_default-source">
-            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__font_default</span>
+            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">__font_default</span>
   <span class="ruby-identifier">config</span> = {}
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:id</span>] = <span class="ruby-constant">FONT_ID</span>
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:type</span>] = <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FONT</span>
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:source</span>] = {}
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:source</span>][<span class="ruby-value">:method</span>] = <span class="ruby-constant">Method</span><span class="ruby-operator">::</span><span class="ruby-constant">SYMLINK</span>
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:source</span>][<span class="ruby-value">:type</span>] = <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE</span>
-  <span class="ruby-identifier">config</span>[<span class="ruby-value">:cached_file</span>] = <span class="ruby-node">&quot;#{File.dirname(__FILE__)}/../../config/font/&quot;</span>         <span class="ruby-string">&#39;theleagueof-blackout/webfonts/blackout_two_am-webfont.ttf&#39;</span>
+  <span class="ruby-identifier">config</span>[<span class="ruby-value">:cached_file</span>] = <span class="ruby-node">&quot;#{File.dirname(__FILE__)}/../../config/font/&quot;</span>\
+    <span class="ruby-string">&#39;theleagueof-blackout/webfonts/blackout_two_am-webfont.ttf&#39;</span>
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:family</span>] = <span class="ruby-string">&#39;Blackout Two AM&#39;</span>
   <span class="ruby-identifier">config</span>
 <span class="ruby-keyword">end</span></pre>
@@ -193,8 +194,8 @@
 
           
           <div class="method-source-code" id="__merger_default-source">
-            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 33</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__merger_default</span>
+            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">__merger_default</span>
   <span class="ruby-identifier">config</span> = {}
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:id</span>] = <span class="ruby-constant">MERGER_ID</span>
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:type</span>] = <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">MERGER</span>
@@ -202,8 +203,8 @@
   <span class="ruby-identifier">overlay_config</span> = {}
   <span class="ruby-identifier">overlay_config</span>[<span class="ruby-value">:id</span>] = <span class="ruby-string">&#39;overlay&#39;</span>
   <span class="ruby-identifier">overlay_config</span>[<span class="ruby-value">:parameters</span>] = []
-  <span class="ruby-identifier">overlay_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;x&#39;</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;0&#39;</span> }
-  <span class="ruby-identifier">overlay_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;y&#39;</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;0&#39;</span> }
+  <span class="ruby-identifier">overlay_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">name:</span> <span class="ruby-string">&#39;x&#39;</span>, <span class="ruby-value">value:</span> <span class="ruby-string">&#39;0&#39;</span> }
+  <span class="ruby-identifier">overlay_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">name:</span> <span class="ruby-string">&#39;y&#39;</span>, <span class="ruby-value">value:</span> <span class="ruby-string">&#39;0&#39;</span> }
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:filters</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">overlay_config</span>
   <span class="ruby-identifier">config</span>
 <span class="ruby-keyword">end</span></pre>
@@ -236,8 +237,8 @@
 
           
           <div class="method-source-code" id="__scaler_default-source">
-            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 46</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__scaler_default</span>
+            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">__scaler_default</span>
   <span class="ruby-identifier">config</span> = {}
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:id</span>] = <span class="ruby-constant">SCALER_ID</span>
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:type</span>] = <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">SCALER</span>
@@ -245,14 +246,14 @@
   <span class="ruby-identifier">scale_config</span> = {}
   <span class="ruby-identifier">scale_config</span>[<span class="ruby-value">:id</span>] = <span class="ruby-string">&#39;scale&#39;</span>
   <span class="ruby-identifier">scale_config</span>[<span class="ruby-value">:parameters</span>] = []
-  <span class="ruby-identifier">scale_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;width&#39;</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;mm_width&#39;</span> }
-  <span class="ruby-identifier">scale_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;height&#39;</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;mm_height&#39;</span> }
+  <span class="ruby-identifier">scale_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">name:</span> <span class="ruby-string">&#39;width&#39;</span>, <span class="ruby-value">value:</span> <span class="ruby-string">&#39;mm_width&#39;</span> }
+  <span class="ruby-identifier">scale_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">name:</span> <span class="ruby-string">&#39;height&#39;</span>, <span class="ruby-value">value:</span> <span class="ruby-string">&#39;mm_height&#39;</span> }
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:filters</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">scale_config</span>
   <span class="ruby-identifier">setsar_config</span> = {}
   <span class="ruby-identifier">setsar_config</span>[<span class="ruby-value">:id</span>] = <span class="ruby-string">&#39;setsar&#39;</span>
   <span class="ruby-identifier">setsar_config</span>[<span class="ruby-value">:parameters</span>] = []
-  <span class="ruby-identifier">setsar_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;sar&#39;</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;1&#39;</span> }
-  <span class="ruby-identifier">setsar_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;max&#39;</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;1&#39;</span> }
+  <span class="ruby-identifier">setsar_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">name:</span> <span class="ruby-string">&#39;sar&#39;</span>, <span class="ruby-value">value:</span> <span class="ruby-string">&#39;1&#39;</span> }
+  <span class="ruby-identifier">setsar_config</span>[<span class="ruby-value">:parameters</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">name:</span> <span class="ruby-string">&#39;max&#39;</span>, <span class="ruby-value">value:</span> <span class="ruby-string">&#39;1&#39;</span> }
   <span class="ruby-identifier">config</span>[<span class="ruby-value">:filters</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">setsar_config</span>
   <span class="ruby-identifier">config</span>
 <span class="ruby-keyword">end</span></pre>
@@ -285,8 +286,8 @@
 
           
           <div class="method-source-code" id="__string-source">
-            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 18</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__string</span>(<span class="ruby-identifier">type</span>)
+            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">__string</span>(<span class="ruby-identifier">type</span>)
   (<span class="ruby-identifier">type</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:id2name</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">id2name</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">type</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -318,8 +319,8 @@
 
           
           <div class="method-source-code" id="module_for_type-source">
-            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 7</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">module_for_type</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">media_id</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/constant/defaults.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">module_for_type</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">media_id</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">type</span> = <span class="ruby-identifier">__string</span>(<span class="ruby-identifier">type</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
   <span class="ruby-keyword">when</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">FONT</span>
@@ -343,12 +344,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 
