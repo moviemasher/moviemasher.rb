@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'aws_helper'
 
 module MovieMasher
@@ -9,13 +11,16 @@ module MovieMasher
       problem &&= config[:queue_name].to_s.empty?
       !problem
     end
+
     def initialize
       @queue_url = nil
       super
     end
+
     def queue_url
       @queue_url ||= __queue_url
     end
+
     def __queue_url
       if configuration[:queue_url].to_s.empty?
         options = { queue_name: configuration[:queue_name] }
@@ -24,6 +29,7 @@ module MovieMasher
         configuration[:queue_url]
       end
     end
+
     def receive_job
       receive_options = {
         max_number_of_messages: 1, queue_url: queue_url,

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module MovieMasher
   # default scaler, merger and font
   module Defaults
-    SCALER_ID = 'com.moviemasher.scaler.default'.freeze
-    MERGER_ID = 'com.moviemasher.merger.default'.freeze
-    FONT_ID = 'com.moviemasher.font.default'.freeze
+    SCALER_ID = 'com.moviemasher.scaler.default'
+    MERGER_ID = 'com.moviemasher.merger.default'
+    FONT_ID = 'com.moviemasher.font.default'
     def self.module_for_type(type, media_id = nil)
       type = __string(type)
       case type
@@ -15,9 +17,11 @@ module MovieMasher
         __scaler_default unless media_id && SCALER_ID != media_id
       end
     end
+
     def self.__string(type)
       (type.respond_to?(:id2name) ? type.id2name : type)
     end
+
     def self.__font_default
       config = {}
       config[:id] = FONT_ID
@@ -30,6 +34,7 @@ module MovieMasher
       config[:family] = 'Blackout Two AM'
       config
     end
+
     def self.__merger_default
       config = {}
       config[:id] = MERGER_ID
@@ -43,6 +48,7 @@ module MovieMasher
       config[:filters] << overlay_config
       config
     end
+
     def self.__scaler_default
       config = {}
       config[:id] = SCALER_ID

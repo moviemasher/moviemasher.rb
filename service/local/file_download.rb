@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # 'downloads' assets via local file system
@@ -12,6 +13,7 @@ module MovieMasher
       unless File.exist?(source_path)
         raise(Error::JobInput, "file does not exist #{source_path}")
       end
+
       unless cache_url_path.start_with?('/')
         cache_url_path = File.expand_path(cache_url_path)
       end
@@ -24,10 +26,10 @@ module MovieMasher
       else # Method::SYMLINK
         FileUtils.symlink(source_path, cache_url_path)
       end
-      unless File.size?(cache_url_path)
-        msg = "could not #{method} #{source_path} to #{cache_url_path}"
-        raise(Error::JobInput, msg)
-      end
+      return if File.size?(cache_url_path)
+
+      msg = "could not #{method} #{source_path} to #{cache_url_path}"
+      raise(Error::JobInput, msg)
     end
   end
 end

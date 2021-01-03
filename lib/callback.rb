@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # A Transfer object and element in Job#callbacks representing a remote
@@ -38,6 +39,7 @@ module MovieMasher
     def self.create(hash = nil)
       (hash.is_a?(Callback) ? hash : Callback.new(hash))
     end
+
     def self.init_hash(hash)
       Hashable._init_key(hash, :trigger, Trigger::COMPLETE)
       if Trigger::PROGRESS == hash[:trigger]
@@ -45,41 +47,51 @@ module MovieMasher
       end
       Transfer.init_hash(hash)
     end
+
     def data
       _get(__method__)
     end
+
     # Hash/Array - Values to recursively evaluate and parse into request body.
     # Default - nil
     def data=(value)
       _set(__method__, value)
     end
+
     def extension
       _get(__method__)
     end
+
     # String - Added to file path after #name, with period inserted between.
     def extension=(value)
       _set(__method__, value)
     end
+
     def name
       _get(__method__)
     end
+
     # String - The full or basename of file added to URL after #path. If full,
     # #extension will be set and removed from value.
     def name=(value)
       _set(__method__, value)
     end
+
     def progress_seconds
       _get(__method__)
     end
+
     # Integer - Seconds to wait before making requests.
     # Default - 44100
     # Triggers - Only Trigger::PROGRESS.
     def progress_seconds=(value)
       _set(__method__, value)
     end
+
     def trigger
       _get(__method__)
     end
+
     # String - The event that fires the request.
     # Constant - Trigger::INITIATE, Trigger::PROGRESS, Trigger::ERROR or
     #            Trigger::COMPLETE

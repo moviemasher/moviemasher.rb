@@ -1,5 +1,6 @@
 def expect_s3_file(bucket_name, path)
-  bucket = MovieMasher::Service.instance(:upload, :s3).s3_resource.bucket(bucket_name)
+  bucket = MovieMasher::Service.instance(:upload,
+                                         :s3).s3_resource.bucket(bucket_name)
   object = bucket.object(path)
   expect(object).to be_exists
 end
@@ -30,13 +31,16 @@ def expect_colors_video(colors, video_file)
     reported = color_frames[i]
     expected = colors[i]
     next if reported == expected
+
     puts "#{reported} != #{expected}" if reported[:frames] != expected[:frames]
     expect(reported[:frames]).to eq expected[:frames]
     reported_color = reported[:color]
     expected_color = MagickGenerator.output_color(expected[:color], 'jpg')
     next if expected_color == reported_color
+
     expected_color = MagickGenerator.output_color(expected[:color], 'png')
     next if expected_color == reported_color
+
     puts video_file
     expect(reported).to eq expected
   end

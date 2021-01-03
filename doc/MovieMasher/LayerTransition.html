@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -98,8 +100,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -134,16 +134,17 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Layer.html#method-c-new">MovieMasher::Layer.new</a>
+              <a href="Layer.html#method-c-new"><code>MovieMasher::Layer::new</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 130</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">input</span>, <span class="ruby-identifier">job_input</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 153</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">input</span>, <span class="ruby-identifier">job_input</span>)
   <span class="ruby-ivar">@job</span> = <span class="ruby-identifier">job</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-string">&#39;no job&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@job</span>
+
   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">job_input</span>)
   <span class="ruby-ivar">@graphs</span> = []
 <span class="ruby-keyword">end</span></pre>
@@ -184,10 +185,9 @@
 
           
           <div class="method-source-code" id="add_new_layer-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 122</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_new_layer</span>(<span class="ruby-identifier">clip</span>)
-  <span class="ruby-identifier">layer_letter</span> = <span class="ruby-string">&#39;a&#39;</span>
-  <span class="ruby-ivar">@graphs</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">times</span> { <span class="ruby-identifier">layer_letter</span>.<span class="ruby-identifier">next!</span> }
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 145</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_new_layer</span>(<span class="ruby-identifier">clip</span>)
+  <span class="ruby-identifier">layer_letter</span> = (<span class="ruby-string">&#39;a&#39;</span><span class="ruby-operator">..</span><span class="ruby-string">&#39;z&#39;</span>).<span class="ruby-identifier">to_a</span>[<span class="ruby-ivar">@graphs</span>.<span class="ruby-identifier">length</span>]
   <span class="ruby-identifier">layer_label</span> = <span class="ruby-node">&quot;#{layer_letter}_#{Type::TRANSITION}&quot;</span>
   <span class="ruby-identifier">graph</span> = <span class="ruby-constant">GraphMash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@job</span>, <span class="ruby-ivar">@job_input</span>, <span class="ruby-ivar">@input</span>[<span class="ruby-value">:range</span>], <span class="ruby-identifier">layer_label</span>)
   <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">add_new_layer</span>(<span class="ruby-identifier">clip</span>)
@@ -221,24 +221,24 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Layer.html#method-i-initialize_chains">MovieMasher::Layer#initialize_chains</a>
+              <a href="Layer.html#method-i-initialize_chains"><code>MovieMasher::Layer#initialize_chains</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="initialize_chains-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 136</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_chains</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 161</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize_chains</span>
   <span class="ruby-comment"># puts &quot;LayerTransition.initialize_chains #{@input}&quot;</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-ivar">@layers</span> = []
   <span class="ruby-identifier">c1</span> = {}
   <span class="ruby-identifier">c2</span> = {}
   <span class="ruby-ivar">@layer_chains</span> = [<span class="ruby-identifier">c1</span>, <span class="ruby-identifier">c2</span>]
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">__is_and_not_empty</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:from</span>][<span class="ruby-value">:filters</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">_present</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:from</span>][<span class="ruby-value">:filters</span>])
     <span class="ruby-identifier">c1</span>[<span class="ruby-value">:filters</span>] = <span class="ruby-constant">ChainModule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:from</span>], <span class="ruby-ivar">@job_input</span>, <span class="ruby-ivar">@input</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">__is_and_not_empty</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:to</span>][<span class="ruby-value">:filters</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">_present</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:to</span>][<span class="ruby-value">:filters</span>])
     <span class="ruby-identifier">c2</span>[<span class="ruby-value">:filters</span>] = <span class="ruby-constant">ChainModule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:to</span>], <span class="ruby-ivar">@job_input</span>, <span class="ruby-ivar">@input</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">c1</span>[<span class="ruby-value">:merger</span>] = <span class="ruby-constant">ChainModule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@input</span>[<span class="ruby-value">:from</span>][<span class="ruby-value">:merger</span>], <span class="ruby-ivar">@job_input</span>, <span class="ruby-ivar">@input</span>)
@@ -278,8 +278,8 @@
 
           
           <div class="method-source-code" id="inputs-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 157</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">inputs</span>
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inputs</span>
   <span class="ruby-identifier">graph_inputs</span> = []
   <span class="ruby-ivar">@graphs</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">graph</span><span class="ruby-operator">|</span> <span class="ruby-identifier">graph_inputs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">inputs</span> }
   <span class="ruby-identifier">graph_inputs</span>
@@ -313,10 +313,10 @@
 
           
           <div class="method-source-code" id="layer_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 162</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">layer_command</span>(<span class="ruby-identifier">scope</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/layers.rb, line 189</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">layer_command</span>(<span class="ruby-identifier">scope</span>)
   <span class="ruby-identifier">layer_scope</span>(<span class="ruby-identifier">scope</span>)
-  <span class="ruby-identifier">layer_letter</span> = <span class="ruby-string">&#39;a&#39;</span>
+  <span class="ruby-identifier">layer_letters</span> = (<span class="ruby-string">&#39;a&#39;</span><span class="ruby-operator">..</span><span class="ruby-string">&#39;z&#39;</span>).<span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">cycle</span>
   <span class="ruby-identifier">cmds</span> = []
   <span class="ruby-identifier">merge_cmds</span> = []
   <span class="ruby-identifier">last_label</span> = <span class="ruby-string">&#39;[transback]&#39;</span>
@@ -324,8 +324,8 @@
   <span class="ruby-identifier">backcolor_cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">last_label</span>
   <span class="ruby-ivar">@graphs</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">graph</span> = <span class="ruby-ivar">@graphs</span>[<span class="ruby-identifier">i</span>]
-    <span class="ruby-identifier">layer_label</span> = <span class="ruby-node">&quot;#{layer_letter}_#{Type::TRANSITION}&quot;</span>
-    <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">graph_command</span>(<span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>], <span class="ruby-keyword">true</span>)
+    <span class="ruby-identifier">layer_label</span> = <span class="ruby-node">&quot;#{layer_letters.next}_#{Type::TRANSITION}&quot;</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">graph</span>.<span class="ruby-identifier">graph_command</span>(<span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_output</span>], <span class="ruby-value">dont_set_input_index:</span> <span class="ruby-keyword">true</span>)
     <span class="ruby-identifier">layer_chain</span> = <span class="ruby-ivar">@layer_chains</span>[<span class="ruby-identifier">i</span>]
     <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;,&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-string">&#39;:v]&#39;</span>)
     <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">layer_chain</span>[<span class="ruby-value">:scaler</span>].<span class="ruby-identifier">chain_command</span>(<span class="ruby-identifier">scope</span>)
@@ -343,9 +343,8 @@
     <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">cur_label</span>
     <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@layer_chains</span>[<span class="ruby-identifier">i</span>][<span class="ruby-value">:merger</span>].<span class="ruby-identifier">chain_command</span>(<span class="ruby-identifier">scope</span>)
     <span class="ruby-identifier">last_label</span> = <span class="ruby-node">&quot;[#{layer_label}ed]&quot;</span>
-    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">last_label</span> <span class="ruby-keyword">if</span> <span class="ruby-value">0</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">i</span>
+    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">last_label</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">zero?</span>
     <span class="ruby-identifier">merge_cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
-    <span class="ruby-identifier">layer_letter</span>.<span class="ruby-identifier">next!</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">backcolor_cmd</span>
   <span class="ruby-identifier">cmds</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">merge_cmds</span>
@@ -364,12 +363,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -70,16 +72,6 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-c-__gcd">::__gcd</a>
-    
-    <li ><a href="#method-c-__lcm">::__lcm</a>
-    
-    <li ><a href="#method-c-__relative_time">::__relative_time</a>
-    
-    <li ><a href="#method-c-__scale">::__scale</a>
-    
-    <li ><a href="#method-c-__scale_time">::__scale_time</a>
-    
     <li ><a href="#method-c-input_length">::input_length</a>
     
     <li ><a href="#method-c-input_time">::input_time</a>
@@ -91,6 +83,10 @@
     <li ><a href="#method-c-new">::new</a>
     
     <li ><a href="#method-c-update">::update</a>
+    
+    <li ><a href="#method-c-update_inputs">::update_inputs</a>
+    
+    <li ><a href="#method-c-update_outputs">::update_outputs</a>
     
     <li ><a href="#method-i-dup">#dup</a>
     
@@ -125,8 +121,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -191,197 +185,6 @@
        </header>
 
     
-      <div id="method-c-__gcd" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__gcd</span><span
-            class="method-args">(a, b)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__gcd-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 61</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__gcd</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>) <span class="ruby-comment"># uint</span>
-  <span class="ruby-keyword">while</span> <span class="ruby-identifier">b</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
-    <span class="ruby-identifier">t</span> = <span class="ruby-identifier">b</span>
-    <span class="ruby-identifier">b</span> = <span class="ruby-identifier">a</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">b</span>
-    <span class="ruby-identifier">a</span> = <span class="ruby-identifier">t</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">a</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__lcm" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__lcm</span><span
-            class="method-args">(a, b)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__lcm-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 69</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__lcm</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>)
-  (<span class="ruby-identifier">a</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">b</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">__gcd</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>))
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__relative_time" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__relative_time</span><span
-            class="method-args">(char, value, duration)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__relative_time-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 72</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__relative_time</span>(<span class="ruby-identifier">char</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">duration</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">char</span>
-    (<span class="ruby-identifier">value</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">duration</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">HUNDRED</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">duration</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">value</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__scale" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__scale</span><span
-            class="method-args">(time, rate, rounding = :round)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__scale-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 79</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__scale</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">rate</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">time</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">__scale_time</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">rate</span>, <span class="ruby-identifier">rounding</span>)
-  <span class="ruby-keyword">elsif</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">rate</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">rate</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span>
-      <span class="ruby-identifier">floated</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span>)
-      <span class="ruby-identifier">floated</span> = <span class="ruby-identifier">floated</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">rounding</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">rounding</span>
-      <span class="ruby-identifier">time</span>.<span class="ruby-identifier">length</span> = [<span class="ruby-value">1</span>, <span class="ruby-identifier">floated</span>].<span class="ruby-identifier">max</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">__scale_time</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">rate</span>, <span class="ruby-identifier">rounding</span>)
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-c-__scale_time" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__scale_time</span><span
-            class="method-args">(time, rate, rounding = :round)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__scale_time-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 91</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">__scale_time</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">rate</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
-  <span class="ruby-identifier">rate</span> = <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:to_i</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">rate</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">rate</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span>
-      <span class="ruby-identifier">floated</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">start</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span>)
-      <span class="ruby-identifier">floated</span> = <span class="ruby-identifier">floated</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">rounding</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">rounding</span>
-      <span class="ruby-identifier">time</span>.<span class="ruby-identifier">start</span> = <span class="ruby-identifier">floated</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span> = <span class="ruby-identifier">rate</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
       <div id="method-c-input_length" class="method-detail ">
         
         <div class="method-heading">
@@ -401,8 +204,8 @@
 
           
           <div class="method-source-code" id="input_length-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 5</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">input_length</span>(<span class="ruby-identifier">input</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">input_length</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-identifier">input_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-value">:length</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -434,19 +237,19 @@
 
           
           <div class="method-source-code" id="input_time-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 8</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">input_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">key</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">input_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">key</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>
   <span class="ruby-identifier">duration</span> = <span class="ruby-identifier">input</span>[<span class="ruby-value">:duration</span>].<span class="ruby-identifier">to_f</span>
-  <span class="ruby-identifier">rel_key</span> = <span class="ruby-value">:&quot;#{key.id2name}_is_relative&quot;</span>
-  <span class="ruby-identifier">val_key</span> = <span class="ruby-value">:&quot;#{key.id2name}_relative_value&quot;</span>
+  <span class="ruby-identifier">rel_key</span> = <span class="ruby-node">&quot;#{key.id2name}_is_relative&quot;</span>.<span class="ruby-identifier">to_sym</span>
+  <span class="ruby-identifier">val_key</span> = <span class="ruby-node">&quot;#{key.id2name}_relative_value&quot;</span>.<span class="ruby-identifier">to_sym</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-identifier">rel_key</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">input</span>[<span class="ruby-identifier">val_key</span>]
     <span class="ruby-keyword">if</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
-      <span class="ruby-identifier">time</span> = <span class="ruby-identifier">__relative_time</span>(<span class="ruby-identifier">input</span>[<span class="ruby-identifier">rel_key</span>], <span class="ruby-identifier">input</span>[<span class="ruby-identifier">val_key</span>], <span class="ruby-identifier">duration</span>)
+      <span class="ruby-identifier">time</span> = <span class="ruby-identifier">relative_time</span>(<span class="ruby-identifier">input</span>[<span class="ruby-identifier">rel_key</span>], <span class="ruby-identifier">input</span>[<span class="ruby-identifier">val_key</span>], <span class="ruby-identifier">duration</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">elsif</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>], <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
     <span class="ruby-identifier">time</span> = <span class="ruby-identifier">input</span>[<span class="ruby-identifier">key</span>]
-  <span class="ruby-keyword">elsif</span> <span class="ruby-value">:length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value">:length</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">duration</span>, <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>)
     <span class="ruby-identifier">time</span> = <span class="ruby-identifier">duration</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">input_trim</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>(<span class="ruby-identifier">time</span>)
@@ -480,8 +283,8 @@
 
           
           <div class="method-source-code" id="input_trim-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 24</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">input_trim</span>(<span class="ruby-identifier">input</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">input_trim</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-identifier">input_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-value">:offset</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -513,8 +316,8 @@
 
           
           <div class="method-source-code" id="input_trim_range-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">input_trim_range</span>(<span class="ruby-identifier">input</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">input_trim_range</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-identifier">range</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">input_trim</span>(<span class="ruby-identifier">input</span>), <span class="ruby-value">1</span>, <span class="ruby-value">1</span>)
   <span class="ruby-identifier">range</span>.<span class="ruby-identifier">length</span> = <span class="ruby-identifier">input_length</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-identifier">range</span>
@@ -548,8 +351,8 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 126</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">start</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">rate</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">length</span> = <span class="ruby-value">1</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">start</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">rate</span> = <span class="ruby-value">0</span>, <span class="ruby-identifier">length</span> = <span class="ruby-value">1</span>)
   <span class="ruby-ivar">@length</span> = <span class="ruby-identifier">length</span>
   <span class="ruby-ivar">@start</span> = <span class="ruby-identifier">start</span>.<span class="ruby-identifier">to_i</span>
   <span class="ruby-ivar">@rate</span> = <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_i</span>
@@ -583,8 +386,43 @@
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 32</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">inputs</span>, <span class="ruby-identifier">outputs</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">update</span>(<span class="ruby-identifier">inputs</span>, <span class="ruby-identifier">outputs</span>)
+  <span class="ruby-identifier">output_duration</span> = <span class="ruby-identifier">update_inputs</span>(<span class="ruby-identifier">inputs</span>)
+  <span class="ruby-identifier">update_outputs</span>(<span class="ruby-identifier">outputs</span>, <span class="ruby-identifier">output_duration</span>)
+  <span class="ruby-identifier">output_duration</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-update_inputs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_inputs</span><span
+            class="method-args">(inputs)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="update_inputs-source">
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">update_inputs</span>(<span class="ruby-identifier">inputs</span>)
   <span class="ruby-identifier">start_audio</span> = <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>
   <span class="ruby-identifier">start_video</span> = <span class="ruby-constant">FloatUtil</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO</span>
   <span class="ruby-identifier">inputs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">input</span><span class="ruby-operator">|</span>
@@ -603,7 +441,40 @@
     <span class="ruby-identifier">input</span>[<span class="ruby-value">:range</span>] = <span class="ruby-identifier">input_trim_range</span>(<span class="ruby-identifier">input</span>)
     <span class="ruby-identifier">input</span>[<span class="ruby-value">:offset</span>] = <span class="ruby-identifier">input_trim</span>(<span class="ruby-identifier">input</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">output_duration</span> = <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">max</span>(<span class="ruby-identifier">start_video</span>, <span class="ruby-identifier">start_audio</span>)
+
+  <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">max</span>(<span class="ruby-identifier">start_video</span>, <span class="ruby-identifier">start_audio</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-update_outputs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_outputs</span><span
+            class="method-args">(outputs, output_duration)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="update_outputs-source">
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">update_outputs</span>(<span class="ruby-identifier">outputs</span>, <span class="ruby-identifier">output_duration</span>)
   <span class="ruby-identifier">outputs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">output</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">output</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-identifier">output_duration</span>
     <span class="ruby-keyword">if</span> <span class="ruby-constant">Type</span><span class="ruby-operator">::</span><span class="ruby-constant">SEQUENCE</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">output</span>[<span class="ruby-value">:type</span>]
@@ -611,7 +482,6 @@
       <span class="ruby-identifier">output</span>[<span class="ruby-value">:sequence</span>] = <span class="ruby-node">&quot;%0#{padding.floor.to_i.to_s.length}d&quot;</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">output_duration</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -650,8 +520,8 @@
 
           
           <div class="method-source-code" id="dup-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 105</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">dup</span>
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 128</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">dup</span>
   <span class="ruby-constant">TimeRange</span>.<span class="ruby-identifier">new</span> <span class="ruby-ivar">@start</span>, <span class="ruby-ivar">@length</span>, <span class="ruby-ivar">@rate</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -683,8 +553,8 @@
 
           
           <div class="method-source-code" id="end_seconds-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 108</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">end_seconds</span>
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 132</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">end_seconds</span>
   <span class="ruby-constant">TimeRange</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">stop</span>, <span class="ruby-identifier">rate</span>).<span class="ruby-identifier">start_seconds</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -716,21 +586,20 @@
 
           
           <div class="method-source-code" id="equals-3F-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 111</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">equals?</span>(<span class="ruby-identifier">range</span>)
-  <span class="ruby-identifier">equal</span> = <span class="ruby-keyword">false</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">range</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">rate</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">start</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">rate</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">rate</span>
-      <span class="ruby-identifier">equal</span> = ((<span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">start</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">length</span>))
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-comment"># make copies so neither range is changed</span>
-      <span class="ruby-identifier">range1</span> = <span class="ruby-identifier">dup</span>
-      <span class="ruby-identifier">range2</span> = <span class="ruby-identifier">range</span>.<span class="ruby-identifier">dup</span>
-      <span class="ruby-identifier">range1</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">range2</span>
-      <span class="ruby-identifier">equal</span> = <span class="ruby-identifier">range1</span>.<span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range2</span>.<span class="ruby-identifier">start</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">range1</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range2</span>.<span class="ruby-identifier">length</span>
-    <span class="ruby-keyword">end</span>
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">equals?</span>(<span class="ruby-identifier">range</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">range</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">rate</span>.<span class="ruby-identifier">positive?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">range</span>.<span class="ruby-identifier">start</span>.<span class="ruby-identifier">negative?</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">rate</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">rate</span>
+    ((<span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">start</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range</span>.<span class="ruby-identifier">length</span>))
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-comment"># make copies so neither range is changed</span>
+    <span class="ruby-identifier">range1</span> = <span class="ruby-identifier">dup</span>
+    <span class="ruby-identifier">range2</span> = <span class="ruby-identifier">range</span>.<span class="ruby-identifier">dup</span>
+    <span class="ruby-identifier">range1</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-identifier">range2</span>
+    <span class="ruby-identifier">range1</span>.<span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range2</span>.<span class="ruby-identifier">start</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">range1</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">range2</span>.<span class="ruby-identifier">length</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">equal</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -761,8 +630,8 @@
 
           
           <div class="method-source-code" id="intersection-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 131</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">intersection</span>(<span class="ruby-identifier">range</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 157</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">intersection</span>(<span class="ruby-identifier">range</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">range1</span> = <span class="ruby-keyword">self</span>
   <span class="ruby-identifier">range2</span> = <span class="ruby-identifier">range</span>
@@ -807,9 +676,9 @@
 
           
           <div class="method-source-code" id="length_seconds-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 147</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">length_seconds</span>(<span class="ruby-identifier">precision</span> = <span class="ruby-value">3</span>)
-  <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>((<span class="ruby-ivar">@length</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@rate</span>.<span class="ruby-identifier">to_f</span>), <span class="ruby-identifier">precision</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 174</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">length_seconds</span>(<span class="ruby-identifier">precision</span> = <span class="ruby-value">3</span>)
+  <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>((<span class="ruby-ivar">@length</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@rate</span>), <span class="ruby-identifier">precision</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -840,9 +709,9 @@
 
           
           <div class="method-source-code" id="start_seconds-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 150</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">start_seconds</span>(<span class="ruby-identifier">precision</span> = <span class="ruby-value">3</span>)
-  <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>((<span class="ruby-ivar">@start</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@rate</span>.<span class="ruby-identifier">to_f</span>), <span class="ruby-identifier">precision</span>)
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 178</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">start_seconds</span>(<span class="ruby-identifier">precision</span> = <span class="ruby-value">3</span>)
+  <span class="ruby-constant">FloatUtil</span>.<span class="ruby-identifier">precision</span>((<span class="ruby-ivar">@start</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@rate</span>), <span class="ruby-identifier">precision</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -873,8 +742,8 @@
 
           
           <div class="method-source-code" id="stop-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 153</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 182</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">stop</span>
   <span class="ruby-identifier">start</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">length</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -906,15 +775,15 @@
 
           
           <div class="method-source-code" id="synchronize-source">
-            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 156</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:rate</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:scale</span>)
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@rate</span>
-      <span class="ruby-identifier">gcf</span> = <span class="ruby-constant">TimeRange</span>.<span class="ruby-identifier">__lcm</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span>, <span class="ruby-ivar">@rate</span>)
-      <span class="ruby-identifier">scale</span>(<span class="ruby-identifier">gcf</span>, <span class="ruby-identifier">rounding</span>)
-      <span class="ruby-constant">TimeRange</span>.<span class="ruby-identifier">__scale</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">gcf</span>, <span class="ruby-identifier">rounding</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
+            <pre><span class="ruby-comment"># File lib/util/time_range.rb, line 186</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">synchronize</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">rounding</span> = <span class="ruby-value">:round</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:rate</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:scale</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@rate</span>
+
+  <span class="ruby-identifier">gcf</span> = <span class="ruby-constant">TimeRange</span>.<span class="ruby-identifier">lcm</span>(<span class="ruby-identifier">time</span>.<span class="ruby-identifier">rate</span>, <span class="ruby-ivar">@rate</span>)
+  <span class="ruby-identifier">scale</span>(<span class="ruby-identifier">gcf</span>, <span class="ruby-identifier">rounding</span>)
+  <span class="ruby-constant">TimeRange</span>.<span class="ruby-identifier">scale</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">gcf</span>, <span class="ruby-identifier">rounding</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -929,12 +798,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

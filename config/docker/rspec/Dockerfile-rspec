@@ -1,4 +1,4 @@
-FROM moviemasher/moviemasher.rb
+FROM moviemasher/moviemasher.rb:4.0.25
 MAINTAINER Movie Masher <support@moviemasher.com>
 
 # install our test gems

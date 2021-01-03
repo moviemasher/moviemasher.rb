@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -101,8 +103,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -157,7 +157,7 @@
         
         <div class="method-heading">
           <span class="method-name">cmp</span><span
-            class="method-args">(f1, f2, digits = 3)</span>
+            class="method-args">(float1, float2, digits = 3)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -166,21 +166,21 @@
 
         <div class="method-description">
           
-          
+          <p>are 2 floats equal</p>
           
           
 
           
           <div class="method-source-code" id="cmp-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 9</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">f1</span>, <span class="ruby-identifier">f2</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>) <span class="ruby-comment"># are 2 floats equal</span>
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cmp</span>(<span class="ruby-identifier">float1</span>, <span class="ruby-identifier">float2</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">digits</span>.<span class="ruby-identifier">zero?</span>
-    <span class="ruby-identifier">i1</span> = <span class="ruby-identifier">f1</span>.<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
-    <span class="ruby-identifier">i2</span> = <span class="ruby-identifier">f2</span>.<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">i1</span> = <span class="ruby-identifier">float1</span>.<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">i2</span> = <span class="ruby-identifier">float2</span>.<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">e</span> = (<span class="ruby-value">10</span><span class="ruby-operator">**</span><span class="ruby-identifier">digits</span>).<span class="ruby-identifier">to_f</span>
-    <span class="ruby-identifier">i1</span> = (<span class="ruby-identifier">f1</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
-    <span class="ruby-identifier">i2</span> = (<span class="ruby-identifier">f2</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">i1</span> = (<span class="ruby-identifier">float1</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">i2</span> = (<span class="ruby-identifier">float2</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>.<span class="ruby-identifier">to_i</span>
   <span class="ruby-keyword">end</span>
   (<span class="ruby-identifier">i1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">i2</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -207,14 +207,14 @@
 
         <div class="method-description">
           
-          
+          <p>is one float bigger than another</p>
           
           
 
           
           <div class="method-source-code" id="gtr-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 20</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">big</span>, <span class="ruby-identifier">small</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>) <span class="ruby-comment"># is one float bigger than another</span>
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">gtr</span>(<span class="ruby-identifier">big</span>, <span class="ruby-identifier">small</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
   <span class="ruby-identifier">e</span> = (<span class="ruby-value">10</span><span class="ruby-operator">**</span><span class="ruby-identifier">digits</span>).<span class="ruby-identifier">to_f</span>
   <span class="ruby-identifier">ibig</span> = (<span class="ruby-identifier">big</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>
   <span class="ruby-identifier">ismall</span> = (<span class="ruby-identifier">small</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>
@@ -243,14 +243,14 @@
 
         <div class="method-description">
           
-          
+          <p>is big greater or equal to small</p>
           
           
 
           
           <div class="method-source-code" id="gtre-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 26</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">gtre</span>(<span class="ruby-identifier">big</span>, <span class="ruby-identifier">small</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>) <span class="ruby-comment"># is big greater or equal to small</span>
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">gtre</span>(<span class="ruby-identifier">big</span>, <span class="ruby-identifier">small</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
   <span class="ruby-identifier">e</span> = (<span class="ruby-value">10</span><span class="ruby-operator">**</span><span class="ruby-identifier">digits</span>).<span class="ruby-identifier">to_f</span>
   <span class="ruby-identifier">ibig</span> = (<span class="ruby-identifier">big</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>
   <span class="ruby-identifier">ismall</span> = (<span class="ruby-identifier">small</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">e</span>).<span class="ruby-identifier">round</span>
@@ -279,14 +279,14 @@
 
         <div class="method-description">
           
-          
+          <p>is one float smaller than another</p>
           
           
 
           
           <div class="method-source-code" id="less-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 32</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">less</span>(<span class="ruby-identifier">small</span>, <span class="ruby-identifier">big</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>) <span class="ruby-comment"># is one float smaller than another</span>
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">less</span>(<span class="ruby-identifier">small</span>, <span class="ruby-identifier">big</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
   <span class="ruby-operator">!</span><span class="ruby-identifier">gtre</span>(<span class="ruby-identifier">big</span>, <span class="ruby-identifier">small</span>, <span class="ruby-identifier">digits</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -303,7 +303,7 @@
         
         <div class="method-heading">
           <span class="method-name">max</span><span
-            class="method-args">(a, b, digits = 3)</span>
+            class="method-args">(float1, float2, digits = 3)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -318,9 +318,9 @@
 
           
           <div class="method-source-code" id="max-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 35</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">max</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
-  (<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>, <span class="ruby-identifier">digits</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">a</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">b</span>)
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">max</span>(<span class="ruby-identifier">float1</span>, <span class="ruby-identifier">float2</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
+  (<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">float1</span>, <span class="ruby-identifier">float2</span>, <span class="ruby-identifier">digits</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">float1</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">float2</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -336,7 +336,7 @@
         
         <div class="method-heading">
           <span class="method-name">min</span><span
-            class="method-args">(a, b, digits = 3)</span>
+            class="method-args">(float1, float2, digits = 3)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -351,9 +351,9 @@
 
           
           <div class="method-source-code" id="min-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 38</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">min</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
-  (<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>, <span class="ruby-identifier">digits</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">b</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">a</span>)
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 51</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">min</span>(<span class="ruby-identifier">float1</span>, <span class="ruby-identifier">float2</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
+  (<span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">float1</span>, <span class="ruby-identifier">float2</span>, <span class="ruby-identifier">digits</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">float2</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">float1</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -369,7 +369,7 @@
         
         <div class="method-heading">
           <span class="method-name">nonzero</span><span
-            class="method-args">(a)</span>
+            class="method-args">(float1)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -384,9 +384,9 @@
 
           
           <div class="method-source-code" id="nonzero-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 41</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">nonzero</span>(<span class="ruby-identifier">a</span>)
-  <span class="ruby-identifier">a</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">a</span>, <span class="ruby-constant">ZERO</span>)
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nonzero</span>(<span class="ruby-identifier">float1</span>)
+  <span class="ruby-identifier">float1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">float1</span>, <span class="ruby-constant">ZERO</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -402,7 +402,7 @@
         
         <div class="method-heading">
           <span class="method-name">precision</span><span
-            class="method-args">(f, digits = 3)</span>
+            class="method-args">(float, digits = 3)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -417,10 +417,10 @@
 
           
           <div class="method-source-code" id="precision-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 44</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">precision</span>(<span class="ruby-identifier">f</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">precision</span>(<span class="ruby-identifier">float</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
   <span class="ruby-identifier">divisor</span> = (<span class="ruby-value">10</span><span class="ruby-operator">**</span><span class="ruby-identifier">digits</span>.<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">to_f</span>
-  (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">divisor</span>).<span class="ruby-identifier">round</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">divisor</span>
+  (<span class="ruby-identifier">float</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">divisor</span>).<span class="ruby-identifier">round</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">divisor</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -436,7 +436,7 @@
         
         <div class="method-heading">
           <span class="method-name">sort</span><span
-            class="method-args">(a, b)</span>
+            class="method-args">(float1, float2)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -451,12 +451,12 @@
 
           
           <div class="method-source-code" id="sort-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 48</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">sort</span>(<span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">a</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">b</span>[<span class="ruby-value">0</span>])
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sort</span>(<span class="ruby-identifier">float1</span>, <span class="ruby-identifier">float2</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">gtr</span>(<span class="ruby-identifier">float1</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">float2</span>[<span class="ruby-value">0</span>])
     <span class="ruby-value">1</span>
   <span class="ruby-keyword">else</span>
-    (<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">a</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">b</span>[<span class="ruby-value">0</span>]) <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">-1</span>)
+    (<span class="ruby-identifier">cmp</span>(<span class="ruby-identifier">float1</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">float2</span>[<span class="ruby-value">0</span>]) <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">-1</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -473,7 +473,7 @@
         
         <div class="method-heading">
           <span class="method-name">string</span><span
-            class="method-args">(f, digits = 3)</span>
+            class="method-args">(float, digits = 3)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -488,9 +488,9 @@
 
           
           <div class="method-source-code" id="string-source">
-            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 55</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">string</span>(<span class="ruby-identifier">f</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
-  <span class="ruby-identifier">precision</span> <span class="ruby-identifier">f</span>, <span class="ruby-identifier">digits</span>
+            <pre><span class="ruby-comment"># File lib/util/float_util.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">string</span>(<span class="ruby-identifier">float</span>, <span class="ruby-identifier">digits</span> = <span class="ruby-value">3</span>)
+  <span class="ruby-identifier">precision</span>(<span class="ruby-identifier">float</span>, <span class="ruby-identifier">digits</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -505,12 +505,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

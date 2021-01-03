@@ -1,4 +1,4 @@
-FROM ruby:2.2
+FROM ruby:2.7
 MAINTAINER Movie Masher <support@moviemasher.com>
 
 ENV HOME /root
@@ -7,16 +7,15 @@ ENV HOME /root
 RUN apt-get update && apt-get install -y \
   apt-utils \
   build-essential \
-  checkinstall \
   cmake \
   git \
   subversion \
   wget \
-  yasm
+  yasm \
+  nasm
 
 # install video libs and plugins
 RUN apt-get update && apt-get install -y \
-  libdirac-dev \
   libfontconfig-dev \
   libfribidi-dev \
   libgd-dev \
@@ -37,39 +36,28 @@ RUN apt-get update && apt-get install -y \
   libtheora-dev \
   libvorbis-dev \
   sox \
-  ecasound
-
+  ecasound \
+  libmad0-dev \
+  libid3tag0-dev \
+  libboost-all-dev
 
 WORKDIR /data
 
 RUN \
   cd /data; \
-  wget https://github.com/uclouvain/openjpeg/archive/version.2.1.tar.gz; \
-  tar -xzvf version.2.1.tar.gz; \
-  cd /data/openjpeg-version.2.1; \
-  cmake .; \
+  git clone https://github.com/uclouvain/openjpeg.git; \
+  mkdir openjpeg/build; \
+  cd openjpeg/build; \
+  cmake .. -DCMAKE_BUILD_TYPE=Release; \
   make; \
   make install; \
-  rm -R /data/openjpeg-version.2.1
-
-# latest nasm required for x264
-RUN \
-  cd /data; \
-  wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.02/nasm-2.13.02.tar.gz; \
-  tar -xzvf nasm-2.13.02.tar.gz; \
-  cd /data/nasm-2.13.02; \
-  ./configure; \
-  make; \
-  make install; \
-  checkinstall --pkgname=nasm --pkgversion="2.13.02" --backup=no --deldoc=yes --fstrans=no --default
-
+  rm -R /data/openjpeg
 
 # pull, configure, make and install x264
 RUN \
   cd /data; \
-  git clone git://git.videolan.org/x264.git; \
+  git clone https://code.videolan.org/videolan/x264.git; \
   cd /data/x264; \
-  git checkout ba24899b0bf23345921da022f7a51e0c57dbe73d; \
   ./configure --prefix=/usr --enable-shared; \
   make; \
   make install; \
@@ -78,9 +66,9 @@ RUN \
 # pull, configure, make and install most recent ffmpeg
 RUN \
   cd /data; \
-  wget https://ffmpeg.org/releases/ffmpeg-3.4.1.tar.gz; \
-  tar -xzvf ffmpeg-3.4.1.tar.gz; \
-  cd /data/ffmpeg-3.4.1; \
+  wget https://ffmpeg.org/releases/ffmpeg-4.2.4.tar.gz; \
+  tar -xzvf ffmpeg-4.2.4.tar.gz; \
+  cd /data/ffmpeg-4.2.4; \
   ./configure \
     --enable-frei0r \
     --enable-gpl \
@@ -94,7 +82,6 @@ RUN \
     --enable-libspeex \
     --enable-libtheora \
     --enable-libvorbis \
-    --enable-libvpx \
     --enable-libx264 \
     --enable-libxvid \
     --enable-postproc \
@@ -105,24 +92,26 @@ RUN \
   ; \
   make; \
   make install; \
-  rm -R /data/ffmpeg-3.4.1;
+  rm -R /data/ffmpeg-4.2.4;
 
 # needed for binaries to find libraries
 RUN ldconfig
 
+# install audiowaveform to build waveform PNGs
+RUN \
+  cd /data; \
+  git clone https://github.com/bbc/audiowaveform.git; \
+  mkdir audiowaveform/build; \
+  cd audiowaveform/build; \
+  cmake -D ENABLE_TESTS=0 ..; \
+  make; \
+  make install; \
+  audiowaveform --help
+
 # install our production gems
 COPY Gemfile /data/
 RUN \
-  cd /data; \
   bundle install;
-
-# copy, make and install wav2png
-COPY bin/wav2png/* /data/wav2png/
-RUN \
-  cd /data/wav2png; \
-  make; \
-  mv wav2png /usr/bin/; \
-  rm -R /data/wav2png
 
 # copy everything except what's caught by .dockerignore
 COPY . /mnt/moviemasher.rb/

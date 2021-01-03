@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -112,8 +114,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -151,8 +151,8 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 6</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">create</span>(<span class="ruby-identifier">hash</span> = <span class="ruby-keyword">nil</span>)
   (<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Clip</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">hash</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Clip</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hash</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -186,12 +186,12 @@
 
         <div class="method-description">
           
-          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html"><code>Transfer</code></a>
 <dd>
 <p>Resolves relative URLs.</p>
 </dd><dt>Default
 <dd>
-<p><a href="Job.html#method-i-base_source">MovieMasher::Job#base_source</a></p>
+<p><a href="Job.html#method-i-base_source"><code>Job#base_source</code></a></p>
 </dd><dt>Types
 <dd>
 <p>Just Type::MASH.</p>
@@ -201,8 +201,8 @@
 
           
           <div class="method-source-code" id="base_source-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 12</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">base_source</span>
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">base_source</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -234,8 +234,8 @@
 
           
           <div class="method-source-code" id="duration-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 15</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">duration</span>
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">duration</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -263,7 +263,7 @@
           
           <dl class="rdoc-list note-list"><dt>Float
 <dd>
-<p>Seconds of <a href="Clip.html">Clip</a> available for presentation.</p>
+<p>Seconds of <a href="Clip.html"><code>Clip</code></a> available for presentation.</p>
 </dd><dt>Default
 <dd>
 <p>Probed from downloaded.</p>
@@ -276,8 +276,8 @@
 
           
           <div class="method-source-code" id="duration-3D-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">duration=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">duration=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span>(<span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -309,8 +309,8 @@
 
           
           <div class="method-source-code" id="error-3F-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 24</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">error?</span>
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">error?</span>
   <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -342,8 +342,8 @@
 
           
           <div class="method-source-code" id="length-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">length</span>
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">length</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -371,19 +371,18 @@
           
           <dl class="rdoc-list note-list"><dt>Float
 <dd>
-<p>Seconds the <a href="Clip.html">Clip</a> appears in the mashup.</p>
+<p>Seconds the <a href="Clip.html"><code>Clip</code></a> appears in the mashup.</p>
 </dd><dt>Default
 <dd>
-<p><a href="Clip.html#method-i-duration">duration</a> - <a
-href="Asset.html#method-i-offset">offset</a></p>
+<p><a href="Clip.html#method-i-duration"><code>duration</code></a> - <a href="Asset.html#method-i-offset"><code>offset</code></a></p>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="length-3D-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 32</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">length=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">length=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span>(<span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -415,8 +414,8 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="loop-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 35</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">loop</span>
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">loop</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -444,7 +443,7 @@ href="Asset.html#method-i-offset">offset</a></p>
           
           <dl class="rdoc-list note-list"><dt>Integer
 <dd>
-<p>Number of times to loop <a href="Clip.html">Clip</a>.</p>
+<p>Number of times to loop <a href="Clip.html"><code>Clip</code></a>.</p>
 </dd><dt>Types
 <dd>
 <p>Just Type::AUDIO.</p>
@@ -454,8 +453,8 @@ href="Asset.html#method-i-offset">offset</a></p>
 
           
           <div class="method-source-code" id="loop-3D-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 40</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">loop=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">loop=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span>(<span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -481,13 +480,12 @@ href="Asset.html#method-i-offset">offset</a></p>
 
         <div class="method-description">
           
-          <dl class="rdoc-list note-list"><dt><a href="Transfer.html">Transfer</a>
+          <dl class="rdoc-list note-list"><dt><a href="Transfer.html"><code>Transfer</code></a>
 <dd>
 <p>Resolves relative font URLs for modules.</p>
 </dd><dt>Default
 <dd>
-<p><a
-href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
+<p><a href="Job.html#method-i-module_source"><code>Job#module_source</code></a></p>
 </dd><dt>Types
 <dd>
 <p>Just Type::MASH.</p>
@@ -497,8 +495,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="module_source-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 46</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">module_source</span>
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">module_source</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -530,8 +528,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="start-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 49</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">start</span>
   <span class="ruby-identifier">_get</span>(<span class="ruby-identifier">__method__</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -559,7 +557,7 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
           
           <dl class="rdoc-list note-list"><dt>Float
 <dd>
-<p>Seconds from start of mashup to introduce the <a href="Clip.html">Clip</a>.</p>
+<p>Seconds from start of mashup to introduce the <a href="Clip.html"><code>Clip</code></a>.</p>
 </dd><dt>Default
 <dd>
 <p>-1.0 means after previous audio in mashup completes.</p>
@@ -572,8 +570,8 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
 
           
           <div class="method-source-code" id="start-3D-source">
-            <pre><span class="ruby-comment"># File lib/clip.rb, line 55</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">start=</span>(<span class="ruby-identifier">value</span>)
+            <pre><span class="ruby-comment"># File lib/clip.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">start=</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">_set</span>(<span class="ruby-identifier">__method__</span>, <span class="ruby-identifier">value</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -589,12 +587,13 @@ href="Job.html#method-i-module_source">MovieMasher::Job#module_source</a></p>
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

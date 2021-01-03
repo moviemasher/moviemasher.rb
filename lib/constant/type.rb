@@ -1,30 +1,31 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # input, output and transfer types
   module Type
-    ASSETS = %w(frame video audio image font).freeze
-    AUDIO = 'audio'.freeze
-    EFFECT = 'effect'.freeze
-    FILE = 'file'.freeze
-    FONT = 'font'.freeze
-    FRAME = 'frame'.freeze
-    HTTP = 'http'.freeze
-    HTTPS = 'https'.freeze
-    IMAGE = 'image'.freeze
-    IMAGES = %w(image sequence).freeze
-    MASH = 'mash'.freeze
-    MERGER = 'merger'.freeze
-    MODULES = %w(theme font effect).freeze
-    RAW_AVS = %w(audio video).freeze
-    RAW_VISUALS = %w(image video).freeze
-    S3 = 's3'.freeze
-    SCALER = 'scaler'.freeze
-    SEQUENCE = 'sequence'.freeze
-    THEME = 'theme'.freeze
-    TRACKS = %w(audio video).freeze
-    TRANSITION = 'transition'.freeze
-    VIDEO = 'video'.freeze
-    VISUALS = %w(image video theme).freeze
-    WAVEFORM = 'waveform'.freeze
+    ASSETS = %w[frame video audio image font].freeze
+    AUDIO = 'audio'
+    EFFECT = 'effect'
+    FILE = 'file'
+    FONT = 'font'
+    FRAME = 'frame'
+    HTTP = 'http'
+    HTTPS = 'https'
+    IMAGE = 'image'
+    IMAGES = %w[image sequence].freeze
+    MASH = 'mash'
+    MERGER = 'merger'
+    MODULES = %w[theme font effect].freeze
+    RAW_AVS = %w[audio video].freeze
+    RAW_VISUALS = %w[image video].freeze
+    S3 = 's3'
+    SCALER = 'scaler'
+    SEQUENCE = 'sequence'
+    THEME = 'theme'
+    TRACKS = %w[audio video].freeze
+    TRANSITION = 'transition'
+    VIDEO = 'video'
+    VISUALS = %w[image video theme].freeze
+    WAVEFORM = 'waveform'
   end
 end

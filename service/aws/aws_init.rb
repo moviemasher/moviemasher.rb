@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # initializes aws service
@@ -23,19 +24,20 @@ module MovieMasher
             launch_apache = true
           end
           result = result['moviemasher.rb'] unless result['moviemasher.rb'].nil?
-        rescue => e
+        rescue StandardError => e
           puts "#{Time.now} #{me} couldn't parse user data as JSON #{e.message}"
         end
       end
       if launch_apache
         puts "#{Time.now} #{me} starting web server"
-        cmd = '/sbin/service httpd restart'
+        cmd = 'systemctl restart httpd'
         puts cmd
         apache_result = Open3.capture3 cmd
         puts apache_result
       end
       result
     end
+
     def __lines_in_ini(result)
       lines = []
       File.foreach(PathIni) do |line|

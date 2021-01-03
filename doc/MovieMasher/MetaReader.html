@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -116,8 +118,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -152,18 +152,18 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Hashable.html#method-c-new">MovieMasher::Hashable.new</a>
+              <a href="Hashable.html#method-c-new"><code>MovieMasher::Hashable::new</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 5</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">path</span>)
+            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-comment"># sequence outputs point to a directory</span>
   <span class="ruby-identifier">path</span> = <span class="ruby-constant">Dir</span>[<span class="ruby-constant">Path</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">path</span>, <span class="ruby-string">&#39;*&#39;</span>].<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-ivar">@path</span> = <span class="ruby-identifier">path</span>
-  <span class="ruby-keyword">super</span> {}
+  <span class="ruby-keyword">super</span>({})
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -201,14 +201,14 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Hashable.html#method-i-5B-5D">MovieMasher::Hashable#[]</a>
+              <a href="Hashable.html#method-i-5B-5D"><code>MovieMasher::Hashable#[]</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="5B-5D-source">
-            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 11</span>
-<span class="ruby-keyword">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">symbol</span>)
+            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]</span>(<span class="ruby-identifier">symbol</span>)
   <span class="ruby-ivar">@hash</span>[<span class="ruby-identifier">symbol</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">_meta</span>(<span class="ruby-identifier">symbol</span>)
   <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
@@ -241,8 +241,8 @@
 
           
           <div class="method-source-code" id="_info-source">
-            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 15</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">_info</span>
+            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">_info</span>
   <span class="ruby-constant">Info</span>.<span class="ruby-identifier">get</span>(<span class="ruby-ivar">@path</span>, <span class="ruby-identifier">__callee__</span>.<span class="ruby-identifier">id2name</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -278,8 +278,8 @@
 
           
           <div class="method-source-code" id="_meta-source">
-            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 18</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">_meta</span>(<span class="ruby-identifier">symbol</span>)
+            <pre><span class="ruby-comment"># File lib/util/meta_reader.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">_meta</span>(<span class="ruby-identifier">symbol</span>)
   <span class="ruby-identifier">s</span> = <span class="ruby-identifier">ffmpeg</span>
   <span class="ruby-identifier">metas</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;Metadata:&#39;</span>)
   <span class="ruby-identifier">metas</span>.<span class="ruby-identifier">shift</span>
@@ -289,9 +289,10 @@
       <span class="ruby-identifier">lines</span> = <span class="ruby-identifier">meta</span>.<span class="ruby-identifier">split</span> <span class="ruby-string">&quot;\n&quot;</span>
       <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">shift</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">empty?</span>
       <span class="ruby-identifier">first_line</span> = <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">first</span>
-      <span class="ruby-identifier">pad</span> = <span class="ruby-identifier">first_line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/([\s]+)[\S]/</span>)[<span class="ruby-value">1</span>]
+      <span class="ruby-identifier">pad</span> = <span class="ruby-identifier">first_line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/(\s+)\S/</span>)[<span class="ruby-value">1</span>]
       <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
         <span class="ruby-keyword">break</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">start_with?</span> <span class="ruby-identifier">pad</span>
+
         <span class="ruby-identifier">pair</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:strip</span>)
         <span class="ruby-keyword">return</span> <span class="ruby-identifier">pair</span>.<span class="ruby-identifier">last</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">pair</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sym_str</span>
       <span class="ruby-keyword">end</span>
@@ -592,12 +593,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

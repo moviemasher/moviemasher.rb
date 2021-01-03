@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'optparse'
 require 'optparse/time'
 require 'ostruct'
@@ -78,58 +80,63 @@ module MovieMasher
       queue_url: 'u',
       queue_wait_seconds: 'w',
       render_directory: 'r',
-      render_save: 's'
+      render_save: 'string'
     }.freeze
 
-    def self.parse(args = [], hash = nil)
-      #  hint for --help
-      # Options specified on the command line will be collected in *options*.
-      # We set default values here.
-      options = {}
-      config = new(hash)
-      config.keys.each do |key|
-        options[key] = config[key]
+    class << self
+      def parse(args = [], hash = nil)
+        #  hint for --help
+        # Options specified on the command line will be collected in *options*.
+        # We set default values here.
+        options = {}
+        config = new(hash)
+        config_keys = config.keys
+        config_keys.each do |key|
+          options[key] = config[key]
+        end
+        opt_parser = OptionParser.new do |opts|
+          opts.banner = 'Usage: moviemasher.rb [OPTIONS] [JOB]'
+          opts.separator('')
+          opts.separator('Options:')
+          config_keys.each do |key|
+            input = config.input(key).upcase
+            short = "-#{config.switch(key)}#{input}"
+            long = "--#{key}=#{input}"
+            descr = wrap(config.describe(key))
+            opts.on(short, long, *descr) do |opt|
+              # puts "#{key} = #{opt}"
+              options[key] = opt
+            end
+          end
+          # No argument, shows at tail. This will print an options summary.
+          opts.on('-h', '--help', 'Display this message and exit.') do
+            return opts.to_s
+          end
+          opts.separator 'Job: Path to a job file or JSON formatted job string.'
+        end
+        # this might return a string containing usage prompt
+        opt_parser.parse!(args)
+        options
       end
-      opt_parser = OptionParser.new do |opts|
-        opts.banner = 'Usage: moviemasher.rb [OPTIONS] [JOB]'
-        opts.separator('')
-        opts.separator('Options:')
-        config.keys.each do |key|
-          input = config.input(key).upcase
-          short = "-#{config.switch(key)}#{input}"
-          long = "--#{key}=#{input}"
-          descr = wrap(config.describe(key))
-          opts.on(short, long, *descr) do |opt|
-            # puts "#{key} = #{opt}"
-            options[key] = opt
+
+      def wrap(string, width = 60)
+        lines = []
+        line = ''
+        string.split(/\string+/).each do |word|
+          if line.size + word.size >= width
+            lines << line
+            line = word
+          elsif line.empty?
+            line = word
+          else
+            line << ' ' << word
           end
         end
-        # No argument, shows at tail. This will print an options summary.
-        opts.on('-h', '--help', 'Display this message and exit.') do
-          return opts.to_s
-        end
-        opts.separator 'Job: Path to a job file or JSON formatted job string.'
+        lines << line if line
+        lines
       end
-      # this might return a string containing usage prompt
-      opt_parser.parse!(args)
-      options
     end
-    def self.wrap(s, width=60)
-      lines = []
-	    line = ""
-	    s.split(/\s+/).each do |word|
-	      if line.size + word.size >= width
-	        lines << line
-	        line = word
-	      elsif line.empty?
-	        line = word
-	        else
-	        line << " " << word
-	      end
-	    end
-	    lines << line if line
-	    lines
-    end
+
     def describe(key)
       key = key.to_sym unless key.is_a?(Symbol)
       value = @hash[key]
@@ -141,6 +148,7 @@ module MovieMasher
       description += '.'
       description
     end
+
     def describe_value(value = nil)
       description = '(empty)'
       if value
@@ -152,6 +160,7 @@ module MovieMasher
       end
       description
     end
+
     def initialize(hash = nil)
       hash ||= {}
       sym_hash = {}
@@ -161,6 +170,7 @@ module MovieMasher
       end
       super DEFAULTS.merge(sym_hash)
     end
+
     def input(key)
       key_s = key.to_s
       last_bit = key_s.split('_').last
@@ -173,6 +183,7 @@ module MovieMasher
         INPUTS[key] || (DESCRIPTIONS[key].is_a?(String) ? last_bit : 'num')
       end
     end
+
     def switch(key)
       key = key.to_sym unless key.is_a?(Symbol)
       SWITCHES[key]

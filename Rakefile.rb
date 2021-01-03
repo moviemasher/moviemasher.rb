@@ -41,7 +41,7 @@ namespace :moviemasher do
       begin
         File.open(stop_file, 'w') {}
         MovieMasher.process_queues
-      rescue => e
+      rescue StandardError => e
         puts "#{Time.now} moviemasher:process_queues caught #{e.message}"
         raise
       ensure

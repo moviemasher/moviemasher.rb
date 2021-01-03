@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="./css/fonts.css" rel="stylesheet">
 <link href="./css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -92,192 +94,108 @@
 
 <main role="main" aria-label="Page README.md">
 
-<p><a href="https://www.moviemasher.com"><img
-src="https://rawgit.com/moviemasher/moviemasher.rb/master/README/logo-120x60.png"></a>
-<strong><a
-href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> |
-<a
-href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
-| moviemasher.rb</strong></p>
+<p><a href="https://www.moviemasher.com"><img src="https://rawgit.com/moviemasher/moviemasher.rb/master/README/logo-120x60.png"></a> <strong><a href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> | <a href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a> | moviemasher.rb</strong></p>
 
-<p><em>Ruby library for mashing up video, images and audio utilizing FFmpeg
-and Ecasound</em></p>
+<p><em>Ruby library for mashing up video, images and audio utilizing FFmpeg and Ecasound</em></p>
 
 <h1 id="label-moviemasher.rb">moviemasher.rb<span><a href="#label-moviemasher.rb">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
-<p>Use moviemasher.rb to encode mashups of video, audio, and images together
-with titles and other visual effects.</p>
+<p>Use moviemasher.rb to encode mashups of video, audio, and images together with titles and other visual effects.</p>
 <ul><li>
-<p><strong>join</strong> files together sequentially with trimming, cropping,
-and transitions</p>
+<p><strong>join</strong> files together sequentially with trimming, cropping, and transitions</p>
 </li><li>
 <p><strong>mix</strong> audio tracks together with variable fading and looping</p>
 </li><li>
-<p><strong>composite</strong> visual tracks together with transformations and
-chromakey</p>
+<p><strong>composite</strong> visual tracks together with transformations and chromakey</p>
 </li><li>
-<p><strong>add</strong> titling with your own fonts overtop other elements
-translucently</p>
+<p><strong>add</strong> titling with your own fonts overtop other elements translucently</p>
 </li><li>
-<p><strong>transfer</strong> media files to and from remote hosts using
-authentication</p>
+<p><strong>transfer</strong> media files to and from remote hosts using authentication</p>
 </li><li>
-<p><strong>specify</strong> callbacks that alert your system of processing
-milestones</p>
+<p><strong>specify</strong> callbacks that alert your system of processing milestones</p>
 </li></ul>
 
 <h3 id="label-Overview">Overview<span><a href="#label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>The project aims to simplify common audio/video editing operations by
-turning your job into a series of shell commands, and then overseeing their
-execution. As part of job processing, media inputs can be downloaded from
-remote hosts and rendered outputs can be uploaded as well. Using the same
-request mechanisms, external systems can be alerted by <em>callbacks</em>
-triggered when a job is started, during its processing and/or when it&#39;s
-completed.</p>
+<p>The project aims to simplify common audio/video editing operations by turning your job into a series of shell commands, and then overseeing their execution. As part of job processing, media inputs can be downloaded from remote hosts and rendered outputs can be uploaded as well. Using the same request mechanisms, external systems can be alerted by <em>callbacks</em> triggered when a job is started, during its processing and/or when it&#39;s completed.</p>
 <ul><li>
-<p><strong>Documentation:</strong> generated with RDoc from source <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/index.html">(HTML)</a></p>
+<p><strong>Documentation:</strong> generated with RDoc from source <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/index.html">(HTML)</a></p>
 </li><li>
-<p><strong>Docker Image:</strong> <code>moviemasher/moviemasher.rb</code> <a
-href="Dockerfile">(Dockerfile)</a></p>
+<p><strong>Docker Image:</strong> <code>moviemasher/moviemasher.rb</code> <a href="Dockerfile">(Dockerfile)</a></p>
 </li></ul>
 
-<p>In addition to the raw media assets (video, audio and images), jobs can
-contain <em>mash</em> inputs that describe more complex compositing,
-titling and other effects. The related <a
-href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a>
-project can be used to generate and display JSON formatted mash
-descriptions within a web browser, and <a
-href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
-can be used to package these into job descriptions.</p>
+<p>In addition to the raw media assets (video, audio and images), jobs can contain <em>mash</em> inputs that describe more complex compositing, titling and other effects. The related <a href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> project can be used to generate and display JSON formatted mash descriptions within a web browser, and <a href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a> can be used to package these into job descriptions.</p>
 
-<p>Jobs are provided to the system for processing in different ways, depending
-on how it&#39;s been configured and deployed. At the lowest level, the <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process">MovieMasher.process</a>
-method is sent a job as a hash, a JSON/YAML formatted string or a local
-path to one. The <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a>
-method calls it with any jobs it finds while scanning a preconfigured watch
-folder or queue. This scanning can be done for a certain number of seconds,
-until no jobs are found, just once or forever. There are rake tasks for
-each of these methods, to simplify calling from shell scripts, cron jobs
-and other tasks.</p>
+<p>Jobs are provided to the system for processing in different ways, depending on how it&#39;s been configured and deployed. At the lowest level, the <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process">MovieMasher.process</a> method is sent a job as a hash, a JSON/YAML formatted string or a local path to one. The <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a> method calls it with any jobs it finds while scanning a preconfigured watch folder or queue. This scanning can be done for a certain number of seconds, until no jobs are found, just once or forever. There are rake tasks for each of these methods, to simplify calling from shell scripts, cron jobs and other tasks.</p>
 
 <h3 id="label-Job+Syntax">Job Syntax<span><a href="#label-Job+Syntax">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>Each transcoding <code>job</code> specifies multiple media
-<code>inputs</code> to be encoded together into one or more
-<code>outputs</code>, as well as metadata like <code>destination</code>
-which defines where to put the final rendered file(s).</p>
+<p>Each transcoding <code>job</code> specifies multiple media <code>inputs</code> to be encoded together into one or more <code>outputs</code>, as well as metadata like <code>destination</code> which defines where to put the final rendered file(s).</p>
 
 <h5 id="label-Scale+down+local+image">Scale down local image<span><a href="#label-Scale+down+local+image">&para;</a> <a href="#top">&uarr;</a></span></h5>
 
 <pre class="ruby">{
-  <span class="ruby-string">&quot;inputs&quot;</span><span class="ruby-operator">:</span> [{ <span class="ruby-string">&quot;source&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;/path/to/local.png&quot;</span>, <span class="ruby-string">&quot;type&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;image&quot;</span> }],
-  <span class="ruby-string">&quot;outputs&quot;</span><span class="ruby-operator">:</span> [{ <span class="ruby-string">&quot;type&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;image&quot;</span>, <span class="ruby-string">&quot;name&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;smaller.png&quot;</span>, <span class="ruby-string">&quot;dimensions&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;1536x864&quot;</span> }],
-  <span class="ruby-string">&quot;destination&quot;</span><span class="ruby-operator">:</span> { <span class="ruby-string">&quot;type&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;file&quot;</span>, <span class="ruby-string">&quot;path&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;/path/to&quot;</span>, <span class="ruby-string">&quot;method&quot;</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;move&quot;</span> }
+  <span class="ruby-value">&quot;inputs&quot;:</span> [{ <span class="ruby-value">&quot;source&quot;:</span> <span class="ruby-string">&quot;/path/to/local.png&quot;</span>, <span class="ruby-value">&quot;type&quot;:</span> <span class="ruby-string">&quot;image&quot;</span> }],
+  <span class="ruby-value">&quot;outputs&quot;:</span> [{ <span class="ruby-value">&quot;type&quot;:</span> <span class="ruby-string">&quot;image&quot;</span>, <span class="ruby-value">&quot;name&quot;:</span> <span class="ruby-string">&quot;smaller.png&quot;</span>, <span class="ruby-value">&quot;dimensions&quot;:</span> <span class="ruby-string">&quot;1536x864&quot;</span> }],
+  <span class="ruby-value">&quot;destination&quot;:</span> { <span class="ruby-value">&quot;type&quot;:</span> <span class="ruby-string">&quot;file&quot;</span>, <span class="ruby-value">&quot;path&quot;:</span> <span class="ruby-string">&quot;/path/to&quot;</span>, <span class="ruby-value">&quot;method&quot;:</span> <span class="ruby-string">&quot;move&quot;</span> }
 }
 </pre>
 
 <h3 id="label-AWS+Integration">AWS Integration<span><a href="#label-AWS+Integration">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>The system <em>optionally</em> supports <a
-href="http://aws.amazon.com">Amazon Web Services</a> for media storage and
-job queueing, through the ruby <a
-href="https://github.com/aws/aws-sdk-ruby">aws-sdk</a> gem. The following
-mechanisms are available through configuration or job options:</p>
+<p>The system <em>optionally</em> supports <a href="http://aws.amazon.com">Amazon Web Services</a> for media storage and job queueing, through the ruby <a href="https://github.com/aws/aws-sdk-ruby">aws-sdk</a> gem. The following mechanisms are available through configuration or job options:</p>
 <ul><li>
-<p>An <a href="http://aws.amazon.com/s3/">S3</a> bucket can be a source for
-inputs or a destination for outputs</p>
+<p>An <a href="http://aws.amazon.com/s3/">S3</a> bucket can be a source for inputs or a destination for outputs</p>
 </li><li>
-<p>An <a href="http://aws.amazon.com/sqs/">SQS</a> queue can be polled and
-messages processed as jobs</p>
+<p>An <a href="http://aws.amazon.com/sqs/">SQS</a> queue can be polled and messages processed as jobs</p>
 </li><li>
 <p>An access key id/secret can be passed to AWS.config for authentication</p>
 </li><li>
-<p>Alternatively, environmental variables or an <a
-href="http://aws.amazon.com/ec2/">EC2</a> role can authenticate</p>
+<p>Alternatively, environmental variables or an <a href="http://aws.amazon.com/ec2/">EC2</a> role can authenticate</p>
 </li></ul>
 
-<p>Additionally, the <a
-href="https://aws.amazon.com/marketplace/pp/B00QKW0P2A">Movie Masher
-AMI</a> is launchable with OneClick in Marketplace as a deployment of all
-related projects and supporting applications. It includes an upstart task
-that executes <code>rake moviemasher:init</code> to merge any User Data
-supplied in JSON format into the configuration plus a cron job that
-continually executes <code>rake moviemasher:process_queues</code>, so
-it&#39;s possible to run in a headless mode polling an SQS queue for jobs.
-Without User Data, the instance will start up Apache and serve the
-angular-moviemasher project for demonstration - the instance id acts as a
-shared password.</p>
+<p>Additionally, the <a href="https://aws.amazon.com/marketplace/pp/B00QKW0P2A">Movie Masher AMI</a> is launchable with OneClick in Marketplace as a deployment of all related projects and supporting applications. It includes an upstart task that executes <code>rake moviemasher:init</code> to merge any User Data supplied in JSON format into the configuration plus a cron job that continually executes <code>rake moviemasher:process_queues</code>, so it&#39;s possible to run in a headless mode polling an SQS queue for jobs. Without User Data, the instance will start up Apache and serve the angular-moviemasher project for demonstration - the instance id acts as a shared password.</p>
 
 <h3 id="label-Docker+Usage">Docker Usage<span><a href="#label-Docker+Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>Docker&#39;s <a
-href="https://registry.hub.docker.com/u/moviemasher/moviemasher.rb/">moviemasher/moviemasher.rb</a>
-image is based off the official <a
-href="https://registry.hub.docker.com/_/ruby/">ruby</a> image, adding
-builds of <a href="http://www.ffmpeg.org">FFmpeg</a>, <a
-href="http://eca.cx/ecasound/">Ecasound</a> and supporting audio/visual
-libraries. It can be used to process jobs supplied directly on the command
-line, or to grab them from a directory/queue - either approach supports
-running in interractive or daemon mode. The Dockerfile contains a
-<strong>VOLUME</strong> instruction for each directory it works with,
-including <strong>queue_directory</strong> so that job files residing on
-the host can be easily processed.</p>
+<p>Docker&#39;s <a href="https://registry.hub.docker.com/u/moviemasher/moviemasher.rb/">moviemasher/moviemasher.rb</a> image is based off the official <a href="https://registry.hub.docker.com/_/ruby/">ruby</a> image, adding builds of <a href="http://www.ffmpeg.org">FFmpeg</a>, <a href="http://eca.cx/ecasound/">Ecasound</a> and supporting audio/visual libraries. It can be used to process jobs supplied directly on the command line, or to grab them from a directory/queue - either approach supports running in interractive or daemon mode. The Dockerfile contains a <strong>VOLUME</strong> instruction for each directory it works with, including <strong>queue_directory</strong> so that job files residing on the host can be easily processed.</p>
 <ul><li>
 <p>To display documentation of configuration options:</p>
 
-<p><code>docker run -it --rm moviemasher/moviemasher.rb moviemasher
---help</code></p>
+<p><code>docker run -it --rm moviemasher/moviemasher.rb moviemasher --help</code></p>
 </li><li>
 <p>To process jobs directly from the command line:</p>
 
-<pre class="ruby"><span class="ruby-value">%x`docker run -it --rm moviemasher/moviemasher.rb process &quot;JOB&quot; &quot;JOB&quot;`</span>
+<pre class="ruby"><span class="ruby-string">`docker run -it --rm moviemasher/moviemasher.rb process &quot;JOB&quot; &quot;JOB&quot;`</span>
 </pre>
 </li></ul>
 
-<p>JOB can be a JSON or YAML formatted string, or a path to one in the
-container.</p>
+<p>JOB can be a JSON or YAML formatted string, or a path to one in the container.</p>
 <ul><li>
-<p>To process all JSON or YAML formatted jobs in directory &#39;my_jobs&#39;
-residing on the host:</p>
+<p>To process all JSON or YAML formatted jobs in directory &#39;my_jobs&#39; residing on the host:</p>
 
-<pre class="ruby"><span class="ruby-value">%x`docker run -it --rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`</span>
+<pre class="ruby"><span class="ruby-string">`docker run -it --rm -v my_jobs:/tmp/moviemasher/queue moviemasher/moviemasher.rb`</span>
 </pre>
 </li><li>
 <p>To continually process jobs from container&#39;s queue volume:</p>
 
-<pre class="ruby"><span class="ruby-value">%x`docker run -d -t --name=moviemasher moviemasher/moviemasher.rb process_loop`</span>
+<pre class="ruby"><span class="ruby-string">`docker run -d -t --name=moviemasher moviemasher/moviemasher.rb process_loop`</span>
 </pre>
 </li></ul>
 
-<p>Note the <code>t</code> switch - it&#39;s required for Ecasound to function
-properly. You&#39;ll need to subsequently execute <code>docker stop
-moviemasher</code> and <code>docker rm moviemasher</code> to stop
-processing and remove the container created.</p>
+<p>Note the <code>t</code> switch - it&#39;s required for Ecasound to function properly. You&#39;ll need to subsequently execute <code>docker stop moviemasher</code> and <code>docker rm moviemasher</code> to stop processing and remove the container created.</p>
 <ul><li>
 <p>To process a single job from an SQS queue:</p>
 
-<pre class="ruby"><span class="ruby-value">%x`docker run -it --rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`</span>
+<pre class="ruby"><span class="ruby-string">`docker run -it --rm moviemasher/moviemasher.rb process_one --queue_url=[URL] --aws_access_key_id=[ID] --aws_secret_access_key=[SECRET]`</span>
 </pre>
 </li></ul>
 
-<p>URL points to an existing SQS Queue that provides read/write access to the
-owner of the access key with ID and SECRET. Messages can be in JSON or YAML
-format.</p>
+<p>URL points to an existing SQS Queue that provides read/write access to the owner of the access key with ID and SECRET. Messages can be in JSON or YAML format.</p>
 
-<p>The last example demonstrates overriding the configuration with command
-line arguments - all commands support this. The
-<strong>MOVIEMASHER_CONFIG</strong> environmental variable can also be set
-to a configuration file residing on the container in JSON/YAML format,
-though arguments take precedence.</p>
+<p>The last example demonstrates overriding the configuration with command line arguments - all commands support this. The <strong>MOVIEMASHER_CONFIG</strong> environmental variable can also be set to a configuration file residing on the container in JSON/YAML format, though arguments take precedence.</p>
 
-<p>When processing jobs in a directory or queue, the
-<strong>process_seconds</strong> configuration option ultimately controls
-how long polling continues and therefore how long the container runs. The
-following values are supported:</p>
+<p>When processing jobs in a directory or queue, the <strong>process_seconds</strong> configuration option ultimately controls how long polling continues and therefore how long the container runs. The following values are supported:</p>
 <ul><li>
 <p>[N]: poll for N seconds, then exit</p>
 </li><li>
@@ -290,63 +208,37 @@ following values are supported:</p>
 <p>-3: poll until container stopped</p>
 </li></ul>
 
-<p>The Dockerfile specifies an <strong>ENTRYPOINT</strong> that provides
-several convenience commands, but calls exec with any it doesn&#39;t
-recognize so that containers behave as expected. The following commands are
-supported:</p>
+<p>The Dockerfile specifies an <strong>ENTRYPOINT</strong> that provides several convenience commands, but calls exec with any it doesn&#39;t recognize so that containers behave as expected. The following commands are supported:</p>
 <ul><li>
-<p>moviemasher (default): call <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a></p>
+<p>moviemasher (default): call <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a></p>
 </li><li>
-<p>process_one: call <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a>
-with <strong>process_seconds</strong>=-1</p>
+<p>process_one: call <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a> with <strong>process_seconds</strong>=-1</p>
 </li><li>
-<p>process_all: call <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a>
-with <strong>process_seconds</strong>=-2</p>
+<p>process_all: call <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a> with <strong>process_seconds</strong>=-2</p>
 </li><li>
-<p>process_loop: call <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a>
-with <strong>process_seconds</strong>=-3</p>
+<p>process_loop: call <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process_queues">MovieMasher.process_queues</a> with <strong>process_seconds</strong>=-3</p>
 </li><li>
-<p>process: call <a
-href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process">MovieMasher.process</a>
-for each supplied argument</p>
+<p>process: call <a href="https://rawgit.com/moviemasher/moviemasher.rb/master/doc/MovieMasher.html#method-c-process">MovieMasher.process</a> for each supplied argument</p>
 </li></ul>
 
 <h3 id="label-Requirements">Requirements<span><a href="#label-Requirements">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>Tested in Ruby 1.9.3 and 2.1.5 (the <code>dockerfile/ruby</code> and
-<code>ruby</code> docker images) and on multiple UNIX flavors including
-OSX. Suggested audio/video libraries are only needed if you&#39;re decoding
-or encoding in their formats. Likewise, the aws-sdk gem is only needed when
-utilizing Amazon&#39;s services.</p>
+<p>Tested in Ruby 1.9.3 and 2.1.5 (the <code>dockerfile/ruby</code> and <code>ruby</code> docker images) and on multiple UNIX flavors including OSX. Suggested audio/video libraries are only needed if you&#39;re decoding or encoding in their formats. Likewise, the aws-sdk gem is only needed when utilizing Amazon&#39;s services.</p>
 <ul><li>
-<p>Applications: <a href="http://www.ffmpeg.org">FFmpeg</a>, <a
-href="http://eca.cx/ecasound/">Ecasound</a>, <a
-href="http://sox.sourceforge.net">Sox</a></p>
+<p>Applications: <a href="http://www.ffmpeg.org">FFmpeg</a>, <a href="http://eca.cx/ecasound/">Ecasound</a>, <a href="http://sox.sourceforge.net">Sox</a></p>
 </li><li>
 <p>Ruby Gems: aws-sdk, builder, mime-types, multipart-post, require_all, uuid</p>
 </li><li>
-<p>Audio Libraries: mp3lame, ogg, opencore, samplerate, sndfile, speex,
-theora, vorbis</p>
+<p>Audio Libraries: mp3lame, ogg, opencore, samplerate, sndfile, speex, theora, vorbis</p>
 </li><li>
-<p>Video Libraries: dirac, fontconfig, frei0r, fribidi, gd, openjpeg, vpx,
-xvidcore, x264</p>
+<p>Video Libraries: dirac, fontconfig, frei0r, fribidi, gd, openjpeg, vpx, xvidcore, x264</p>
 </li></ul>
 
 <h3 id="label-How+to+Install">How to Install<span><a href="#label-How+to+Install">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>Transcoding audio and video is extremely processor intensive, so while
-installation might be possible on most machines it isn&#39;t reccommended
-for all environments. In particular, running alongside a web server is only
-practical for demonstration purposes. Typically in production a pool of
-machines is deployed with each instance running a single process solely
-engaged in transcoding.</p>
+<p>Transcoding audio and video is extremely processor intensive, so while installation might be possible on most machines it isn&#39;t reccommended for all environments. In particular, running alongside a web server is only practical for demonstration purposes. Typically in production a pool of machines is deployed with each instance running a single process solely engaged in transcoding.</p>
 <ol><li>
-<p>Review <a href="Dockerfile">Dockerfile</a> for commands that work on the
-<code>ruby</code> image</p>
+<p>Review <a href="Dockerfile">Dockerfile</a> for commands that work on the <code>ruby</code> image</p>
 </li><li>
 <p>Install av libraries for supported formats and codecs</p>
 </li><li>
@@ -359,81 +251,50 @@ engaged in transcoding.</p>
 
 <p><code>bundle install</code></p>
 <ol><li>
-<p>Edit config/config.yml configuration file to match paths on system and
-configure logging/debugging options</p>
+<p>Edit config/config.yml configuration file to match paths on system and configure logging/debugging options</p>
 </li><li>
-<p>To scan watch folder and/or queue for jobs <code>cd</code> to project
-directory and execute:</p>
+<p>To scan watch folder and/or queue for jobs <code>cd</code> to project directory and execute:</p>
 </li></ol>
 
 <p><code>rake moviemasher:process_queues</code></p>
 <ol><li>
-<p><em>optionally</em> add crontab entry from config/aws/moviemasher.cron,
-after checking its binary paths</p>
+<p><em>optionally</em> add crontab entry from config/aws/moviemasher.cron, after checking its binary paths</p>
 </li></ol>
 
 <h3 id="label-User+Feedback">User Feedback<span><a href="#label-User+Feedback">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>If any problems arise while utilizing this repository, a <a
-href="https://github.com/moviemasher/moviemasher.rb/issues">GitHub Issue
-Ticket</a> should be filed. Please include the job description that&#39;s
-causing problems and any relevant log entries - issues with callbacks can
-typically be resolved faster after seeing entries from the receiving web
-server&#39;s log. Please post your issue ticket in the appropriate
-repository and refrain from cross posting - all projects are monitored with
-equal zeal.</p>
+<p>If any problems arise while utilizing this repository, a <a href="https://github.com/moviemasher/moviemasher.rb/issues">GitHub Issue Ticket</a> should be filed. Please include the job description that&#39;s causing problems and any relevant log entries - issues with callbacks can typically be resolved faster after seeing entries from the receiving web server&#39;s log. Please post your issue ticket in the appropriate repository and refrain from cross posting - all projects are monitored with equal zeal.</p>
 
 <h3 id="label-Contributing">Contributing<span><a href="#label-Contributing">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>Please join in the shareable economy by gifting your efforts towards
-improving this project in any way you feel inclined. Pull requests for
-fixes, features and refactorings are always appreciated, as are
-documentation updates. Creative help with graphics, video and the web site
-is also needed. Please contact through <a
-href="https://moviemasher.com">MovieMasher.com</a> to discuss your ideas.</p>
+<p>Please join in the shareable economy by gifting your efforts towards improving this project in any way you feel inclined. Pull requests for fixes, features and refactorings are always appreciated, as are documentation updates. Creative help with graphics, video and the web site is also needed. Please contact through <a href="https://moviemasher.com">MovieMasher.com</a> to discuss your ideas.</p>
 
 <h4 id="label-Developer+Setup">Developer Setup<span><a href="#label-Developer+Setup">&para;</a> <a href="#top">&uarr;</a></span></h4>
 
-<p>Docker is used extensively to develop this project. Additionally, the spec
-tests rely on the other two Movie Masher projects which should both be
-cloned into the same directory that contains this repository:</p>
+<p>Docker is used extensively to develop this project. Additionally, the spec tests rely on the other two Movie Masher projects which should both be cloned into the same directory that contains this repository:</p>
 <ul><li>
 <p><a href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a></p>
 </li><li>
-<p><a
-href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a></p>
+<p><a href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a></p>
 </li></ul>
 
 <p>To run spec tests utilizing options from <code>.rspec</code> file:</p>
 <ul><li>
-<p><code>docker-compose -f config/docker/rspec/docker-compose.yml run --rm
-rspec</code></p>
+<p><code>docker-compose -f config/docker/rspec/docker-compose.yml run --rm rspec</code></p>
 </li></ul>
 
-<p>All files generated by tests appear in <code>tmp/spec</code> sub
-directories. Each job has its own log file in
-<code>tmp/spec/temporary</code>.</p>
+<p>All files generated by tests appear in <code>tmp/spec</code> sub directories. Each job has its own log file in <code>tmp/spec/temporary</code>.</p>
 
-<p>To run rubocop with options from
-<code>config/docker/rubocop/rubocop-rules.yml</code> file:</p>
+<p>To run rubocop with options from <code>config/docker/rubocop/rubocop-rules.yml</code> file:</p>
 <ul><li>
-<p><code>docker-compose -f config/docker/rubocop/docker-compose.yml run --rm
-rubocop</code></p>
+<p><code>docker-compose -f config/docker/rubocop/docker-compose.yml run --rm rubocop</code></p>
 </li></ul>
 
-<p>To rebuild Gemfile.lock from Gemfile: - <code>docker-compose -f
-config/docker/bundler/docker-compose.yml run --rm bundler</code></p>
+<p>To rebuild Gemfile.lock from Gemfile: - <code>docker-compose -f config/docker/bundler/docker-compose.yml run --rm bundler</code></p>
 
 <p>To have rdoc rebuild documentation in <code>doc</code> from source code:</p>
 <ul><li>
-<p><code>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39;
---fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov
---exclude=&#39;/spec&#39; --exclude=&#39;/log&#39;
---exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39;
---exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39;
---exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39;
---exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39;
---exclude=&#39;/README-short&#39; --exclude=&#39;/LICENSE&#39;</code></p>
+<p><code>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39; --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude=&#39;/spec&#39; --exclude=&#39;/log&#39; --exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39; --exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39; --exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39; --exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39; --exclude=&#39;/README-short&#39; --exclude=&#39;/LICENSE&#39;</code></p>
 </li></ul>
 
 <h5 id="label-Known+issues+in+this+version">Known issues in this version<span><a href="#label-Known+issues+in+this+version">&para;</a> <a href="#top">&uarr;</a></span></h5>
@@ -451,32 +312,28 @@ config/docker/bundler/docker-compose.yml run --rm bundler</code></p>
 <ul><li>
 <p>The <code>length</code> key in clips has been renamed <code>frames</code>.</p>
 </li><li>
-<p>The <code>audio</code> and <code>video</code> keys in mash tracks have been
-moved to mash.</p>
+<p>The <code>audio</code> and <code>video</code> keys in mash tracks have been moved to mash.</p>
 </li><li>
 <p>The <code>tracks</code> key in mashes has been removed.</p>
 </li><li>
-<p>The <code>fps</code> key in outputs has been renamed
-<code>video_rate</code>.</p>
+<p>The <code>fps</code> key in outputs has been renamed <code>video_rate</code>.</p>
 </li><li>
-<p>The <code>audio_frequency</code> key in outputs has been renamed
-<code>audio_rate</code>.</p>
+<p>The <code>audio_frequency</code> key in outputs has been renamed <code>audio_rate</code>.</p>
 </li><li>
 <p>The <code>trim</code> key in inputs has been renamed <code>offset</code>.</p>
 </li><li>
-<p>The new <code>mash</code> key in mash inputs should be used for embedded
-mashes</p>
+<p>The new <code>mash</code> key in mash inputs should be used for embedded mashes</p>
 </li><li>
-<p>The <code>source</code> key in mash inputs should only contain a source
-object</p>
+<p>The <code>source</code> key in mash inputs should only contain a source object</p>
 </li></ul>
+
 </main>
 
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

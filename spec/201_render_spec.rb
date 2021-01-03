@@ -1,4 +1,3 @@
-
 require_relative 'helpers/spec_helper'
 
 describe File.basename(__FILE__) do

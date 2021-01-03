@@ -1,4 +1,3 @@
-
 require_relative 'helpers/spec_helper'
 
 describe File.basename(__FILE__) do
@@ -12,7 +11,7 @@ describe File.basename(__FILE__) do
       size = 'SM'
       file_name = "image-#{R4X3}-#{size.downcase}-jpg"
       destination_file = spec_process_job_files(image_input, file_name)
-      height = (XL4X3W.to_f * (SM4X3W.to_f / XL4X3H.to_f)).to_i
+      height = (XL4X3W.to_f * (SM4X3W.to_f / XL4X3H)).to_i
       dimensions = "#{SM4X3W}x#{height}"
       expect_dimensions(destination_file, dimensions)
     end

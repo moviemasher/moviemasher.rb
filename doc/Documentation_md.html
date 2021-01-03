@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="./css/fonts.css" rel="stylesheet">
 <link href="./css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -83,17 +85,9 @@
 
 <main role="main" aria-label="Page Documentation.md">
 
-<p><img
-src="https://github.com/moviemasher/moviemasher.rb/raw/master/README/logo-120x60.png">
-<strong><a
-href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> |
-<a
-href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a>
-| <a
-href="https://github.com/moviemasher/moviemasher.rb">moviemasher.rb</a></strong></p>
+<p><img src="https://github.com/moviemasher/moviemasher.rb/raw/master/README/logo-120x60.png"> <strong><a href="https://github.com/moviemasher/moviemasher.js">moviemasher.js</a> | <a href="https://github.com/moviemasher/angular-moviemasher">angular-moviemasher</a> | <a href="https://github.com/moviemasher/moviemasher.rb">moviemasher.rb</a></strong></p>
 
-<p><em>Ruby library for mashing up video, images and audio utilizing FFmpeg
-and Ecasound</em></p>
+<p><em>Ruby library for mashing up video, images and audio utilizing FFmpeg and Ecasound</em></p>
 
 <h1 id="label-moviemasher.rb">moviemasher.rb<span><a href="#label-moviemasher.rb">&para;</a> <a href="#top">&uarr;</a></span></h1>
 <hr>
@@ -102,77 +96,54 @@ and Ecasound</em></p>
 
 <h5 id="label-Core+Classes-2FModules">Core Classes/Modules<span><a href="#label-Core+Classes-2FModules">&para;</a> <a href="#top">&uarr;</a></span></h5>
 <ul><li>
-<p><a href="MovieMasher.html">MovieMasher</a></p>
+<p><a href="MovieMasher.html"><code>MovieMasher</code></a></p>
 </li><li>
-<p><a href="MovieMasher/Job.html">MovieMasher::Job</a></p>
+<p><a href="MovieMasher/Job.html"><code>MovieMasher::Job</code></a></p>
 </li><li>
-<p><a href="MovieMasher/Input.html">MovieMasher::Input</a></p>
+<p><a href="MovieMasher/Input.html"><code>MovieMasher::Input</code></a></p>
 </li><li>
-<p><a href="MovieMasher/Output.html">MovieMasher::Output</a></p>
+<p><a href="MovieMasher/Output.html"><code>MovieMasher::Output</code></a></p>
 </li><li>
-<p><a href="MovieMasher/Transfer.html">MovieMasher::Transfer</a></p>
+<p><a href="MovieMasher/Transfer.html"><code>MovieMasher::Transfer</code></a></p>
 </li><li>
-<p><a href="MovieMasher/Source.html">MovieMasher::Source</a></p>
+<p><a href="MovieMasher/Source.html"><code>MovieMasher::Source</code></a></p>
 </li><li>
-<p><a href="MovieMasher/Destination.html">MovieMasher::Destination</a></p>
+<p><a href="MovieMasher/Destination.html"><code>MovieMasher::Destination</code></a></p>
 </li><li>
-<p><a href="MovieMasher/Callback.html">MovieMasher::Callback</a></p>
+<p><a href="MovieMasher/Callback.html"><code>MovieMasher::Callback</code></a></p>
 </li></ul>
 
 <h5 id="label-Core+Usage">Core Usage<span><a href="#label-Core+Usage">&para;</a> <a href="#top">&uarr;</a></span></h5>
 
 <pre class="ruby">    <span class="ruby-identifier">require_relative</span> <span class="ruby-string">&#39;lib/moviemasher.rb&#39;</span>
-    <span class="ruby-identifier">job</span> = { :<span class="ruby-identifier">inputs</span> =<span class="ruby-operator">&gt;</span> [], :<span class="ruby-identifier">base_source</span> =<span class="ruby-operator">&gt;</span> {}, :<span class="ruby-identifier">outputs</span> =<span class="ruby-operator">&gt;</span> [], :<span class="ruby-identifier">destination</span> =<span class="ruby-operator">&gt;</span> {} }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">base_source</span>][:<span class="ruby-identifier">path</span>] = <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">destination</span>][:<span class="ruby-identifier">path</span>] = <span class="ruby-string">&#39;~/&#39;</span>
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;video&#39;</span>, :<span class="ruby-identifier">source</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;input.mov&#39;</span>, :<span class="ruby-identifier">fill</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;crop&#39;</span> }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;image&#39;</span>, :<span class="ruby-identifier">source</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;input.jpg&#39;</span>, :<span class="ruby-identifier">length</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span> }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;audio&#39;</span>, :<span class="ruby-identifier">source</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;input.mp3&#39;</span>, :<span class="ruby-identifier">offset</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10</span> }
-    <span class="ruby-identifier">job</span>[:<span class="ruby-identifier">outputs</span>] <span class="ruby-operator">&lt;&lt;</span> { :<span class="ruby-identifier">type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;video&#39;</span>, :<span class="ruby-identifier">name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;output.mp4&#39;</span> }
+    <span class="ruby-identifier">job</span> = { <span class="ruby-value">:inputs</span> <span class="ruby-operator">=&gt;</span> [], <span class="ruby-value">:base_source</span> <span class="ruby-operator">=&gt;</span> {}, <span class="ruby-value">:outputs</span> <span class="ruby-operator">=&gt;</span> [], <span class="ruby-value">:destination</span> <span class="ruby-operator">=&gt;</span> {} }
+    <span class="ruby-identifier">job</span>[<span class="ruby-value">:base_source</span>][<span class="ruby-value">:path</span>] = <span class="ruby-identifier">job</span>[<span class="ruby-value">:destination</span>][<span class="ruby-value">:path</span>] = <span class="ruby-string">&#39;~/&#39;</span>
+    <span class="ruby-identifier">job</span>[<span class="ruby-value">:inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;video&#39;</span>, <span class="ruby-value">:source</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;input.mov&#39;</span>, <span class="ruby-value">:fill</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;crop&#39;</span> }
+    <span class="ruby-identifier">job</span>[<span class="ruby-value">:inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;image&#39;</span>, <span class="ruby-value">:source</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;input.jpg&#39;</span>, <span class="ruby-value">:length</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">2</span> }
+    <span class="ruby-identifier">job</span>[<span class="ruby-value">:inputs</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;audio&#39;</span>, <span class="ruby-value">:source</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;input.mp3&#39;</span>, <span class="ruby-value">:offset</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">10</span> }
+    <span class="ruby-identifier">job</span>[<span class="ruby-value">:outputs</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;video&#39;</span>, <span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&#39;output.mp4&#39;</span> }
     <span class="ruby-constant">MovieMasher</span>.<span class="ruby-identifier">process</span> <span class="ruby-identifier">job</span>
 </pre>
 
-<p>When inputs use relative URLs like the example above then either the input
-or the job needs a <code>base_source</code> key containing a <a
-href="MovieMasher/Transfer.html">MovieMasher::Transfer</a> object to
-resolve them to absolute ones. Likewise, a <code>destination</code> key
-containing a <a
-href="MovieMasher/Destination.html">MovieMasher::Destination</a> object can
-be placed either in an output or the job for all outputs to use to resolve
-relative locations. We&#39;ve set them both to our home directory in this
-case so all files live there.</p>
+<p>When inputs use relative URLs like the example above then either the input or the job needs a <code>base_source</code> key containing a <a href="MovieMasher/Transfer.html"><code>MovieMasher::Transfer</code></a> object to resolve them to absolute ones. Likewise, a <code>destination</code> key containing a <a href="MovieMasher/Destination.html"><code>MovieMasher::Destination</code></a> object can be placed either in an output or the job for all outputs to use to resolve relative locations. We&#39;ve set them both to our home directory in this case so all files live there.</p>
 
-<p>Inputs are arranged consecutively one after the other - at least the visual
-ones. Audio inputs will by default start where the last audio or video with
-audio ends, so if the video input in our example has audio the audio input
-will start after it, otherwise they will begin at the same time. You can
-also explicitly play an audio track at any time by specify its
-<code>start</code> value.</p>
+<p>Inputs are arranged consecutively one after the other - at least the visual ones. Audio inputs will by default start where the last audio or video with audio ends, so if the video input in our example has audio the audio input will start after it, otherwise they will begin at the same time. You can also explicitly play an audio track at any time by specify its <code>start</code> value.</p>
 
-<p>In addition to raw media (video, audio and images) it&#39;s also possible
-to output image sequences from video tracks and waveform graphics from
-audio tracks. In terms of inputs, it&#39;s also possible to provide a mash
-JSON payload like moviemasher.js creates. Within a mash input, visual
-elements can be composited together just like audio elements can in the job
-itself.</p>
+<p>In addition to raw media (video, audio and images) it&#39;s also possible to output image sequences from video tracks and waveform graphics from audio tracks. In terms of inputs, it&#39;s also possible to provide a mash JSON payload like moviemasher.js creates. Within a mash input, visual elements can be composited together just like audio elements can in the job itself.</p>
 
-<p>The visual composition of inputs is controlled by <em>effect, scaler</em>
-and <em>merger</em> media, which are all arrangements of FFmpeg
-<em>filters</em>. Only a subset of filters and their parameters are
-supported at this time, but they include basics like crop, scale, fade and
-drawtext. That last one relies on <em>font</em> media, the last of the
-modular types.</p>
+<p>The visual composition of inputs is controlled by <em>effect, scaler</em> and <em>merger</em> media, which are all arrangements of FFmpeg <em>filters</em>. Only a subset of filters and their parameters are supported at this time, but they include basics like crop, scale, fade and drawtext. That last one relies on <em>font</em> media, the last of the modular types.</p>
 
-<p><strong>To regenerate this documentation <code>cd</code> to project
-directory and execute:</strong></p>
+<p><strong>To regenerate this documentation <code>cd</code> to project directory and execute:</strong></p>
 
 <pre>rdoc --visibility=public -o doc --main=&#39;Documentation.md&#39; --fmt=darkfish --markup=tomdoc --tab-width=2 --no-dcov --exclude=&#39;/spec&#39; --exclude=&#39;/log&#39; --exclude=&#39;/Gemfile&#39; --exclude=&#39;/tmp&#39; --exclude=&#39;/config&#39; --exclude=&#39;/index.rb&#39; --exclude=&#39;/doc&#39; --exclude=&#39;/bin&#39; --exclude=&#39;/Rakefile&#39; --exclude=&#39;/Docker&#39; --exclude=&#39;/README-short&#39; --exclude=&#39;/LICENSE&#39;</pre>
+
 </main>
 
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

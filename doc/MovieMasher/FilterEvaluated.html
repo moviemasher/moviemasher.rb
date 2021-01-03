@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -72,21 +74,11 @@
     
     <li class="calls-super" ><a href="#method-c-new">::new</a>
     
-    <li ><a href="#method-i-__command_name_value">#__command_name_value</a>
-    
-    <li ><a href="#method-i-__filter_dimension_keys">#__filter_dimension_keys</a>
-    
-    <li ><a href="#method-i-__filter_is_source-3F">#__filter_is_source?</a>
-    
-    <li ><a href="#method-i-__filter_scope_binding">#__filter_scope_binding</a>
-    
-    <li ><a href="#method-i-__is_filter_helper">#__is_filter_helper</a>
-    
-    <li ><a href="#method-i-__scope_value">#__scope_value</a>
-    
     <li ><a href="#method-i-command_parameters">#command_parameters</a>
     
     <li class="calls-super" ><a href="#method-i-filter_command">#filter_command</a>
+    
+    <li ><a href="#method-i-scope_value">#scope_value</a>
     
   </ul>
 </div>
@@ -105,8 +97,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -163,17 +153,18 @@
           
             <div class="method-calls-super">
               Calls superclass method
-              <a href="Filter.html#method-c-new">MovieMasher::Filter.new</a>
+              <a href="Filter.html#method-c-new"><code>MovieMasher::Filter::new</code></a>
             </div>
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 57</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">filter_config</span>, <span class="ruby-identifier">mash_input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">applied_input</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 51</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">filter_config</span>, <span class="ruby-identifier">mash_input</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">applied_input</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-comment"># applied_input same as filter_config for themes</span>
   <span class="ruby-ivar">@config</span> = <span class="ruby-identifier">filter_config</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">Parameter</span>, <span class="ruby-string">&#39;no config&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@config</span>
+
   <span class="ruby-ivar">@parameters</span> = <span class="ruby-ivar">@config</span>[<span class="ruby-value">:parameters</span>]
   <span class="ruby-ivar">@evaluated</span> = {}
   <span class="ruby-ivar">@mash_input</span> = <span class="ruby-identifier">mash_input</span>
@@ -205,150 +196,10 @@
        </header>
 
     
-      <div id="method-i-__command_name_value" class="method-detail ">
+      <div id="method-i-command_parameters" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">__command_name_value</span><span
-            class="method-args">(name, value, scope)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__command_name_value-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 74</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__command_name_value</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">scope</span>)
-  <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-identifier">value</span>, <span class="ruby-string">&#39;__command_name_value got nil value&#39;</span>)
-  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">value</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
-    <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>
-    <span class="ruby-identifier">bind</span> = <span class="ruby-identifier">__filter_scope_binding</span>(<span class="ruby-identifier">scope</span>)
-    <span class="ruby-identifier">condition_is_true</span> = <span class="ruby-keyword">false</span>
-    <span class="ruby-identifier">value</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conditional</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">condition</span> = <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:condition</span>]
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:is</span>]
-        <span class="ruby-identifier">condition</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;==&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:is</span>].<span class="ruby-identifier">to_s</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>]
-        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
-          <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>] = <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:in</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-identifier">condition</span> = <span class="ruby-node">&quot;include(#{condition}, #{conditional[:in].join(&#39;, &#39;)})&quot;</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-identifier">condition</span> = <span class="ruby-node">&quot;if ((#{condition}), 1, 0)&quot;</span>
-      <span class="ruby-identifier">calculator</span> = <span class="ruby-constant">Dentaku</span><span class="ruby-operator">::</span><span class="ruby-constant">Calculator</span>.<span class="ruby-identifier">new</span>
-      <span class="ruby-identifier">calculator</span>.<span class="ruby-identifier">add_function</span>(
-        <span class="ruby-value">:include</span>, <span class="ruby-value">:numeric</span>, <span class="ruby-operator">-</span><span class="ruby-operator">&gt;</span>(<span class="ruby-identifier">n</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) { <span class="ruby-identifier">args</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">n</span>) }
-      )
-      <span class="ruby-identifier">condition_is_true</span> = <span class="ruby-operator">!</span><span class="ruby-identifier">calculator</span>.<span class="ruby-identifier">evaluate</span>(<span class="ruby-identifier">condition</span>, <span class="ruby-identifier">bind</span>).<span class="ruby-identifier">zero?</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">condition_is_true</span>
-        <span class="ruby-identifier">result</span> = <span class="ruby-identifier">__scope_value</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">conditional</span>[<span class="ruby-value">:value</span>])
-        <span class="ruby-keyword">break</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-string">&#39;zero true conditions&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">condition_is_true</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">__scope_value</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">value</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">result</span> = <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">equation</span>(<span class="ruby-identifier">result</span>)
-  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">__coerce_if_numeric</span>(<span class="ruby-identifier">result</span>)
-  <span class="ruby-identifier">name</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">name</span>)
-  <span class="ruby-identifier">result</span> = <span class="ruby-constant">ShellHelper</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">result</span>)
-  <span class="ruby-ivar">@evaluated</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">result</span>
-  <span class="ruby-node">&quot;#{name}=#{result}&quot;</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-__filter_dimension_keys" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__filter_dimension_keys</span><span
-            class="method-args">(filter_id)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__filter_dimension_keys-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 119</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_dimension_keys</span>(<span class="ruby-identifier">filter_id</span>)
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">filter_id</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;crop&#39;</span>
-    { <span class="ruby-identifier">w</span><span class="ruby-operator">:</span> <span class="ruby-node">%w(w out_w)</span>, <span class="ruby-identifier">h</span><span class="ruby-operator">:</span> <span class="ruby-node">%w(h out_h)</span> }
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;scale&#39;</span>, <span class="ruby-string">&#39;pad&#39;</span>
-    { <span class="ruby-identifier">w</span><span class="ruby-operator">:</span> <span class="ruby-node">%w(w width)</span>, <span class="ruby-identifier">h</span><span class="ruby-operator">:</span> <span class="ruby-node">%w(h height)</span> }
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-__filter_is_source-3F" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__filter_is_source?</span><span
-            class="method-args">(filter_id)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="__filter_is_source-3F-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 127</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_is_source?</span>(<span class="ruby-identifier">filter_id</span>)
-  <span class="ruby-node">%w(color movie)</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">filter_id</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-__filter_scope_binding" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">__filter_scope_binding</span><span
+          <span class="method-name">command_parameters</span><span
             class="method-args">(scope)</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -363,12 +214,20 @@
           
 
           
-          <div class="method-source-code" id="__filter_scope_binding-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 130</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__filter_scope_binding</span>(<span class="ruby-identifier">scope</span>)
-  <span class="ruby-identifier">bind</span> = {}
-  <span class="ruby-identifier">scope</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">bind</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">__coerce_if_numeric</span>(<span class="ruby-identifier">v</span>) } <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
-  <span class="ruby-identifier">bind</span>
+          <div class="method-source-code" id="command_parameters-source">
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">command_parameters</span>(<span class="ruby-identifier">scope</span>)
+  <span class="ruby-identifier">cmds</span> = []
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@parameters</span>
+    <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-ivar">@parameters</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>), <span class="ruby-string">&#39;parameters is not an array&#39;</span>)
+    <span class="ruby-ivar">@parameters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">parameter</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-identifier">parameter</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>), <span class="ruby-string">&#39;parameter is not a hash&#39;</span>)
+      <span class="ruby-identifier">name</span> = <span class="ruby-identifier">parameter</span>[<span class="ruby-value">:name</span>]
+      <span class="ruby-identifier">evaluated</span> = <span class="ruby-identifier">parameter</span>[<span class="ruby-value">:value</span>]
+      <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">__command_name_value</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">evaluated</span>, <span class="ruby-identifier">scope</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;:&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -380,11 +239,11 @@
       </div>
 
     
-      <div id="method-i-__is_filter_helper" class="method-detail ">
+      <div id="method-i-filter_command" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">__is_filter_helper</span><span
-            class="method-args">(func)</span>
+          <span class="method-name">filter_command</span><span
+            class="method-args">(scope = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -396,15 +255,42 @@
           
           
           
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Filter.html#method-i-filter_command"><code>MovieMasher::Filter#filter_command</code></a>
+            </div>
+          
 
           
-          <div class="method-source-code" id="__is_filter_helper-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 113</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__is_filter_helper</span>(<span class="ruby-identifier">func</span>)
-  <span class="ruby-identifier">func_sym</span> = <span class="ruby-identifier">func</span>.<span class="ruby-identifier">to_sym</span>
-  <span class="ruby-identifier">ok</span> = <span class="ruby-constant">FilterHelpers</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">func_sym</span>)
-  <span class="ruby-identifier">ok</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-identifier">func</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-string">&#39;mm_&#39;</span>) <span class="ruby-operator">||</span> <span class="ruby-node">%w(rgb rgba)</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">func</span>)
-  <span class="ruby-identifier">ok</span>
+          <div class="method-source-code" id="filter_command-source">
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">filter_command</span>(<span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">cmd</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">empty?</span>
+
+  <span class="ruby-ivar">@evaluated</span> = {}
+  <span class="ruby-identifier">cmds</span> = []
+  <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;w&#39;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;h&#39;</span>]
+      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_w</span>] = <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;w&#39;</span>]
+      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_h</span>] = <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;h&#39;</span>]
+      <span class="ruby-comment"># puts &quot;&lt;&lt; #{scope[:mm_in_w]}x#{scope[:mm_in_h]} #{@id}&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_w</span>] = <span class="ruby-string">&#39;in_w&#39;</span>
+      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_h</span>] = <span class="ruby-string">&#39;in_h&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">command_parameters</span>(<span class="ruby-identifier">scope</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;=&#39;</span>
+    <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">join</span>
+  <span class="ruby-identifier">__set_output_dimension</span>
+
+  <span class="ruby-ivar">@evaluated</span> = {}
+  <span class="ruby-identifier">cmd</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -416,10 +302,10 @@
       </div>
 
     
-      <div id="method-i-__scope_value" class="method-detail ">
+      <div id="method-i-scope_value" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">__scope_value</span><span
+          <span class="method-name">scope_value</span><span
             class="method-args">(scope, value_str)</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -429,14 +315,14 @@
 
         <div class="method-description">
           
-          
+          <p>only called directly from here and tests</p>
           
           
 
           
-          <div class="method-source-code" id="__scope_value-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 135</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__scope_value</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">value_str</span>)
+          <div class="method-source-code" id="scope_value-source">
+            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">scope_value</span>(<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">value_str</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
     <span class="ruby-comment"># puts &quot;1 value_str = #{value_str}&quot;</span>
     <span class="ruby-identifier">level</span> = <span class="ruby-value">0</span>
@@ -444,7 +330,7 @@
     <span class="ruby-identifier">esc</span> = <span class="ruby-string">&#39;~&#39;</span>
     <span class="ruby-comment"># expand variables</span>
     <span class="ruby-identifier">value_str</span> = <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">dup</span>
-    <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/([\w]+)/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">value_str</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/(\w+)/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">match_str</span> = <span class="ruby-identifier">match</span>.<span class="ruby-identifier">to_s</span>
       <span class="ruby-identifier">match_sym</span> = <span class="ruby-identifier">match_str</span>.<span class="ruby-identifier">to_sym</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>[<span class="ruby-identifier">match_sym</span>]
@@ -468,7 +354,7 @@
       <span class="ruby-identifier">result</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-comment"># puts &quot;3 value_str = #{value_str}&quot;</span>
-    <span class="ruby-keyword">while</span> <span class="ruby-value">0</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">deepest</span>
+    <span class="ruby-keyword">while</span> <span class="ruby-identifier">deepest</span>.<span class="ruby-identifier">positive?</span>
       <span class="ruby-comment"># puts &quot;PRE #{deepest}: #{value_str}&quot;</span>
       <span class="ruby-identifier">reg_str</span> = <span class="ruby-node">&quot;([a-z_]+)[(]#{deepest}[#{esc}](.*?)[)]#{deepest}[#{esc}]&quot;</span>
       <span class="ruby-identifier">regexp</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">reg_str</span>)
@@ -519,131 +405,16 @@
       </div>
 
     
-      <div id="method-i-command_parameters" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">command_parameters</span><span
-            class="method-args">(scope)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="command_parameters-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 6</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_parameters</span>(<span class="ruby-identifier">scope</span>)
-  <span class="ruby-identifier">cmds</span> = []
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@parameters</span>
-    <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-ivar">@parameters</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>), <span class="ruby-string">&#39;parameters is not an array&#39;</span>)
-    <span class="ruby-ivar">@parameters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">parameter</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">__raise_unless</span>(<span class="ruby-identifier">parameter</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>), <span class="ruby-string">&#39;parameter is not a hash&#39;</span>)
-      <span class="ruby-identifier">name</span> = <span class="ruby-identifier">parameter</span>[<span class="ruby-value">:name</span>]
-      <span class="ruby-identifier">evaluated</span> = <span class="ruby-identifier">parameter</span>[<span class="ruby-value">:value</span>]
-      <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">__command_name_value</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">evaluated</span>, <span class="ruby-identifier">scope</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;:&#39;</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-filter_command" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">filter_command</span><span
-            class="method-args">(scope = nil)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-            <div class="method-calls-super">
-              Calls superclass method
-              <a href="Filter.html#method-i-filter_command">MovieMasher::Filter#filter_command</a>
-            </div>
-          
-
-          
-          <div class="method-source-code" id="filter_command-source">
-            <pre><span class="ruby-comment"># File lib/graphs/filters.rb, line 19</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_command</span>(<span class="ruby-identifier">scope</span> = <span class="ruby-keyword">nil</span>)
-  <span class="ruby-identifier">cmd</span> = <span class="ruby-keyword">super</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">cmd</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">empty?</span>
-  <span class="ruby-ivar">@evaluated</span> = {}
-  <span class="ruby-identifier">cmds</span> = []
-  <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;w&#39;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;h&#39;</span>]
-      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_w</span>] = <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;w&#39;</span>]
-      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_h</span>] = <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-string">&#39;h&#39;</span>]
-      <span class="ruby-comment"># puts &quot;&lt;&lt; #{scope[:mm_in_w]}x#{scope[:mm_in_h]} #{@id}&quot;</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_w</span>] = <span class="ruby-string">&#39;in_w&#39;</span>
-      <span class="ruby-identifier">scope</span>[<span class="ruby-value">:mm_in_h</span>] = <span class="ruby-string">&#39;in_h&#39;</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">command_parameters</span>(<span class="ruby-identifier">scope</span>)
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;=&#39;</span>
-    <span class="ruby-identifier">cmds</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">cmd</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">cmds</span>.<span class="ruby-identifier">join</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-identifier">dimension_keys</span> = <span class="ruby-identifier">__filter_dimension_keys</span> <span class="ruby-ivar">@id</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">dimension_keys</span>
-    <span class="ruby-identifier">dimension_keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">w_or_h</span>, <span class="ruby-identifier">keys</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
-        <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@evaluated</span>[<span class="ruby-identifier">key</span>]
-        <span class="ruby-identifier">evaluated</span> = <span class="ruby-ivar">@evaluated</span>[<span class="ruby-identifier">key</span>]
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">evaluated</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:round</span>)
-          <span class="ruby-constant">Filter</span>.<span class="ruby-identifier">__outsize</span>[<span class="ruby-identifier">w_or_h</span>] = <span class="ruby-identifier">evaluated</span>
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">break</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-ivar">@evaluated</span> = {}
-  <span class="ruby-identifier">cmd</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

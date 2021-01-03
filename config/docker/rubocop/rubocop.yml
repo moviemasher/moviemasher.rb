@@ -1,4 +1,7 @@
-Style/Tab:
+AllCops:
+  NewCops: enable
+
+Layout/IndentationStyle:
   Enabled: false
 
 Metrics/AbcSize:
@@ -7,7 +10,7 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Max: 100
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 80
 
 Metrics/BlockNesting:
@@ -31,14 +34,7 @@ Metrics/PerceivedComplexity:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: false
 
-# don't allow empty lines between defs.
-Style/EmptyLineBetweenDefs:
-  Enabled: false
-  # If true, this parameter means that single line method definitions don't
-  # need an empty line between them.
-  AllowAdjacentOneLineDefs: true
-
 # it's okay that Rakefile is capitalized
-Style/FileName:
+Naming/FileName:
   Exclude:
     - 'Rakefile.rb'

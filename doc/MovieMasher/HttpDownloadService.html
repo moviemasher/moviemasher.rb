@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -92,8 +94,6 @@
   </section>
 
   
-  
-  
   <section id="5Buntitled-5D" class="documentation-section">
     
 
@@ -129,35 +129,35 @@
 
           
           <div class="method-source-code" id="download-source">
-            <pre><span class="ruby-comment"># File service/remote/http_download.rb, line 5</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">download</span>(<span class="ruby-identifier">options</span>)
+            <pre><span class="ruby-comment"># File service/remote/http_download.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">download</span>(<span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">source</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:source</span>]
   <span class="ruby-identifier">cache_url_path</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:path</span>]
   <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>(<span class="ruby-identifier">options</span>[<span class="ruby-value">:asset</span>][<span class="ruby-value">:input_url</span>])
   <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span> = <span class="ruby-identifier">source</span>[<span class="ruby-value">:port</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>[<span class="ruby-value">:port</span>]
   <span class="ruby-identifier">parameters</span> = <span class="ruby-identifier">source</span>[<span class="ruby-value">:parameters</span>]
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">parameters</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-identifier">parameters</span> = <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">parameters</span>))
-    <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">object</span>(<span class="ruby-identifier">parameters</span>, <span class="ruby-identifier">job</span><span class="ruby-operator">:</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:job</span>], <span class="ruby-identifier">input</span><span class="ruby-operator">:</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:asset</span>])
+    <span class="ruby-constant">Evaluate</span>.<span class="ruby-identifier">object</span>(<span class="ruby-identifier">parameters</span>, <span class="ruby-value">job:</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:job</span>], <span class="ruby-value">input:</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:asset</span>])
     <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">query</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">encode_www_form</span> <span class="ruby-identifier">parameters</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>[<span class="ruby-value">:user</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">source</span>[<span class="ruby-value">:pass</span>]
     <span class="ruby-identifier">req</span>.<span class="ruby-identifier">basic_auth</span>(<span class="ruby-identifier">source</span>[<span class="ruby-value">:user</span>], <span class="ruby-identifier">source</span>[<span class="ruby-value">:pass</span>])
   <span class="ruby-keyword">end</span>
-  <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>, <span class="ruby-identifier">use_ssl</span><span class="ruby-operator">:</span> <span class="ruby-identifier">secure</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span>
+  <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>, <span class="ruby-value">use_ssl:</span> <span class="ruby-identifier">secure</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">uri</span>
     <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span> <span class="ruby-identifier">request</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">response</span><span class="ruby-operator">|</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-value">200</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">code</span>.<span class="ruby-identifier">to_i</span>
-        <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">cache_url_path</span>, <span class="ruby-string">&#39;wb&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
-          <span class="ruby-identifier">response</span>.<span class="ruby-identifier">read_body</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chunk</span><span class="ruby-operator">|</span>
-            <span class="ruby-identifier">io</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">chunk</span>
-          <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-identifier">mime_type</span> = <span class="ruby-identifier">response</span>[<span class="ruby-string">&#39;content-type&#39;</span>]
-        <span class="ruby-constant">Info</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">cache_url_path</span>, <span class="ruby-string">&#39;Content-Type&#39;</span>, <span class="ruby-identifier">mime_type</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">mime_type</span>
-      <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">code</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">200</span>
         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span><span class="ruby-operator">::</span><span class="ruby-constant">JobInput</span>, <span class="ruby-node">&quot;got #{response.code} code from #{uri}&quot;</span>)
       <span class="ruby-keyword">end</span>
+
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">cache_url_path</span>, <span class="ruby-string">&#39;wb&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">response</span>.<span class="ruby-identifier">read_body</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chunk</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">io</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">chunk</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">mime_type</span> = <span class="ruby-identifier">response</span>[<span class="ruby-string">&#39;content-type&#39;</span>]
+      <span class="ruby-constant">Info</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">cache_url_path</span>, <span class="ruby-string">&#39;Content-Type&#39;</span>, <span class="ruby-identifier">mime_type</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">mime_type</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -190,8 +190,8 @@
 
           
           <div class="method-source-code" id="secure-source">
-            <pre><span class="ruby-comment"># File service/remote/http_download.rb, line 36</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">secure</span>
+            <pre><span class="ruby-comment"># File service/remote/http_download.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">secure</span>
   <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -207,12 +207,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -1,198 +1,190 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # Input#source of mash inputs, representing a collection #media arranged on
   # #audio and #video tracks.
   class Mash < Hashable
-    def self.clip_has_audio(clip)
-      has = false
-      unless clip[:no_audio]
-        url =
-          case clip[:type]
-          when Type::AUDIO
-            clip[:source] || clip[:audio]
-          when Type::VIDEO
-            clip[:source] || clip[:audio] unless 0 == clip[:audio]
-          end
-        if url
-          has = !clip[:gain]
-          has ||= !__gain_mutes(clip[:gain])
-        end
-      end
-      has
-    end
-    def self.clips_having_audio(mash)
-      clips = []
-      Type::TRACKS.each do |track_type|
-        mash[track_type.to_sym].each do |track|
-          track[:clips].each do |clip|
-            clips << clip if clip_has_audio(clip)
-          end
-        end
-      end
-      clips
-    end
-    def self.clips_in_range(mash, range, track_type)
-      clips_in_range = []
-      mash[track_type.to_sym].each do |track|
-        track[:clips].each do |clip|
-          clips_in_range << clip if range.intersection(clip[:range])
-        end
-      end
-      clips_in_range = clips_in_range.sort do |a, b|
-        if a[:track] == b[:track]
-          a[:frame] <=> b[:frame]
-        else
-          a[:track] <=> b[:track]
-        end
-      end
-      clips_in_range
-    end
-    def self.duration(mash)
-      mash[:length] / mash[:quantize]
-    end
-    def self.gain_changes(gain)
-      does = false
-      if gain.is_a?(String) && gain.include?(',')
-        gains = gain.split ','
-        (gains.length / 2).times do |i|
-          does = !FloatUtil.cmp(gains[1 + i * 2].to_f, Gain::None)
-          break if does
-        end
-      else
-        does = !FloatUtil.cmp(gain.to_f, Gain::None)
-      end
-      does
-    end
-    def self.hash?(hash)
-      isa = false
-      if hash.is_a?(Hash) || hash.is_a?(Mash)
-        medias = __ob_prop(:media, hash)
-        if medias && medias.is_a?(Array)
-          video_tracks = __ob_prop(:video, hash)
-          audio_tracks = __ob_prop(:audio, hash)
-          isa = (video_tracks || audio_tracks)
-        end
-      end
-      isa
-    end
-    def self.audio?(mash)
-      Type::TRACKS.each do |track_type|
-        mash[track_type.to_sym].each do |track|
-          track[:clips].each do |clip|
-            return true if clip_has_audio(clip)
-          end
-        end
-      end
-      false
-    end
-    def self.video?(mash)
-      mash && mash[:video] && mash[:video].any? do |track|
-        track[:clips] && track[:clips].any?
-      end
-    end
-    def self.init_hash(mash)
-      Hashable._init_key mash, :backcolor, 'black'
-      mash[:quantize] ||= FloatUtil::ONE
-      mash[:quantize] = mash[:quantize].to_f
-      mash[:media] ||= []
-      longest = FloatUtil::ZERO
-      Type::TRACKS.each do |track_type|
-        track_sym = track_type.to_sym
-        mash[track_sym] ||= []
-        mash[track_sym].length.times do |track_index|
-          track = mash[track_sym][track_index]
-          track[:clips] ||= []
-          track[:clips].map! do |clip|
-            clip = __init_clip clip, mash, track_index, track_type
-            __init_clip_media(clip[:merger], mash, :merger) if clip[:merger]
-            __init_clip_media(clip[:scaler], mash, :scaler) if clip[:scaler]
-            clip[:effects].each do |effect|
-              __init_clip_media(effect, mash, :effect)
+    class << self
+      def clip_has_audio(clip)
+        has = false
+        unless clip[:no_audio]
+          url =
+            case clip[:type]
+            when Type::AUDIO
+              clip[:source] || clip[:audio]
+            when Type::VIDEO
+              clip[:source] || __nonzero_audio(clip)
             end
-            clip
+          if url
+            has = !clip[:gain]
+            has ||= !__gain_mutes(clip[:gain])
           end
-          clip = track[:clips].last
-          longest = FloatUtil.max(longest, clip[:range].stop) if clip
-          track_index += 1
+        end
+        has
+      end
+
+      def clips_having_audio(mash)
+        clips = []
+        Type::TRACKS.each do |track_type|
+          mash[track_type.to_sym].each do |track|
+            track[:clips].each do |clip|
+              clips << clip if clip_has_audio(clip)
+            end
+          end
+        end
+        clips
+      end
+
+      def clips_in_range(mash, range, track_type)
+        clips_in_range = []
+        mash[track_type.to_sym].each do |track|
+          track[:clips].each do |clip|
+            clips_in_range << clip if range.intersection(clip[:range])
+          end
+        end
+        clips_in_range.sort do |a, b|
+          if a[:track] == b[:track]
+            a[:frame] <=> b[:frame]
+          else
+            a[:track] <=> b[:track]
+          end
         end
       end
-      mash[:length] = longest
-      mash
-    end
-    def self.init_av_input(input)
-      if input[:no_video]
-        (input[:no_audio] ? AV::NEITHER : AV::AUDIO_ONLY)
-      else
-        (input[:no_audio] ? AV::VIDEO_ONLY : AV::BOTH)
+
+      def duration(mash)
+        mash[:length] / mash[:quantize]
       end
-    end
-    def self.init_input(input)
-      type = input[:type]
-      is_av = [Type::VIDEO, Type::AUDIO].include?(type)
-      is_v = [Type::VIDEO, Type::IMAGE, Type::FRAME].include?(type)
-      input[:effects] ||= []
-      input[:merger] ||= Defaults.module_for_type(:merger)
-      input[:scaler] ||= Defaults.module_for_type(:scaler) unless input[:fill]
-      # set volume with default of none (no adjustment)
-      Hashable._init_key(input, :gain, Gain::None) if is_av
-      Hashable._init_key(input, :fill, Fill::STRETCH) if is_v
-      if [Type::VIDEO, Type::IMAGE, Type::FRAME, Type::AUDIO].include?(type)
-        # set source from url unless defined
-        input[:source] ||= input[:url]
+
+      def gain_changes(gain)
+        does = false
+        if gain.is_a?(String) && gain.include?(',')
+          gains = gain.split ','
+          (gains.length / 2).times do |i|
+            does = !FloatUtil.cmp(gains[1 + i * 2].to_f, Gain::None)
+            break if does
+          end
+        else
+          does = !FloatUtil.cmp(gain.to_f, Gain::None)
+        end
+        does
       end
-      # set no_audio and/or no_video when we know for sure
-      case type
-      when Type::MASH
-        init_mash_input(input)
-      when Type::VIDEO
-        __init_video(input)
-      when Type::AUDIO
-        Hashable._init_key(input, :loop, 1)
-        input[:no_video] = true
-      when Type::IMAGE
-        input[:no_video] = false
-        input[:no_audio] = true
-      else
-        input[:no_audio] = true
+
+      def hash?(hash)
+        isa = false
+        if hash.is_a?(Hash) || hash.is_a?(Mash)
+          medias = __ob_prop(:media, hash)
+          if medias.is_a?(Array)
+            video_tracks = __ob_prop(:video, hash)
+            audio_tracks = __ob_prop(:audio, hash)
+            isa = (video_tracks || audio_tracks)
+          end
+        end
+        isa
       end
-      input[:no_audio] ||= !clip_has_audio(input) if is_av
-      input[:av] = init_av_input(input)
-    end
-    def self.init_mash_input(input)
-      if hash? input[:mash]
-        input[:mash] = Mash.new input[:mash]
-        input[:mash].preflight if input[:mash]
+
+      def audio?(mash)
+        Type::TRACKS.each do |track_type|
+          mash[track_type.to_sym].each do |track|
+            track[:clips].each do |clip|
+              return true if clip_has_audio(clip)
+            end
+          end
+        end
+        false
+      end
+
+      def video?(mash)
+        mash && mash[:video] && mash[:video].any? do |track|
+          track[:clips]&.any?
+        end
+      end
+
+      def init_hash(mash)
+        Hashable._init_key mash, :backcolor, 'black'
+        mash[:quantize] ||= FloatUtil::ONE
+        mash[:quantize] = mash[:quantize].to_f
+        mash[:media] ||= []
+        longest = FloatUtil::ZERO
+        Type::TRACKS.each do |track_type|
+          track_sym = track_type.to_sym
+          mash[track_sym] ||= []
+          mash[track_sym].length.times do |track_index|
+            track = mash[track_sym][track_index]
+            track[:clips] ||= []
+            track[:clips].map! do |clip|
+              clip = __init_clip clip, mash, track_index, track_type
+              __init_clip_media(clip[:merger], mash, :merger)
+              __init_clip_media(clip[:scaler], mash, :scaler)
+              clip[:effects].each do |effect|
+                __init_clip_media(effect, mash, :effect)
+              end
+              clip
+            end
+            clip = track[:clips].last
+            longest = FloatUtil.max(longest, clip[:range].stop) if clip
+            track_index += 1
+          end
+        end
+        mash[:length] = longest
+        mash
+      end
+
+      def init_av_input(input)
+        if input[:no_video]
+          (input[:no_audio] ? AV::NEITHER : AV::AUDIO_ONLY)
+        else
+          (input[:no_audio] ? AV::VIDEO_ONLY : AV::BOTH)
+        end
+      end
+
+      def init_input(input)
+        input[:effects] ||= []
+        input[:merger] ||= Defaults.module_for_type(:merger)
+        input[:scaler] ||= Defaults.module_for_type(:scaler) unless input[:fill]
+        __init_input_av(input)
+        __init_input_fill(input)
+        __init_input_source(input)
+      end
+
+      def init_mash_input(input)
+        return unless hash?(input[:mash])
+
+        input[:mash] = Mash.new(input[:mash])
+        input[:mash]&.preflight
         if FloatUtil.cmp(input[:duration], FloatUtil::ZERO)
           input[:duration] = duration(input[:mash])
         end
         input[:no_audio] = !audio?(input[:mash])
         input[:no_video] = !video?(input[:mash])
       end
-    end
-    def self.media(mash, ob_or_id)
-      return nil unless mash && ob_or_id
-      ob_or_id = __ob_prop(:id, ob_or_id) if ob_or_id.is_a?(Hash)
-      if ob_or_id
-        media_array = __ob_prop(:media, mash)
-        if media_array && media_array.is_a?(Array)
-          media_array.each do |media|
-            id = __ob_prop(:id, media)
-            return media if id == ob_or_id
+
+      def media(mash, ob_or_id)
+        return nil unless mash && ob_or_id
+
+        ob_or_id = __ob_prop(:id, ob_or_id) if ob_or_id.is_a?(Hash)
+        if ob_or_id
+          media_array = __ob_prop(:media, mash)
+          if media_array.is_a?(Array)
+            media_array.each do |media|
+              id = __ob_prop(:id, media)
+              return media if id == ob_or_id
+            end
           end
         end
+        nil
       end
-      nil
-    end
-    def self.media_count_for_clips(mash, clips, referenced)
-      referenced = {} unless referenced
-      if clips
-        clips.each do |clip|
+
+      def media_count_for_clips(mash, clips, referenced)
+        referenced ||= {}
+        clips&.each do |clip|
           media_id = __ob_prop(:id, clip)
           __media_reference(mash, media_id, referenced)
           reference = referenced[media_id]
           raise("__media_reference with no #{media_id}") unless reference
+
           media = reference[:media]
           next unless media
+
           if __modular_media?(media)
             keys = __properties_for_media(media, Type::FONT)
             keys.each do |key|
@@ -214,130 +206,117 @@ module MovieMasher
           end
         end
       end
-    end
-    def self.media_search(type, ob_or_id, mash)
-      media_ob = nil
-      if ob_or_id
+
+      def media_search(type, ob_or_id, mash)
+        return unless ob_or_id
+
+        media_ob = nil
         ob_or_id = __ob_prop(:id, ob_or_id) if ob_or_id.is_a?(Hash)
         if ob_or_id
           media_ob = media(mash, ob_or_id) if mash
-          media_ob = Defaults.module_for_type(type, ob_or_id) unless media_ob
+          media_ob ||= Defaults.module_for_type(type, ob_or_id)
         end
+        media_ob
       end
-      media_ob
-    end
-    def self.video_ranges(mash)
-      quantize = mash[:quantize]
-      frames = []
-      frames << 0
-      frames << mash[:length]
-      mash[:video].each do |track|
-        track[:clips].each do |clip|
-          frames << clip[:range].start
-          frames << clip[:range].stop
-        end
-      end
-      all_ranges = []
-      frames.uniq!
-      frames.sort!
-      frame = nil
-      frames.length.times do |i|
-        all_ranges << TimeRange.new(frame, quantize, frames[i] - frame) if frame
-        frame = frames[i]
-      end
-      all_ranges
-    end
-    def self.__gain_mutes(gain)
-      does = true
-      if gain.is_a?(String) && gain.include?(',')
-        does = true
-        gains = gain.split ','
-        gains.length.times do |i|
-          does = FloatUtil.cmp(gains[1 + i * 2].to_f, Gain::Mute)
-          break unless does
-        end
-      else
-        does = FloatUtil.cmp(gain.to_f, Gain::Mute)
-      end
-      does
-    end
-    def self.__media_merger_scaler(mash, object, referenced)
-      if object
-        merger = __ob_prop(Type::MERGER, object)
-        if merger
-          id = __ob_prop(:id, merger)
-          __media_reference(mash, id, referenced, Type::MERGER) if id
-        end
-        scaler = __ob_prop(Type::SCALER, object)
-        if scaler
-          id = __ob_prop(:id, scaler)
-          __media_reference(mash, id, referenced, Type::SCALER) if id
-        end
-      end
-    end
-    def self.__media_reference(mash, media_id, referenced, type = nil)
-      if media_id && referenced
-        if referenced[media_id]
-          referenced[media_id][:count] += 1
-        else
-          referenced[media_id] = {}
-          referenced[media_id][:count] = 1
-          referenced[media_id][:media] = media_search type, media_id, mash
-        end
-      end
-    end
-    def self.__modular_media?(media)
-      case __ob_prop(:type, media)
-      when Type::IMAGE, Type::AUDIO, Type::VIDEO, Type::FRAME
-        false
-      else
-        true
-      end
-    end
-    def self.__properties_for_media(media, type)
-      prop_keys = []
-      if type && media
-        properties = __ob_prop(:properties, media)
-        if properties && properties.is_a?(Hash)
-          properties.each do |key, property|
-            property_type = __ob_prop(:type, property)
-            prop_keys << key if type == property_type
+
+      def video_ranges(mash)
+        quantize = mash[:quantize]
+        frames = []
+        frames << 0
+        frames << mash[:length]
+        mash[:video].each do |track|
+          track[:clips].each do |clip|
+            frames << clip[:range].start
+            frames << clip[:range].stop
           end
         end
+        all_ranges = []
+        frames.uniq!
+        frames.sort!
+        frame = nil
+        frames.length.times do |i|
+          if frame
+            all_ranges << TimeRange.new(frame, quantize, frames[i] - frame)
+          end
+          frame = frames[i]
+        end
+        all_ranges
       end
-      prop_keys
-    end
-    def self.__ob_prop(sym, ob)
-      prop = nil
-      if sym && ob && (ob.is_a?(Hash) || ob.is_a?(Hashable))
-        sym = sym.to_sym unless sym.is_a?(Symbol)
-        prop = ob[sym] || ob[sym.id2name]
+
+      private
+
+      def __gain_mutes(gain)
+        does = true
+        if gain.is_a?(String) && gain.include?(',')
+          does = true
+          gains = gain.split ','
+          gains.length.times do |i|
+            does = FloatUtil.cmp(gains[1 + i * 2].to_f, Gain::Mute)
+            break unless does
+          end
+        else
+          does = FloatUtil.cmp(gain.to_f, Gain::Mute)
+        end
+        does
       end
-      prop
-    end
-    def self.__init_clip(input, mash, track_index, track_type)
-      __init_clip_media(input, mash, track_type)
-      input[:frame] ||= FloatUtil::ZERO
-      input[:frame] = input[:frame].to_f
-      unless input[:frames] && 0 < input[:frames]
-        raise(Error::JobInput, 'mash clips must have frames')
+
+      def __init_clip(input, mash, track_index, track_type)
+        __init_clip_media(input, mash, track_type)
+        __init_clip_range(input, mash)
+
+        input[:length] ||= input[:range].length_seconds
+        input[:track] = track_index if track_index
+
+        case input[:type]
+        when Type::FRAME
+          __init_clip_frame(input, mash)
+        when Type::TRANSITION
+          __init_clip_transition(input, mash)
+        when Type::VIDEO, Type::AUDIO
+          input[:trim] ||= 0
+          input[:offset] ||= input[:trim].to_f / mash[:quantize]
+        end
+        init_input(input)
+        Clip.create(input)
       end
-      input[:range] = TimeRange.new(
-        input[:frame], mash[:quantize], input[:frames]
-      )
-      input[:length] ||= input[:range].length_seconds
-      input[:track] = track_index if track_index
-      case input[:type]
-      when Type::FRAME
+
+      def __init_clip_frame(input, mash)
         input[:still] ||= 0
         input[:fps] ||= mash[:quantize]
-        if 2 > input[:still] + input[:fps]
+        if input[:still] + input[:fps] < 2
           input[:quantized_frame] = 0
         else
-          still_frame = (input[:still].to_f / input[:fps].to_f).round
+          still_frame = (input[:still].to_f / input[:fps]).round
           input[:quantized_frame] = mash[:quantize] * still_frame
         end
-      when Type::TRANSITION
+      end
+
+      def __init_clip_media(clip, mash, type = nil)
+        return unless clip
+
+        raise(Error::JobInput, "clip has no id #{clip}") unless clip[:id]
+
+        media = media_search(type, clip, mash)
+        unless media
+          raise(Error::JobInput, "no #{clip[:id]} #{type || 'media'} found")
+        end
+
+        media.each { |k, v| clip[k] = v unless clip[k] }
+      end
+
+      def __init_clip_range(input, mash)
+        input[:frame] ||= FloatUtil::ZERO
+        input[:frame] = input[:frame].to_f
+        unless input[:frames] && (input[:frames]).positive?
+          raise(Error::JobInput, 'mash clips must have frames')
+        end
+
+        input[:range] = TimeRange.new(
+          input[:frame], mash[:quantize], input[:frames]
+        )
+      end
+
+      def __init_clip_transition(input, mash)
         input[:to] ||= {}
         input[:from] ||= {}
         input[:to][:merger] ||= Defaults.module_for_type(:merger)
@@ -352,39 +331,147 @@ module MovieMasher
         __init_clip_media(input[:from][:merger], mash, Type::MERGER)
         __init_clip_media(input[:to][:scaler], mash, Type::SCALER)
         __init_clip_media(input[:from][:scaler], mash, Type::SCALER)
-      when Type::VIDEO, Type::AUDIO
-        input[:trim] ||= 0
-        input[:offset] ||= input[:trim].to_f / mash[:quantize]
       end
-      init_input input
-      Clip.create input
-    end
-    def self.__init_clip_media(clip, mash, type = nil)
-      raise(Error::JobInput, "clip has no id #{clip}") unless clip[:id]
-      media = media_search(type, clip, mash)
-      unless media
-        raise(Error::JobInput, "no #{clip[:id]} #{type ? type : 'media'} found")
+
+      def __init_input_av(input)
+        is_av = __init_input_gain(input)
+        # set no_audio and/or no_video when we know for sure
+        case input[:type]
+        when Type::MASH
+          init_mash_input(input)
+        when Type::VIDEO
+          __init_input_video(input)
+        when Type::AUDIO
+          Hashable._init_key(input, :loop, 1)
+          input[:no_video] = true
+        when Type::IMAGE
+          input[:no_video] = false
+          input[:no_audio] = true
+        else
+          input[:no_audio] = true
+        end
+        input[:no_audio] ||= !clip_has_audio(input) if is_av
+        input[:av] = init_av_input(input)
+        is_av
       end
-      media.each { |k, v| clip[k] = v unless clip[k] }
+
+      def __init_input_gain(input)
+        return unless [Type::VIDEO, Type::AUDIO].include?(input[:type])
+
+        # set volume with default of none (no adjustment)
+        Hashable._init_key(input, :gain, Gain::None)
+        true
+      end
+
+      def __init_input_fill(input)
+        visual_types = [Type::VIDEO, Type::IMAGE, Type::FRAME]
+        return unless visual_types.include?(input[:type])
+
+        Hashable._init_key(input, :fill, Fill::STRETCH)
+        true
+      end
+
+      def __init_input_source(input)
+        source_types = [Type::VIDEO, Type::IMAGE, Type::FRAME, Type::AUDIO]
+        return unless source_types.include?(input[:type])
+
+        # set source from url unless defined
+        input[:source] ||= input[:url]
+        true
+      end
+
+      def __init_input_video(input)
+        input[:speed] ||= FloatUtil::ONE
+        input[:speed] = input[:speed].to_f
+        input[:no_audio] = !FloatUtil.cmp(FloatUtil::ONE, input[:speed])
+        input[:no_video] = false
+      end
+
+      def __media_merger_scaler(mash, object, referenced)
+        return unless object
+
+        merger = __ob_prop(Type::MERGER, object)
+        if merger
+          id = __ob_prop(:id, merger)
+          __media_reference(mash, id, referenced, Type::MERGER) if id
+        end
+        scaler = __ob_prop(Type::SCALER, object)
+
+        return unless scaler
+
+        id = __ob_prop(:id, scaler)
+        return unless id
+
+        __media_reference(mash, id, referenced, Type::SCALER)
+      end
+
+      def __media_reference(mash, media_id, referenced, type = nil)
+        return unless media_id && referenced
+
+        if referenced[media_id]
+          referenced[media_id][:count] += 1
+        else
+          referenced[media_id] = {}
+          referenced[media_id][:count] = 1
+          referenced[media_id][:media] = media_search type, media_id, mash
+        end
+      end
+
+      def __modular_media?(media)
+        case __ob_prop(:type, media)
+        when Type::IMAGE, Type::AUDIO, Type::VIDEO, Type::FRAME
+          false
+        else
+          true
+        end
+      end
+
+      def __nonzero_audio(clip)
+        audio = clip[:audio].to_s
+        return if audio == '0'
+
+        audio
+      end
+
+      def __ob_prop(sym, object)
+        prop = nil
+        if sym && object && (object.is_a?(Hash) || object.is_a?(Hashable))
+          sym = sym.to_sym unless sym.is_a?(Symbol)
+          prop = object[sym] || object[sym.id2name]
+        end
+        prop
+      end
+
+      def __properties_for_media(media, type)
+        prop_keys = []
+        if type && media
+          properties = __ob_prop(:properties, media)
+          if properties.is_a?(Hash)
+            properties.each do |key, property|
+              property_type = __ob_prop(:type, property)
+              prop_keys << key if type == property_type
+            end
+          end
+        end
+        prop_keys
+      end
     end
-    def self.__init_video(input)
-      input[:speed] ||= FloatUtil::ONE
-      input[:speed] = input[:speed].to_f
-      input[:no_audio] = !FloatUtil.cmp(FloatUtil::ONE, input[:speed])
-      input[:no_video] = false
-    end
+
     # Array - One or more Track objects.
     def audio
       _get(__method__)
     end
+
     def initialize(hash)
       super
       self.class.init_hash(@hash)
     end
+
     # Array - One or more Media objects.
     def media
       _get(__method__)
     end
+
     def preflight(job = nil)
       media.map! do |media|
         case media[:type]
@@ -395,6 +482,7 @@ module MovieMasher
         media
       end
     end
+
     def url_count(desired)
       count = 0
       media.each do |media|
@@ -405,6 +493,7 @@ module MovieMasher
       end
       count
     end
+
     # Array - One or more Track objects.
     def video
       _get(__method__)

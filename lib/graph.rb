@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # base class for most other graph related classes
@@ -13,34 +14,41 @@ module MovieMasher
       end
       joined_commands.join
     end
+
     def __coerce_if_numeric(value)
       Evaluate.coerce_if_numeric(value)
     end
-    def __is_and_not_empty(thing)
+
+    def _present(thing)
       thing && !thing.empty?
     end
-    def __raise_if_empty(s, msg)
-      raise(Error::JobInput, msg) if s.empty?
+
+    def __raise_if_empty(string, msg)
+      raise(Error::JobInput, msg) if string.empty?
     end
-    def __raise_unless(tf, msg)
-      raise(Error::JobInput, msg) unless tf
+
+    def __raise_unless(boolean, msg)
+      raise(Error::JobInput, msg) unless boolean
     end
   end
+
   # top level interface
   class Graph < GraphUtility
     def self.color_value(color)
-      if color.is_a?(String) && color.end_with?(')')
-        if color.start_with?('rgb(', 'rgba(')
-          color_split = color.split('(')
-          method = color_split.shift.to_sym
-          params = color_split.shift[0..-2]
-          color = FilterHelpers.send(method, params)
-        end
+      if color.is_a?(String) && color.end_with?(')') && color.start_with?(
+        'rgb(', 'rgba('
+      )
+        color_split = color.split('(')
+        method = color_split.shift.to_sym
+        params = color_split.shift[0..-2]
+        color = FilterHelpers.send(method, params)
       end
       color
     end
+
     def create_layer(input)
       raise('no job') unless @job
+
       __raise_unless(input[:type], "input with no type #{input}")
       case input[:type]
       when Type::VIDEO
@@ -56,15 +64,19 @@ module MovieMasher
       end
       layer
     end
+
     def duration
       @render_range.length_seconds
     end
+
     def graph_command(output)
       FilterSourceRaw.input_index = 0
       @job_output = output
     end
+
     def graph_scope
       raise('no job') unless @job
+
       scope = {}
       scope[:mm_job] = @job
       scope[:mm_output] = @job_output
@@ -74,15 +86,19 @@ module MovieMasher
       scope[:mm_width], scope[:mm_height] = scope[:mm_dimensions].split 'x'
       scope
     end
+
     def initialize(job = nil, job_input = nil, render_range = nil)
+      super()
       @job = job
       @job_input = job_input
       @render_range = render_range
     end
+
     def inputs
       []
     end
   end
+
   # base for all filters
   class Filter < GraphUtility
     class << self
@@ -91,17 +107,22 @@ module MovieMasher
     Filter.__outsize = {}
     attr_reader :id
     attr_writer :disabled
+
     def filter_command(_scope)
       (@disabled ? '' : @id)
     end
+
     def filter_name
       @id
     end
+
     def initialize(id = nil)
+      super()
       @id = id || ''
       @disabled = false
     end
   end
+
   # base for all filter chains
   class Chain < GraphUtility
     def chain_command(scope)
@@ -110,38 +131,48 @@ module MovieMasher
       end
       __join_commands(cmds)
     end
-    def chain_labels(label, i)
-      "[#{label}#{1 == i ? '' : 'ed'}#{i - 1}][#{label}#{i}]"
+
+    def chain_labels(label, index)
+      "[#{label}#{index == 1 ? '' : 'ed'}#{index - 1}][#{label}#{index}]"
     end
+
     def initialize(input = nil, job_input = nil)
+      super()
       @input = input
       @job_input = job_input
       @filters = []
       # puts "Chain calling #initialize_filters"
       initialize_filters
     end
+
     def initialize_filters
       # override me
     end
+
     def <<(filter)
       @filters << filter
     end
   end
+
   # base for all layers
-  class Layer < GraphUtility # all layers - LayerRaw, LayerModule
+  # all layers - LayerRaw, LayerModule
+  class Layer < GraphUtility
     def initialize(input, job_input)
+      super()
       @input = input
       @job_input = job_input # will be different than input if we're in a mash
       raise('no input') unless input
+
       @range = input[:range]
       @chains = []
       initialize_chains
     end
+
     def initialize_chains
       if @input[:merger]
         @input[:merger][:dimensions] ||= @input[:dimensions]
         @merger_chain =
-          if 'com.moviemasher.merger.blend' == @input[:merger][:id]
+          if @input[:merger][:id] == 'com.moviemasher.merger.blend'
             ChainBlend.new(@input[:merger], @job_input, @input)
           else
             ChainModule.new(@input[:merger], @job_input, @input)
@@ -159,29 +190,35 @@ module MovieMasher
       @chains << @scaler_chain
       @chains << @effects_chain
     end
+
     def inputs
       []
     end
+
     def layer_command(scope)
       layer_scope(scope)
       __join_commands(@chains.map { |chain| chain.chain_command(scope) })
     end
+
     def layer_scope(scope)
       __raise_unless(@input[:length], "no input length #{@input}")
       scope[:mm_duration] = @input[:length]
       scope[:mm_t] = "(t/#{scope[:mm_duration]})"
-      if @input[:dimensions]
-        scope[:overlay_w], scope[:overlay_h] = @input[:dimensions].split('x')
-      end
+      return unless @input[:dimensions]
+
+      scope[:overlay_w], scope[:overlay_h] = @input[:dimensions].split('x')
     end
-    def merger_command(scope, label, i)
+
+    def merger_command(scope, label, index)
       merge_cmd = @merger_chain.chain_command(scope)
       __raise_if_empty(merge_cmd, "merger produced nothing #{self}")
-      "#{@merger_chain.chain_labels(label, i)}#{merge_cmd}"
+      "#{@merger_chain.chain_labels(label, index)}#{merge_cmd}"
     end
+
     def range
       (@input ? @input[:range] : nil)
     end
+
     def trim_command(render_range)
       input_range = range
       # puts "command_range_trim #{input_range}"
@@ -205,6 +242,7 @@ module MovieMasher
       cmd
     end
   end
+
   # a mash represented as a graph
   class GraphMash < Graph
     def add_new_layer(input)
@@ -212,41 +250,45 @@ module MovieMasher
       @layers << layer
       layer
     end
-    def graph_command(output, dont_set_input_index = false) # LayerTransition
+
+    # LayerTransition
+    def graph_command(output, dont_set_input_index: false)
       FilterSourceRaw.input_index = 0 unless dont_set_input_index
       @job_output = output
       graph_cmds = []
       layer_length = @layers.length
-      layer_length.times do |i|
-        layer = @layers[i]
+      layer_length.times do |index|
+        layer = @layers[index]
         cmd = layer.layer_command(graph_scope)
         cmd += layer.trim_command(@render_range)
-        cmd += "[#{@label_name}#{i}]" if 1 < layer_length
+        cmd += "[#{@label_name}#{index}]" if layer_length > 1
         graph_cmds << cmd
       end
-      if 1 < layer_length
-        (1..layer_length - 1).each do |i|
-          layer = @layers[i]
-          cmd = layer.merger_command(graph_scope, @label_name, i)
-          cmd += "[#{@label_name}ed#{i}]" if i + 1 < layer_length
+      if layer_length > 1
+        (1..layer_length - 1).each do |index|
+          layer = @layers[index]
+          cmd = layer.merger_command(graph_scope, @label_name, index)
+          cmd += "[#{@label_name}ed#{index}]" if index + 1 < layer_length
           graph_cmds << cmd
         end
       end
-      cmd = graph_cmds.join ';'
-      cmd
+      graph_cmds.join ';'
     end
+
     def initialize(job, mash_input, render_range = nil, label_name = 'layer')
       @label_name = label_name
       super(job, mash_input, render_range)
       @layers = []
       @layers << LayerColor.new(duration, mash_input[:mash][:backcolor])
     end
+
     def inputs
       layer_inputs = []
       @layers.each { |layer| layer_inputs += layer.inputs }
       layer_inputs
     end
   end
+
   # a video or image represented as a graph
   class GraphRaw < Graph
     def graph_command(*)
@@ -255,10 +297,13 @@ module MovieMasher
       cmd += @layer.trim_command(@render_range)
       cmd
     end
-    def initialize(input) # a video or image input
+
+    # a video or image input
+    def initialize(input)
       super(input, nil, input[:range])
       @layer = create_layer(input)
     end
+
     def inputs
       @layer.inputs
     end

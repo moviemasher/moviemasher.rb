@@ -1,8 +1,6 @@
-
 require_relative 'helpers/spec_helper'
 require_relative '../lib/service'
 describe File.basename(__FILE__) do
-
   before(:each) do
     spec_delete_all
     spec_create_bucket(@bucket)
@@ -13,60 +11,60 @@ describe File.basename(__FILE__) do
     @bucket = 'rspec'
     @queue = 'rspec'
     @img_output = {
-      "type": "image",
-      "name": "file.png",
-      "dimensions": "100x100",
-      "quality": "1"
+      "type": 'image',
+      "name": 'file.png',
+      "dimensions": '100x100',
+      "quality": '1'
     }
     @file_input = {
-      "id": "file_input",
-      "type": "image",
-      "source": "magick/lg-4x3.png"
+      "id": 'file_input',
+      "type": 'image',
+      "source": 'magick/lg-4x3.png'
     }
     @file_destination = {
-      "type": "file",
+      "type": 'file',
       "path": "#{DIR_LOCAL_POSTS}/output.png",
-      "method": "move"
+      "method": 'move'
     }
     @s3_input = {
-      "id": "s3_input",
-      "type": "image",
+      "id": 's3_input',
+      "type": 'image',
       "source": {
-        "type": "s3",
-        "path": "path/to",
+        "type": 's3',
+        "path": 'path/to',
         "bucket": @bucket,
-        "name": "input.png"
+        "name": 'input.png'
       }
     }
     @http_input = {
-      "id": "http_input",
-      "type": "image",
+      "id": 'http_input',
+      "type": 'image',
       "source": {
-        "type": "http",
-        "path": "posts/path/to",
+        "type": 'http',
+        "path": 'posts/path/to',
         "host": 'http', # same as docker-compose service
-        "port": "80", # exposed port (doesn't matter if mapped)
-        "name": "input.png"
+        "port": '80', # exposed port (doesn't matter if mapped)
+        "name": 'input.png'
       }
     }
     @https_input = {
-      "id": "https_input",
-      "type": "image",
+      "id": 'https_input',
+      "type": 'image',
       "source": 'https://moviemasher.com/media/img/mm-logo-200.png'
     }
     @s3_destination = {
-      "type": "s3",
+      "type": 's3',
       "bucket": @bucket,
-      "acl": "private",
-      "path": "path/to"
+      "acl": 'private',
+      "path": 'path/to'
     }
     @http_destination = {
-        "type": "http",
-        "host": "http", # same as docker-compose service
-        "port": "80", # exposed port (doesn't matter if mapped)
-        "path": "php",
-        "name": "index.php"
-      }
+      "type": 'http',
+      "host": 'http', # same as docker-compose service
+      "port": '80', # exposed port (doesn't matter if mapped)
+      "path": 'php',
+      "name": 'index.php'
+    }
     @aws_config = {
       secret_access_key: '...', access_key_id: '...', region: 'us-east-1'
     }
@@ -89,16 +87,16 @@ describe File.basename(__FILE__) do
 
   context "when scanning #{MovieMasher::Service::SERVICES_DIRECTORY}" do
     it 'services(:download) returns file, http, https, and s3' do
-     services = MovieMasher::Service.services(:download)
-      expect(services.map{|s| s[:name]}.sort).to eq %w(file http https s3)
+      services = MovieMasher::Service.services(:download)
+      expect(services.map { |s| s[:name] }.sort).to eq %w[file http https s3]
     end
     it 'services(:queue) returns file and sqs' do
       services = MovieMasher::Service.services(:queue)
-      expect(services.map{|s| s[:name]}.sort).to eq %w(file sqs)
+      expect(services.map { |s| s[:name] }.sort).to eq %w[file sqs]
     end
     it 'services(:upload) returns file, http, https, and s3' do
       services = MovieMasher::Service.services(:upload)
-      expect(services.map{|s| s[:name]}.sort).to eq %w(file http https s3)
+      expect(services.map { |s| s[:name] }.sort).to eq %w[file http https s3]
     end
   end
 
@@ -149,21 +147,21 @@ describe File.basename(__FILE__) do
   context 'when uploading to file service' do
     it 'file input renders to file destination' do
       spec_process_files(@file_input, @img_output, @file_destination)
-      expect_local_file("output.png")
+      expect_local_file('output.png')
     end
     it 'http input renders to file destination' do
       spec_put_file_http(MagickGenerator.image_file, 'path/to/input.png')
       spec_process_files(@http_input, @img_output, @file_destination)
-      expect_local_file("output.png")
+      expect_local_file('output.png')
     end
     it 'https input renders to file destination' do
       spec_process_files(@https_input, @img_output, @file_destination)
-      expect_local_file("output.png")
+      expect_local_file('output.png')
     end
     it 's3 input renders to file destination' do
       spec_put_file_s3(MagickGenerator.image_file, @bucket, 'path/to/input.png')
       spec_process_files(@s3_input, @img_output, @file_destination)
-      expect_local_file("output.png")
+      expect_local_file('output.png')
     end
   end
 
@@ -191,21 +189,21 @@ describe File.basename(__FILE__) do
   context 'when uploading to s3 service' do
     it 'file input renders to s3 destination' do
       spec_process_files(@file_input, @img_output, @s3_destination)
-      expect_s3_file(@bucket, "path/to/file.png")
+      expect_s3_file(@bucket, 'path/to/file.png')
     end
     it 'http input renders to s3 destination' do
       spec_put_file_http(MagickGenerator.image_file, 'path/to/input.png')
       spec_process_files(@http_input, @img_output, @s3_destination)
-      expect_s3_file(@bucket, "path/to/file.png")
+      expect_s3_file(@bucket, 'path/to/file.png')
     end
     it 'https input renders to s3 destination' do
       spec_process_files(@https_input, @img_output, @s3_destination)
-      expect_s3_file(@bucket, "path/to/file.png")
+      expect_s3_file(@bucket, 'path/to/file.png')
     end
     it 's3 input renders to s3 destination' do
       spec_put_file_s3(MagickGenerator.image_file, @bucket, 'path/to/input.png')
       spec_process_files(@s3_input, @img_output, @s3_destination)
-      expect_s3_file(@bucket, "path/to/file.png")
+      expect_s3_file(@bucket, 'path/to/file.png')
     end
   end
 
@@ -214,7 +212,7 @@ describe File.basename(__FILE__) do
       job = spec_job_files(@file_input, @img_output, @file_destination)
       spec_queue_job_sqs(spec_magick(job))
       MovieMasher.process_queues
-      expect_local_file("output.png")
+      expect_local_file('output.png')
     end
     it 'http input renders to http destination' do
       spec_put_file_http(MagickGenerator.image_file, 'path/to/input.png')
@@ -228,16 +226,16 @@ describe File.basename(__FILE__) do
       job = spec_job_files(@s3_input, @img_output, @s3_destination)
       spec_queue_job_sqs(spec_magick(job))
       MovieMasher.process_queues
-      expect_s3_file(@bucket, "path/to/file.png")
+      expect_s3_file(@bucket, 'path/to/file.png')
     end
   end
 
   context 'when posting job to local queue' do
-   it 'file input renders to file destination' do
+    it 'file input renders to file destination' do
       job = spec_job_files(@file_input, @img_output, @file_destination)
       spec_queue_job_file(spec_magick(job))
       MovieMasher.process_queues
-      expect_local_file("output.png")
+      expect_local_file('output.png')
     end
     it 'http input renders to http destination' do
       spec_put_file_http(MagickGenerator.image_file, 'path/to/input.png')
@@ -246,13 +244,12 @@ describe File.basename(__FILE__) do
       MovieMasher.process_queues
       expect_http_file('file.png')
     end
-   it 's3 input renders to s3 destination' do
+    it 's3 input renders to s3 destination' do
       spec_put_file_s3(MagickGenerator.image_file, @bucket, 'path/to/input.png')
       job = spec_job_files(@s3_input, @img_output, @s3_destination)
       spec_queue_job_file(spec_magick(job))
       MovieMasher.process_queues
-      expect_s3_file(@bucket, "path/to/file.png")
+      expect_s3_file(@bucket, 'path/to/file.png')
     end
   end
-
 end

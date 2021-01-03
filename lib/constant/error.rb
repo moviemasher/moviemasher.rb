@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   module Error
@@ -5,19 +6,25 @@ module MovieMasher
     class Runtime < RuntimeError
       def initialize(the_msg = nil)
         @msg = the_msg if the_msg
+        super
       end
+
       def message
         to_s
       end
+
       def to_s
-        @msg ? @msg : ''
+        @msg || ''
       end
     end
 
     # job related errors
     class Job < Runtime; end
+
     class JobOutput < Job; end
+
     class JobSyntax < Job; end
+
     # a problem rendering output
     class JobRender < JobOutput
       def initialize(ffmpeg_result, the_msg = 'failed to render')
@@ -27,7 +34,7 @@ module MovieMasher
         if ffmpeg_result
           # puts ffmpeg_result
           lines = ffmpeg_result.split("\n")
-          failure_words = %w(Error Invalid Failed)
+          failure_words = %w[Error Invalid Failed]
           lines.reverse.each do |line|
             failure_words.each do |failure_word|
               if line.include? failure_word
@@ -41,16 +48,24 @@ module MovieMasher
         @msg = error_lines.join("\n") unless error_lines.empty?
       end
     end
+
     class JobUpload < Job; end
+
     class JobSource < Job; end
+
     class JobInput < Job; end
+
     class Todo < Job; end
 
     # serious code errors
     class Critical < Runtime; end
+
     class Parameter < Critical; end
+
     class Configuration < Critical; end
+
     class Object < Critical; end
+
     class State < Critical; end
   end
 end

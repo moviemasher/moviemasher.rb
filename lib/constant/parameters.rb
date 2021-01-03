@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MovieMasher
   # default filter parameters
   module Parameters

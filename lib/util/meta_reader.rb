@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # used to parse file's meta data
@@ -6,15 +7,18 @@ module MovieMasher
       # sequence outputs point to a directory
       path = Dir[Path.concat path, '*'].first if File.directory?(path)
       @path = path
-      super {}
+      super({})
     end
+
     def [](symbol)
       @hash[symbol] ||= _meta(symbol)
       super
     end
+
     def _info
       Info.get(@path, __callee__.id2name)
     end
+
     def _meta(symbol)
       s = ffmpeg
       metas = s.split('Metadata:')
@@ -25,9 +29,10 @@ module MovieMasher
           lines = meta.split "\n"
           lines.shift if lines.first.strip.empty?
           first_line = lines.first
-          pad = first_line.match(/([\s]+)[\S]/)[1]
+          pad = first_line.match(/(\s+)\S/)[1]
           lines.each do |line|
             break unless line.start_with? pad
+
             pair = line.split(':').map(&:strip)
             return pair.last if pair.first == sym_str
           end

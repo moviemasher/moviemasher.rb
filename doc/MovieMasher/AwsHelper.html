@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
 </script>
 
 <script src="../js/jquery.js"></script>
@@ -15,6 +16,7 @@
 
 <link href="../css/fonts.css" rel="stylesheet">
 <link href="../css/rdoc.css" rel="stylesheet">
+
 
 
 
@@ -96,8 +98,6 @@
 
   </section>
 
-  
-  
   
   <section id="5Buntitled-5D" class="documentation-section">
     
@@ -182,8 +182,11 @@
           
           <div class="method-source-code" id="__require_sdk-source">
             <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 50</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">__require_sdk</span>
-  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;aws-sdk&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-constant">Aws</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">__require_sdk</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-constant">Aws</span>)
+
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;aws-sdk-s3&#39;</span>
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;aws-sdk-sqs&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -214,8 +217,8 @@
 
           
           <div class="method-source-code" id="aws_configuration-source">
-            <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 11</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">aws_configuration</span>
+            <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">aws_configuration</span>
   <span class="ruby-identifier">prefixed_configuration</span>(<span class="ruby-string">&#39;aws_&#39;</span>, <span class="ruby-identifier">configuration</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -247,13 +250,14 @@
 
           
           <div class="method-source-code" id="prefixed_configuration-source">
-            <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 15</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">prefixed_configuration</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">hash</span>)
+            <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prefixed_configuration</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">hash</span>)
   <span class="ruby-identifier">config</span> = {}
   <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">k_str</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">id2name</span>
     <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">k_str</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-identifier">key</span>)
     <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
+
     <span class="ruby-identifier">k_str</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-string">&#39;&#39;</span>
     <span class="ruby-identifier">config</span>[<span class="ruby-identifier">k_str</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">value</span>
   <span class="ruby-keyword">end</span>
@@ -289,7 +293,7 @@
           
           <div class="method-source-code" id="s3_client-source">
             <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">s3_client</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">s3_client</span>
   <span class="ruby-identifier">__require_sdk</span>
   <span class="ruby-constant">AwsHelper</span>.<span class="ruby-identifier">__s3</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Aws</span><span class="ruby-operator">::</span><span class="ruby-constant">S3</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">s3_configuration</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -323,7 +327,7 @@
           
           <div class="method-source-code" id="s3_configuration-source">
             <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 37</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">s3_configuration</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">s3_configuration</span>
   <span class="ruby-identifier">aws_configuration</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">prefixed_configuration</span>(<span class="ruby-string">&#39;s3_&#39;</span>, <span class="ruby-identifier">configuration</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -356,7 +360,7 @@
           
           <div class="method-source-code" id="s3_resource-source">
             <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 32</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">s3_resource</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">s3_resource</span>
   <span class="ruby-identifier">__require_sdk</span>
   <span class="ruby-constant">AwsHelper</span>.<span class="ruby-identifier">__s3_resource</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Aws</span><span class="ruby-operator">::</span><span class="ruby-constant">S3</span><span class="ruby-operator">::</span><span class="ruby-constant">Resource</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">s3_configuration</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -390,7 +394,7 @@
           
           <div class="method-source-code" id="sqs_client-source">
             <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 41</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">sqs_client</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sqs_client</span>
   <span class="ruby-identifier">__require_sdk</span>
   <span class="ruby-constant">AwsHelper</span>.<span class="ruby-identifier">__sqs</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Aws</span><span class="ruby-operator">::</span><span class="ruby-constant">SQS</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sqs_configuration</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -424,7 +428,7 @@
           
           <div class="method-source-code" id="sqs_configuration-source">
             <pre><span class="ruby-comment"># File service/aws/aws_helper.rb, line 46</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">sqs_configuration</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sqs_configuration</span>
   <span class="ruby-identifier">aws_configuration</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">prefixed_configuration</span>(<span class="ruby-string">&#39;sqs_&#39;</span>, <span class="ruby-identifier">configuration</span>))
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -440,12 +444,13 @@
     </section>
   
   </section>
+
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
-  <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

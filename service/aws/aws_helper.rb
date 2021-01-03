@@ -1,11 +1,10 @@
+# frozen_string_literal: true
 
 module MovieMasher
   # included by all aws service instances
   module AwsHelper
     class << self
-      attr_accessor :__s3
-      attr_accessor :__s3_resource
-      attr_accessor :__sqs
+      attr_accessor :__s3, :__s3_resource, :__sqs
     end
 
     def aws_configuration
@@ -18,6 +17,7 @@ module MovieMasher
         k_str = k.id2name
         next unless k_str.start_with?(key)
         next if value.to_s.empty?
+
         k_str[key] = ''
         config[k_str.to_sym] = value
       end
@@ -48,7 +48,10 @@ module MovieMasher
     end
 
     def __require_sdk
-      require 'aws-sdk' unless defined?(Aws)
+      return if defined?(Aws)
+
+      require 'aws-sdk-s3'
+      require 'aws-sdk-sqs'
     end
   end
 end
