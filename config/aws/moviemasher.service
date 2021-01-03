@@ -5,9 +5,10 @@ After=httpd.service
 [Service]
 Type=simple
 WorkingDirectory=/var/www/moviemasher.rb
-ExecStartPre=./config/aws/create_temp_dirs.sh
+ExecStartPre=/var/www/moviemasher.rb/config/aws/create_temp_dirs.sh
 Restart=on-failure
-ExecStart=/usr/bin/rake moviemasher:init['aws'] >> /tmp/moviemasher/log/moviemasher.rb.init.log 2>&1 &
+ExecStart=/usr/bin/rake moviemasher:init['aws']
+ExecStop=
 
 [Install]
 WantedBy=multi-user.target

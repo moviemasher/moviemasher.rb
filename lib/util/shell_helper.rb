@@ -114,7 +114,7 @@ module MovieMasher
         output_type = output[:type]
         a_or_v = Type::RAW_AVS.include?(output_type)
         unless AV::AUDIO_ONLY == avb
-          if v_graphs.length == 1
+          if v_graphs.length == 1 && a_graphs.empty?
             graph = v_graphs.first
             video_dur = graph.duration
             switches += __graph_command(graph, output)

@@ -1,6 +1,6 @@
 /var/www/log/*.log {
     missingok
     size 1M
-    create 664 ec2-user www
+    create 664 ec2-user apache
     rotate 1
 }

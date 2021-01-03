@@ -121,7 +121,7 @@ module MovieMasher
       end
 
       def __transition(clips, mash)
-        transition_clip = nil
+        transition_clip = false
         transition_clips = []
         clips.each do |clip|
           __copy_raw_from_media(clip, mash)
