@@ -240,8 +240,8 @@ module MovieMasher
     end
 
     # Describes the download request for the element, as either a URL or
-    # Hash/Source. If the URL is relative it's based from
-    # Job#base_source. Assets of Type::MASH can point to anything that
+    # Hash/Source. If the URL is relative it's based from job's 
+    # base_source. Assets of Type::MASH can point to anything that
     # responds with a JSON formatted mash. After download they will pass
     # the parsed Hash to Mash.new and reset their #source to the
     # returned instance. Alternatively, #source can be initially set to

@@ -150,7 +150,7 @@ module MovieMasher
     end
 
     # Hash - Query string parameters to send with request for file. The values
-    # are evaluated, with Job and Input in scope.
+    # are evaluated, with job and input in scope.
     # Default - Nil means no query string used.
     # Types - Type::HTTP and Type::HTTPS.
     def parameters=(value)
@@ -205,7 +205,7 @@ module MovieMasher
       _get __method__
     end
 
-    # String - Global AWS geographical region code.
+    # String - Global AWS region code.
     # Default - Nil means us-east-1 standard region.
     # Types - Just Type::S3.
     def region=(value)

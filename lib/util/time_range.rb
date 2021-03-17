@@ -74,6 +74,18 @@ module MovieMasher
         end
       end
 
+      def lcm(rate1, rate2)
+        (rate1 * rate2 / gcd(rate1, rate2))
+      end
+
+      def scale(time, rate, rounding = :round)
+        return if rate == time.rate
+        
+        time.start = scale_int(time.start, time.rate, rate, rounding)
+        time.length = scale_int(time.length, time.rate, rate, rounding)
+        time.rate = rate
+      end
+
       private
 
       def gcd(rate1, rate2)
@@ -85,10 +97,6 @@ module MovieMasher
         rate1
       end
 
-      def lcm(rate1, rate2)
-        (rate1 * rate2 / gcd(rate1, rate2))
-      end
-
       def relative_time(char, value, duration)
         if char == '%'
           (value * duration) / FloatUtil::HUNDRED
@@ -96,37 +104,19 @@ module MovieMasher
           duration + value
         end
       end
-
-      def scale(time, rate, rounding = :round)
-        if !time.empty?
-          scale_time(time, rate, rounding)
-        elsif rate.positive? && time.rate != rate
-          if time.rate.positive?
-            floated = time.length.to_f / (time.rate.to_f / rate)
-            floated = floated.send(rounding) if rounding
-            time.length = [1, floated].max
-          end
-          scale_time(time, rate, rounding)
-        end
+      
+      def scale_int(int, from_rate, to_rate, rounding)
+        floated = int.to_f * (to_rate.to_f / from_rate.to_f)
+        floated = floated.send(rounding) if rounding
+        floated.to_i
       end
-
-      def scale_time(time, rate, rounding = :round)
-        rate = rate.to_i if rate.respond_to? :to_i
-        return unless rate.positive? && rate != time.rate
-
-        if time.rate.positive?
-          floated = time.start.to_f / (time.rate.to_f / rate)
-          floated = floated.send(rounding) if rounding
-          time.start = floated
-        end
-        time.rate = rate
-      end
+      
     end
 
     attr_accessor :length, :rate, :start
 
     def dup
-      TimeRange.new @start, @length, @rate
+      TimeRange.new(@start, @rate, @length)
     end
 
     def end_seconds
@@ -149,9 +139,9 @@ module MovieMasher
     end
 
     def initialize(start = 0, rate = 0, length = 1)
-      @length = length
       @start = start.to_i
       @rate = rate.to_i
+      @length = length
     end
 
     def intersection(range)
@@ -161,7 +151,7 @@ module MovieMasher
       if range1.rate != range2.rate
         range1 = range1.dup
         range2 = range2.dup
-        range1.synchronize range2
+        range1.synchronize(range2)
       end
       last_start = [range1.start, range2.start].max
       first_end = [range1.stop, range2.stop].min
@@ -184,13 +174,24 @@ module MovieMasher
     end
 
     def synchronize(time, rounding = :round)
-      return unless time
-      return unless time.respond_to?(:rate) && time.respond_to?(:scale)
       return if time.rate == @rate
 
       gcf = TimeRange.lcm(time.rate, @rate)
-      scale(gcf, rounding)
+
+      TimeRange.scale(self, gcf, rounding)
       TimeRange.scale(time, gcf, rounding)
+    end
+
+    def to_h
+      h = {}
+      h[:start] = start
+      h[:length] = length
+      h[:rate] = rate
+      h
+    end
+    
+    def to_s
+      to_h.to_s
     end
   end
 end

@@ -10,7 +10,7 @@ describe File.basename(__FILE__) do
       scope = {}
       scope[:size] = 0.5
       scope[:mm_width] = 320
-      horz = MovieMasher::FilterHelpers.send(:mm_horz, 'size', nil, scope)
+      horz = MovieMasher::FilterHelpers.send(:mm_horz, 'size', scope)
       expect(horz).to eq '160'
     end
   end

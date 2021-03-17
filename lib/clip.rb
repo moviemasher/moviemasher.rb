@@ -8,8 +8,13 @@ module MovieMasher
       (hash.is_a?(Clip) ? hash : Clip.new(hash))
     end
 
+    def id
+      _get(__method__)
+    end
+
+
     # Transfer - Resolves relative URLs.
-    # Default - Job#base_source
+    # Default - job's base_source
     # Types - Just Type::MASH.
     def base_source
       _get(__method__)
@@ -51,7 +56,7 @@ module MovieMasher
     end
 
     # Transfer - Resolves relative font URLs for modules.
-    # Default - Job#module_source
+    # Default - job's module_source
     # Types - Just Type::MASH.
     def module_source
       _get(__method__)

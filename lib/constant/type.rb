@@ -5,6 +5,7 @@ module MovieMasher
   module Type
     ASSETS = %w[frame video audio image font].freeze
     AUDIO = 'audio'
+    CHAIN = 'chain'
     EFFECT = 'effect'
     FILE = 'file'
     FONT = 'font'
@@ -16,6 +17,7 @@ module MovieMasher
     MASH = 'mash'
     MERGER = 'merger'
     MODULES = %w[theme font effect].freeze
+    RAW = %w[audio image video]
     RAW_AVS = %w[audio video].freeze
     RAW_VISUALS = %w[image video].freeze
     S3 = 's3'

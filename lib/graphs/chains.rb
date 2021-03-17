@@ -73,14 +73,14 @@ module MovieMasher
       orig_dims = @input_dimensions || target_dims
       __raise_unless(orig_dims, 'input dimensions nil')
       __raise_unless(target_dims, 'output dimensions nil')
-      chain_command_resize(orig_dims, target_dims) if orig_dims != target_dims
+      chain_command_resize(scope, orig_dims, target_dims) if orig_dims != target_dims
       if Fill::STRETCH == @fill
         @filters << FilterHash.new('setsar', sar: 1, max: 1)
       end
       super
     end
 
-    def chain_command_resize(orig_dims, target_dims)
+    def chain_command_resize(scope, orig_dims, target_dims)
       orig_dims = orig_dims.split('x')
       target_dims = target_dims.split('x')
       orig_w = orig_dims[0].to_i
@@ -111,7 +111,7 @@ module MovieMasher
       unless simple_scale
         gtr = FloatUtil.gtr(orig_w_f, w_scaled)
         gtr ||= FloatUtil.gtr(orig_h_f, h_scaled)
-        @filters << __crop_or_pad(gtr, w_scaled, h_scaled, orig_w_f, orig_h_f)
+        @filters << __crop_or_pad(scope, gtr, w_scaled, h_scaled, orig_w_f, orig_h_f)
         simple_scale = !((orig_w == target_w) || (orig_h == target_h))
       end
       return unless simple_scale
@@ -135,11 +135,11 @@ module MovieMasher
       )
     end
 
-    def __crop_or_pad(gtr, w_scaled, h_scaled, orig_w_f, orig_h_f)
+    def __crop_or_pad(scope, gtr, w_scaled, h_scaled, orig_w_f, orig_h_f)
       if gtr
         __crop_filter(w_scaled, h_scaled, orig_w_f, orig_h_f)
       else
-        __pad_filter(w_scaled, h_scaled, orig_w_f, orig_h_f)
+        __pad_filter(scope, w_scaled, h_scaled, orig_w_f, orig_h_f)
       end
     end
 
@@ -151,14 +151,10 @@ module MovieMasher
       end
     end
 
-    def __pad_filter(w_scaled, h_scaled, orig_w_f, orig_h_f)
-      backcolor = 'black'
-      if @job_input[:mash] && @job_input[:mash][:backcolor]
-        backcolor = Graph.color_value(@job_input[:mash][:backcolor])
-      end
+    def __pad_filter(scope, w_scaled, h_scaled, orig_w_f, orig_h_f)
       FilterHash.new(
         'pad',
-        color: backcolor,
+        color: Graph.color_value(scope[:mm_backcolor]),
         w: w_scaled.to_i, h: h_scaled.to_i,
         x: ((w_scaled - orig_w_f) / FloatUtil::TWO).floor.to_i,
         y: ((h_scaled - orig_h_f) / FloatUtil::TWO).floor.to_i
@@ -175,7 +171,7 @@ module MovieMasher
       cmds << "[#{label1}]format=pix_fmts=rgba[#{label1}_rgba]"
       cmds << "[#{label2}]format=pix_fmts=rgba[#{label2}_rgba]"
       cmds << "[#{label1}_rgba][#{label2}_rgba]"
-      puts "CHAIN_LABELS #{cmds.join(';')}"
+      # puts "CHAIN_LABELS #{cmds.join(';')}"
       cmds.join(';')
     end
   end

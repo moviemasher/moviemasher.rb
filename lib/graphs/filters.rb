@@ -26,23 +26,23 @@ module MovieMasher
       @evaluated = {}
       cmds = []
       cmds << cmd
-      if scope
-        if Filter.__outsize['w'] && Filter.__outsize['h']
-          scope[:mm_in_w] = Filter.__outsize['w']
-          scope[:mm_in_h] = Filter.__outsize['h']
-          # puts "<< #{scope[:mm_in_w]}x#{scope[:mm_in_h]} #{@id}"
-        else
-          scope[:mm_in_w] = 'in_w'
-          scope[:mm_in_h] = 'in_h'
-        end
-      end
+      # if scope
+      #   if Filter.__outsize['w'] && Filter.__outsize['h']
+      #     scope[:mm_in_w] = Filter.__outsize['w']
+      #     scope[:mm_in_h] = Filter.__outsize['h']
+      #     # puts "<< #{scope[:mm_in_w]}x#{scope[:mm_in_h]} #{@id}"
+      #   else
+      #     scope[:mm_in_w] = 'in_w'
+      #     scope[:mm_in_h] = 'in_h'
+      #   end
+      # end
       cmd = command_parameters(scope)
       unless cmd.to_s.empty?
         cmds << '='
         cmds << cmd
       end
       cmd = cmds.join
-      __set_output_dimension
+      __set_output_dimension(scope)
 
       @evaluated = {}
       cmd
@@ -111,7 +111,7 @@ module MovieMasher
             params = param_str.split(',').map(&:strip)
             if __is_filter_helper(method)
               result = FilterHelpers.send(
-                method.to_sym, params, @mash_input[:mash], scope
+                method.to_sym, params, scope
               )
               __raise_unless(result, "got false #{method}(#{params.join ','})")
               result = result.to_s
@@ -210,14 +210,18 @@ module MovieMasher
       bind
     end
 
-    def __set_output_dimension
+    def __set_output_dimension(scope)
       dimension_keys = __filter_dimension_keys(@id)
       dimension_keys&.each do |w_or_h, keys|
         keys.each do |key|
           next unless @evaluated[key]
 
           evaluated = @evaluated[key]
-          Filter.__outsize[w_or_h] = evaluated if evaluated.respond_to?(:round)
+          
+          if evaluated.respond_to?(:round)
+            Filter.__outsize[w_or_h] = evaluated 
+            scope["mm_in_#{w_or_h}".to_sym] = evaluated
+          end
           break
         end
       end
@@ -260,9 +264,16 @@ module MovieMasher
 
   # base filter source
   class FilterSource < FilterHash
+    def filter_scope(scope)
+      scope[:mm_in_w], scope[:mm_in_h] = @dimensions.split('x').map(&:to_f)
+      scope
+    end
+
     def filter_command(scope)
       cmd = super
+      
       unless cmd.empty?
+        filter_scope(scope)
         Filter.__outsize['w'], Filter.__outsize['h'] = @dimensions.split('x')
       end
       cmd
@@ -291,7 +302,8 @@ module MovieMasher
       super('movie', {}, @input[:dimensions])
     end
 
-    def filter_command(*)
+    def filter_command(scope)
+      filter_scope(scope)
       Filter.__outsize['w'], Filter.__outsize['h'] = @dimensions.split('x')
       index = FilterSourceRaw.input_index
       FilterSourceRaw.input_index += 1

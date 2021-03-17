@@ -1,13 +1,12 @@
 [Unit]
 Description=Movie Masher
-After=httpd.service
 
 [Service]
 Type=simple
 WorkingDirectory=/var/www/moviemasher.rb
 ExecStartPre=/var/www/moviemasher.rb/config/aws/create_temp_dirs.sh
 Restart=on-failure
-ExecStart=/usr/bin/rake moviemasher:init['aws']
+ExecStart=/usr/bin/rake moviemasher:init[aws]
 ExecStop=
 
 [Install]

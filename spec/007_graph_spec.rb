@@ -1,11 +1,12 @@
 require_relative 'helpers/spec_helper'
 
 describe File.basename(__FILE__) do
+  let(:job) { MovieMasher::Job.create({inputs: [{ mash: { backcolor: 'blue' } }]})}
+  let(:mash) { job.inputs.first }
   context 'Graph#graph_command' do
     it 'returns correct filter string for simple background' do
-      mash = { mash: { backcolor: 'blue' } }
       time_range = MovieMasher::TimeRange.new(3, 1, 2)
-      graph = MovieMasher::GraphMash.new({}, mash, time_range)
+      graph = MovieMasher::GraphMash.new(job, mash, time_range)
       output = {}
       output[:video_rate] = 30
       output[:dimensions] = '320x240'
@@ -13,9 +14,8 @@ describe File.basename(__FILE__) do
       expect(graph.graph_command(output)).to eq expected_output
     end
     it 'returns correct filter string for simple video' do
-      mash = { mash: { backcolor: 'blue' } }
       time_range = MovieMasher::TimeRange.new(3, 1, 2)
-      graph = MovieMasher::GraphMash.new({}, mash, time_range)
+      graph = MovieMasher::GraphMash.new(job, mash, time_range)
       output = {}
       output[:video_rate] = 30
       output[:dimensions] = '320x240'

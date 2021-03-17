@@ -1,8 +1,8 @@
 require_relative 'helpers/spec_helper'
 
-describe File.basename(__FILE__) do
+describe MovieMasher::Evaluate do
   def expect_split(s, *array)
-    expect(MovieMasher::Evaluate.send(:__split, s)).to eq array
+    expect(described_class.send(:__split, s)).to eq array
   end
   context '__split' do
     it "('abc{def}ghi{jkl}mnop') == ['abc', 'def', 'ghi', 'jkl', 'mnop']" do

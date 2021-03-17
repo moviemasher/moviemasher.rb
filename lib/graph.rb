@@ -34,6 +34,7 @@ module MovieMasher
 
   # top level interface
   class Graph < GraphUtility
+    attr_reader :layers, :job_input, :job, :render_range
     def self.color_value(color)
       if color.is_a?(String) && color.end_with?(')') && color.start_with?(
         'rgb(', 'rgba('
@@ -46,8 +47,18 @@ module MovieMasher
       color
     end
 
+
+    def initialize(job = nil, job_input = nil, render_range = nil)
+      super()
+      @job = job
+      @job_input = job_input
+      @render_range = render_range
+      @layers = []
+    end
+
+
     def create_layer(input)
-      raise('no job') unless @job
+      raise('no job') unless job
 
       __raise_unless(input[:type], "input with no type #{input}")
       case input[:type]
@@ -78,24 +89,20 @@ module MovieMasher
       raise('no job') unless @job
 
       scope = {}
-      scope[:mm_job] = @job
+      scope[:mm_output_path] = @job.output_path(@job_output)
+      scope[:mm_backcolor] = @job[:backcolor] || '0x000000'
       scope[:mm_output] = @job_output
-      scope[:mm_render_range] = @render_range
       scope[:mm_fps] = @job_output[:video_rate] || 1
       scope[:mm_dimensions] = @job_output[:dimensions]
       scope[:mm_width], scope[:mm_height] = scope[:mm_dimensions].split 'x'
+      scope[:mm_in_w] = 'in_w'
+      scope[:mm_in_h] = 'in_h'
       scope
     end
 
-    def initialize(job = nil, job_input = nil, render_range = nil)
-      super()
-      @job = job
-      @job_input = job_input
-      @render_range = render_range
-    end
 
     def inputs
-      []
+      layers.map(&:inputs).flatten
     end
   end
 
@@ -206,6 +213,7 @@ module MovieMasher
       scope[:mm_t] = "(t/#{scope[:mm_duration]})"
       return unless @input[:dimensions]
 
+      # puts "#{self.class.name}##{__method__} setting scope overlay dimensions #{@input[:dimensions]}"
       scope[:overlay_w], scope[:overlay_h] = @input[:dimensions].split('x')
     end
 
@@ -245,13 +253,22 @@ module MovieMasher
 
   # a mash represented as a graph
   class GraphMash < Graph
-    def add_new_layer(input)
-      layer = create_layer(input)
+    def add_new_layer(clip)
+      layer = create_layer(clip)
       @layers << layer
       layer
     end
 
-    # LayerTransition
+    def graph_scope
+      raise('no job') unless @job
+
+      scope = super
+      scope[:mm_mash] = job_input[:mash]
+      scope[:mm_backcolor] = job_input[:mash][:backcolor]
+      
+      scope
+    end
+
     def graph_command(output, dont_set_input_index: false)
       FilterSourceRaw.input_index = 0 unless dont_set_input_index
       @job_output = output
@@ -278,7 +295,6 @@ module MovieMasher
     def initialize(job, mash_input, render_range = nil, label_name = 'layer')
       @label_name = label_name
       super(job, mash_input, render_range)
-      @layers = []
       @layers << LayerColor.new(duration, mash_input[:mash][:backcolor])
     end
 
@@ -291,21 +307,19 @@ module MovieMasher
 
   # a video or image represented as a graph
   class GraphRaw < Graph
+    attr_reader :layer
     def graph_command(*)
       super
-      cmd = @layer.layer_command(graph_scope)
-      cmd += @layer.trim_command(@render_range)
+      cmd = layer.layer_command(graph_scope)
+      cmd += layer.trim_command(@render_range)
       cmd
     end
 
     # a video or image input
-    def initialize(input)
-      super(input, nil, input[:range])
+    def initialize(job, input)
+      super(job, input, input[:range])
       @layer = create_layer(input)
-    end
-
-    def inputs
-      @layer.inputs
+      layers << layer
     end
   end
 end

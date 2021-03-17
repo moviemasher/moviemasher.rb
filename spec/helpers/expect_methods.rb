@@ -13,9 +13,13 @@ end
 def expect_dimensions(destination_file, dimensions)
   expect(MovieMasher::Info.get(destination_file, 'dimensions')).to eq dimensions
 end
-def expect_duration(destination_file, expected_duration)
+def expect_duration(destination_file, job)
   duration = MovieMasher::Info.get(destination_file, 'duration').to_f
-  expect(duration).to be_within(0.1).of expected_duration
+  job_duration = job[:duration]
+  # puts "duration: #{duration} job_duration: #{job_duration}"
+  
+  puts job[:inputs].map(&:to_json) if (job_duration - duration).abs > 0.1
+  expect(duration).to be_within(0.1).of job_duration
 end
 def expect_color_video(color, video_file)
   video_duration = MovieMasher::Info.get(video_file, 'duration').to_f

@@ -112,7 +112,7 @@ module MovieMasher
           opts.on('-h', '--help', 'Display this message and exit.') do
             return opts.to_s
           end
-          opts.separator 'Job: Path to a job file or JSON formatted job string.'
+          opts.separator('Job: Path to a job file or JSON formatted job string.')
         end
         # this might return a string containing usage prompt
         opt_parser.parse!(args)

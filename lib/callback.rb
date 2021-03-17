@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module MovieMasher
-  # A Transfer object and element in Job#callbacks representing a remote
+  # A Transfer object and element in job's callbacks representing a remote
   # request triggered at a particular stage in processing.
   #
   # There are four types of #trigger events for callbacks -
   # Trigger::INITIATE, Trigger::PROGRESS, Trigger::ERROR and
-  # Trigger::COMPLETE. After Job#process is called, all
+  # Trigger::COMPLETE. After job.process is called, all
   # Trigger::INITIATE callbacks are requested. Then, every
   # #progress_seconds or so, each Trigger::PROGRESS callback is
   # requested. If a problem is encountered while downloading or
@@ -17,7 +17,7 @@ module MovieMasher
   # The request body is always a JSON payload built from #data by
   # recursively evaluating all its String values. When a value contains
   # curly brace pairs, the text they wrap is treated as a key path into
-  # a scope that contains the Job and Callback being triggered. For
+  # a scope that contains the job and callback being triggered. For
   # instance, {job.destination.type} might evaluate to 'http'. To
   # reference an Array element use a zero-based index in the key path,
   # like {job.inputs.0.type} which might evaluate to 'audio'.
@@ -27,11 +27,11 @@ module MovieMasher
   #     trigger: Trigger::ERROR, # request only if error encountered
   #     host: 'example.com',     # http://example.com/cgi-bin/error.cgi?i=123
   #     path: 'cgi-bin/error.cgi',
-  #     parameters: {i: '{job.id}'},   # Scalar - Job#id
+  #     parameters: {i: '{job.id}'},   # Scalar - job's ID
   #     data: {                        # body of request, JSON formatted
-  #       log: '{job.log}',            # String - Job#log
-  #       error: '{job.error}',        # String - Job#error
-  #       progress: '{job.progress}'   # Hash - Job#progress
+  #       log: '{job.log}',            # String - job's log
+  #       error: '{job.error}',        # String - job's error
+  #       progress: '{job.progress}'   # Hash - job's progress
   #     }
   #   }
   class Callback < Transfer

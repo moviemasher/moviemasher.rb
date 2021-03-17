@@ -1,7 +1,7 @@
 [![Image](https://rawgit.com/moviemasher/moviemasher.rb/master/README/logo-120x60.png "MovieMasher.com")](https://www.moviemasher.com) **[moviemasher.js](https://github.com/moviemasher/moviemasher.js "stands below angular-moviemasher, providing audiovisual playback handling and edit support in a web browser") | [angular-moviemasher](https://github.com/moviemasher/angular-moviemasher "sits between moviemasher.js and moviemasher.rb, providing an editing GUI and simple CMS middleware layer") | moviemasher.rb**
 
 *Ruby library for mashing up video, images and audio utilizing FFmpeg and Ecasound*
-# moviemasher.rb
+# moviemasher.rb  (4.0.26)
 
 Use moviemasher.rb to encode mashups of video, audio, and images together with titles and other visual effects.
 

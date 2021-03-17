@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MovieMasher
-  # A Transfer object used as Job#destination or Output#destination
+  # A Transfer object used as job's destination or output's destination
   # representing a remote host ready to accept rendered file(s).
   #
   #
@@ -9,7 +9,7 @@ module MovieMasher
   #     type: Type::HTTP,
   #     host: 'example.com', # http://example.com/cgi-bin/error.cgi?i=123
   #     path: 'cgi-bin/upload.cgi',
-  #     parameters: {i: '{job.id}'}  # Scalar - Job#id
+  #     parameters: {i: '{job.id}'}  # Scalar - job's id
   #   }
   class Destination < Transfer
     class << self

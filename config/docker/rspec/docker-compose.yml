@@ -1,13 +1,11 @@
 version: '2'
 services:
   rspec:
-    image: moviemasher_rspec
+    image: moviemasher/moviemasher.rb.rspec:4.0.26
     container_name: moviemasher_rspec
     build:
       context: ../../../
       dockerfile: ./config/docker/rspec/Dockerfile-rspec
-    entrypoint: rspec
-    command: spec
     volumes:
       - ../../../lib:/mnt/moviemasher.rb/lib
       - ../../../.rspec:/mnt/moviemasher.rb/.rspec

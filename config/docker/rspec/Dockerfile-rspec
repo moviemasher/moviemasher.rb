@@ -1,10 +1,22 @@
-FROM moviemasher/moviemasher.rb:4.0.25
+FROM moviemasher/moviemasher.rb:4.0.26
 MAINTAINER Movie Masher <support@moviemasher.com>
+
+
+RUN yum update -y && yum groupinstall -y "Development Tools"
+RUN yum install -y ImageMagick ImageMagick-devel
+
+WORKDIR /mnt/moviemasher.rb
+CMD ["moviemasher"]
+ENTRYPOINT ["config/docker/entrypoint.rb"]
 
 # install our test gems
 COPY ./config/docker/rspec/Gemfile-rspec /mnt/moviemasher.rb/Gemfile+
 COPY ./Gemfile /mnt/moviemasher.rb/Gemfile
 
+ENV BUNDLE_SILENCE_ROOT_WARNING=1
 RUN cat Gemfile+ >> Gemfile ; rm Gemfile+ ; bundle install --gemfile=./Gemfile
 
+COPY ./spec /mnt/moviemasher.rb/spec
 
+CMD ["spec"]
+ENTRYPOINT ["rspec"]

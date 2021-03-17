@@ -6,14 +6,14 @@ module MovieMasher
     RGB_FORMAT = '0x%02x%02x%02x'
 
     class << self
-      def mm_cmp(param_string, _mash, _scope)
+      def mm_cmp(param_string, _scope)
         params = __params_from_str(param_string)
         param0 = Evaluate.equation(params[0], true)
         param1 = Evaluate.equation(params[0], true)
         (param0 > param1 ? params[2] : params[3])
       end
 
-      def mm_dir_horz(param_string, _mash, _scope)
+      def mm_dir_horz(param_string, _scope)
         if param_string.empty?
           raise(Error::JobInput, "mm_dir_horz no parameters #{param_string}")
         end
@@ -32,7 +32,7 @@ module MovieMasher
         end
       end
 
-      def mm_dir_vert(param_string, _mash, _scope)
+      def mm_dir_vert(param_string, _scope)
         if param_string.empty?
           raise(Error::JobInput, "mm_dir_vert no parameters #{param_string}")
         end
@@ -51,10 +51,11 @@ module MovieMasher
         end
       end
 
-      def mm_fontfile(param_string, mash, _scope)
+      def mm_fontfile(param_string, scope)
+
         params = __params_from_str(param_string)
         font_id = params.join ','
-        font = __find_font(font_id, mash)
+        font = __find_font(font_id, scope[:mm_mash])
         unless font[:cached_file]
           raise(Error::JobInput, "font has not been cached #{font}")
         end
@@ -62,51 +63,55 @@ module MovieMasher
         font[:cached_file]
       end
 
-      def mm_fontfamily(param_string, mash, _scope)
+      def mm_fontfamily(param_string, scope)
         params = __params_from_str(param_string)
         font_id = params.join(',')
-        font = __find_font(font_id, mash)
+        font = __find_font(font_id, scope[:mm_mash])
         raise(Error::JobInput, 'font has no family') unless font[:family]
 
         font[:family]
       end
 
-      def mm_horz(param_string, mash = nil, scope = nil)
-        __horz_vert(:mm_width, param_string, mash, scope)
+      def mm_horz(param_string, scope)
+        __horz_vert(:mm_width, param_string, scope)
       end
 
-      def mm_max(param_string, mash, scope)
-        __max_min(:max, param_string, mash, scope)
+      def mm_max(param_string, _scope)
+        __max_min(:max, param_string)
       end
 
-      def mm_min(param_string, mash, scope)
-        __max_min(:min, param_string, mash, scope)
+      def mm_min(param_string, _scope)
+        __max_min(:min, param_string)
       end
 
-      def mm_paren(param_string, _mash, _scope)
+      def mm_paren(param_string, _scope)
         params = __params_from_str(param_string)
         "(#{params.join ','})"
       end
 
-      def mm_textfile(param_string, _mash, scope)
-        job = scope[:mm_job]
-        output = scope[:mm_output]
-        path = Path.concat(job.output_path(output), "#{SecureRandom.uuid}.txt")
-        params = __params_from_str(param_string)
-        output[:commands] << { content: params.join(','), file: path }
+      def mm_textfile(param_string, scope)
+        # write supplied string to file and return its path
+        dir = scope[:mm_output_path]
+        path = Path.concat(dir, "#{SecureRandom.uuid}.txt")
+        params = __params_from_str(param_string, true)
+
+        FileHelper.safe_path(dir)
+        File.write(path, params.join(',')) 
+
+        # output[:commands] << { content: params.join(','), file: path }
         path
       end
 
-      def mm_vert(param_string, mash = nil, scope = nil)
-        __horz_vert(:mm_height, param_string, mash, scope)
+      def mm_vert(param_string, scope)
+        __horz_vert(:mm_height, param_string, scope)
       end
 
-      def rgb(param_string, _mash = nil, _scope = nil)
+      def rgb(param_string, _scope = nil)
         params = __params_from_str(param_string)
         format(RGB_FORMAT, *params)
       end
 
-      def rgba(param_string, _mash = nil, _scope = nil)
+      def rgba(param_string, _scope = nil)
         params = __params_from_str(param_string)
         alpha = params.pop.to_f
         result = format(RGB_FORMAT, *params)
@@ -122,7 +127,7 @@ module MovieMasher
         font
       end
 
-      def __horz_vert(w_h, param_string, _mash, scope)
+      def __horz_vert(w_h, param_string, scope)
         params = __params_from_str(param_string)
         value = params.shift
         proud = params.shift
@@ -146,7 +151,7 @@ module MovieMasher
         result
       end
 
-      def __max_min(symbol, param_string, _mash, _scope)
+      def __max_min(symbol, param_string)
         params = __params_from_str(param_string)
         all_ints = true
         evaluated_all = true
@@ -168,9 +173,9 @@ module MovieMasher
         p
       end
 
-      def __params_from_str(param_string)
+      def __params_from_str(param_string, dont_strip = false)
         param_string = param_string.split(',') if param_string.is_a?(String)
-        param_string.map! { |p| p.is_a?(String) ? p.strip : p }
+        param_string.map! { |p| p.is_a?(String) ? p.strip : p } unless dont_strip
         param_string
       end
     end

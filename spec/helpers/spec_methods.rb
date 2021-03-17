@@ -100,21 +100,36 @@ def spec_file(dir, id_or_hash)
   end
   MovieMasher::Hashable.symbolize(id_or_hash)
 end
-def spec_generate_rgb_video(options = nil)
-  options ||= {}
-  options[:red] ||= 2
-  options[:green] ||= 2
-  options[:blue] ||= 2
-  job = spec_job
+
+def spec_rgb_job(options = nil)
+  options = rgb_options(options)
+  job_data = spec_job
   %w[red green blue].each do |c|
     source = MagickGenerator.image_file(
       back: MagickGenerator.const_get(c.upcase), width: SM16X9W, height: SM16X9H
     )
-    job[:inputs] << {
+    # MovieMasher::Input.new(
+    job_data[:inputs] << {
       length: options[c.to_sym], id: c, type: 'image', source: source
     }
   end
-  job[:id] = Digest::SHA2.new(256).hexdigest(options.inspect)
+  job_data[:id] = Digest::SHA2.new(256).hexdigest(options.inspect)
+  
+  MovieMasher::Job.create(job_data)
+end
+
+def rgb_options(options = nil)
+  options ||= {}
+  options[:red] ||= 2
+  options[:green] ||= 2
+  options[:blue] ||= 2
+  options
+end
+
+def spec_generate_rgb_video(options = nil)
+  options = rgb_options(options)
+  job = spec_rgb_job(options)
+  # job.write
   rendered_video_path = spec_process_job(job)
   fps = job[:outputs].first.video_rate.to_i
   colors = []
@@ -130,6 +145,7 @@ def spec_generate_rgb_video(options = nil)
   expect_colors_video(colors, rendered_video_path)
   rendered_video_path
 end
+
 def spec_input_from_file(file, type = 'video', fill = 'none')
   {
     id: File.basename(file, File.extname(file)),
@@ -140,13 +156,13 @@ def spec_input_from_file(file, type = 'video', fill = 'none')
 end
 def spec_job(input_id = nil, output = 'video_h264', destination = 'file_log')
   job_data = spec_job_from_files(input_id, output, destination)
+  
   if job_data
     spec_job_data job_data
     unless job_data[:id]
       input = job_data[:inputs].first
       job_data[:id] = input[:id] if input
     end
-    job_data = MovieMasher::Job.create(job_data)
   else
     puts "SKIPPED #{input_id} - put angular-moviemasher repo alongside "\
       'moviemasher.rb repo to test modules'
@@ -182,11 +198,11 @@ end
 def spec_job_from_files(input_id = nil, output_id = nil, destination_id = nil)
   job = {}
   job[:log_level] = 'debug'
-  job[:inputs] = []
   job[:callbacks] = []
-  job[:outputs] = []
   job[:destination] = spec_file('destinations', destination_id)
+  job[:inputs] = []
   job[:inputs] << spec_file('inputs', input_id) if input_id
+  job[:outputs] = []
   job[:outputs] << spec_file('outputs', output_id) if output_id
   job
 end
@@ -250,14 +266,14 @@ def spec_output(job)
 end
 def spec_process(job)
   spec_magick(job)
-  MovieMasher.process(MovieMasher::Job.create(job))
+  MovieMasher.process(job)
 end
 def spec_process_files(input_id, output = nil, destination = nil)
   spec_process(spec_job_files(input_id, output, destination))
 end
 def spec_process_job(job, expect_error = nil)
   return nil unless job
-
+  
   spec_magick(job)
   job = MovieMasher.process(job)
   if job[:error] && !expect_error
@@ -273,7 +289,7 @@ def spec_process_job(job, expect_error = nil)
   if output
     case output[:type]
     when MovieMasher::Type::AUDIO, MovieMasher::Type::VIDEO
-      expect_duration(destination_file, job[:duration])
+      expect_duration(destination_file, job)
     end
     input = job.inputs.first
     if input && MovieMasher::Type::MASH == input[:type]
@@ -288,7 +304,9 @@ end
 def spec_process_job_files(input_id, output = nil, destination = nil)
   output ||= 'video_h264'
   destination ||= 'file_log'
-  spec_process_job(spec_job(input_id, output, destination))
+  job_data = spec_job(input_id, output, destination)
+  job = MovieMasher::Job.create(job_data)
+  spec_process_job(job)
 end
 def spec_put_file_http(file_path, key)
   full_path = "#{DIR_HTTP_POSTS}/#{key}"

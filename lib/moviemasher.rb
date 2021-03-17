@@ -22,9 +22,9 @@ require_rel '.'
 # configuration is required, though be aware that no download cache is
 # maintained by default.
 #
-#   MovieMasher.configure render_directory: './temp'
-#   MovieMasher.process './job.json'
-#   # => #<MovieMasher::Job:0x007fa34300abc0>
+#   MovieMasher.configure(render_directory: './temp')
+#   MovieMasher.process('./job.json')
+#   # => #<MovieMasher::Job::Instance:0x007fa34300abc0>
 module MovieMasher
   class << self
     attr_accessor :__config, :__job, :__logger
@@ -73,18 +73,17 @@ module MovieMasher
       "#{Time.now} #{name} version #{VERSION}"
     end
 
-    # object_or_path - Job object or String/Hash to be passed to Job.new along
-    # with ::configuration. After the MovieMasher::Job#process method is called,
+    # job_hash_or_path - job, string, or hash to be passed to Job.create along
+    # with ::configuration. After the job's process method is called,
     # its render directory is either moved to *error_directory* (if that option
-    #  isnot empty and a problem arose during processing) or deleted (unless
+    # is not empty and a problem arose during processing) or deleted (unless
     # *render_save* is true). The *download_directory* will also be pruned to
     # assure its size is not greater than *download_bytes*.
     #
-    # Returns Job object with *error* key set if problem arose.
+    # Returns job object with *error* key set if problem arose.
     # Raises Error::Configuration if *render_directory* is empty.
-    def process(object_or_path)
-      object_or_path = Job.new(object_or_path) unless object_or_path.is_a?(Job)
-      result = MovieMasher.__job = object_or_path
+    def process(job_hash_or_path)
+      result = MovieMasher.__job = Job.create(job_hash_or_path) 
       # try to process job
       begin
         MovieMasher.__job.process unless MovieMasher.__job[:error]

@@ -136,7 +136,8 @@ module MovieMasher
               }
             end
             file_path = "#{out_path}concat.txt"
-            output[:commands] << { content: ffconcat, file: file_path }
+            FileHelper.safe_path(out_path)
+            File.write(file_path, ffconcat)
             switches += switch("'#{file_path}'", 'i')
             end_switches += switch('copy', 'c:v')
           end
@@ -181,7 +182,7 @@ module MovieMasher
           # audio graph now represents just one file
           if Type::WAVEFORM == output_type
             output[:commands] << {
-              app: 'audiowaveform', file: rend_path,
+              file: rend_path,
               command: __waveform_switches(graph, output)
             }
           else
@@ -416,22 +417,22 @@ module MovieMasher
         (Type::IMAGES.include?(type) ? nil : max_dur)
       end
 
-      def __waveform_switches(graph, output)
+      def __waveform_switches(segment, output)
         switches = []
-        dimensions = output[:dimensions].split 'x'
-        pixels_per_second = (dimensions.first.to_f / graph[:duration]).to_i
+        
+        layers = []
+        layers << "color=s=#{output[:dimensions]}:c=##{output[:backcolor]}[bg]"
+        layers << "[0:a]aformat=channel_layouts=mono,showwavespic=colors=##{output[:forecolor]}:s=#{output[:dimensions]}[fg]"
+        layers << "[bg][fg]overlay=format=rgb"
 
-        puts "pixels_per_second: #{pixels_per_second}"
-        switches << switch(graph[:waved_file], '--input-filename')
-        switches << switch(dimensions.first, '--width')
-        switches << switch(dimensions.last, '--height')
-        switches << switch(pixels_per_second, '--pixels-per-second')
-        switches << switch(output[:forecolor], '--waveform-color')
-        switches << switch(output[:backcolor], '--background-color')
-        switches << switch('', '--no-axis-labels')
-        switches << switch('', '--output-filename')
+        switches << switch(segment[:waved_file], '-i')
+        
+        switches << switch(layers.join(';'), '-filter_complex')
+        switches << switch(1, '-frames:v')
+        
         switches.join
       end
+
     end
   end
 end

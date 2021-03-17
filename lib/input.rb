@@ -97,7 +97,7 @@ module MovieMasher
               graphs << __mash_range_graph(input, mash, range, job)
             end
           when Type::VIDEO, Type::IMAGE
-            graphs << GraphRaw.new(input)
+            graphs << GraphRaw.new(job, input)
           end
         end
         graphs

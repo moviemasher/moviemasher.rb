@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module MovieMasher
-  # Input#source of mash inputs, representing a collection #media arranged on
-  # #audio and #video tracks.
+  # Input#source of mash inputs, representing a collection of #media 
+  # arranged on #audio and #video tracks.
   class Mash < Hashable
     class << self
       def clip_has_audio(clip)
@@ -35,14 +35,21 @@ module MovieMasher
         clips
       end
 
-      def clips_in_range(mash, range, track_type)
-        clips_in_range = []
-        mash[track_type.to_sym].each do |track|
-          track[:clips].each do |clip|
-            clips_in_range << clip if range.intersection(clip[:range])
+      def clips_in_range(mash, range, track_type = nil, track_number = nil)
+        track_types = track_type ? [track_type] : [Type::AUDIO, Type::VIDEO]
+        
+        
+        in_range = []
+        track_types.each do |type|
+          mash[type.to_sym].each do |track|
+            next if track_number && track_number != track[:index]
+              
+            track[:clips].each do |clip|
+              in_range << clip if range.intersection(clip[:range])
+            end
           end
         end
-        clips_in_range.sort do |a, b|
+        in_range.sort do |a, b|
           if a[:track] == b[:track]
             a[:frame] <=> b[:frame]
           else
@@ -50,7 +57,7 @@ module MovieMasher
           end
         end
       end
-
+      
       def duration(mash)
         mash[:length] / mash[:quantize]
       end
@@ -108,15 +115,16 @@ module MovieMasher
         Type::TRACKS.each do |track_type|
           track_sym = track_type.to_sym
           mash[track_sym] ||= []
-          mash[track_sym].length.times do |track_index|
-            track = mash[track_sym][track_index]
+          mash[track_sym].each_with_index do |track, track_index|
             track[:clips] ||= []
             track[:clips].map! do |clip|
               clip = __init_clip clip, mash, track_index, track_type
-              __init_clip_media(clip[:merger], mash, :merger)
-              __init_clip_media(clip[:scaler], mash, :scaler)
-              clip[:effects].each do |effect|
-                __init_clip_media(effect, mash, :effect)
+              if AV.includes?(clip[:av], Type::VIDEO)
+                __init_clip_media(clip[:merger], mash, :merger)
+                __init_clip_media(clip[:scaler], mash, :scaler)
+                clip[:effects].each do |effect|
+                  __init_clip_media(effect, mash, :effect)
+                end
               end
               clip
             end
@@ -125,6 +133,7 @@ module MovieMasher
             track_index += 1
           end
         end
+        
         mash[:length] = longest
         mash
       end
@@ -138,11 +147,14 @@ module MovieMasher
       end
 
       def init_input(input)
-        input[:effects] ||= []
-        input[:merger] ||= Defaults.module_for_type(:merger)
-        input[:scaler] ||= Defaults.module_for_type(:scaler) unless input[:fill]
+        Hashable._init_key(input, :uuid, SecureRandom.uuid)
         __init_input_av(input)
-        __init_input_fill(input)
+        if AV.includes?(input[:av], Type::VIDEO)
+          input[:effects] ||= []
+          input[:merger] ||= Defaults.module_for_type(:merger)
+          input[:scaler] ||= Defaults.module_for_type(:scaler) unless input[:fill]
+          __init_input_fill(input)
+        end
         __init_input_source(input)
       end
 
@@ -413,7 +425,7 @@ module MovieMasher
         else
           referenced[media_id] = {}
           referenced[media_id][:count] = 1
-          referenced[media_id][:media] = media_search type, media_id, mash
+          referenced[media_id][:media] = media_search(type, media_id, mash)
         end
       end
 
@@ -457,32 +469,173 @@ module MovieMasher
       end
     end
 
-    # Array - One or more Track objects.
-    def audio
-      _get(__method__)
+    def segment_frames_dynamic(range = nil)
+      range ||= TimeRange.new(0, quantize, length)
+      
+      # we don't include transitions at all 
+      clips_with_transitions = self.class.clips_in_range(self, range)
+      clips = clips_with_transitions.reject { |c| c[:type] == Type::TRANSITION }
+      starts = clips.map { |c| c[:frame] }.uniq.sort
+      ends = clips.map { |c| c[:frame] + c[:frames] }.uniq.sort
+      (starts + ends).uniq.sort
+    end
+    
+    def duration
+      self.class.duration(self)
+    end
+    
+    def dynamic_puts(job, input, output, range = nil)
+      array = []
+      active_clip_identifiers = []
+      active_input_ids = []
+      active_inputs_by_id = {}
+      range ||= TimeRange.new(0, quantize, length)
+      frames = segment_frames_dynamic(range)
+      frames_count = frames.count
+      
+      (frames_count - 1).times do |index|
+        range.start = frames[index]
+        range.length = frames[index + 1] - range.start
+        inputs = []
+        states = []
+        
+        # we ignore transitions entirely
+        clips_with_transitions = self.class.clips_in_range(self, range)
+        clips = clips_with_transitions.reject { |c| c[:type] == Type::TRANSITION }
+      
+        clip_identifiers = clips.map { |clip| clip.identifier }
+        clips_by_identifier = Hash[clip_identifiers.zip(clips)] 
+        input_ids = clips.map { |clip| clip.id }.uniq
+        inputs_by_id = Hash[input_ids.zip(clips)] 
+        
+        # add newly appearing inputs
+        activating_input_ids = input_ids - active_input_ids
+        activating_input_ids.each do |input_id|
+          inputs << dynamic_input_from_clip(inputs_by_id[input_id])
+        end
+        
+        # remove disappearing inputs
+        deactivating_input_ids = active_input_ids - input_ids
+        deactivating_input_ids.each do |input_id|
+          states << dynamic_state_remove_clip(active_inputs_by_id[input_id])
+        end
+        
+        active_inputs_by_id = inputs_by_id
+        
+        clips.each do |clip|
+          # state has changed if clip has just appeared
+          state_changed = !active_clip_identifiers.include?(clip.identifier)
+          next unless state_changed
+          scope = dynamic_scope(job, clip, output)
+          state = dynamic_state_add_clip(scope, clip, output) 
+          states << state
+        end
+
+        active_clip_identifiers = clip_identifiers
+        active_input_ids = input_ids
+      
+        array << { inputs: inputs.compact, states: states.compact }
+      end
+      # deactivate remaining inputs
+      states = []
+      active_input_ids.each do |input_id|
+        states << dynamic_state_remove_clip(active_inputs_by_id[input_id])
+      end
+      array << { states: states.compact, inputs: [] }
+      
+      array
+    end
+    
+    def dynamic_scope(job, input, output)
+      scope = {}
+      scope[:mm_output_path] = job.output_path(output)
+      scope[:mm_output] = output
+      scope[:mm_fps] = output[:video_rate] || 1
+
+      scope[:mm_dimensions] = output[:dimensions]
+      scope[:mm_width], scope[:mm_height] = scope[:mm_dimensions].split 'x'
+
+      # if input[:dimensions]
+      #   puts "setting scope overlay dimensions #{input[:dimensions]}"
+      #   scope[:overlay_w], scope[:overlay_h] = input[:dimensions].split('x') 
+      # end
+      scope[:mm_mash] = self
+      scope[:mm_in_w] = 'in_w'
+      scope[:mm_in_h] = 'in_h'
+      scope[:mm_backcolor] = _get(:backcolor)
+      
+      scope
+    end
+    
+    def dynamic_layer_from_clip(clip, output)
+      case clip[:type]
+        when Type::VIDEO
+          Render::Segment::Layer::LayerRaw::LayerRawVideo.create(clip, output)
+        when Type::IMAGE
+          Render::Segment::Layer::LayerRaw::LayerRawImage.create(clip, output)
+        when Type::THEME
+          Render::Segment::Layer::LayerModule::LayerTheme.create(clip, output)
+        end
+    end
+    
+    def dynamic_input_type(clip)
+      Type::RAW.include?(clip[:type]) ? clip[:type] : Type::CHAIN
+    end
+    
+    def dynamic_input_from_clip(clip)
+      # we don't include transitions since they only affect their related clips
+      # puts "dynamic_input_from_clip type: #{clip.type}"
+      return if clip.type == Type::TRANSITION 
+      
+      hash = { id: clip.id, type: dynamic_input_type(clip) }
+      # hash[:path] = clip[:cached_file] unless hash[:type] == Type::CHAIN
+      hash
+    end
+    
+    def dynamic_state_add_clip(scope, clip, output)
+      # puts "dynamic_state_add_clip type: #{clip.type}"
+      
+      hash = { 
+        id: clip.id, 
+        type: dynamic_input_type(clip), 
+        frame: clip[:frame],
+        frames: clip[:frames] 
+      }
+      if AV.includes?(clip[:av], Type::AUDIO)
+        hash[:gain] = clip[:gain]
+      end
+      if AV.includes?(clip[:av], Type::VIDEO)
+        layer = dynamic_layer_from_clip(clip, output)
+        hash[:filters] = layer.dynamic_filters(scope)
+        hash[:overlay] = layer.dynamic_overlay(scope)
+        hash[:overlay][:z] = clip[:track]
+      end
+      hash
     end
 
+    def dynamic_state_remove_clip(clip)
+      # we don't include transitions since they only affect their related clips
+      return if clip.type == Type::TRANSITION 
+      
+      { id: clip.id, type: dynamic_input_type(clip), delete: true }
+    end
+    
     def initialize(hash)
       super
       self.class.init_hash(@hash)
-    end
-
-    # Array - One or more Media objects.
-    def media
-      _get(__method__)
     end
 
     def preflight(job = nil)
       media.map! do |media|
         case media[:type]
         when Type::VIDEO, Type::AUDIO, Type::IMAGE, Type::FRAME, Type::FONT
-          media = Clip.create media
-          media.preflight job
+          media = Clip.create(media)
+          media.preflight(job)
         end
         media
       end
     end
-
+    
     def url_count(desired)
       count = 0
       media.each do |media|
@@ -494,9 +647,25 @@ module MovieMasher
       count
     end
 
-    # Array - One or more Track objects.
+
+    def audio
+      _get(__method__)
+    end
+    def backcolor
+      _get(__method__)
+    end
+    def length
+      _get(__method__)
+    end
+    def media
+      _get(__method__)
+    end
+    def quantize
+      _get(__method__)
+    end
     def video
       _get(__method__)
     end
+   
   end
 end

@@ -126,11 +126,15 @@ module MovieMasher
       @hash.slice(*keys)
     end
 
+    def to_h
+      @hash
+    end
+    
     # Return deep copy of underlying Hash.
     def to_hash
       Marshal.load(Marshal.dump(@hash))
     end
-
+    
     # Return underlying Hash in JSON format.
     def to_json(state = nil)
       @hash.to_json state
@@ -168,8 +172,8 @@ module MovieMasher
       @hash[symbol] = value
     end
 
-    def _get(symbol)
-      @hash[symbol]
+    def _get(symbol = nil)
+      @hash[symbol || __method__]
     end
   end
 end

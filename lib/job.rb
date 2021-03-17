@@ -34,6 +34,7 @@ module MovieMasher
       def init_hash(job)
         job[:progress] = Hash.new { 0 }
         Hashable._init_key(job, :id, SecureRandom.uuid)
+        Hashable._init_key(job, :backcolor, '0x000000')
         Hashable._init_key(job, :inputs, [])
         Hashable._init_key(job, :outputs, [])
         Hashable._init_key(job, :callbacks, [])
@@ -160,6 +161,8 @@ module MovieMasher
     end
 
     def output_path(output, no_trailing_slash: false)
+      return unless output.respond_to?(:identifier)
+
       path = Path.concat(__path_job, output.identifier)
       path = Path.add_slash_end(path) unless no_trailing_slash
       path
@@ -422,11 +425,14 @@ module MovieMasher
     end
 
     def __execute_output_command(output, cmd_hash)
-      out_path, content = cmd_hash.values_at(*%i[file content])
+      out_path = cmd_hash[:file]
+      # out_path, content = cmd_hash.values_at(*%i[file content])
       FileHelper.safe_path(File.dirname(out_path))
-      if content
-        File.open(out_path, 'w') { |f| f << content }
-      elsif !File.exist?(out_path)
+      # 
+      # if content
+      #   puts "CONTENT: #{content} path: #{out_path}"
+      #   File.open(out_path, 'w') { |f| f << content }
+      unless File.exist?(out_path)
         keys = %i[command duration precision app]
         cmd, duration, precision, app = cmd_hash.values_at(*keys)
         do_single_pass = !cmd_hash[:pass]

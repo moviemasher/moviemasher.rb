@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/ruby
 # encoding: utf-8
 
 commands = {
@@ -8,20 +8,24 @@ commands = {
   process_loop: -3,
   moviemasher: false,
 }
-command = ARGV.first.to_sym
+arguments = ARGV.dup
+arguments = arguments.first.split(' ') if arguments.count == 1
+command = arguments.first.to_sym
+
 def puts_configuration(config)
-  puts "Current Configuration:"
-  config.keys.sort.each { |k| puts "  #{k}: #{config[k]}" }
+  keys = config.keys.sort.map { |k| "#{k}: #{config[k]}" }
+  puts "Loaded configuration: #{keys.join(', ')}"
 end
+
 if commands.include?(command)
-  ARGV.shift # remove command
+  arguments.shift # remove command
   config_file = ENV['MOVIEMASHER_CONFIG']
+  puts "Loading configuration #{config_file}"
   config_file ||= '/mnt/moviemasher.rb/config/docker/config.yml'
-  puts "Command #{command} loading configuration file #{config_file}"
   require '/mnt/moviemasher.rb/lib/moviemasher'
   config = YAML.load(File.open(config_file))
   config[:process_seconds] = commands[command] if commands[command]
-  configuration = MovieMasher::Configuration.parse(ARGV, config)
+  configuration = MovieMasher::Configuration.parse(arguments, config)
   if configuration.is_a?(String)
     puts configuration
     puts_configuration(config)
@@ -29,10 +33,11 @@ if commands.include?(command)
     puts_configuration(configuration)
     MovieMasher.configure(configuration)
     puts MovieMasher.hello
-    MovieMasher.process_jobs(ARGV)
+    MovieMasher.process_jobs(arguments)
     MovieMasher.process_queues(configuration[:process_seconds])
     puts MovieMasher.goodbye
   end
 else
-  exec(ARGV.join(' '))
+  puts "Executing #{command}"
+  exec(arguments.join(' '))
 end

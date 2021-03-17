@@ -1,10 +1,11 @@
 
-version <future>:
-- freeze frame
+version 4.0.26:
+- base Docker image on amazonlinux instead of ruby
+- use FFMpeg to generate waveform graphics
 
 version 4.0.25:
 - update FFMpeg to 4.2.4
-- update Ruby to 2.7
+- update Ruby to 2.6
 - update many other dependencies
 - replace wav2png with audiowaveform
 - cleaned up code for Rubocop

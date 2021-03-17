@@ -1,11 +1,7 @@
 
-FROM ruby:2.7
+FROM moviemasher/moviemasher.rb:4.0.26
 MAINTAINER Movie Masher <support@moviemasher.com>
 
-# # # # # # # # # # # # # # # #
-#  DEFAULT COMMAND
-CMD bundle install
-
-# # # # # # # # # # # # # # # #
-#  WORKING DIRECTORY
+CMD ["install"]
+ENTRYPOINT ["bundle"]
 WORKDIR /data

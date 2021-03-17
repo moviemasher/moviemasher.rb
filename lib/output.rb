@@ -10,7 +10,7 @@ module MovieMasher
   # outputs an image file from the audio in the mashup.
   #
   # If outputs need to be uploaded to different locations then each should have
-  # its own #destination, otherwise they will all share Job#destination.
+  # its own #destination, otherwise they will all share job's destination.
   # Typically
   # #name is set to define the filename that's ultimately uploaded, but this can
   # be overridden by #destination. It's important to set #extension regardless
@@ -19,7 +19,7 @@ module MovieMasher
   #
   # By default outputs are optional, unless #required is true. Optional outputs
   # will not halt job processing if there's a problem rendering them. Instead of
-  # setting Job#error the problem is added to Job#log as a warning.
+  # setting job's error, the problem is added to job's log as a warning.
   #
   #   Output.create {
   #     type: Type::VIDEO,                       # aka 'video'
@@ -195,7 +195,7 @@ module MovieMasher
     end
 
     # Transfer - Describes where to upload this output.
-    # Default - Job#destination
+    # Default - job's destination
     def destination=(value)
       _set __method__, value
     end
@@ -293,7 +293,7 @@ module MovieMasher
       _get __method__
     end
 
-    # Integer - Number of decimal places that Job#duration and #duration must
+    # Integer - Number of decimal places that job's duration and #duration must
     # match by for successful rendering - use negative number to skip duration
     # check.
     # Default - 1 for Type::VIDEO, 0 for others.
@@ -330,12 +330,16 @@ module MovieMasher
       _get __method__
     end
 
-    # Boolean - Whether or not Job should halt if output fails render or upload.
+    # Boolean - Whether or not job should halt if output fails render or upload.
     # Default - nil
     def required=(value)
       _set __method__, value
     end
 
+    def stream
+     Dynamic.new(MovieMasher.__job, self).to_h
+    end
+    
     def type
       _get __method__
     end

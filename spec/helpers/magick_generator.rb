@@ -66,8 +66,8 @@ module MagickGenerator
       fill = Magick::HatchFill.new(options[:back], 'white', 100)
       Magick::Image.new(options[:width], options[:height], fill)
     else
-      Magick::Image.new(options[:width], options[:height]) do
-        self.background_color = options[:back] unless options[:grid]
+      Magick::Image.new(options[:width], options[:height]) do |image|
+        image.background_color = options[:back] unless options[:grid]
       end
     end
   end
@@ -207,8 +207,8 @@ module MagickGenerator
     y = ((options[:height] - inner_height).to_f / 2.0).to_i
 
     image = canvas(options)
-    Magick::Image.new(options[:width], options[:height]) do
-      self.background_color = options[:back]
+    Magick::Image.new(options[:width], options[:height]) do |image|
+      image.background_color = options[:back]
     end
 
     rect = Magick::Draw.new

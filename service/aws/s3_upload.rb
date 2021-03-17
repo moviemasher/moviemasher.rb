@@ -28,8 +28,6 @@ module MovieMasher
       bucket_options[:bucket] = output_destination[:bucket]
       if output_destination[:acl]
         bucket_options[:acl] = output_destination[:acl].gsub('_', '-')
-      else
-        puts "output_destination: #{output_destination}"
       end
       if options[:output] && options[:output][:mime_type]
         bucket_options[:content_type] = options[:output][:mime_type]
