@@ -661,7 +661,7 @@ module MovieMasher
         
           def __trim_filters(render_range)
             array = []
-            if render_range && range && !range.equals?(render_range)
+            if render_range && range && range != render_range
               range_start = render_range.start_seconds
               range_end = render_range.end_seconds
               input_start = range.start_seconds

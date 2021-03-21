@@ -231,7 +231,7 @@ module MovieMasher
       input_range = range
       # puts "command_range_trim #{input_range}"
       cmd = ''
-      if render_range && input_range && !input_range.equals?(render_range)
+      if render_range && input_range && input_range != render_range
         range_start = render_range.start_seconds
         range_end = render_range.end_seconds
         input_start = input_range.start_seconds

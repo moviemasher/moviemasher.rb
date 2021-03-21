@@ -3,6 +3,8 @@
 module MovieMasher
   # a time span at a rate
   class TimeRange
+    include Comparable
+
     class << self
       def input_length(input)
         input_time(input, :length)
@@ -110,7 +112,6 @@ module MovieMasher
         floated = floated.send(rounding) if rounding
         floated.to_i
       end
-      
     end
 
     attr_accessor :length, :rate, :start
@@ -123,19 +124,12 @@ module MovieMasher
       TimeRange.new(stop, rate).start_seconds
     end
 
-    def equals?(range)
-      return false unless range
-      return false unless rate.positive? && !range.start.negative?
-
-      if rate == range.rate
-        ((start == range.start) && (length == range.length))
-      else
-        # make copies so neither range is changed
-        range1 = dup
-        range2 = range.dup
-        range1.synchronize range2
-        range1.start == range2.start && range1.length == range2.length
+    def <=>(range)
+      if same_start?(range)
+        return 0 if same_length?(range)
+        return length_seconds <=> range.length_seconds
       end
+      start_seconds <=> range.start_seconds
     end
 
     def initialize(start = 0, rate = 0, length = 1)
@@ -192,6 +186,16 @@ module MovieMasher
     
     def to_s
       to_h.to_s
+    end
+
+    private
+
+    def same_length?(range)
+      FloatUtil.cmp(length_seconds, range.length_seconds)
+    end
+
+    def same_start?(range)
+      FloatUtil.cmp(start_seconds, range.start_seconds)
     end
   end
 end

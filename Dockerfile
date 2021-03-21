@@ -1,5 +1,4 @@
 FROM amazonlinux
-MAINTAINER Movie Masher <support@moviemasher.com>
 
 # # # # # # # # # # # # # # # #
 # DEFINE DIRECTORIES
